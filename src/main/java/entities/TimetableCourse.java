@@ -18,7 +18,8 @@ public class TimetableCourse extends Course{
     private Section practical = null;
     private Section lecture = null;
 
-    public TimetableCourse(List<Section> sections, String courseSession, String courseCode, String breadth){
+    public TimetableCourse(List<Section> sections, String courseSession, String courseCode, String breadth)
+            throws Exception{
         super(sections, courseSession, courseCode, breadth);
         for (Section section : sections){
             switch (section.getCode.slice(0, 3)){
