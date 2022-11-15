@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 /** A concrete implementation of Course that stores at most one tutorial section,
  * one practical section, and one lecture section.
  *
@@ -22,20 +24,20 @@ public class TimetableCourse extends Course{
             throws Exception{
         super(sections, courseSession, courseCode, breadth);
         for (Section section : sections){
-            switch (section.getCode.slice(0, 3)){
+            switch (section.getCode().substring(0, 3)){
                 case "TUT":
                     if (this.tutorial != null){
-                        throw new Exception("Tutorial section is already set.")
+                        throw new InvalidSectionsException("tutorial");
                     }
                     this.tutorial = section;
                 case "PRA":
                     if (this.practical != null){
-                        throw new Exception("Practical section is already set.")
+                        throw new InvalidSectionsException("practical");
                     }
                     this.practical = section;
                 case "LEC":
                     if (this.tutorial != null){
-                        throw new Exception("Tutorial section is already set.")
+                        throw new InvalidSectionsException("lecture");
                     }
                     this.lecture = section;
 

@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 /** A concrete implementation of Course that stores all sections available in a course.
  *
  */
