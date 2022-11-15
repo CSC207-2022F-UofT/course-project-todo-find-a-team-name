@@ -4,6 +4,8 @@ public class EditTimetableResponseModel {
     private String courseCode;
     private boolean success;
 
+    private String message;
+
     public EditTimetableResponseModel(String courseCode, boolean success){
         this.courseCode = courseCode;
         this.success = success;
@@ -15,5 +17,13 @@ public class EditTimetableResponseModel {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public String getMessage(){
+        return message;
+    }
+
+    public void setMessage(String message){
+        this.message = message;
     }
 }

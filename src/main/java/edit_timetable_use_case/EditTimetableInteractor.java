@@ -4,10 +4,10 @@ public class EditTimetableInteractor implements EditTimetableInputBoundary {
 
     private Timetable timetable;
     private Session session;
-    private final EditTimetablePresenter presenter;
+    private final EditTimetableOutputBoundary presenter;
 
 
-    public EditTimetableInteractor(Timetable timetable, Session session, EditTimetablePresenter presenter){
+    public EditTimetableInteractor(Timetable timetable, Session session, EditTimetableOutputBoundary presenter){
         this.timetable = timetable;
         this.session = session;
         this.presenter = presenter;

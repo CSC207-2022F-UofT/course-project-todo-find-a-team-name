@@ -24,17 +24,17 @@ public class TimetableCourse extends Course{
             switch (section.getCode.slice(0, 3)){
                 case "TUT":
                     if (this.tutorial != null){
-                        throw new Exception("Tutorial section is already set.")
+                        throw new Exception("Tutorial section is already set.");
                     }
                     this.tutorial = section;
                 case "PRA":
                     if (this.practical != null){
-                        throw new Exception("Practical section is already set.")
+                        throw new Exception("Practical section is already set.");
                     }
                     this.practical = section;
                 case "LEC":
                     if (this.tutorial != null){
-                        throw new Exception("Tutorial section is already set.")
+                        throw new Exception("Tutorial section is already set.");
                     }
                     this.lecture = section;
 
