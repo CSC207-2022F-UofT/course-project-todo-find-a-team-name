@@ -1,5 +1,8 @@
 package edit_timetable_use_case;
 
+/**
+ *
+ */
 public class EditTimetableInteractor implements EditTimetableInputBoundary {
 
     private Timetable timetable;
@@ -7,6 +10,11 @@ public class EditTimetableInteractor implements EditTimetableInputBoundary {
     private final EditTimetableOutputBoundary presenter;
 
 
+    /**
+     * @param timetable
+     * @param session
+     * @param presenter
+     */
     public EditTimetableInteractor(Timetable timetable, Session session, EditTimetableOutputBoundary presenter){
         this.timetable = timetable;
         this.session = session;

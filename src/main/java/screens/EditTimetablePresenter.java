@@ -4,6 +4,9 @@ import edit_timetable_use_case.EditTimetableOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
 import edit_timetable_use_case.RemoveCourseFailedException;
 
+/**
+ *
+ */
 public class EditTimetablePresenter implements EditTimetableOutputBoundary {
 
 
