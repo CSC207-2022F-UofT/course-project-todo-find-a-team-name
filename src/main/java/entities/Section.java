@@ -26,7 +26,7 @@ public class Section {
          */
         @Override
         public int compare(Block b1, Block b2) {
-            return Double.compare(b1.getDay() * 24 + b1.getStartTime(), b2.getDay() * 24 - b2.getStartTime());
+            return Double.compare(b1.getDay() * 24 + b1.getStartTime(), b2.getDay() * 24 + b2.getStartTime());
         }
     }
 
@@ -57,9 +57,9 @@ public class Section {
         for (int i = 0; i < merged.size() - 1; i++){
             if (merged.get(i).getDay() == merged.get(i + 1).getDay() &&
                     merged.get(i).getEndTime() > merged.get(i + 1).getStartTime())
-                return false;
+                return true;
         }
-        return true;
+        return false;
 
     }
 
