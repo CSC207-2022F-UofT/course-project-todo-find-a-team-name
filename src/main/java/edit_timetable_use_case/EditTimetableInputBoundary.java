@@ -10,7 +10,7 @@ public interface EditTimetableInputBoundary {
      * @param requestModel
      * @return
      */
-    EditTimetableResponseModel remove(EditTimetableRequestModel requestModel);
+    EditTimetableResponseModel remove(EditTimetableRequestModel requestModel) throws RemoveCourseFailedException;
     EditTimetableResponseModel add(EditTimetableRequestModel requestModel);
     EditTimetableResponseModel edit(EditTimetableRequestModel requestModel);
 }

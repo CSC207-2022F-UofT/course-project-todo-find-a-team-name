@@ -17,7 +17,7 @@ public class EditTimetableController {
      * @param courseCode
      * @return
      */
-    EditTimetableResponseModel remove(String courseCode){
+    public EditTimetableResponseModel remove(String courseCode) throws RemoveCourseFailedException {
         EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode);
         return userInput.remove(requestModel);
     }

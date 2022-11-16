@@ -5,5 +5,5 @@ public interface EditTimetableOutputBoundary {
      * @param responseModel
      * @return
      */
-    EditTimetableResponseModel prepareView(EditTimetableResponseModel responseModel);
+    EditTimetableResponseModel prepareRemoveView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException;
 }

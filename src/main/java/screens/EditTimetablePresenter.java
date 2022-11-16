@@ -15,7 +15,7 @@ public class EditTimetablePresenter implements EditTimetableOutputBoundary {
      * @return
      */
     @Override
-    public EditTimetableResponseModel prepareView(EditTimetableResponseModel responseModel) {
+    public EditTimetableResponseModel prepareRemoveView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException {
         if (responseModel.isSuccess()){
             responseModel.setMessage(responseModel.getCourseCode() + " has been successfully removed.");
             return responseModel;

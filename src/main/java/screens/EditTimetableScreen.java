@@ -1,6 +1,7 @@
 package screens;
 
 import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.RemoveCourseFailedException;
 
 import javax.swing.*;
 
@@ -14,7 +15,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 /**
  *
  */
-public class EditTimetableScreen extends JPanel implements ActionListener {
+public class EditTimetableScreen extends JPanel {
 
     private final EditTimetableController controller;
 
@@ -45,12 +46,13 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
 
     }
 
-
-    /**
-     * @param e the event to be processed
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
+    public void remove(String courseCode){
+        try{
+            this.controller.remove(courseCode).getMessage()
+        }
+        catch (RemoveCourseFailedException e){
+            ...... e.getMessage() ......;
+        }
     }
+
 }
