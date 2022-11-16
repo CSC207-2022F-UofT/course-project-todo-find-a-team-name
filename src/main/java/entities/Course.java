@@ -16,7 +16,7 @@ import java.util.List;
  * BR is sometimes an empty string. There should be a way to handle this somewhere.
  * This shouldn't change after initialization.
  */
-public abstract class Course() {
+public abstract class Course {
 
     private final String title;
     protected List<Section> sections;
