@@ -31,19 +31,19 @@ public class TimetableCourse extends Course{
 
         for (Section section : sections){
             switch (section.getCode().substring(0, 3)) {
-                case "TUT" -> {
+                case "TUT": {
                     if (hasTutorial) {
                         throw new InvalidSectionsException("tutorial");
                     }
                     hasTutorial = true;
                 }
-                case "PRA" -> {
+                case "PRA": {
                     if (hasPractical) {
                         throw new InvalidSectionsException("practical");
                     }
                     hasPractical = true;
                 }
-                case "LEC" -> {
+                case "LEC": {
                     if (hasLecture) {
                         throw new InvalidSectionsException("lecture");
                     }
