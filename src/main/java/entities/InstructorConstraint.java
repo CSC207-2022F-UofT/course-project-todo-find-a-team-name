@@ -46,4 +46,9 @@ public class InstructorConstraint extends Constraint{
         return super.toString() + "instructor: " + instructorNames;
     }
 
+    // TEST
+    public static void main(String[] args) {
+        // Do nothing
+        return;
+    }
 }
