@@ -1,3 +1,7 @@
+package entities;
+
+import java.util.List;
+
 /** An entity representing a Course.
  *
  * Strings are used for tags because it's convenient with JSON. Don't actually use them as strings!
@@ -15,7 +19,7 @@
 public abstract class Course() {
 
     private final String title;
-    private final List<Section> sections;
+    protected List<Section> sections;
     private final String courseSession;
     private final String courseCode;
     private final String breadth;

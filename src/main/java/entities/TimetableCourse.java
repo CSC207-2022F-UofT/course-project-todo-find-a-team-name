@@ -20,9 +20,9 @@ public class TimetableCourse extends Course{
     private Section practical = null;
     private Section lecture = null;
 
-    public TimetableCourse(List<Section> sections, String courseSession, String courseCode, String breadth)
-            throws Exception{
-        super(sections, courseSession, courseCode, breadth);
+    public TimetableCourse(String title, List<Section> sections, String courseSession, String courseCode, String breadth)
+            throws InvalidSectionsException{
+        super(title, sections, courseSession, courseCode, breadth);
         for (Section section : sections){
             switch (section.getCode().substring(0, 3)){
                 case "TUT":
@@ -40,9 +40,7 @@ public class TimetableCourse extends Course{
                         throw new InvalidSectionsException("lecture");
                     }
                     this.lecture = section;
-
             }
-
         }
     }
 
