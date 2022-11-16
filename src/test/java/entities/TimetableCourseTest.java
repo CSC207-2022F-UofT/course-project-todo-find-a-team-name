@@ -34,10 +34,10 @@ class TimetableCourseTest {
             TimetableCourse c = new TimetableCourse("Test Course",
                     new ArrayList<Section>(List.of(s1, s2)),
                     "F", "EGX101", "BR1");
+            fail("Constructor should have thrown InvalidSectionsException.");
         } catch (InvalidSectionsException e){
             expectedExceptionThrown = true;
         }
-        assertTrue(expectedExceptionThrown);
     }
 
 }
