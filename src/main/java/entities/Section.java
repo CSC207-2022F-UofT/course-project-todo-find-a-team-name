@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * An entity representing a Section (e.g. LEC-0101, TUT-0201, PRA-0101) of a course.
+ * Instance Attributes:
+ *      - code: section code (e.g. "LEC-0101")
+ *      - instructorName: name of the instructor for this section
+ *      - blocks: list of blocks of this section
+ */
 public class Section {
     private final String code;
     private final String instructorName;
@@ -116,7 +123,7 @@ public class Section {
 
     /**
      * returns List of Block contained in this section
-     * Blocks returned is the copy of blocks attribute
+     * list of Block entities returned is the copy of this.blocks
      *
      * @return List of Block contained in this section
      */
