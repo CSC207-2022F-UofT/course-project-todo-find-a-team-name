@@ -81,11 +81,7 @@ public class Session {
      * @return ArrayList<String>
      */
     public ArrayList<String> allCourseCodesSession() {
-        ArrayList<String> allCourseCodes = new ArrayList<>();
-        for (String courseCode : allSessionCourses.keySet()) {
-            allCourseCodes.add(courseCode);
-        }
-        return allCourseCodes;
+        return new ArrayList<>(allSessionCourses.keySet());
     }
 
     @Override
