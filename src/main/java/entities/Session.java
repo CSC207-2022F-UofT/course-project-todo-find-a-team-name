@@ -15,7 +15,7 @@ public class Session {
 
     // allSessionCourses contains all courses in this session:
     // key (Course Code) and value (CalendarCourse object)
-    protected HashMap<String, CalendarCourse> allSessionCourses;
+    private HashMap<String, CalendarCourse> allSessionCourses;
     private final String sessionType;
 
     // Constructor
