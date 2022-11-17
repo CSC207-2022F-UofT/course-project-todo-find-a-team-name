@@ -53,7 +53,7 @@ public class RoomConstraint extends Constraint{
 
     @Override
     public String toString(){
-        return super.toString() + ": " + rooms;
+        return "Room " + super.toString() + ": " + rooms;
     }
 }
 
