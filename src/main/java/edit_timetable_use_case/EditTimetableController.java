@@ -1,16 +1,18 @@
 package edit_timetable_use_case;
 
+import java.util.ArrayList;
+
 /**
  *
  */
 public class EditTimetableController {
-    EditTimetableInputBoundary userInput;
+    RemoveCourseInputBoundary removeCourseInteractor;
 
     /**
-     * @param userInput
+     * @param removeCourseInteractor
      */
-    public EditTimetableController(EditTimetableInputBoundary userInput){
-        this.userInput = userInput;
+    public EditTimetableController(RemoveCourseInputBoundary removeCourseInteractor){
+        this.removeCourseInteractor = removeCourseInteractor;
     }
 
     /**
@@ -18,7 +20,7 @@ public class EditTimetableController {
      * @return
      */
     public EditTimetableResponseModel remove(String courseCode) throws RemoveCourseFailedException {
-        EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode);
-        return userInput.remove(requestModel);
+        EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode, new ArrayList<>());
+        return removeCourseInteractor.remove(requestModel);
     }
 }

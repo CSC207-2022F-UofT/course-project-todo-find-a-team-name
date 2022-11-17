@@ -1,7 +1,7 @@
 package edit_timetable_use_case;
 
 
-/** The input boundary used to remove a course in the EditTimetable use case.
+/** #TODO: replace with ______InputBoundary
  *
  */
 
@@ -10,7 +10,6 @@ public interface EditTimetableInputBoundary {
      * @param requestModel
      * @return
      */
-    EditTimetableResponseModel remove(EditTimetableRequestModel requestModel) throws RemoveCourseFailedException;
     EditTimetableResponseModel add(EditTimetableRequestModel requestModel);
     EditTimetableResponseModel edit(EditTimetableRequestModel requestModel);
 }
