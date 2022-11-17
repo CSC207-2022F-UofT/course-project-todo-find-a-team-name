@@ -104,6 +104,14 @@ public class Session {
         return new ArrayList<>(allSessionCourses.keySet());
     }
 
+    /**
+     * Returns a list of all CalendarCourse objects in this session
+     * @return ArrayList<CalendarCourse> containing strings of course codes
+     */
+    public ArrayList<CalendarCourse> allCoursesSession() {
+        return new ArrayList<>(allSessionCourses.values());
+    }
+
     @Override
     public String toString() {
         return "Session: " + this.sessionType + " { " + allSessionCourses + " }";
