@@ -29,7 +29,7 @@ public class Session {
      * @param course (a CalendarCourse object)
      */
     public boolean addCourse(CalendarCourse course) {
-        if (!allSessionCourses.containsValue(course) && course.getCourseSession().equals(this.sessionType)) {
+        if (!(allSessionCourses.containsValue(course)) && course.getCourseSession().equals(this.sessionType)) {
             // Adds key (Course Code) and value (CalendarCourse object)
             allSessionCourses.put(course.getCourseCode(), course);
             return true;
@@ -38,7 +38,7 @@ public class Session {
     }
     /**
      * Returns the session type of this session. Either Fall (F), Winter (S), or Fall & Winter (Y).
-     * @return String
+     * @return String of session type
      */
     public String getSessionType() {
         return this.sessionType;
@@ -64,7 +64,7 @@ public class Session {
     /**
      * Returns a list of all courses codes in this session with given Breadth Category.
      * @param breadth A breadth category
-     * @return ArrayList<String>
+     * @return ArrayList<String> containing strings of course codes
      */
     public ArrayList<String> allCourseCodesBRSession(String breadth) {
         ArrayList<String> allCourseCodesBR = new ArrayList<>();
@@ -78,7 +78,7 @@ public class Session {
 
     /**
      * Returns a list of all course codes in this session
-     * @return ArrayList<String>
+     * @return ArrayList<String> containing strings of course codes
      */
     public ArrayList<String> allCourseCodesSession() {
         return new ArrayList<>(allSessionCourses.keySet());
