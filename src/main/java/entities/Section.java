@@ -142,6 +142,33 @@ public class Section {
         return "Section {" + "code: " + code + ", instructor name: " + instructorName +
                 ", # of blocks: " + blocks.size() + "}";
     }
+
+    /**
+     * Returns whether this section is lecture
+     * (i.e. whether section code starts with "LEC")
+     * @return whether this section is lecture
+     */
+    public boolean isLecture(){
+        return code.startsWith("LEC");
+    }
+
+    /**
+     * Returns whether this section is tutorial
+     * (i.e. whether section code starts with "TUT")
+     * @return whether this section is tutorial
+     */
+    public boolean isTutorial(){
+        return code.startsWith("TUT");
+    }
+
+    /**
+     * Returns whether this section is practical
+     * (i.e. whether section code starts with "PRA")
+     * @return whether this section is practical
+     */
+    public boolean isPractical(){
+        return code.startsWith("PRA");
+    }
 }
 
 
