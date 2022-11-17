@@ -30,29 +30,27 @@ public class TimetableCourse extends Course{
         boolean hasLecture = false;
 
         for (Section section : sections){
-            switch (section.getCode().substring(0, 3)) {
-                case "TUT": {
-                    if (hasTutorial) {
-                        throw new InvalidSectionsException("tutorial");
-                    }
-                    hasTutorial = true;
+            if (section.isLecture()){
+                if (hasLecture){
+                    throw new InvalidSectionsException("lecture");
                 }
-                case "PRA": {
-                    if (hasPractical) {
-                        throw new InvalidSectionsException("practical");
-                    }
-                    hasPractical = true;
+                hasLecture = true;
+            }
+            else if (section.isTutorial()){
+                if (hasTutorial){
+                    throw new InvalidSectionsException("tutorial");
                 }
-                case "LEC": {
-                    if (hasLecture) {
-                        throw new InvalidSectionsException("lecture");
-                    }
-                    hasLecture = true;
+                hasTutorial = true;
+            }
+            else if (section.isPractical()){
+                if (hasPractical){
+                    throw new InvalidSectionsException("practical");
                 }
+                hasPractical = true;
             }
         }
     }
-
 }
+
 
 
