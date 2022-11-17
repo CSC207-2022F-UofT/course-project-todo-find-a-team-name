@@ -24,4 +24,10 @@ public class CalendarCourse extends Course {
     public void removeSection(Section toRemove){
         this.sections.remove(toRemove);
     }
-}
+
+    public boolean equals(CalendarCourse other){
+        return (this.title.equals(other.title) && this.sections.equals(other.sections) &&
+                this.courseSession.equals(other.courseSession) && this.courseCode.equals(other.courseCode)
+        && this.breadth.equals(other.breadth));
+    }
+    }
