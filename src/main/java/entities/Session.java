@@ -50,7 +50,7 @@ public class Session {
      */
     public void removeCourse(CalendarCourse course) {
         for (String key : allSessionCourses.keySet()) {
-            if (allSessionCourses.get(key) == course) {
+            if (allSessionCourses.get(key).equals(course)) {
                 allSessionCourses.remove(key);
             }
         }
