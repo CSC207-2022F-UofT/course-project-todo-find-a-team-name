@@ -57,7 +57,7 @@ public class Session {
      * @param courseCode String representation of course code.
      * @return CalendarCourse
      */
-    public CalendarCourse loadCalendarCourse(String courseCode){
+    public CalendarCourse getCalendarCourse(String courseCode){
         return allSessionCourses.get(courseCode);
     }
 
