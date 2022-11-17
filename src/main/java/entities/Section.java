@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * An entity representing a Section (e.g. LEC-0101, TUT-0201, PRA-0101) of a course.
+ * Instance Attributes:
+ *      - code: section code (e.g. "LEC-0101")
+ *      - instructorName: name of the instructor for this section
+ *      - blocks: list of blocks of this section
+ */
 public class Section {
     private final String code;
     private final String instructorName;
@@ -33,21 +40,23 @@ public class Section {
     /**
      * Creates Section entity with given blocks, section code, and
      * instructor name.
+     * Blocks given is copied to initialize blocks attribute of this entity
      *
      * @param code section code (e.g. LEC0101)
      * @param instructorName instructor name
      * @param blocks List of Block entities
      */
     public Section(String code, String instructorName, List<Block> blocks){
-        blocks.sort(new BlockComparator());
         this.code = code;
         this.instructorName = instructorName;
-        this.blocks = blocks;
+        this.blocks = new ArrayList<>(blocks);
+        this.blocks.sort(new BlockComparator());
     }
 
     /**
      * Returns whether time conflict exists between
-     * this section and the given section called other
+     * this section and the given section called other,
+     * assuming that both section exist in same session
      *
      * @param other another section entity
      * @return whether there is time conflict between this and other
@@ -114,11 +123,12 @@ public class Section {
 
     /**
      * returns List of Block contained in this section
+     * list of Block entities returned is the copy of this.blocks
      *
      * @return List of Block contained in this section
      */
     public List<Block> getBlocks() {
-        return blocks;
+        return new ArrayList<>(blocks);
     }
 
     /**
@@ -131,6 +141,33 @@ public class Section {
     public String toString() {
         return "Section {" + "code: " + code + ", instructor name: " + instructorName +
                 ", # of blocks: " + blocks.size() + "}";
+    }
+
+    /**
+     * Returns whether this section is lecture
+     * (i.e. whether section code starts with "LEC")
+     * @return whether this section is lecture
+     */
+    public boolean isLecture(){
+        return code.startsWith("LEC");
+    }
+
+    /**
+     * Returns whether this section is tutorial
+     * (i.e. whether section code starts with "TUT")
+     * @return whether this section is tutorial
+     */
+    public boolean isTutorial(){
+        return code.startsWith("TUT");
+    }
+
+    /**
+     * Returns whether this section is practical
+     * (i.e. whether section code starts with "PRA")
+     * @return whether this section is practical
+     */
+    public boolean isPractical(){
+        return code.startsWith("PRA");
     }
 }
 
