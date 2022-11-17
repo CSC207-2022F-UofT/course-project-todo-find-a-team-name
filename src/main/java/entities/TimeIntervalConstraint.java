@@ -72,6 +72,6 @@ public class TimeIntervalConstraint extends Constraint{
 
     @Override
     public String toString(){
-        return "Time" + super.toString() + ": " + formatTime(startTime) + "-" + formatTime(endTime);
+        return "Time " + super.toString() + ": " + formatTime(startTime) + "-" + formatTime(endTime);
     }
 }
