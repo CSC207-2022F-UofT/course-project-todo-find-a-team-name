@@ -1,10 +1,13 @@
 package edit_timetable_use_case;
 
+import java.util.List;
+
 /**
  *
  */
 public class EditTimetableResponseModel {
     private String courseCode;
+    private List<String> sectionCodes;
     private boolean success;
 
     private String message;
@@ -13,8 +16,9 @@ public class EditTimetableResponseModel {
      * @param courseCode
      * @param success
      */
-    public EditTimetableResponseModel(String courseCode, boolean success){
+    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, boolean success){
         this.courseCode = courseCode;
+        this.sectionCodes = sectionCodes;
         this.success = success;
     }
 
@@ -23,6 +27,10 @@ public class EditTimetableResponseModel {
      */
     public String getCourseCode() {
         return courseCode;
+    }
+
+    public List<String> getSectionCodes(){
+        return sectionCodes;
     }
 
     /**

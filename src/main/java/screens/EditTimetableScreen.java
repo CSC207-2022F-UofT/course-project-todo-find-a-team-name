@@ -18,6 +18,8 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class EditTimetableScreen extends JPanel {
 
     private final EditTimetableController controller;
+    private Timetable timetable;
+    private Session session;
 
 
     /**
@@ -27,16 +29,13 @@ public class EditTimetableScreen extends JPanel {
         this.controller = controller;
 
         JButton recommendBR = new JButton("Recommend BR courses");
-        RecommendBRAction recommendBRAction = new RecommendBRAction(controller);
-        recommendBR.setAction(recommendBRAction);
+        recommendBR.setAction(new RecommendBRAction(...));
 
         JButton save = new JButton("Save");
-        SaveTimetableAction saveTimetableAction = new SaveTimetableAction(________);
-        save.setAction(saveTimetableAction);
+        save.setAction(new SaveTimetableAction(...));
 
         JButton addCourse = new JButton("Add a course");
-        AddCourseAction addCourseAction = new AddCourseAction(controller);
-        addCourse.setAction(addCourseAction);
+        addCourse.setAction(new AddCourseAction());
 
 
         JPanel buttons = new JPanel();
@@ -44,6 +43,11 @@ public class EditTimetableScreen extends JPanel {
         buttons.add(recommendBR);
         buttons.add(addCourse);
 
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(buttons);
+        this.add(timetableViewPanel);
+
+        this.setVisible(true);
     }
 
     public void remove(String courseCode){
@@ -53,6 +57,14 @@ public class EditTimetableScreen extends JPanel {
         catch (RemoveCourseFailedException e){
             ...... e.getMessage() ......;
         }
+    }
+
+    public void openAddCourseMenu(){
+
+    }
+
+    public void openEditCourseScreen(String courseCode){
+        new EditCourseScreen(this, courseCode);
     }
 
 }

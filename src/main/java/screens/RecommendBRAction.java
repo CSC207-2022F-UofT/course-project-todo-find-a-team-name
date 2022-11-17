@@ -8,8 +8,9 @@ import java.awt.event.ActionEvent;
 public class RecommendBRAction extends AbstractAction {
     private final EditTimetableController controller;
     private final EditTimetableScreen screen;
-    public RecommendBRAction(EditTimetableController controller) {
+    public RecommendBRAction(EditTimetableController controller, EditTimetableScreen screen) {
         this.controller = controller;
+        this.screen = screen;
     }
 
     /**
