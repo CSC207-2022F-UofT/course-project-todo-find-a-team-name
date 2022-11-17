@@ -33,21 +33,23 @@ public class Section {
     /**
      * Creates Section entity with given blocks, section code, and
      * instructor name.
+     * Blocks given is copied to initialize blocks attribute of this entity
      *
      * @param code section code (e.g. LEC0101)
      * @param instructorName instructor name
      * @param blocks List of Block entities
      */
     public Section(String code, String instructorName, List<Block> blocks){
-        blocks.sort(new BlockComparator());
         this.code = code;
         this.instructorName = instructorName;
-        this.blocks = blocks;
+        this.blocks = new ArrayList<>(blocks);
+        this.blocks.sort(new BlockComparator());
     }
 
     /**
      * Returns whether time conflict exists between
-     * this section and the given section called other
+     * this section and the given section called other,
+     * assuming that both section exist in same session
      *
      * @param other another section entity
      * @return whether there is time conflict between this and other
@@ -114,11 +116,12 @@ public class Section {
 
     /**
      * returns List of Block contained in this section
+     * Blocks returned is the copy of blocks attribute
      *
      * @return List of Block contained in this section
      */
     public List<Block> getBlocks() {
-        return blocks;
+        return new ArrayList<>(blocks);
     }
 
     /**
