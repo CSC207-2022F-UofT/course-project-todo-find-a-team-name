@@ -45,11 +45,31 @@ public class Session {
     }
 
     /**
+     * Removes given a CalendarCourse object in this session
+     * @param course CalendarCourse object
+     */
+    public void removeCourse(CalendarCourse course) {
+        for (String key : allSessionCourses.keySet()) {
+            if (allSessionCourses.get(key) == course) {
+                allSessionCourses.remove(key);
+            }
+        }
+    }
+
+    /**
      * Removes given courseCode in this session
      * @param courseCode String representation of course code
      */
-    public void removeCourse(String courseCode) {
+    public void removeCourseByCourseCode(String courseCode) {
         allSessionCourses.remove(courseCode);
+    }
+
+    /**
+     * Removes number of courses in this session
+     * @return Integer
+     */
+    public Integer numberOfCourses() {
+        return allSessionCourses.size();
     }
 
     /**
