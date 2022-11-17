@@ -1,6 +1,6 @@
 package screens;
 
-import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.RetrieveTimetableController;
 import entities.Section;
 
 import javax.swing.*;
@@ -8,16 +8,16 @@ import javax.swing.*;
 public class EditCourseScreen extends JPanel {
 
     private EditTimetableScreen screen;
-    private Controller controller;
+    private RetrieveTimetableController controller;
     private String courseCode;
 
-    public EditCourseScreen(EditTimetableScreen screen, ModuleLayer.Controller controller, String courseCode){
+    public EditCourseScreen(EditTimetableScreen screen, RetrieveTimetableController controller, String courseCode){
         this.screen = screen;
         this.courseCode = courseCode;
         this.controller = controller;
 
-        CourseResponseModel calCourse = controller.retrieveCalendarCourseData(courseCode);
-        CourseResponseModel course = controller.retrieveTimetableCourseData(courseCode);
+        CourseResponseModel calCourse = controller.retrieveCalendarCourse(courseCode);
+        CourseResponseModel course = controller.retrieveTimetableCourse(courseCode);
 
         for (Section section : calCourse.getSections()){
             ... generate a box with data...
@@ -25,5 +25,7 @@ public class EditCourseScreen extends JPanel {
         }
 
         screen.setVisible(false);
+        this.setVisible(true);
+
     }
 }
