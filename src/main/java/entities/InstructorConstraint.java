@@ -43,7 +43,7 @@ public class InstructorConstraint extends Constraint{
 
     @Override
     public String toString(){
-        return super.toString() + "instructor: " + instructorNames;
+        return "Instructor "+ super.toString() + ": "+ instructorNames;
     }
 
 }

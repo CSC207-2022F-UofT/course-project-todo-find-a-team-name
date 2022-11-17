@@ -1,27 +1,27 @@
 package entities;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
-/** An entity representing a RoomConstraint.
+/**
+ * An entity representing an TimeConstraint.
  *
  * Instance Attributes:
- * - rooms: A list of all rooms in the Constraint domain.
+ * - days: A List of days.
  * - super(isBlackList): a boolean showing b/w lists.
  *
+ * Note: every weekday from Monday to Friday is represented by an integer from 0 to 4.
  */
-public class RoomConstraint extends Constraint{
-    private final List<String> rooms;
+public class WeekdayConstraint extends Constraint{
+    private final List<Integer> days;
 
-    public RoomConstraint(List<String> rooms, boolean isBlackList){
+    public WeekdayConstraint(List<Integer> days, boolean isBlackList) {
         super(isBlackList);
-        this.rooms = rooms;
+        this.days = days;
     }
 
     /**
      * filter and modify the sections instance variable of a Course Object based on the
-     * type of constraint.
+     * given weekday.
      *
      * @param course the course to be modified with filtered sections.
      */
@@ -36,24 +36,29 @@ public class RoomConstraint extends Constraint{
     }
 
     /**
-     * a helper method that loops through the blocks of a section to evaluate the whether the section should be
-     * removed if the timeConstraint is a blacklist.
+     * a helper method that loop through the blocks of a section to evaluate the whether the section should be
+     * removed if the Weekday Constraint is a blacklist.
      *
-     * @param section a Section Entity
+     * @param section a section entity
      * @return a boolean indicating the RemoveCondition of a BlackList.
      */
     private boolean evalBlackListFilterCondition(Section section) {
         for (Block block : section.getBlocks()){
-            if (rooms.contains(block.getRoom())){
+            if (days.contains(block.getDay())){
                 return true;
             }
         }
         return false;
     }
 
+    public List<Integer> getWeekdays() {
+        return days;
+    }
+
     @Override
     public String toString(){
-        return "Room " + super.toString() + ": " + rooms;
+        return "Weekday " + super.toString() + ": " + days;
     }
-}
 
+
+}

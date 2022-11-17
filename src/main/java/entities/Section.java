@@ -144,6 +144,24 @@ public class Section {
     }
 
     /**
+     * returns whether this section is equal to obj, based on the value of
+     * instance attributes
+     *
+     * @param obj object compared with this section
+     * @return whether this section is equal to obj
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Section)){
+            return false;
+        }
+
+        Section other = (Section) obj;
+
+        return code.equals(other.code) && instructorName.equals(other.instructorName) && blocks.equals(other.blocks);
+    }
+
+    /**
      * Returns whether this section is lecture
      * (i.e. whether section code starts with "LEC")
      * @return whether this section is lecture
