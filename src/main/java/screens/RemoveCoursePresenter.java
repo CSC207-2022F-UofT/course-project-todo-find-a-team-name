@@ -9,7 +9,6 @@ import edit_timetable_use_case.RemoveCourseFailedException;
  */
 public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
 
-
     /**
      * @param responseModel
      * @return

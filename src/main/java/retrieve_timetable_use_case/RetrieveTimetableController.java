@@ -1,4 +1,4 @@
-package edit_timetable_use_case;
+package retrieve_timetable_use_case;
 
 public class RetrieveTimetableController {
 

@@ -20,6 +20,7 @@ public class EditTimetableScreen extends JPanel {
     private final EditTimetableController controller;
     private Timetable timetable;
     private Session session;
+    private JOptionPane optionPane;
 
 
     /**
@@ -37,6 +38,7 @@ public class EditTimetableScreen extends JPanel {
         JButton addCourse = new JButton("Add a course");
         addCourse.setAction(new AddCourseAction());
 
+        optionPane = new JOptionPane();
 
         JPanel buttons = new JPanel();
         buttons.add(save);
@@ -46,6 +48,7 @@ public class EditTimetableScreen extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
         this.add(timetableViewPanel);
+        this.add(optionPane);
 
         this.setVisible(true);
     }

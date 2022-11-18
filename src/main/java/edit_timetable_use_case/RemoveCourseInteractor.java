@@ -24,8 +24,8 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
      * @return returns a EditTimetableResponseModel contains a message and the success
      * of the action.
      * @throws RemoveCourseFailedException if the interactor was unable to remove the
-     *                                     course from the timetable (likely because it couldn't find a course in timetable
-     *                                     with the corresponding course code).
+     *                                     course from the timetable (likely because it couldn't find a course in
+     *                                     timetable with the corresponding course code).
      */
     @Override
     public EditTimetableResponseModel remove(EditTimetableRequestModel requestModel)
