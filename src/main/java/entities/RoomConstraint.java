@@ -28,11 +28,20 @@ public class RoomConstraint extends Constraint{
     @Override
     public void filter(CalendarCourse course) {
         ArrayList<Section> copy = new ArrayList<>(course.getSections());
-        for (Section section : copy) {
-            if (this.evalRemoveSectionCondition(this.evalBlackListFilterCondition(section))) {
-                course.removeSection(section);
+        if (this.isBlackList()){
+            for (Section section : copy) {
+                if (this.evalBlackListRemoveCondition(section)) {
+                    course.removeSection(section);
+                }
+            }
+        } else {
+            for (Section section : copy) {
+                if (this.evalWhiteListRemoveCondition(section)) {
+                    course.removeSection(section);
+                }
             }
         }
+
     }
 
     /**
@@ -40,11 +49,27 @@ public class RoomConstraint extends Constraint{
      * removed if the timeConstraint is a blacklist.
      *
      * @param section a Section Entity
-     * @return a boolean indicating the RemoveCondition of a BlackList.
+     * @return a boolean indicating the RemoveCondition of a BlackList Constraint.
      */
-    private boolean evalBlackListFilterCondition(Section section) {
+    private boolean evalBlackListRemoveCondition(Section section) {
         for (Block block : section.getBlocks()){
             if (rooms.contains(block.getRoom())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * a helper method that loops through the blocks of a section to evaluate the whether the section should be
+     * removed if the timeConstraint is a whitelist.
+     *
+     * @param section a Section Entity
+     * @return a boolean indicating the RemoveCondition of a Whitelist Constraint.
+     */
+    private boolean evalWhiteListRemoveCondition(Section section) {
+        for (Block block : section.getBlocks()){
+            if (! rooms.contains(block.getRoom())){
                 return true;
             }
         }
