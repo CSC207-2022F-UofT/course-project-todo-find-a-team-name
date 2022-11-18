@@ -45,11 +45,32 @@ public class Session {
     }
 
     /**
+     * Returns given a CalendarCourse object's course code in this session
+     * @param course CalendarCourse object
+     */
+    public String itsCourseCode(CalendarCourse course) {
+        for (String courseCode : allSessionCourses.keySet()) {
+            if (allSessionCourses.get(courseCode).equals(course)) {
+                return courseCode;
+            }
+        }
+        return " ";
+    }
+
+    /**
      * Removes given courseCode in this session
      * @param courseCode String representation of course code
      */
     public void removeCourse(String courseCode) {
         allSessionCourses.remove(courseCode);
+    }
+
+    /**
+     * Removes number of courses in this session
+     * @return Integer
+     */
+    public Integer numberOfCourses() {
+        return allSessionCourses.size();
     }
 
     /**
@@ -62,7 +83,7 @@ public class Session {
     }
 
     /**
-     * Returns a list of all courses codes in this session with given Breadth Category.
+     * Returns a unsorted list of all courses codes in this session with given Breadth Category.
      * @param breadth A breadth category
      * @return ArrayList<String> containing strings of course codes
      */
@@ -77,11 +98,19 @@ public class Session {
     }
 
     /**
-     * Returns a list of all course codes in this session
+     * Returns a unsorted list of all course codes in this session.
      * @return ArrayList<String> containing strings of course codes
      */
     public ArrayList<String> allCourseCodesSession() {
         return new ArrayList<>(allSessionCourses.keySet());
+    }
+
+    /**
+     * Returns a unsorted list of all CalendarCourse objects in this session
+     * @return ArrayList<CalendarCourse> containing strings of course codes
+     */
+    public ArrayList<CalendarCourse> allCoursesSession() {
+        return new ArrayList<>(allSessionCourses.values());
     }
 
     @Override
