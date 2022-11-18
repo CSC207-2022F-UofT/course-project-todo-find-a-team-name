@@ -40,17 +40,6 @@ public abstract class Constraint {
      */
     public abstract void filter(CalendarCourse course);
 
-    /**
-     * A helper method used to evaluate the RemoveSectionCondition based on Blacklist or Whitelist.
-     * Since BlackList Constraints Domain is the complement of Whitelist Constraint Domain.
-     */
-    protected boolean evalRemoveSectionCondition(boolean condition) {
-        if (this.isBlackList()) {
-            return condition;
-        } else {
-            return !condition;
-        }
-    }
 
     /**
      * @return a String representation of the Constraint with listType.
