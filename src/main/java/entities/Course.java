@@ -18,11 +18,11 @@ import java.util.List;
  */
 public abstract class Course {
 
-    private final String title;
+    protected final String title;
     protected List<Section> sections;
-    private final String courseSession;
-    private final String courseCode;
-    private final String breadth;
+    protected final String courseSession;
+    protected final String courseCode;
+    protected final String breadth;
 
     Course(String title, List<Section> sections, String courseSession, String courseCode, String breadth){
         this.title = title;
