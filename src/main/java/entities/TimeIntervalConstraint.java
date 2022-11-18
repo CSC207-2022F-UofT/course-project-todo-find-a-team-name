@@ -13,7 +13,7 @@ public class TimeIntervalConstraint extends Constraint{
     private final double startTime;
     private final double endTime;
 
-    public TimeIntervalConstraint(int startTime, int endTime, boolean isBlackList){
+    public TimeIntervalConstraint(double startTime, double endTime, boolean isBlackList){
         super(isBlackList);
         this.startTime = startTime;
         this.endTime = endTime;
@@ -69,7 +69,7 @@ public class TimeIntervalConstraint extends Constraint{
      */
     private boolean evalWhiteListRemoveCondition(Section section) {
         for (Block block: section.getBlocks()){
-            if (block.getStartTime() < startTime || block.getEndTime() > endTime){
+            if (block.getEndTime() <= startTime || block.getStartTime() >= endTime){
                 return true;
             }
         }
@@ -86,7 +86,7 @@ public class TimeIntervalConstraint extends Constraint{
      */
     private boolean checkOverLap(double blockStartTime, double blockEndTime) {
         return (blockStartTime < endTime && endTime < blockEndTime) ||
-                (blockStartTime < startTime && startTime< blockEndTime) ||
+                (blockStartTime < startTime && startTime < blockEndTime) ||
                 (startTime <= blockStartTime && blockEndTime <= endTime);
 
     }
