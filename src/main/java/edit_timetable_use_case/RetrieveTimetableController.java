@@ -6,7 +6,6 @@ public class RetrieveTimetableController {
 
     public RetrieveTimetableController(RetrieveTimetableInputBoundary interactor){
         this.interactor = interactor;
-
     }
 
     public CourseResponseModel retrieveCalendarCourse(String courseCode){
@@ -19,5 +18,11 @@ public class RetrieveTimetableController {
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel("", courseCode, "");
         return interactor.retrieveTimetableCourse(requestModel);
+    }
+
+    public TimetableResponseModel retrieveTimetable(String timetable){
+        RetrieveTimetableRequestModel requestModel =
+                new RetrieveTimetableRequestModel(timetable, "", "");
+        return interactor.retrieveTimetable(requestModel);
     }
 }
