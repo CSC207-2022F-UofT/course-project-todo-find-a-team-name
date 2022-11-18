@@ -3,7 +3,6 @@ package entities;
 import java.util.ArrayList;
 /**
  * An entity representing an TimeConstraint.
- *
  * Instance Attributes:
  * - startTime: A Limit for startTime.
  * - endTime: A Limit for EndTime.
@@ -14,7 +13,7 @@ public class TimeIntervalConstraint extends Constraint{
     private final double startTime;
     private final double endTime;
 
-    public TimeIntervalConstraint(int startTime, int endTime, boolean isBlackList){
+    public TimeIntervalConstraint(double startTime, double endTime, boolean isBlackList){
         super(isBlackList);
         this.startTime = startTime;
         this.endTime = endTime;
@@ -29,9 +28,18 @@ public class TimeIntervalConstraint extends Constraint{
     @Override
     public void filter(CalendarCourse course) {
         ArrayList<Section> copy = new ArrayList<>(course.getSections());
-        for (Section section : copy) {
-            if (this.evalRemoveSectionCondition(this.evalBlackListFilterCondition(section))){
-                course.removeSection(section);
+        if (isBlackList()){
+            for (Section section : copy){
+                if (evalBlackListRemoveCondition(section)){
+                    course.removeSection(section);
+                }
+            }
+        } else{
+            for (Section section : copy){
+                if (evalWhiteListRemoveCondition(section)) {
+                    course.removeSection(section);
+
+                }
             }
         }
     }
@@ -43,14 +51,44 @@ public class TimeIntervalConstraint extends Constraint{
      * @param section a Section Entity
      * @return a boolean indicating the RemoveCondition of a BlackList.
      */
-    private boolean evalBlackListFilterCondition(Section section) {
+    private boolean evalBlackListRemoveCondition(Section section) {
         ArrayList<Block> blocks = new ArrayList<>(section.getBlocks());
         for (Block block : blocks){
-            if (block.getStartTime() < startTime || block.getEndTime() > endTime){
+            if (checkOverLap(block.getStartTime(), block.getEndTime())){
                 return true;
             }
         }
         return false;
+    }
+    /**
+     * a helper method that loops through the blocks of a section to evaluate the whether the section should be
+     * removed if the timeConstraint is a whitelist.
+     *
+     * @param section a Section Entity
+     * @return a boolean indicating the RemoveCondition of a BlackList.
+     */
+    private boolean evalWhiteListRemoveCondition(Section section) {
+        for (Block block: section.getBlocks()){
+            if (block.getEndTime() <= startTime || block.getStartTime() >= endTime){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * a helper method that checks the overlaps between interval of TimeConstraint startTime and endTime
+     * and interval of block startTime and endTime.
+     *
+     * @param blockStartTime startTime of a block
+     * @param blockEndTime endTime of a block
+     * @return a boolean indicating the RemoveCondition of a BlackList.
+     */
+    private boolean checkOverLap(double blockStartTime, double blockEndTime) {
+        return (blockStartTime < endTime && endTime < blockEndTime) ||
+                (blockStartTime < startTime && startTime < blockEndTime) ||
+                (startTime <= blockStartTime && blockEndTime <= endTime);
+
     }
 
     public double getStartTime() {
@@ -61,6 +99,11 @@ public class TimeIntervalConstraint extends Constraint{
         return endTime;
     }
 
+    /**
+     * helper method for formatting.
+     * @param time a double representing time.
+     * @return a string that is in the form of HH:MM
+     */
     private String formatTime(Double time) {
         int hour = time.intValue();
         int min = (int) Math.round((time - time.intValue()) * 60);
@@ -75,3 +118,5 @@ public class TimeIntervalConstraint extends Constraint{
         return "Time " + super.toString() + ": " + formatTime(startTime) + "-" + formatTime(endTime);
     }
 }
+
+

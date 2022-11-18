@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  * An entity representing an TimeConstraint.
- *
  * Instance Attributes:
  * - days: A List of days.
  * - super(isBlackList): a boolean showing b/w lists.
- *
  * Note: every weekday from Monday to Friday is represented by an integer from 0 to 4.
  */
 public class WeekdayConstraint extends Constraint{
@@ -28,9 +26,17 @@ public class WeekdayConstraint extends Constraint{
     @Override
     public void filter(CalendarCourse course) {
         ArrayList<Section> copy = new ArrayList<>(course.getSections());
-        for (Section section : copy) {
-            if (this.evalRemoveSectionCondition(this.evalBlackListFilterCondition(section))) {
-                course.removeSection(section);
+        if (this.isBlackList()) {
+            for (Section section : copy) {
+                if (this.evalBlackListRemoveCondition(section)) {
+                    course.removeSection(section);
+                }
+            }
+        } else {
+            for (Section section : copy) {
+                if (this.evalWhiteListRemoveCondition(section)) {
+                    course.removeSection(section);
+                }
             }
         }
     }
@@ -42,7 +48,7 @@ public class WeekdayConstraint extends Constraint{
      * @param section a section entity
      * @return a boolean indicating the RemoveCondition of a BlackList.
      */
-    private boolean evalBlackListFilterCondition(Section section) {
+    private boolean evalBlackListRemoveCondition(Section section) {
         for (Block block : section.getBlocks()){
             if (days.contains(block.getDay())){
                 return true;
@@ -50,6 +56,23 @@ public class WeekdayConstraint extends Constraint{
         }
         return false;
     }
+
+    /**
+     * a helper method that loop through the blocks of a section to evaluate the whether the section should be
+     * removed if the Weekday Constraint is a whitelist.
+     *
+     * @param section a section entity
+     * @return a boolean indicating the RemoveCondition of a WhiteList.
+     */
+    private boolean evalWhiteListRemoveCondition(Section section) {
+        for (Block block : section.getBlocks()){
+            if (! days.contains(block.getDay())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public List<Integer> getWeekdays() {
         return days;
