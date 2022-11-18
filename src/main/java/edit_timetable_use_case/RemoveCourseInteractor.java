@@ -1,15 +1,13 @@
 package edit_timetable_use_case;
 
-/** The interactor used to remove, add or edit a course in a timetable.
+/** The interactor used to remove a course from a timetable.
  * Instance Attributes:
  * timetable - the timetable being edited by the interactor.
- * session - the currently loaded session that determines which courses are available.
- * presenter - the presenter used by the user.
+ * presenter - the presenter attached to the use case.
  */
 public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
 
     private Timetable timetable;
-    private Session session;
     private RemoveCourseOutputBoundary presenter;
 
 
@@ -22,7 +20,7 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
      * @param requestModel an EditTimetableRequestModel that stores the code of the
      *                     course to be removed.
      * @return returns a EditTimetableResponseModel contains a message and the success
-     * of the action.
+     * of the action. See EditTimetableResponseModel for further details.
      * @throws RemoveCourseFailedException if the interactor was unable to remove the
      *                                     course from the timetable (likely because it couldn't find a course in
      *                                     timetable with the corresponding course code).

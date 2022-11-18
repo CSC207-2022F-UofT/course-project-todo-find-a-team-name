@@ -3,7 +3,8 @@ package edit_timetable_use_case;
 import java.util.ArrayList;
 
 /**
- *
+ * The controller used to process requests to edit the timetable. This controller will communicate with 1 interactor
+ * for each type of request (removing a course, adding a new course, editing an existing course).
  */
 public class EditTimetableController {
     RemoveCourseInputBoundary removeCourseInteractor;

@@ -3,6 +3,7 @@ package retrieve_timetable_use_case;
 import entities.Block;
 import entities.Course;
 import entities.Section;
+import entities.Session;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public CourseResponseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel) {
-        return generateCourseResponse(session.getCourse(requestModel.getCourseCode()));
+        return generateCourseResponse(session.getCalendarCourse(requestModel.getCourseCode()));
     }
 
     private CourseResponseModel generateCourseResponse(Course course){
