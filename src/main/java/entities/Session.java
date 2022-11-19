@@ -37,7 +37,7 @@ public class Session {
         return false;
     }
     /**
-     * Checks if course is in this session using courseCode.
+     * Returns True if course is in this session using courseCode.
      * @param courseCode a String of course code
      */
     public boolean checkCourseCode(String courseCode) {
@@ -45,7 +45,7 @@ public class Session {
     }
 
     /**
-     * Checks if course is in this session using CalendarCourse object
+     * Returns True if course is in this session using CalendarCourse object
      * @param course (a CalendarCourse object)
      */
     public boolean checkCalendarCourse(CalendarCourse course) {
