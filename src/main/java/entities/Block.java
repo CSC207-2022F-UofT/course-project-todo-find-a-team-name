@@ -44,9 +44,11 @@ public class Block {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Block other)){
+        if (!(obj instanceof Block)){
             return false;
         }
+
+        Block other = (Block) obj;
 
         return day == other.day && startTime == other.startTime && endTime == other.endTime && room.equals(other.room);
     }
