@@ -37,6 +37,22 @@ public class Session {
         return false;
     }
     /**
+     * Checks if course is in this session using courseCode.
+     * @param courseCode a String of course code
+     */
+    public boolean checkCourseCode(String courseCode) {
+        return allSessionCourses.containsKey(courseCode);
+    }
+
+    /**
+     * Checks if course is in this session using CalendarCourse object
+     * @param course (a CalendarCourse object)
+     */
+    public boolean checkCalendarCourse(CalendarCourse course) {
+        return allSessionCourses.containsValue(course);
+    }
+
+    /**
      * Returns the session type of this session. Either Fall (F), Winter (S), or Fall & Winter (Y).
      * @return String of session type
      */
