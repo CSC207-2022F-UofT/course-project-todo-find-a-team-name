@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TimeIntervalConstraintTest {
+class WeekdayConstraintTest {
     @Test
     void filterWithBlackListRemoveAllSection() {
         //blocks1
@@ -59,18 +59,19 @@ class TimeIntervalConstraintTest {
 
         CalendarCourse course1 = new CalendarCourse("Course1",sections1, "", "","");
 
+        List<Integer> days = new ArrayList<Integer>(List.of(1, 3, 4));
+        WeekdayConstraint weekdayConstraint = new WeekdayConstraint(days, true);
 
-        TimeIntervalConstraint timeIntervalConstraint = new TimeIntervalConstraint(14.5, 15.0, true);
-
-        // testing to check original and modified course section type consistency.
+        // testing to check if all sections with the blacklisted time interval are removed. (No sections satisfied),
+        // in this case there is a early return which deletes one of the section type, causing inconsistency.
         CalendarCourse courseWithNoSections = new CalendarCourse("Course1", emptySections, "", "", "");
-        timeIntervalConstraint.filter(course1);
-        assertTrue(courseWithNoSections.equals(course1));
+        assertFalse(weekdayConstraint.filter(course1));
+
 
     }
 
     @Test
-    void filterWithWhiteListRemovePartial() {
+    void filterWithWhiteListNoRemove() {
         //blocks1
         List<Block> blocks1 = new ArrayList<>();
         blocks1.add(new Block("MO", "14:30", "15:00", "room3"));
@@ -115,27 +116,23 @@ class TimeIntervalConstraintTest {
         sections2.add(section5);
         sections2.add(section6);
 
-        List<Section> expectedSections = new ArrayList<>();
-        expectedSections.add(section3);
-        expectedSections.add(section5);
-
 
         CalendarCourse course1 = new CalendarCourse("Course1",sections1, "", "","");
-        CalendarCourse course2 = new CalendarCourse("Course2",sections2, "", "","");
+        CalendarCourse course2 = new CalendarCourse("Course1",sections1, "", "","");
 
 
 
-        TimeIntervalConstraint timeIntervalConstraint = new TimeIntervalConstraint(14.5, 18, false);
+        List<Integer> days = new ArrayList<Integer>(List.of(0, 1, 2,3, 4));
+        WeekdayConstraint weekdayConstraint = new WeekdayConstraint(days, false);
 
-        // testing to check if all sections without the whitelisted time intervals are removed.
-        // testing to check original and modified course section type consistency.
-        CalendarCourse courseWithModifiedSections = new CalendarCourse("Course2", expectedSections, "", "", "");
-        assertFalse(timeIntervalConstraint.filter(course2));
-        assertTrue(courseWithModifiedSections.equals(course2));
+        // testing to check if all sections without the whitelisted time intervals are not removed, and the
+        // section type is consistent.
+        assertTrue(weekdayConstraint.filter(course2));
+        assertTrue(course1.equals(course2));
     }
 
     @Test
-    void filterWithBlackListUnchanged() {
+    void filterWithBlackListRemoveAll() {
         //blocks1
         List<Block> blocks1 = new ArrayList<>();
         blocks1.add(new Block("MO", "14:30", "15:00", "room3"));
@@ -183,21 +180,24 @@ class TimeIntervalConstraintTest {
         CalendarCourse course1 = new CalendarCourse("Course1",sections1, "", "","");
 
 
-        TimeIntervalConstraint timeIntervalConstraint = new TimeIntervalConstraint(9.5, 12.5, true);
+        List<Integer> days = new ArrayList<Integer>(List.of(1, 2,3,4,0));
+        WeekdayConstraint weekdayConstraint = new WeekdayConstraint(days, true);
+        ArrayList<Section> emptySections = new ArrayList<>();
 
-        // testing to check original and modified course section type consistency.
-        CalendarCourse courseUnchanged = new CalendarCourse("Course1",sections1, "", "","");
-        assertFalse(timeIntervalConstraint.filter(course1));
+        // testing to check if all sections with the blacklisted time interval are removed. (No sections satisfied) I
+        // In this case, it does early return false since it detects inconsistency in section types.
+        CalendarCourse courseWithNoSections = new CalendarCourse("Course1", emptySections, "", "", "");
+        assertFalse(weekdayConstraint.filter(course1));
     }
     @Test
     void testToString() {
-        TimeIntervalConstraint timeIntervalConstraint1 = new TimeIntervalConstraint(11.5,12, true);
-        TimeIntervalConstraint timeIntervalConstraint2 = new TimeIntervalConstraint(13.5, 15.5, false);
-        String expected1 = "Time BlackList Constraint: 11:30-12:00";
-        assertEquals(expected1, timeIntervalConstraint1.toString());
-        String expected2 = "Time WhiteList Constraint: 13:30-15:30";
-        assertEquals(expected2, timeIntervalConstraint2.toString());
+        List<Integer> days = new ArrayList<Integer>(List.of(1, 3, 4));
+        WeekdayConstraint weekdayConstraint1 = new WeekdayConstraint(days, true);
+        WeekdayConstraint weekdayConstraint2 = new WeekdayConstraint(days, false);
+        String expected1 = "Weekday BlackList Constraint: [TU, TH, FR]";
+        assertEquals(expected1, weekdayConstraint1.toString());
+        String expected2 = "Weekday WhiteList Constraint: [TU, TH, FR]";
+        assertEquals(expected2, weekdayConstraint2.toString());
     }
+
 }
-
-
