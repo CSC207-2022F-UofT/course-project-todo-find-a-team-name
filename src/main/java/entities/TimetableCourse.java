@@ -9,6 +9,10 @@ import java.util.List;
 
 public class TimetableCourse extends Course{
 
+    private Section lecture = null;
+    private Section tutorial = null;
+    private Section practical = null;
+
     /** TimetableCourse's default constructor.
      * Attempting to construct a TimetableCourse with multiple sections of the
      * same type will result in an InvalidSectionsException being raised.
@@ -25,30 +29,77 @@ public class TimetableCourse extends Course{
             throws InvalidSectionsException{
         super(title, sections, courseSession, courseCode, breadth);
 
-        boolean hasTutorial = false;
-        boolean hasPractical = false;
-        boolean hasLecture = false;
-
         for (Section section : sections){
             if (section.isLecture()){
-                if (hasLecture){
+                if (lecture != null){
                     throw new InvalidSectionsException("lecture");
                 }
-                hasLecture = true;
+                lecture = section;
             }
             else if (section.isTutorial()){
-                if (hasTutorial){
+                if (tutorial != null){
                     throw new InvalidSectionsException("tutorial");
                 }
-                hasTutorial = true;
+                tutorial = section;
             }
             else if (section.isPractical()){
-                if (hasPractical){
+                if (practical != null){
                     throw new InvalidSectionsException("practical");
                 }
-                hasPractical = true;
+                practical = section;
             }
         }
+    }
+
+    public void setPractical(Section section) {
+        if (practical != null){
+            this.sections.remove(practical);
+        }
+        this.practical = section;
+        this.sections.add(section);
+    }
+
+    public void setLecture(Section section) {
+        if (lecture != null){
+            this.sections.remove(lecture);
+        }
+        this.lecture = section;
+        this.sections.add(section);
+    }
+
+    public void setTutorial(Section section) {
+        if (tutorial != null){
+            this.sections.remove(tutorial);
+        }
+        this.tutorial = section;
+        this.sections.add(section);
+    }
+
+    public void setSection(Section section) {
+        if (section.isLecture()){
+            setLecture(section);
+        }
+        else if (section.isTutorial()){
+            setTutorial(section);
+        }
+        else if (section.isPractical()){
+            setPractical(section);
+        }
+        else {
+            this.sections.add(section);
+        }
+    }
+
+    public Section getLecture(){
+        return this.lecture;
+    }
+
+    public Section getTutorial(){
+        return this.tutorial;
+    }
+
+    public Section getPractical(){
+        return this.practical;
     }
 }
 

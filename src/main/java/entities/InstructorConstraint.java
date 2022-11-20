@@ -23,22 +23,31 @@ public class InstructorConstraint extends Constraint{
      * @param course a Course Object with section instance variable.
      */
     @Override
-    public void filter(CalendarCourse course) {
+    public boolean filter(CalendarCourse course) {
         List<Section> copy = new ArrayList<>(course.getSections());
+        boolean hasTutorial = course.hasTutorial();
+        boolean hasLecture = course.hasLecture();
+        boolean hasPractical = course.hasPractical();
         if (this.isBlackList()) {
             for (Section section : copy) {
                 if (instructorNames.contains(section.getInstructorName())) {
                     course.removeSection(section);
                 }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
             }
+        }
         } else {
             for (Section section : copy) {
                 if (! instructorNames.contains(section.getInstructorName())) {
                     course.removeSection(section);
-
                 }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
             }
         }
+    }
+       return true;
     }
     /**
      * getter method

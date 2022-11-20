@@ -36,6 +36,39 @@ class SessionTest {
         assertTrue(Winter.addCourse(c3));
         assertFalse(FallWinter.addCourse(c2));
     }
+    void testingCheckingCourseCodeAndCalendarCourse() {
+        // Course 1
+        Section section1 = new Section("LEC0101", "A", new ArrayList<Block>());
+        Section section2 = new Section("LEC0201", "B", new ArrayList<Block>());
+        CalendarCourse c1 = new CalendarCourse("Test Course", new ArrayList<Section>(List.of(section1, section2)),
+                "Y", "GA101", "BR3");
+        // Course 2
+        Section section1a = new Section("LEC0101", "C", new ArrayList<Block>());
+        Section section2a = new Section("LEC0201", "D", new ArrayList<Block>());
+        CalendarCourse c2 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(section1a, section2a)),
+                "Y", "MP100", "BR4");
+        // Course 3
+        Section section1b = new Section("LEC0101", "E", new ArrayList<Block>());
+        Section section2b = new Section("LEC0201", "F", new ArrayList<Block>());
+        CalendarCourse c3 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(section1b, section2b)),
+                "Y", "MP101", "BR4");
+        // Creating new sessions
+        Session FallWinter = new Session("Y");
+
+        FallWinter.addCourse(c1);
+        FallWinter.addCourse(c2);
+
+        assertFalse(FallWinter.checkCalendarCourse(c3));
+        assertFalse(FallWinter.checkCourseCode("MP101"));
+
+        assertTrue(FallWinter.checkCalendarCourse(c1));
+        assertTrue(FallWinter.checkCourseCode("GA101"));
+
+        assertTrue(FallWinter.checkCalendarCourse(c2));
+        assertTrue(FallWinter.checkCourseCode("MP100"));
+    }
     @Test
     void testingSessionType() {
         Section section1a = new Section("LEC0101", "C", new ArrayList<Block>());
