@@ -36,9 +36,20 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
         for (CourseResponseModel courseModel : responseModel.getCourses()){
 
             String brCategory = formatBrCategory(courseModel.getBreadth());
-            SectionResponseModel lectureModel = courseModel.getSections().get(0);
-            SectionResponseModel tutorialModel = courseModel.getSections().get(1);
-            SectionResponseModel practicalModel = courseModel.getSections().get(2);
+
+            SectionResponseModel lectureModel = null;
+            SectionResponseModel tutorialModel = null;
+            SectionResponseModel practicalModel = null;
+
+            for (SectionResponseModel sectionModel : courseModel.getSections()){
+                if (sectionModel.getCode().startsWith("LEC")){
+                    lectureModel = sectionModel;
+                } else if (sectionModel.getCode().startsWith("TUT")){
+                    tutorialModel = sectionModel;
+                } else if (sectionModel.getCode().startsWith("PRA")) {
+                    practicalModel = sectionModel;
+                }
+            }
 
             String lectureCode = lectureModel == null ? null : lectureModel.getCode();
             String tutorialCode = tutorialModel == null ? null : tutorialModel.getCode();
@@ -46,7 +57,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
 
             courseViewModels.add(new BRCourseViewModel(courseModel.getCourseCode(), courseModel.getTitle(),
                     brCategory, lectureCode, tutorialCode, practicalCode,
-                    createBlockInfos(tutorialModel),
+                    createBlockInfos(lectureModel),
                     createBlockInfos(tutorialModel),
                     createBlockInfos(practicalModel)));
         }
