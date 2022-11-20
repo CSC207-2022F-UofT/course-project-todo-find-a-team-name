@@ -10,5 +10,5 @@ public interface RemoveCourseOutputBoundary {
      * @return the input responseModel, mutated such that it contains a message to inform the user of the attempt's
      * result.
      */
-    EditTimetableResponseModel prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException;
+    public void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException;
 }

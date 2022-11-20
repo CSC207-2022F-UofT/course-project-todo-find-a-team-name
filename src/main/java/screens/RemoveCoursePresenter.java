@@ -9,7 +9,7 @@ import edit_timetable_use_case.RemoveCourseFailedException;
  */
 public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
 
-    private EditTimetableView screen;
+    private EditTimetableView view;
 
     /**
      * @param responseModel
@@ -20,10 +20,13 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
         this.view = view;
     }
     @Override
-    public EditTimetableResponseModel prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException {
+    public void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException {
+        TimetableResponseModel updatedTimetable = responseModel.getUpdatedTimetable();
+        TimetableViewModel ttViewModel = TimetableConverter.TimetableResponseToView(updatedTimetable);
+        view.updateTimetable(ttViewModel);
         if (responseModel.isSuccess()){
-            responseModel.setMessage(responseModel.getCourseCode() + " has been successfully removed.");
-            return responseModel;
+            String successMessage = responseModel.getCourseCode() + " has been successfully removed.";
+            view.displayResponse(successMessage);
         }
         else{
             throw new RemoveCourseFailedException(responseModel.getCourseCode());

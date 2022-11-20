@@ -20,8 +20,8 @@ public class EditTimetableController {
      * @param courseCode
      * @return
      */
-    public EditTimetableResponseModel remove(String courseCode) throws RemoveCourseFailedException {
+    public void remove(String courseCode) throws RemoveCourseFailedException {
         EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode, new ArrayList<>());
-        return removeCourseInteractor.remove(requestModel);
+        removeCourseInteractor.remove(requestModel);
     }
 }

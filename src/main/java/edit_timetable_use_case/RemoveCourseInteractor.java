@@ -1,6 +1,7 @@
 package edit_timetable_use_case;
 
 import entities.Timetable;
+import screens.TimetableViewModel;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
      *                                     timetable with the corresponding course code).
      */
     @Override
-    public EditTimetableResponseModel remove(EditTimetableRequestModel requestModel)
+    public void remove(EditTimetableRequestModel requestModel)
             throws RemoveCourseFailedException {
         String courseCode = requestModel.getCourseCode();
         boolean success = false;
@@ -38,9 +39,10 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
             timetable.removeCourse(courseCode);
             success = true;
         }
+        TimetableResponseModel updatedTimetable = TimetableConverter.timetableToResponse(timetable);
         EditTimetableResponseModel editTimetableResponseModel =
                 new EditTimetableResponseModel(courseCode, new ArrayList<>(),
-                        success);
-        return presenter.prepareView(editTimetableResponseModel);
+                        success, updatedTimetable);
+        presenter.prepareView(editTimetableResponseModel);
     }
 }

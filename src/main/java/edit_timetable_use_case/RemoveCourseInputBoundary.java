@@ -12,5 +12,5 @@ public interface RemoveCourseInputBoundary {
      * @throws RemoveCourseFailedException when the course could not be removed. This is most likely when the
      * timetable contains no such course that has the input course code.
      */
-    EditTimetableResponseModel remove(EditTimetableRequestModel requestModel) throws RemoveCourseFailedException;
+    void remove(EditTimetableRequestModel requestModel) throws RemoveCourseFailedException;
 }

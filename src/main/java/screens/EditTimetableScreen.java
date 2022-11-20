@@ -19,13 +19,12 @@ import static javax.swing.JOptionPane.showMessageDialog;
 /**
  *
  */
-public class EditTimetableScreen extends JPanel implements ActionListener {
+public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView {
 
     private JFrame frame;
     private final EditTimetableController controller;
     private TimetableViewModel timetable;
     /*private SessionViewModel session;*/
-    private JOptionPane optionPane;
 
 
     /**
@@ -69,9 +68,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
         }
         this.add(courseButtons);
         courseButtons.setVisible(true);
-
-        optionPane = new JOptionPane();
-        this.add(optionPane);
 
         this.setVisible(true);
     }
@@ -167,9 +163,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
 
     public void remove(String courseCode) {
         try {
-            optionPane.showMessageDialog(frame, this.controller.remove(courseCode).getMessage());
+            this.controller.remove(courseCode);
         } catch (RemoveCourseFailedException e) {
-            optionPane.createDialog(e.getMessage());
+            JOptionPane.showMessageDialog(frame, e.getMessage());
         }
     }
 

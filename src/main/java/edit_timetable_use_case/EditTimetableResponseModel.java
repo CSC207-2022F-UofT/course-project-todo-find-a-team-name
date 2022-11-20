@@ -17,16 +17,20 @@ public class EditTimetableResponseModel {
     private List<String> sectionCodes;
     private boolean success;
 
+    private TimetableResponseModel updatedTimetable;
+
     private String message;
 
     /**
      * @param courseCode
      * @param success
      */
-    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, boolean success){
+    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, boolean success, TimetableResponseModel
+                                      updatedTimetable){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;
         this.success = success;
+        this.updatedTimetable = updatedTimetable;
     }
 
     /**
@@ -59,5 +63,9 @@ public class EditTimetableResponseModel {
      */
     public void setMessage(String message){
         this.message = message;
+    }
+
+    public TimetableResponseModel getUpdatedTimetable() {
+        return updatedTimetable;
     }
 }
