@@ -1,6 +1,7 @@
 package recommend_br_use_case;
 
 import entities.*;
+import generate_timetable_course_use_case.TimetableCourseGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -74,7 +75,7 @@ public class BRRecommender {
                             practicals.add(section);
                     }
                 }
-                result.addAll(createAllPossibleTimetableCourse(course, lectures, tutorials, practicals));
+                result.addAll(new TimetableCourseGenerator(course).generateAllTimetableCourses(lectures, tutorials, practicals));
 
             }
         }
@@ -85,64 +86,4 @@ public class BRRecommender {
         return result;
     }
 
-    /**
-     * Returns list of all possible TimetableCourse corresponding to the given course
-     * that can be generated from the given lectures, tutorials, and practicals
-     *
-     * @param course calendar course corresponding to all TimetableCourse generated
-     * @param lectures all lectures in course
-     * @param tutorials all tutorials in course
-     * @param practicals all practicals in course
-     * @return list of all possible TimetableCourse corresponding to the given course
-     * that can be generated from the given lectures, tutorials, and practicals
-     */
-    private static List<TimetableCourse> createAllPossibleTimetableCourse(CalendarCourse course, List<Section> lectures,
-                                                                               List<Section> tutorials,
-                                                                               List<Section> practicals){
-        List<List<Section>> sections = new ArrayList<>();
-        sections.add(lectures);
-        sections.add(tutorials);
-        sections.add(practicals);
-        try {
-            ArrayList<TimetableCourse> temp = new ArrayList<>();
-            createAllPossibleTimetableCourse(sections, temp, 0, new TimetableCourse(course.getTitle(),
-                    new ArrayList<>(), course.getCourseSession(),
-                    course.getCourseCode(), course.getBreadth()));
-            return temp;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * TODO: document this code
-     *
-     * @param sections
-     * @param result
-     * @param depth
-     * @param curr
-     */
-    private static void createAllPossibleTimetableCourse(List<List<Section>> sections,
-                                                         List<TimetableCourse> result,
-                                                         int depth, TimetableCourse curr){
-        if (depth == sections.size()){
-            result.add(curr);
-            return;
-        }
-
-        if (sections.get(depth).size() == 0)
-            createAllPossibleTimetableCourse(sections, result, depth + 1, curr);
-
-        for (Section section : sections.get(depth)) {
-            TimetableCourse course;
-            try {
-                course = new TimetableCourse(curr.getTitle(), curr.getSections(), curr.getCourseSession(),
-                        curr.getCourseCode(), curr.getBreadth());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            course.setSection(section);
-            createAllPossibleTimetableCourse(sections, result, depth + 1, course);
-        }
-    }
 }
