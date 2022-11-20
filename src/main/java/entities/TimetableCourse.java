@@ -93,6 +93,18 @@ public class TimetableCourse extends Course{
             this.sections.add(section);
         }
     }
+
+    public Section getLecture(){
+        return this.lecture;
+    }
+
+    public Section getTutorial(){
+        return this.tutorial;
+    }
+
+    public Section getPractical(){
+        return this.practical;
+    }
 }
 
 
