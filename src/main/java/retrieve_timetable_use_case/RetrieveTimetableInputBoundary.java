@@ -6,6 +6,6 @@ public interface RetrieveTimetableInputBoundary {
 
     public CourseResponseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
 
-    public TimetableResponseModel retrieveTimetable();
+    public TimetableResponseModel retrieveTimetable(RetrieveTimetableRequestModel requestModel);
     public SessionResponseModel retrieveSession();
 }

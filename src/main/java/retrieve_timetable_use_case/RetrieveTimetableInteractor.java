@@ -48,7 +48,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
     }
 
     @Override
-    public TimetableResponseModel retrieveTimetable(){
+    public TimetableResponseModel retrieveTimetable(RetrieveTimetableRequestModel requestModel){
         ArrayList<CourseResponseModel> courses = new ArrayList<CourseResponseModel>();
         for (Course course : timetable.getCourseList()){
             courses.add(generateCourseResponse(course));
