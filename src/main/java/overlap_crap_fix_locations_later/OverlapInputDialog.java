@@ -36,7 +36,7 @@ public class OverlapInputDialog extends JDialog {
         });
 
         buttonCancel.addActionListener(new ActionListener() {
-            /** Add an action listener for the cancel dialogue button **/
+            /** Add an action listener for the cancel dialogue button that kills the dialog. **/
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
