@@ -2,11 +2,14 @@ package screens;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class TimetableView extends JPanel {
+public class TimetableView extends JPanel implements MouseListener {
 
     public static final int START_TIME = 8;
     public static final int END_TIME = 22;
@@ -15,10 +18,14 @@ public class TimetableView extends JPanel {
     public static final String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     private final TimetableViewModel timetableViewModel;
     private final Color[] courseColors;
+    private final List<TimetableViewEventListener> observers;
+//    private final HashMap<String, Boolean> isSectionSelected;
 
     public TimetableView(int width, int height, TimetableViewModel timetableViewModel){
         super();
         this.timetableViewModel = timetableViewModel;
+//        this.isSectionSelected = new HashMap<>();
+
         setPreferredSize(new Dimension(width, height));
 
         courseColors = new Color[timetableViewModel.getCourseData().size()];
@@ -27,6 +34,8 @@ public class TimetableView extends JPanel {
             courseColors[i] = new Color(rand.nextInt(256), rand.nextInt(256),
                     rand.nextInt(256), 125);
         }
+        observers = new ArrayList<>();
+        addMouseListener(this);
     }
 
     @Override
@@ -76,9 +85,15 @@ public class TimetableView extends JPanel {
 
                     g.setColor(courseColors[i]);
                     g.fillRect(x1, y1, cellWidth, y2 - y1);
+                    String text = courseModel.getCode() + "; " + sectionModel.getCode();
+
+//                    if (isSectionSelected.containsKey(text) && isSectionSelected.get(text)){
+//                        g.setColor(Color.RED);
+//                        g.drawRect(x1, y1, cellWidth, y2 - y1);
+//                        g.setColor(courseColors[i]);
+//                    }
 
                     g.setColor(Color.BLACK);
-                    String text = courseModel.getCode() + "; " + sectionModel.getCode();
 
                     Font font = g.getFont();
                     float fontSize = ((float) cellWidth / g.getFontMetrics(font).stringWidth(text)) * font.getSize();
@@ -89,6 +104,20 @@ public class TimetableView extends JPanel {
 
                 }
             }
+        }
+    }
+
+    public void addTimetableViewListener(TimetableViewEventListener observer){
+        observers.add(observer);
+    }
+
+    public void removeTimetableViewListener(TimetableViewEventListener observer){
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(TimetableViewEvent event){
+        for (TimetableViewEventListener observer : observers){
+            observer.courseClicked(event);
         }
     }
 
@@ -126,12 +155,60 @@ public class TimetableView extends JPanel {
 
         courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
 
+
         TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
-        frame.add(new TimetableView(500, 600, timetableViewModel));
+        TimetableView timetableView = new TimetableView(500, 600, timetableViewModel);
+
+        timetableView.addTimetableViewListener(e -> System.out.println(e.getSelectedCourseCode() + "; " + e.getSelectedLectureCode()));
+        frame.add(timetableView);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+        Rectangle r = this.getBounds();
+
+        int cellWidth = r.width / NUM_COLUMNS;
+        int cellHeight = r.height / NUM_ROWS;
+
+        for (int i = 0; i < timetableViewModel.getCourseData().size(); i++){
+            TimetableViewCourseModel courseModel = timetableViewModel.getCourseData().get(i);
+            for (TimetableViewSectionModel sectionModel : courseModel.getSectionModels()) {
+                for (TimetableViewBlockModel blockModel : sectionModel.getBlockModels()) {
+                    int y1 = (int) ((blockModel.getStartTime() - START_TIME) * 2 * cellHeight) + cellHeight;
+                    int y2 = (int) ((blockModel.getEndTime() - START_TIME) * 2 *  cellHeight) + cellHeight;
+                    int x1 = (blockModel.getDay() + 1) * cellWidth;
+                    int x2 = x1 + cellWidth;
+
+                    if (x1 <= e.getX() && e.getX() <= x2 && y1 <= e.getY() && e.getY() <= y2){
+                        notifyObservers(new TimetableViewEvent(this, courseModel.getCode(), sectionModel.getCode()));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

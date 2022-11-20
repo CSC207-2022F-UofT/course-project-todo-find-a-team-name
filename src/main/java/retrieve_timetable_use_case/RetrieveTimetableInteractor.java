@@ -7,6 +7,7 @@ import entities.Session;
 import entities.Timetable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RetrieveTimetableInteractor implements RetrieveTimetableInputBoundary {
 
@@ -43,12 +44,24 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
 
     @Override
     public SessionResponseModel retrieveSession(){
-        return new SessionResponseModel(session.getAllSessionCourses(), session.getSessionType());
+        return generateSessionResponse(session);
     }
 
     @Override
     public TimetableResponseModel retrieveTimetable(){
-        return new TimetableResponseModel(timetable.getCourse);
+        ArrayList<CourseResponseModel> courses = new ArrayList<CourseResponseModel>();
+        for (Course course : timetable.getCourseList()){
+            courses.add(generateCourseResponse(course));
+        }
+        return new TimetableResponseModel(courses);
+    }
+
+    private SessionResponseModel generateSessionResponse(Session session){
+        HashMap<String, CourseResponseModel> courses = new HashMap<String, CourseResponseModel>();
+        for (String courseCode : session.getAllSessionCourses().keySet()){
+            courses.put(courseCode, generateCourseResponse(session.getAllSessionCourses().get(courseCode)));
+        }
+        return new SessionResponseModel(courses, session.getSessionType());
     }
 
     private CourseResponseModel generateCourseResponse(Course course){

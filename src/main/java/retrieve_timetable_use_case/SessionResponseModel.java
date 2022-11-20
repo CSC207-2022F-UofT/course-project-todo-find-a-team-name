@@ -6,15 +6,15 @@ import java.util.HashMap;
 
 public class SessionResponseModel {
 
-    private HashMap<String, CalendarCourse> courses;
+    private HashMap<String, CourseResponseModel> courses;
     private String sessionType;
 
-    public SessionResponseModel(HashMap<String, CalendarCourse> courses, String sessionType){
+    public SessionResponseModel(HashMap<String, CourseResponseModel> courses, String sessionType){
         this.courses = courses;
         this.sessionType = sessionType;
     }
 
-    public HashMap<String, CalendarCourse> getCourses() {
+    public HashMap<String, CourseResponseModel> getCourses() {
         return courses;
     }
 
