@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** An entity representing a Course.
@@ -53,5 +54,13 @@ public abstract class Course {
     public String toString() {
         return "Title: " + title + "\n Sections: " + sections + "\n CourseSession: " + courseSession + "\n CourseCode: "
                 + courseCode + "\n Breadth: " + breadth;
+    }
+
+    public ArrayList<String> getSectionCodes(){
+        ArrayList<String> sectionCodes = new ArrayList<>();
+        for(Section section: sections){
+            sectionCodes.add(section.getCode());
+        }
+        return sectionCodes;
     }
 }
