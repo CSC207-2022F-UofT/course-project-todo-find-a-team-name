@@ -16,7 +16,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 /**
  *
  */
-public class EditTimetableScreen extends JPanel {
+public class EditTimetableScreen extends JPanel implements ActionListener {
 
     private final EditTimetableController controller;
     private Timetable timetable;
@@ -30,25 +30,27 @@ public class EditTimetableScreen extends JPanel {
     public EditTimetableScreen(EditTimetableController controller){
         this.controller = controller;
 
-        /*JButton recommendBR = new JButton("Recommend BR courses");
-        recommendBR.setAction(new RecommendBRAction(...));
+        JButton recommendBR = new JButton("Recommend BR Courses");
+        recommendBR.addActionListener(this);
 
         JButton save = new JButton("Save");
-        save.setAction(new SaveTimetableAction(...));
+        save.addActionListener(this);
 
-        JButton addCourse = new JButton("Add a course");
-        addCourse.setAction(new AddCourseAction());*/
+        JButton addCourse = new JButton("Add Course");
+        addCourse.addActionListener(this);
 
         optionPane = new JOptionPane();
 
         JPanel buttons = new JPanel();
-        /*buttons.add(save);
+        buttons.add(save);
         buttons.add(recommendBR);
-        buttons.add(addCourse);*/
+        buttons.add(addCourse);
+
+        this.timetable
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
-        /*this.add(timetableViewPanel);*/
+        this.add(timetableViewPanel);
         this.add(optionPane);
 
         this.setVisible(true);
@@ -67,8 +69,25 @@ public class EditTimetableScreen extends JPanel {
 
     }
 
-    /*public void openEditCourseScreen(String courseCode){
-        new EditCourseScreen(this, courseCode);
+    public void openEditCourseScreen(String courseCode){
+        EditCourseScreen screen = new EditCourseScreen(this, courseCode);
+        screen.setVisible(true);
+        this.setVisible(false);
     }
-    */
+
+    /**
+     * @param e the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Recommend BR Courses")){
+
+        }
+        else if (e.getActionCommand().equals("Save")){
+
+        }
+        /*else if (e.getActionCommand().equals("Add Course")){
+            openAddCourseMenu();
+        }*/
+    }
 }
