@@ -49,7 +49,7 @@ public class TimeIntervalConstraint extends Constraint{
      * removed if the timeConstraint is a blacklist.
      *
      * @param section a Section Entity
-     * @return a boolean indicating the RemoveCondition of a BlackList.
+     * @return a boolean indicating the RemoveCondition of a BlackList
      */
     private boolean evalBlackListRemoveCondition(Section section) {
         ArrayList<Block> blocks = new ArrayList<>(section.getBlocks());
