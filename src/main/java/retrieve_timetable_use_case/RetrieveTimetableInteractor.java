@@ -30,7 +30,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public CourseResponseModel retrieveTimetableCourse(RetrieveTimetableRequestModel requestModel) {
-        return generateCourseResponse(timetable.getCourse(requestModel.getCourseCode()));
+        return EntityConverter.generateCourseResponse(timetable.getCourse(requestModel.getCourseCode()));
     }
 
     /**
@@ -39,53 +39,22 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public CourseResponseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel) {
-        return generateCourseResponse(session.getCalendarCourse(requestModel.getCourseCode()));
+        return EntityConverter.generateCourseResponse(session.getCalendarCourse(requestModel.getCourseCode()));
     }
 
     @Override
     public SessionResponseModel retrieveSession(){
-        return generateSessionResponse(session);
+        return EntityConverter.generateSessionResponse(session);
     }
 
     @Override
     public TimetableResponseModel retrieveTimetable(RetrieveTimetableRequestModel requestModel){
         ArrayList<CourseResponseModel> courses = new ArrayList<CourseResponseModel>();
         for (Course course : timetable.getCourseList()){
-            courses.add(generateCourseResponse(course));
+            courses.add(EntityConverter.generateCourseResponse(course));
         }
         return new TimetableResponseModel(courses);
     }
 
-    private SessionResponseModel generateSessionResponse(Session session){
-        HashMap<String, CourseResponseModel> courses = new HashMap<String, CourseResponseModel>();
-        for (String courseCode : session.getAllSessionCourses().keySet()){
-            courses.put(courseCode, generateCourseResponse(session.getAllSessionCourses().get(courseCode)));
-        }
-        return new SessionResponseModel(courses, session.getSessionType());
-    }
 
-    private CourseResponseModel generateCourseResponse(Course course){
-        ArrayList<SectionResponseModel> sections = new ArrayList<SectionResponseModel>();
-
-        for (Section section : course.getSections()){
-            sections.add(generateSectionResponse(section));
-        }
-
-        return new CourseResponseModel(course.getTitle(), sections, course.getCourseSession(), course.getCourseCode(),
-                course.getBreadth());
-    }
-
-    private SectionResponseModel generateSectionResponse(Section section){
-        ArrayList<BlockResponseModel> blocks = new ArrayList<BlockResponseModel>();
-
-        for (Block block : section.getBlocks()){
-            blocks.add(generateBlockResponse(block));
-        }
-
-        return new SectionResponseModel(section.getCode(), section.getInstructorName(), blocks);
-    }
-
-    private BlockResponseModel generateBlockResponse(Block block){
-        return new BlockResponseModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
-    }
 }
