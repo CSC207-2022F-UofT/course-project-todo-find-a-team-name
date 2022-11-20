@@ -23,6 +23,14 @@ public class Session {
         this.allSessionCourses = new HashMap<>();
         this.sessionType = sessionType;
     }
+    
+    /** 
+    * Returns HashMap containing all courses as a CalendarCourse (value) with their corresponding course code (key)
+    * @return HashMap<String, CalendarCourse>
+    */
+    public HashMap<String, CalendarCourse> getAllSessionCourses() {
+        return allSessionCourses;
+    }
 
     /**
      * Adds course to this session
