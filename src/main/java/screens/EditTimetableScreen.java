@@ -21,6 +21,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  */
 public class EditTimetableScreen extends JPanel implements ActionListener {
 
+    private JFrame frame;
     private final EditTimetableController controller;
     private TimetableViewModel timetable;
     /*private SessionViewModel session;*/
@@ -30,8 +31,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
     /**
      * @param controller
      */
-    public EditTimetableScreen(EditTimetableController controller, TimetableViewModel timetable/*,
-                               SessionViewModel session*/){
+    public EditTimetableScreen(JFrame frame, EditTimetableController controller, TimetableViewModel timetable/*,
+                               SessionViewModel session*/) {
         this.controller = controller;
         this.timetable = timetable;
         /*this.session = session;*/
@@ -57,7 +58,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
         this.add(ttView);
 
         JPanel courseButtons = new JPanel();
-        for (TimetableViewCourseModel course : timetable.getCourseData()){
+        for (TimetableViewCourseModel course : timetable.getCourseData()) {
             JButton editButton = new JButton("Edit " + course.getCode());
             editButton.addActionListener(this);
             courseButtons.add(editButton);
@@ -66,6 +67,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
             removeButton.addActionListener(this);
             courseButtons.add(removeButton);
         }
+        this.add(courseButtons);
         courseButtons.setVisible(true);
 
         optionPane = new JOptionPane();
@@ -107,38 +109,71 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
 
         TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
 
-        block1 = new Block("");
+        Block block1 = new Block("MO", "11:00", "12:00", "");
+        Block block2 = new Block("FR", "11:00", "12:00", "");
+        List<Block> blocks1 = new ArrayList<Block>();
+        blocks1.add(block1);
+        blocks1.add(block2);
+
+        Block block3 = new Block("WE", "11:00", "12:00", "");
+        List<Block> blocks2 = new ArrayList<Block>();
+        blocks2.add(block3);
+
+        Block block4 = new Block("TU", "16:00", "17:00", "");
+        Block block5 = new Block("FR", "16:00", "17:00", "");
+        List<Block> blocks3 = new ArrayList<Block>();
+        blocks3.add(block4);
+        blocks3.add(block5);
+
+        Block block6 = new Block("MO", "14:00", "16:00", "");
+        List<Block> blocks4 = new ArrayList<Block>();
+        blocks4.add(block6);
+
+        Section s1 = new Section("LEC0101", "", blocks1);
+        Section s2 = new Section("TUT0101", "", blocks2);
+
+        Section s3 = new Section("LEC0401", "", blocks3);
+        Section s4 = new Section("TUT0301", "", blocks4);
 
         List<Section> sections1 = new ArrayList<Section>();
+        sections1.add(s1);
+        sections1.add(s2);
         List<Section> sections2 = new ArrayList<Section>();
-        c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
-        c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
+        sections2.add(s3);
+        sections2.add(s4);
 
+        try {
+            TimetableCourse c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
+            TimetableCourse c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
 
-        ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(c1, c2);
-        courses.add(c1, c2);
-        Timetable timetable = new Timetable(courses);
+            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>();
+            courses.add(c1);
+            courses.add(c2);
+            Timetable timetable = new Timetable(courses);
 
-        RemoveCoursePresenter presenter = new RemoveCoursePresenter();
-        RemoveCourseInteractor interactor = new RemoveCourseInteractor(timetable, presenter);
-        EditTimetableController controller = new EditTimetableController(interactor);
-        EditTimetableScreen screen = new EditTimetableScreen(controller, timetableViewModel);
+            RemoveCoursePresenter presenter = new RemoveCoursePresenter();
+            RemoveCourseInteractor interactor = new RemoveCourseInteractor(timetable, presenter);
+            EditTimetableController controller = new EditTimetableController(interactor);
+            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, timetableViewModel);
+            frame.add(screen);
+        } catch (InvalidSectionsException e) {
+            System.out.println("InvalidSectionsException thrown.");
+        }
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    public void remove(String courseCode){
-        try{
-            optionPane.createDialog(this.controller.remove(courseCode).getMessage());
-        }
-        catch (RemoveCourseFailedException e){
+    public void remove(String courseCode) {
+        try {
+            optionPane.showMessageDialog(frame, this.controller.remove(courseCode).getMessage());
+        } catch (RemoveCourseFailedException e) {
             optionPane.createDialog(e.getMessage());
         }
     }
 
-    public void openAddCourseMenu(){
+    public void openAddCourseMenu() {
 
     }
 
@@ -154,9 +189,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
-        if (cmd.startsWith("Remove ")){
-            remove(cmd.substring("Remove ".length(), cmd.length() - 1));
-        }/*
+        if (cmd.startsWith("Remove ")) {
+            remove(cmd.substring("Remove ".length(), cmd.length()));
+        }
+        /*
         else if (cmd.startsWith("Edit ")){
 
         }

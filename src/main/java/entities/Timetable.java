@@ -19,7 +19,23 @@ public class Timetable {
         return null;
     }
 
-
+    public boolean existsByCode(String code){
+        for (TimetableCourse course: this.CourseList){
+            if (course.getCourseCode().equals(code)){
+                return true;
+            }
+        }
+        return false;
     }
+
+    public void removeCourse(String code){
+        for (TimetableCourse course: this.CourseList){
+            if (course.getCourseCode().equals(code)){
+                CourseList.remove(course);
+            }
+        }
+    }
+
+}
 
 

@@ -1,5 +1,9 @@
 package edit_timetable_use_case;
 
+import entities.Timetable;
+
+import java.util.ArrayList;
+
 /** The interactor used to remove a course from a timetable.
  * Instance Attributes:
  * timetable - the timetable being edited by the interactor.
@@ -29,12 +33,14 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
     public EditTimetableResponseModel remove(EditTimetableRequestModel requestModel)
             throws RemoveCourseFailedException {
         String courseCode = requestModel.getCourseCode();
+        boolean success = false;
         if (timetable.existsByCode(courseCode)) {
             timetable.removeCourse(courseCode);
+            success = true;
         }
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableResponseModel(courseCode,
-                        timetable.existsByCode(courseCode));
+                new EditTimetableResponseModel(courseCode, new ArrayList<>(),
+                        success);
         return presenter.prepareView(editTimetableResponseModel);
     }
 }
