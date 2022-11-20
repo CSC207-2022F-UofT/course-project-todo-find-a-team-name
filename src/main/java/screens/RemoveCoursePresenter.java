@@ -17,6 +17,7 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
      * @return
      */
 
+    public RemoveCoursePresenter(){}
     public RemoveCoursePresenter(EditTimetableView view){
         this.view = view;
     }
@@ -32,5 +33,9 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
         else{
             throw new RemoveCourseFailedException(responseModel.getCourseCode());
         }
+    }
+
+    public void setView(EditTimetableView view){
+        this.view = view;
     }
 }

@@ -23,6 +23,6 @@ public class RetrieveTimetableController {
     public TimetableResponseModel retrieveTimetable(String timetable){
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel(timetable, "", "");
-        return interactor.retrieveTimetable(requestModel);
+        return interactor.retrieveTimetable();
     }
 }

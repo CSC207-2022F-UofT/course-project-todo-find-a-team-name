@@ -26,6 +26,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private TimetableViewModel timetable;
     /*private SessionViewModel session;*/
 
+    private TimetableView ttView;
+
 
     /**
      * @param controller
@@ -53,7 +55,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
 
-        TimetableView ttView = new TimetableView(1280, 720, timetable);
+        ttView = new TimetableView(1280, 720, timetable);
         this.add(ttView);
 
         JPanel courseButtons = new JPanel();
@@ -151,6 +153,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             RemoveCourseInteractor interactor = new RemoveCourseInteractor(timetable, presenter);
             EditTimetableController controller = new EditTimetableController(interactor);
             EditTimetableScreen screen = new EditTimetableScreen(frame, controller, timetableViewModel);
+            presenter.setView(screen);
             frame.add(screen);
         } catch (InvalidSectionsException e) {
             System.out.println("InvalidSectionsException thrown.");
@@ -201,5 +204,23 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (e.getActionCommand().equals("Add Course")){
             openAddCourseMenu();
         }*/
+    }
+
+    /**
+     * @param timetable
+     */
+    @Override
+    public void updateTimetable(TimetableViewModel timetable) {
+        this.remove(ttView);
+        ttView = new TimetableView(1280, 720, timetable);
+        this.add(ttView);
+    }
+
+    /**
+     * @param successMessage
+     */
+    @Override
+    public void displayResponse(String successMessage) {
+
     }
 }
