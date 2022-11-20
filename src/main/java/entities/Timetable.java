@@ -19,7 +19,9 @@ public class Timetable {
         return null;
     }
 
-
+    public ArrayList<TimetableCourse> getCourseList() {
+        return CourseList;
     }
+}
 
 
