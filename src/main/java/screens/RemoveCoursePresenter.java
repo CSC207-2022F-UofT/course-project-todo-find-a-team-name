@@ -3,6 +3,7 @@ package screens;
 import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
 import edit_timetable_use_case.RemoveCourseFailedException;
+import retrieve_timetable_use_case.TimetableResponseConverter;
 import retrieve_timetable_use_case.TimetableResponseModel;
 
 /**
@@ -13,7 +14,7 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
     private EditTimetableView view;
 
     /**
-     * @param responseModel
+     * @param
      * @return
      */
 
@@ -24,7 +25,7 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
     @Override
     public void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException {
         TimetableResponseModel updatedTimetable = responseModel.getUpdatedTimetable();
-        TimetableViewModel ttViewModel = TimetableConverter.TimetableResponseToView(updatedTimetable);
+        TimetableViewModel ttViewModel = TimetableResponseConverter.timetableToView(updatedTimetable);
         view.updateTimetable(ttViewModel);
         if (responseModel.isSuccess()){
             String successMessage = responseModel.getCourseCode() + " has been successfully removed.";

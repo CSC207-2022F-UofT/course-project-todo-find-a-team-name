@@ -55,14 +55,11 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
 
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
-
         JPanel courseButtons = new JPanel();
         for (TimetableViewCourseModel course : timetable.getCourseData()) {
-            JButton editButton = new JButton("Edit " + course.getCode());
+            /*JButton editButton = new JButton("Edit " + course.getCode());
             editButton.addActionListener(this);
-            courseButtons.add(editButton);
+            courseButtons.add(editButton);*/
 
             JButton removeButton = new JButton("Remove " + course.getCode());
             removeButton.addActionListener(this);
@@ -70,6 +67,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
         this.add(courseButtons);
         courseButtons.setVisible(true);
+
+        ttView = new TimetableView(1280, 720, timetable);
+        this.add(ttView);
 
         this.setVisible(true);
     }
@@ -211,9 +211,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        this.remove(ttView);
+        ttView.setVisible(false);
         ttView = new TimetableView(1280, 720, timetable);
         this.add(ttView);
+        ttView.setVisible(true);
     }
 
     /**
@@ -221,6 +222,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void displayResponse(String successMessage) {
-
+        JOptionPane.showMessageDialog(frame, successMessage);
     }
 }

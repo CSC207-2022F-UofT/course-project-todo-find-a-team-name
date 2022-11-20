@@ -32,6 +32,7 @@ public class Timetable {
         for (TimetableCourse course: this.CourseList){
             if (course.getCourseCode().equals(code)){
                 CourseList.remove(course);
+                return;
             }
         }
     }
