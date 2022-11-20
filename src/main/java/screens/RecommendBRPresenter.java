@@ -1,6 +1,9 @@
 package screens;
 
 import recommend_br_use_case.*;
+import retrieve_timetable_use_case.BlockResponseModel;
+import retrieve_timetable_use_case.CourseResponseModel;
+import retrieve_timetable_use_case.SectionResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +33,22 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
     @Override
     public void prepareSuccessView(RecommendBRResponseModel responseModel) {
         List<BRCourseViewModel> courseViewModels = new ArrayList<>();
-        for (BRCourseResponseModel courseModel : responseModel.getCourses()){
-            String brCategory = formatBrCategory(courseModel.getBrCategory());
-            String lectureCode = courseModel.getLectureModel() == null ? null : courseModel.getLectureModel().getCode();
-            String tutorialCode = courseModel.getTutorialModel() == null ? null : courseModel.getTutorialModel().getCode();
-            String practicalCode = courseModel.getPracticalModel() == null ? null : courseModel.getPracticalModel().getCode();
+        for (CourseResponseModel courseModel : responseModel.getCourses()){
 
-            courseViewModels.add(new BRCourseViewModel(courseModel.getCode(), courseModel.getTitle(),
+            String brCategory = formatBrCategory(courseModel.getBreadth());
+            SectionResponseModel lectureModel = courseModel.getSections().get(0);
+            SectionResponseModel tutorialModel = courseModel.getSections().get(1);
+            SectionResponseModel practicalModel = courseModel.getSections().get(2);
+
+            String lectureCode = lectureModel == null ? null : lectureModel.getCode();
+            String tutorialCode = tutorialModel == null ? null : tutorialModel.getCode();
+            String practicalCode = practicalModel == null ? null : practicalModel.getCode();
+
+            courseViewModels.add(new BRCourseViewModel(courseModel.getCourseCode(), courseModel.getTitle(),
                     brCategory, lectureCode, tutorialCode, practicalCode,
-                    createBlockInfos(courseModel.getLectureModel()),
-                    createBlockInfos(courseModel.getTutorialModel()),
-                    createBlockInfos(courseModel.getPracticalModel())));
+                    createBlockInfos(tutorialModel),
+                    createBlockInfos(tutorialModel),
+                    createBlockInfos(practicalModel)));
         }
         RecommendBRViewModel viewModel = new RecommendBRViewModel(courseViewModels);
         view.showSuccessView(viewModel);
@@ -97,12 +105,12 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      * @param sectionResponseModel response model representing section
      * @return list of block information from the given BRSectionResponseModel
      */
-    private static List<String> createBlockInfos(BRSectionResponseModel sectionResponseModel){
+    private static List<String> createBlockInfos(SectionResponseModel sectionResponseModel){
         if (sectionResponseModel == null)
             return new ArrayList<>();
 
         List<String> blockInfos = new ArrayList<>();
-        for (BRBlockResponseModel blockResponseModel : sectionResponseModel.getBrBlockResponseModels()){
+        for (BlockResponseModel blockResponseModel : sectionResponseModel.getBlocks()){
 
             String day = intToStringDay(blockResponseModel.getDay());
             String startTime = doubleToStringTime(blockResponseModel.getStartTime());

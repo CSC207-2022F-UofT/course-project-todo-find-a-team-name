@@ -1,6 +1,8 @@
 package recommend_br_use_case;
 
 import entities.*;
+import retrieve_timetable_use_case.CourseResponseModel;
+import retrieve_timetable_use_case.EntityConverter;
 
 
 import java.util.ArrayList;
@@ -72,38 +74,40 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
             return;
         }
 
-        List<BRCourseResponseModel> courseModels = new ArrayList<>();
+        List<CourseResponseModel> courseModels = new ArrayList<>();
 
         for (TimetableCourse course : recommendedCourses){
 
-            BRSectionResponseModel lectureModel = null;
-            if (course.getLecture() != null) {
-                List<BRBlockResponseModel> lectureBlockModels = new ArrayList<>();
-                for (Block lectureBlock : course.getLecture().getBlocks()) {
-                    lectureBlockModels.add(new BRBlockResponseModel(lectureBlock.getDay(), lectureBlock.getStartTime(), lectureBlock.getEndTime()));
-                }
-                lectureModel = new BRSectionResponseModel(course.getLecture().getCode(), lectureBlockModels);
-            }
+            courseModels.add(EntityConverter.generateCourseResponse(course));
 
-            BRSectionResponseModel tutorialModel = null;
-            if (course.getTutorial() != null) {
-                List<BRBlockResponseModel> tutorialBlockModels = new ArrayList<>();
-                for (Block tutorialBlock : course.getTutorial().getBlocks()) {
-                    tutorialBlockModels.add(new BRBlockResponseModel(tutorialBlock.getDay(), tutorialBlock.getStartTime(), tutorialBlock.getEndTime()));
-                }
-                tutorialModel = new BRSectionResponseModel(course.getTutorial().getCode(), tutorialBlockModels);
-            }
-
-            BRSectionResponseModel practicalModel = null;
-            if (course.getPractical() != null) {
-                List<BRBlockResponseModel> practicalBlockModels = new ArrayList<>();
-                for (Block practicalBlock : course.getPractical().getBlocks()) {
-                    practicalBlockModels.add(new BRBlockResponseModel(practicalBlock.getDay(), practicalBlock.getStartTime(), practicalBlock.getEndTime()));
-                }
-                practicalModel = new BRSectionResponseModel(course.getPractical().getCode(), practicalBlockModels);
-            }
-
-            courseModels.add(new BRCourseResponseModel(course.getCourseCode(), course.getTitle(), course.getBreadth(), lectureModel, tutorialModel, practicalModel));
+//            BRSectionResponseModel lectureModel = null;
+//            if (course.getLecture() != null) {
+//                List<BRBlockResponseModel> lectureBlockModels = new ArrayList<>();
+//                for (Block lectureBlock : course.getLecture().getBlocks()) {
+//                    lectureBlockModels.add(new BRBlockResponseModel(lectureBlock.getDay(), lectureBlock.getStartTime(), lectureBlock.getEndTime()));
+//                }
+//                lectureModel = new BRSectionResponseModel(course.getLecture().getCode(), lectureBlockModels);
+//            }
+//
+//            BRSectionResponseModel tutorialModel = null;
+//            if (course.getTutorial() != null) {
+//                List<BRBlockResponseModel> tutorialBlockModels = new ArrayList<>();
+//                for (Block tutorialBlock : course.getTutorial().getBlocks()) {
+//                    tutorialBlockModels.add(new BRBlockResponseModel(tutorialBlock.getDay(), tutorialBlock.getStartTime(), tutorialBlock.getEndTime()));
+//                }
+//                tutorialModel = new BRSectionResponseModel(course.getTutorial().getCode(), tutorialBlockModels);
+//            }
+//
+//            BRSectionResponseModel practicalModel = null;
+//            if (course.getPractical() != null) {
+//                List<BRBlockResponseModel> practicalBlockModels = new ArrayList<>();
+//                for (Block practicalBlock : course.getPractical().getBlocks()) {
+//                    practicalBlockModels.add(new BRBlockResponseModel(practicalBlock.getDay(), practicalBlock.getStartTime(), practicalBlock.getEndTime()));
+//                }
+//                practicalModel = new BRSectionResponseModel(course.getPractical().getCode(), practicalBlockModels);
+//            }
+//
+//            courseModels.add(new BRCourseResponseModel(course.getCourseCode(), course.getTitle(), course.getBreadth(), lectureModel, tutorialModel, practicalModel));
         }
 
         presenter.prepareSuccessView(new RecommendBRResponseModel(courseModels));
