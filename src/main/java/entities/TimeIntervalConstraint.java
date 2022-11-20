@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * - startTime: A Limit for startTime.
  * - endTime: A Limit for EndTime.
  * - super(isBlackList): a boolean showing b/w lists.
- *
  */
 public class TimeIntervalConstraint extends Constraint{
     private final double startTime;
@@ -102,7 +101,7 @@ public class TimeIntervalConstraint extends Constraint{
     /**
      * helper method for formatting.
      * @param time a double representing time.
-     * @return a string that is in the form of HH:MM
+     * @return a string that is in the form of HH:MM.
      */
     private String formatTime(Double time) {
         int hour = time.intValue();
