@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class containing data needed for displaying course information for recommend BR use case.
  */
-public class BRCourseViewModel {
+public class RecommendBRCourseViewModel {
     private String code;
     private String title;
     private String brCategory;
@@ -37,8 +37,8 @@ public class BRCourseViewModel {
      * @param tutorialBlockInfos list of text containing tutorial block information of the course
      * @param practicalBlockInfos list of text containing practical block information of the course
      */
-    public BRCourseViewModel(String code, String title, String brCategory, String lectureCode, String tutorialCode,
-                             String practicalCode, List<String> lectureBlockInfos, List<String> tutorialBlockInfos, List<String> practicalBlockInfos){
+    public RecommendBRCourseViewModel(String code, String title, String brCategory, String lectureCode, String tutorialCode,
+                                      String practicalCode, List<String> lectureBlockInfos, List<String> tutorialBlockInfos, List<String> practicalBlockInfos){
         this.code = code;
         this.title = title;
         this.brCategory = brCategory;

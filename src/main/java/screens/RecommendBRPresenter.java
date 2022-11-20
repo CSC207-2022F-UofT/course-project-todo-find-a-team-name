@@ -32,7 +32,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      */
     @Override
     public void prepareSuccessView(RecommendBRResponseModel responseModel) {
-        List<BRCourseViewModel> courseViewModels = new ArrayList<>();
+        List<RecommendBRCourseViewModel> courseViewModels = new ArrayList<>();
         for (CourseResponseModel courseModel : responseModel.getCourses()){
 
             String brCategory = formatBrCategory(courseModel.getBreadth());
@@ -55,7 +55,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
             String tutorialCode = tutorialModel == null ? null : tutorialModel.getCode();
             String practicalCode = practicalModel == null ? null : practicalModel.getCode();
 
-            courseViewModels.add(new BRCourseViewModel(courseModel.getCourseCode(), courseModel.getTitle(),
+            courseViewModels.add(new RecommendBRCourseViewModel(courseModel.getCourseCode(), courseModel.getTitle(),
                     brCategory, lectureCode, tutorialCode, practicalCode,
                     createBlockInfos(lectureModel),
                     createBlockInfos(tutorialModel),

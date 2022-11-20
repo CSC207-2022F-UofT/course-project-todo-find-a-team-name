@@ -8,14 +8,14 @@ import java.util.List;
  * It contains list of course data shown to the user.
  */
 public class RecommendBRViewModel {
-    List<BRCourseViewModel> courseViewModels;
+    List<RecommendBRCourseViewModel> courseViewModels;
 
     /**
      * Constructs RecommendBRViewModel from the given list of BRCourseViewModel
      *
      * @param courseViewModels list of BRCourseViewModel containing information display for each course
      */
-    public RecommendBRViewModel(List<BRCourseViewModel> courseViewModels){
+    public RecommendBRViewModel(List<RecommendBRCourseViewModel> courseViewModels){
         this.courseViewModels = courseViewModels;
     }
 
@@ -24,7 +24,7 @@ public class RecommendBRViewModel {
      *
      * @return list of BRCourseViewModel representing information about the course shown to the user
      */
-    public List<BRCourseViewModel> getCourseViewModels() {
+    public List<RecommendBRCourseViewModel> getCourseViewModels() {
         return courseViewModels;
     }
 }

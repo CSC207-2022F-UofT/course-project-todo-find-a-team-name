@@ -25,7 +25,7 @@ public class CourseInfoPanel extends JPanel {
      *
      * @param courseViewModel object containing all the information of the course shown to the user
      */
-    public void showCourseInfo(BRCourseViewModel courseViewModel){
+    public void showCourseInfo(RecommendBRCourseViewModel courseViewModel){
         StringBuilder sb = new StringBuilder();
         sb.append("<html><p>Code: ")
                 .append(courseViewModel.getCode()).append("<br>")
