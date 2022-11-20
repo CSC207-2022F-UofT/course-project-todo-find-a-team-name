@@ -41,4 +41,15 @@ public class Block {
     public double getEndTime() { return endTime; }
 
     public String getRoom() { return room; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Block)){
+            return false;
+        }
+
+        Block other = (Block) obj;
+
+        return day == other.day && startTime == other.startTime && endTime == other.endTime && room.equals(other.room);
+    }
 }
