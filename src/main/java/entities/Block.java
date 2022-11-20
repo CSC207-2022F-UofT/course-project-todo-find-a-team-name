@@ -8,13 +8,18 @@ public class Block {
     private final String room;
 
     public Block(String day, String startTime, String endTime, String room) {
-        switch (day) {
-            case "MO" -> this.day = 0;
-            case "TU" -> this.day = 1;
-            case "WE" -> this.day = 2;
-            case "TH" -> this.day = 3;
-            default -> this.day = 4;
+        if (day.equals("MO")) {
+            this.day = 0;
+        } else if (day.equals("TU")) {
+            this.day = 1;
+        } else if (day.equals("WE")) {
+            this.day = 2;
+        } else if (day.equals("TH")) {
+            this.day = 3;
+        } else {
+            this.day = 4;
         }
+
 
         String[] start = startTime.split(":");
         double startHour = Integer.parseInt(start[0]);
@@ -36,4 +41,15 @@ public class Block {
     public double getEndTime() { return endTime; }
 
     public String getRoom() { return room; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Block)){
+            return false;
+        }
+
+        Block other = (Block) obj;
+
+        return day == other.day && startTime == other.startTime && endTime == other.endTime && room.equals(other.room);
+    }
 }
