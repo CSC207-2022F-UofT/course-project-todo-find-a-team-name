@@ -34,10 +34,8 @@ class InstructorConstraintTest {
         instructorNames.add("inst2");
         instructorNames.add("inst3");
         InstructorConstraint instructorConstraint = new InstructorConstraint(instructorNames,true);
-        instructorConstraint.filter(course);
-        ArrayList<Section> expected_sections = new ArrayList<>();
-        assertEquals(expected_sections, course.getSections());
-        assertEquals(0, course.getSections().size());
+        // testing to check original and modified course section type consistency.
+        assertFalse(instructorConstraint.filter(course));
     }
     @Test
     void filterRemove2SectionsBlackList() {
@@ -50,12 +48,8 @@ class InstructorConstraintTest {
         instructorNames.add("inst1");
         instructorNames.add("inst2");
         InstructorConstraint instructorConstraint = new InstructorConstraint(instructorNames, true);
-        instructorConstraint.filter(course);
-        Section expected_section = new Section("PRA-0301", "inst3", blocks);
-        ArrayList<Section> expected_sections = new ArrayList<>();
-        expected_sections.add(expected_section);
-        assertEquals(expected_sections, course.getSections());
-        assertEquals(1, course.getSections().size());
+        // testing to check original and modified course section type consistency.
+        assertFalse(instructorConstraint.filter(course));
     }
 
 
@@ -72,8 +66,8 @@ class InstructorConstraintTest {
         instructorNames.add("inst2");
         instructorNames.add("inst3");
         InstructorConstraint instructorConstraint = new InstructorConstraint(instructorNames,false);
-        instructorConstraint.filter(course);
-
+        // testing to check original and modified course section type consistency.
+        assertTrue(instructorConstraint.filter(course));
         assertTrue(courseBeforeFilter.equals(course));
         assertEquals(3, course.getSections().size());
 

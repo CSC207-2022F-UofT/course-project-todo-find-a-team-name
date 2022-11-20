@@ -22,23 +22,35 @@ public class WeekdayConstraint extends Constraint{
      * given weekday.
      *
      * @param course the course to be modified with filtered sections.
+     * @return a boolean value. First check if the course sections contain a lecture, practical, or tutorial, and
+     * return true if the modified course sections still contain at least one of each original course section type.
      */
     @Override
-    public void filter(CalendarCourse course) {
+    public boolean filter(CalendarCourse course) {
         ArrayList<Section> copy = new ArrayList<>(course.getSections());
-        if (this.isBlackList()) {
-            for (Section section : copy) {
-                if (this.evalBlackListRemoveCondition(section)) {
+        boolean hasTutorial = course.hasTutorial();
+        boolean hasLecture = course.hasLecture();
+        boolean hasPractical = course.hasPractical();
+        if (isBlackList()){
+            for (Section section : copy){
+                if (evalBlackListRemoveCondition(section)){
                     course.removeSection(section);
+                }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
                 }
             }
         } else {
-            for (Section section : copy) {
-                if (this.evalWhiteListRemoveCondition(section)) {
+            for (Section section : copy){
+                if (evalWhiteListRemoveCondition(section)) {
                     course.removeSection(section);
+                }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     /**
@@ -78,9 +90,31 @@ public class WeekdayConstraint extends Constraint{
         return days;
     }
 
+    private List<String> formatDay(List<Integer> dayList) {
+        ArrayList<String> formattedDayList = new ArrayList<>();
+        for (int i: dayList) {
+            if (i == 0) {
+                formattedDayList.add("MO");
+            }
+            else if (i == 1){
+                formattedDayList.add("TU");
+            }
+            else if (i == 2){
+                formattedDayList.add("WE");
+            }
+            else if (i == 3){
+                formattedDayList.add("TH");
+            }
+            else if (i == 4){
+                formattedDayList.add("FR");
+            }
+        }
+        return formattedDayList;
+    }
+
     @Override
     public String toString(){
-        return "Weekday " + super.toString() + ": " + days;
+        return "Weekday " + super.toString() + ": " + formatDay(days);
     }
 
 
