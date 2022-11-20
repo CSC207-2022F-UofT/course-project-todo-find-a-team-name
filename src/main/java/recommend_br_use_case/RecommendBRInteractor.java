@@ -44,7 +44,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
     public void recommendBr(RecommendBRRequestModel requestModel) {
         Timetable timetable = timetableGateway.get(requestModel.getTimetableId());
 
-        Session[] sessions = sessionGateway.get();
+        Session session = sessionGateway.get(timetable.getSessionType());
 
         Comparator<Course> courseComparator;
 
@@ -62,7 +62,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
                 courseComparator = null;
         }
 
-        BRRecommender brRecommender = new BRRecommender(timetable, sessions[0], sessions[1], sessions[2],
+        BRRecommender brRecommender = new BRRecommender(timetable, session,
                 requestModel.getBrCategoriesSelected(), courseComparator);
 
         List<TimetableCourse> recommendedCourses = brRecommender.recommendBr();
