@@ -20,7 +20,7 @@ public class Session {
 
     // Constructor
     public Session(String sessionType) {
-        allSessionCourses = new HashMap<>();
+        this.allSessionCourses = new HashMap<>();
         this.sessionType = sessionType;
     }
 
