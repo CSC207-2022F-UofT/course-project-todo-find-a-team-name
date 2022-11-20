@@ -3,6 +3,7 @@ package screens;
 import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
 import edit_timetable_use_case.RemoveCourseFailedException;
+import retrieve_timetable_use_case.TimetableResponseModel;
 
 /**
  *

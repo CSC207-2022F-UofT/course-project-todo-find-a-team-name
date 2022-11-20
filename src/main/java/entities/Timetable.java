@@ -35,7 +35,9 @@ public class Timetable {
             }
         }
     }
-
+    public ArrayList<TimetableCourse> getCourseList() {
+        return CourseList;
+    }
 }
 
 

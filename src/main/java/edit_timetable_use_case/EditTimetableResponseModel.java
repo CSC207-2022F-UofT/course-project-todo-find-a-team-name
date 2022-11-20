@@ -1,5 +1,7 @@
 package edit_timetable_use_case;
 
+import retrieve_timetable_use_case.TimetableResponseModel;
+
 import java.util.List;
 
 /**

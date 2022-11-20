@@ -1,6 +1,10 @@
 package edit_timetable_use_case;
 
+import entities.Session;
 import entities.Timetable;
+import retrieve_timetable_use_case.RetrieveTimetableController;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.TimetableResponseModel;
 import screens.TimetableViewModel;
 
 import java.util.ArrayList;
@@ -39,7 +43,11 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
             timetable.removeCourse(courseCode);
             success = true;
         }
-        TimetableResponseModel updatedTimetable = TimetableConverter.timetableToResponse(timetable);
+
+        RetrieveTimetableController RTController = new RetrieveTimetableController(
+                new RetrieveTimetableInteractor(timetable, new Session("")));
+
+        TimetableResponseModel updatedTimetable = RTController.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
                 new EditTimetableResponseModel(courseCode, new ArrayList<>(),
                         success, updatedTimetable);
