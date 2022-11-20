@@ -4,6 +4,7 @@ import entities.Block;
 import entities.Course;
 import entities.Section;
 import entities.Session;
+import entities.Timetable;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,16 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
         return generateCourseResponse(session.getCalendarCourse(requestModel.getCourseCode()));
     }
 
+    @Override
+    public SessionResponseModel retrieveSession(){
+        return new SessionResponseModel(session.getAllSessionCourses(), session.getSessionType());
+    }
+
+    @Override
+    public TimetableResponseModel retrieveTimetable(){
+        return new TimetableResponseModel(timetable.getCourse);
+    }
+
     private CourseResponseModel generateCourseResponse(Course course){
         ArrayList<SectionResponseModel> sections = new ArrayList<SectionResponseModel>();
 
@@ -58,6 +69,10 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
             blocks.add(generateBlockResponse(block));
         }
 
-        return new SectionResponseModel();
+        return new SectionResponseModel(section.getCode(), section.getInstructorName(), blocks);
+    }
+
+    private BlockResponseModel generateBlockResponse(Block block){
+        return new BlockResponseModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
 }

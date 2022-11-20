@@ -2,9 +2,10 @@ package retrieve_timetable_use_case;
 
 public interface RetrieveTimetableInputBoundary {
 
-    CourseResponseModel retrieveTimetableCourse(RetrieveTimetableRequestModel requestModel);
+    public CourseResponseModel retrieveTimetableCourse(RetrieveTimetableRequestModel requestModel);
 
-    CourseResponseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
+    public CourseResponseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
 
-
+    public TimetableResponseModel retrieveTimetable();
+    public SessionResponseModel retrieveSession();
 }

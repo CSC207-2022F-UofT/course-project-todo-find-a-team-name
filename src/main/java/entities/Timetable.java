@@ -19,7 +19,6 @@ public class Timetable {
         return null;
     }
 
-
-    }
+}
 
 
