@@ -7,6 +7,7 @@ import entities.Section;
 import entities.TimetableCourse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class Timetable {
     ArrayList<TimetableCourse> timetableCourses;
@@ -33,22 +34,22 @@ public class TimeTableMatchInteractor {
      * We seek to maximize 'overlap'. Overlap is defined in terms of:
      * - Overlapping hours in the same section (to be with friends :3)
      * - Possibly HARD killing all constraints OR
-     * - Possibly trying to prioritize ones where more hours maximize more constraints.
+     * - Possibly trying to prioritize ones where more hours maximize more constraints. LATER ON.
      * (Weight can simply be determined by time * (proportion of satisfied constraints).
      */
     private final ArrayList<Timetable> timetables;
     private final Timetable mainTable;
 
-    private final Boolean strictConstraints;
+    private final Boolean lightConstraints;
 
-    TimeTableMatchInteractor(ArrayList<Timetable> timetables, Timetable mainTable, Boolean strictConstraints){
+    TimeTableMatchInteractor(ArrayList<Timetable> timetables, Timetable mainTable, Boolean lightConstraints){
         this.timetables = timetables;
         this.mainTable = mainTable;
-        this.strictConstraints = strictConstraints;
+        this.lightConstraints = lightConstraints;
     }
 
     /** Return the overlap value of a timeTable with the main one. */
-    private Float calculateTimetableOverlap(Timetable candidate){
+    private Double calculateTimetableOverlap(Timetable candidate){
         ArrayList<TimetableCourse> mainCourses = mainTable.timetableCourses;
         ArrayList<TimetableCourse> candidateCourses = candidate.timetableCourses;
 
@@ -63,28 +64,43 @@ public class TimeTableMatchInteractor {
                         if (mainSection == candidateSection){
                             // If they're in the same section in the same course, the two people can go together :).
                             // Hey, what if we used a companion object to not have to make a new one each time? Or just made this into an object.
-                            Double thisOverlapWeightedHrs = new TimeTableMatchCalculateSectionHoursInteractor().calculateHoursOfSection(candidateSection);
+                            Double thisOverlapWeightedHrs =
+                                    new TimeTableMatchCalculateSectionHoursInteractor().calculateHoursOfSection(candidateSection);
+                            totalOverlapWeightedHrs += thisOverlapWeightedHrs;
+                            // TODO: Add in functionality for allowing 'soft constraint' overlap.
+                            //  Later on this would probably involve calling Hans' part with 0 constraints and then
+                            //  considering entered ones later.
                         }
                     }
                 }
-
-
-
             }
         }
+        return totalOverlapWeightedHrs;
     }
 
-    /** Return a new Arraylist of pairs, of the form (Overlap, Timetable)
-     * sorted by the timetable's overlap value in descending order.
+    /** Return a new HashMap connecting Timetables to their Overlap value.
      */
-    public Float calculateTimetableOverlaps(){
-
+    public HashMap<Timetable, Double> calculateTimetableOverlaps(){
+        HashMap<Timetable, Double> timetableOverlapMap = new HashMap<>();
+        for (Timetable timetable : timetables){
+            timetableOverlapMap.put(timetable, calculateTimetableOverlap(timetable));
+        }
+        return timetableOverlapMap;
     }
 
     /** Return ONLY the best overlapping timetable with the main one. Order is arbitrary if there is a tie. For multiple
      * outputs, use calculateTimetableOverlaps and just take the first few. **/
     public Timetable determineBestMatchingTimetable(){
-
+        Timetable bestTimetable = null;
+        Double bestScore = -1.0;
+        for (Timetable timetable : timetables){
+            Double calculatedOverlap = calculateTimetableOverlap(timetable);
+            if (calculatedOverlap > bestScore){
+                bestTimetable = timetable;
+                bestScore = calculateTimetableOverlap(timetable);
+            }
+        }
+        return bestTimetable;
     }
 
 
