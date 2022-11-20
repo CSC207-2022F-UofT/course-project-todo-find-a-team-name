@@ -1,26 +1,20 @@
 package overlap_crap_fix_locations_later;
 
+import entities.Constraint;
+import entities.Timetable;
+
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
 public class OverlapMaximizationController implements Flow.Subscriber {
 
-    public Timetable getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints){
-        Timetable bestMatch = new TimeTableMatchInteractor(Timetables, mainTable, lightConstraints)
+    public Timetable getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints,
+                                              ArrayList<Constraint> constraints){
+        Timetable bestMatch = new TimeTableMatchInteractor(Timetables, mainTable, lightConstraints, constraints)
                 .determineBestMatchingTimetable();
         return bestMatch;
 
 
-    }
-
-    public static void main(String[] args) {
-        ArrayList<Timetable> test = new ArrayList<>();
-        test.add(Timetable())
-        OverlapInputDialog dialog = new OverlapInputDialog(new String[]{"A", "B", "C"});
-        dialog.subscribe(new OverlapMaximizationController());
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     // TODO: For the moment, this is a string for testing. Change it later.

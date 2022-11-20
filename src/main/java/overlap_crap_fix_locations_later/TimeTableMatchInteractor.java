@@ -2,16 +2,10 @@ package overlap_crap_fix_locations_later;
 
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
-import entities.Block;
-import entities.Section;
-import entities.TimetableCourse;
+import entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-class Timetable {
-    ArrayList<TimetableCourse> timetableCourses;
-}
 
 /** A helper interactor responsible for calculating the # of hours in a section.
  * FIXME: Not sure if this deserves its own interactor, but I feel like if we ever changed how Section time is
@@ -40,18 +34,23 @@ public class TimeTableMatchInteractor {
     private final ArrayList<Timetable> timetables;
     private final Timetable mainTable;
 
+    private final ArrayList<Constraint> constraints;
     private final Boolean lightConstraints;
 
-    TimeTableMatchInteractor(ArrayList<Timetable> timetables, Timetable mainTable, Boolean lightConstraints){
+    TimeTableMatchInteractor(ArrayList<Timetable> timetables, Timetable mainTable, Boolean lightConstraints,
+    ArrayList<Constraint> constraints){
         this.timetables = timetables;
         this.mainTable = mainTable;
         this.lightConstraints = lightConstraints;
+        this.constraints = constraints;
     }
 
     /** Return the overlap value of a timeTable with the main one. */
     private Double calculateTimetableOverlap(Timetable candidate){
-        ArrayList<TimetableCourse> mainCourses = mainTable.timetableCourses;
-        ArrayList<TimetableCourse> candidateCourses = candidate.timetableCourses;
+        // ArrayList<TimetableCourse> mainCourses = mainTable.getCourseList();
+        ArrayList<TimetableCourse> mainCourses = new ArrayList<>();
+        // ArrayList<TimetableCourse> candidateCourses = candidate.getCourseList();
+        ArrayList<TimetableCourse> candidateCourses = new ArrayList<>();
 
         Double totalOverlapWeightedHrs = 0.0;
         // Although this is terribly inefficient, note that we have at most, like... 10 courses. Of 10 sections each.

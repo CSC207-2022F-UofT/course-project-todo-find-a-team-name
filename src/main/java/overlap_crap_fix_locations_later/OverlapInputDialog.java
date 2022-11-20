@@ -1,6 +1,6 @@
 package overlap_crap_fix_locations_later;
 
-import entities.Constraint;
+import entities.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -9,10 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Flow;
 
-public class OverlapInputDialog extends JDialog implements OverlapInputFunctionality, Flow.Publisher {
+public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -20,6 +22,8 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
     private JLabel textLabel;
     private Timetable selectedMainTimetable;
 
+    // TODO: May wish to find a better way of doing this. This is a placeholder.
+    private HashMap<String, Timetable> timeTableRepresentations = new HashMap<>();
     private ArrayList<Constraint> selectedConstraints;
 
     private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
@@ -29,13 +33,16 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
 
     private final ArrayList<Timetable> timeTableOptions;
 
-    /** Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
+    /**
+     * Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
      * and interactor and such.
-     * */
+     */
     public OverlapInputDialog(ArrayList<Timetable> timeTableOptions) {
 
         this.timeTableOptions = timeTableOptions;
-
+        for (int i = 0; i < timeTableOptions.size(); i++) {
+            timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
+        }
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
@@ -44,21 +51,24 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
         setUpInputPassing();
     }
 
-    /** Method through which the Dialog stores the entered main timeTable and begins receiving a set of constraints. **/
+    /**
+     * Method through which the Dialog stores the entered main timeTable and begins receiving a set of constraints.
+     **/
     private void finishDataEntry() {
         // add your code here
         // System.out.println(timeTableComboBox.getSelectedItem());
+        String selectedItemName = (String) timeTableComboBox.getSelectedItem();
         for (Flow.Subscriber subscriber : dataReceivers) {
             subscriber.onNext(timeTableComboBox.getSelectedItem());
             subscriber.onComplete();
         }
-        this.selectedMainTimetable = (Timetable) timeTableComboBox.getSelectedItem();
+        this.selectedMainTimetable = timeTableRepresentations.get(selectedItemName);
 
         // Then, call Hans' Dialog to open it up.
         // Receive its completed constraints, store them in this Dialog as well.
         // Call JD's stuff to get the timetables.
         // Pass them to the controller.
-        new OverlapMaximizationController().getBestMatchingTimetable(selectedMainTimetable, selectedConstraints, false)
+        new OverlapMaximizationController().getBestMatchingTimetable(timeTableOptions, selectedMainTimetable, false, selectedConstraints);
     }
 
     private void onCancel() {
@@ -66,10 +76,34 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
     }
 
     public static void main(String[] args) {
-        OverlapInputDialog dialog = new OverlapInputDialog(new String[]{"A", "B", "C"});
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
+
+        // Initialise a test value.
+        Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
+        ArrayList<Block> testBlockList = new ArrayList<>();
+        testBlockList.add(testBlock);
+
+        Section testSection = new Section("LEC0101", "Mario", testBlockList);
+        ArrayList<Section> testSectionList = new ArrayList<>();
+        testSectionList.add(testSection);
+
+        try {
+            TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
+            ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
+            testTimetableCourseList.add(testCourse);
+
+            Timetable testTimetable = new Timetable(testTimetableCourseList);
+            ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
+            testTimetableList.add(testTimetable);
+
+            OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList);
+            dialog.pack();
+            dialog.setVisible(true);
+            System.exit(0);
+
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -81,11 +115,10 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
 
     // Custom initialize a ComboBox object and return it.
     private JComboBox initialiseComboBox() {
-        return new JComboBox(timeTableOptions);
+        return new JComboBox(timeTableRepresentations.keySet().toArray());
 
     }
 
-    @Override
     public void setUpCancelFunctionality() {
         buttonCancel.addActionListener(new ActionListener() {
             /** Add an action listener for the cancel dialogue button that kills the dialog. **/
@@ -103,7 +136,6 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
         });
     }
 
-    @Override
     public void setUpInputPassing() {
         buttonOK.addActionListener(new ActionListener() {
             /** Add an action listener for the OK button. */
@@ -120,12 +152,6 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
         System.out.println(dataReceivers);
         dataReceivers.add(subscriber);
         System.out.println(dataReceivers);
-    }
-
-    // TODO: Ask someone about this. Is this too specific?
-    @Override
-    public JDialog createWithScheduleList(ArrayList<String> timetablesToChooseFrom) {
-        return new OverlapInputDialog((String[]) timetablesToChooseFrom.toArray());
     }
 
     /**
@@ -171,7 +197,6 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 
 
 }
