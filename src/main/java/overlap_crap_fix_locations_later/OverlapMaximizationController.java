@@ -5,12 +5,17 @@ import java.util.concurrent.Flow;
 
 public class OverlapMaximizationController implements Flow.Subscriber {
 
-    public void performUseCase(){
-        ArrayList<String> testItems = new ArrayList<>();
+    public Timetable getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints){
+        Timetable bestMatch = new TimeTableMatchInteractor(Timetables, mainTable, lightConstraints)
+                .determineBestMatchingTimetable();
+        return bestMatch;
+
 
     }
 
     public static void main(String[] args) {
+        ArrayList<Timetable> test = new ArrayList<>();
+        test.add(Timetable())
         OverlapInputDialog dialog = new OverlapInputDialog(new String[]{"A", "B", "C"});
         dialog.subscribe(new OverlapMaximizationController());
         dialog.pack();

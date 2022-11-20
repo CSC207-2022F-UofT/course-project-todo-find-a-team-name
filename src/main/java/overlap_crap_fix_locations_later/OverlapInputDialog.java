@@ -1,5 +1,7 @@
 package overlap_crap_fix_locations_later;
 
+import entities.Constraint;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -7,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.im.spi.InputMethodDescriptor;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
@@ -17,15 +18,21 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
     private JButton buttonCancel;
     private JComboBox timeTableComboBox;
     private JLabel textLabel;
+    private Timetable selectedMainTimetable;
+
+    private ArrayList<Constraint> selectedConstraints;
 
     private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
 
     // TODO: What I want to be able to do is to have a button be pressed and then return a value to the presenter.
     // TODO: Change String to TimeTable in the types here once we have that option and we're not just testing.
 
-    private final String[] timeTableOptions;
+    private final ArrayList<Timetable> timeTableOptions;
 
-    public OverlapInputDialog(String[] timeTableOptions) {
+    /** Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
+     * and interactor and such.
+     * */
+    public OverlapInputDialog(ArrayList<Timetable> timeTableOptions) {
 
         this.timeTableOptions = timeTableOptions;
 
@@ -37,13 +44,21 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
         setUpInputPassing();
     }
 
-    private void passInput() {
+    /** Method through which the Dialog stores the entered main timeTable and begins receiving a set of constraints. **/
+    private void finishDataEntry() {
         // add your code here
         // System.out.println(timeTableComboBox.getSelectedItem());
         for (Flow.Subscriber subscriber : dataReceivers) {
             subscriber.onNext(timeTableComboBox.getSelectedItem());
             subscriber.onComplete();
         }
+        this.selectedMainTimetable = (Timetable) timeTableComboBox.getSelectedItem();
+
+        // Then, call Hans' Dialog to open it up.
+        // Receive its completed constraints, store them in this Dialog as well.
+        // Call JD's stuff to get the timetables.
+        // Pass them to the controller.
+        new OverlapMaximizationController().getBestMatchingTimetable(selectedMainTimetable, selectedConstraints, false)
     }
 
     private void onCancel() {
@@ -93,7 +108,7 @@ public class OverlapInputDialog extends JDialog implements OverlapInputFunctiona
         buttonOK.addActionListener(new ActionListener() {
             /** Add an action listener for the OK button. */
             public void actionPerformed(ActionEvent e) {
-                passInput();
+                finishDataEntry();
                 dispose();
             }
         });
