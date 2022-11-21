@@ -16,9 +16,9 @@ import java.util.*;
  *  puts them into a session.
  */
 
-public class SessionGateway implements SessionGatewayInterface {
+public class SessionGateway implements GatewayInterface {
     public SessionGateway() {}
-    /**
+    /**Cr
      * Returns a string representation of the JSON file it reads.
      * @param file The JSON file's file path
      * @return String
@@ -105,7 +105,6 @@ public class SessionGateway implements SessionGatewayInterface {
     /**
      * Returns a SessionStorerInteractor class of all sessions (Fall and Winter) based on given HashMap of String
      * to CalendarCourse.
-     *
      * Note: Use .getAllSessions() method in SessionStorerInteractor to get
      * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
      *
