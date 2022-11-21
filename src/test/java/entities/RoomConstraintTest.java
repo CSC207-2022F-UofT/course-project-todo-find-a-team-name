@@ -71,10 +71,10 @@ class RoomConstraintTest {
 
         RoomConstraint roomConstraint1 = new RoomConstraint(rooms1, true);
 
-        // testing to check if all sections with the blacklisted room are removed. (No sections satisfied)
+        // testing to check original and modified course section type consistency.
         CalendarCourse courseWithNoSections = new CalendarCourse("Course1", emptySections, "", "", "");
-        roomConstraint1.filter(course1);
-        assertTrue(courseWithNoSections.equals(course1));
+        assertFalse(roomConstraint1.filter(course1));
+        assertFalse(courseWithNoSections.equals(course1));
 
     }
 
@@ -143,9 +143,9 @@ class RoomConstraintTest {
         RoomConstraint roomConstraint1 = new RoomConstraint(rooms1, true);
         RoomConstraint roomConstraint2 = new RoomConstraint(rooms2, false);
 
-        // testing to check if all sections without the whitelisted room are removed.
+        // testing to check original and modified course section type consistency.
         CalendarCourse courseWithModifiedSections = new CalendarCourse("Course2", expectedSections, "", "", "");
-        roomConstraint2.filter(course2);
+        assertFalse(roomConstraint2.filter(course2));
         assertTrue(courseWithModifiedSections.equals(course2));
 
     }
@@ -214,10 +214,9 @@ class RoomConstraintTest {
 
         RoomConstraint roomConstraint2 = new RoomConstraint(rooms2, false);
 
-        // testing to check if all sections with the whitelisted room are removed. (None should be removed, since
-        //Whitelist contains all the rooms in the section blocks.
+        // testing to check original and modified course section type consistency.
         CalendarCourse courseUnchanged = new CalendarCourse("Course1",sections1, "", "","");
-        roomConstraint2.filter(course1);
+        assertFalse(roomConstraint2.filter(course1));
         assertTrue(courseUnchanged.equals(course1));
 
     }

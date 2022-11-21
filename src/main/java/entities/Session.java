@@ -20,8 +20,16 @@ public class Session {
 
     // Constructor
     public Session(String sessionType) {
-        allSessionCourses = new HashMap<>();
+        this.allSessionCourses = new HashMap<>();
         this.sessionType = sessionType;
+    }
+    
+    /** 
+    * Returns HashMap containing all courses as a CalendarCourse (value) with their corresponding course code (key)
+    * @return HashMap<String, CalendarCourse>
+    */
+    public HashMap<String, CalendarCourse> getAllSessionCourses() {
+        return allSessionCourses;
     }
 
     /**
@@ -36,6 +44,22 @@ public class Session {
         }
         return false;
     }
+    /**
+     * Returns True if course is in this session using courseCode.
+     * @param courseCode a String of course code
+     */
+    public boolean checkCourseCode(String courseCode) {
+        return allSessionCourses.containsKey(courseCode);
+    }
+
+    /**
+     * Returns True if course is in this session using CalendarCourse object
+     * @param course (a CalendarCourse object)
+     */
+    public boolean checkCalendarCourse(CalendarCourse course) {
+        return allSessionCourses.containsValue(course);
+    }
+
     /**
      * Returns the session type of this session. Either Fall (F), Winter (S), or Fall & Winter (Y).
      * @return String of session type

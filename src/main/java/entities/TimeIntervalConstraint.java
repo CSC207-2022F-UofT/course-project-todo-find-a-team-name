@@ -23,24 +23,35 @@ public class TimeIntervalConstraint extends Constraint{
      * startTime limit and endTime limit.
      *
      * @param course the course to be modified with filtered sections.
+     * @return a boolean value. First check if the course sections contain a lecture, practical, or tutorial, and
+     * return true if the modified course sections still contain at least one of each original course section type.
      */
     @Override
-    public void filter(CalendarCourse course) {
+    public boolean filter(CalendarCourse course) {
         ArrayList<Section> copy = new ArrayList<>(course.getSections());
+        boolean hasTutorial = course.hasTutorial();
+        boolean hasLecture = course.hasLecture();
+        boolean hasPractical = course.hasPractical();
         if (isBlackList()){
             for (Section section : copy){
                 if (evalBlackListRemoveCondition(section)){
                     course.removeSection(section);
                 }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
+                }
             }
-        } else{
+        } else {
             for (Section section : copy){
                 if (evalWhiteListRemoveCondition(section)) {
                     course.removeSection(section);
-
+                }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     /**
