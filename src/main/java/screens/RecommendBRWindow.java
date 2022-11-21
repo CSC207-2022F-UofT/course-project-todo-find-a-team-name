@@ -14,14 +14,25 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
      * It displays the RecommendBRInputScreen.
      */
     RecommendBRInputScreen inputScreen;
-    public RecommendBRWindow(JFrame frame, RecommendBRController controller, String timetableId){
+    RecommendBRController controller;
+
+    public RecommendBRWindow(JFrame frame, RecommendBRController controller){
         super(frame, "Recommend BR", true);
         this.setSize(600, 400);
         this.setResizable(false);
+        this.controller = controller;
+    }
 
+    /**
+     * Displays input screen that accepts breadth categories and
+     * preferred time to recommend breadth courses
+     *
+     * @param timetableId id of the timetable
+     */
+    public void showInputViw(String timetableId){
         inputScreen = new RecommendBRInputScreen(controller, timetableId);
         add(inputScreen);
-
+        setVisible(true);
     }
 
     /**
