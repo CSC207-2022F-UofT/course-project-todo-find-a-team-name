@@ -8,13 +8,13 @@ import javax.swing.*;
 
 public class CourseCodePanel extends JPanel{
 
-    JLabel sessionlabel = new JLabel("Session");
+    JLabel sessionLabel = new JLabel("Session");
     JComboBox<String> comboBox;
     JLabel courseLabel = new JLabel("Course Codes");
     JTextField textField;
 
     public CourseCodePanel(JComboBox<String> comboBox, JTextField textField) {
-        this.add(sessionlabel);
+        this.add(sessionLabel);
         this.comboBox = comboBox;
         this.add(comboBox);
         this.add(courseLabel);
