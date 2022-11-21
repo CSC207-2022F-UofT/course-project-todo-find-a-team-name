@@ -10,37 +10,37 @@ import java.util.HashMap;
 
 public class EntityConverter {
 
-    public static SessionResponseModel generateSessionResponse(Session session){
-        HashMap<String, CourseResponseModel> courses = new HashMap<String, CourseResponseModel>();
+    public static SessionModel generateSessionResponse(Session session){
+        HashMap<String, CourseModel> courses = new HashMap<String, CourseModel>();
         for (String courseCode : session.getAllSessionCourses().keySet()){
             courses.put(courseCode, generateCourseResponse(session.getAllSessionCourses().get(courseCode)));
         }
-        return new SessionResponseModel(courses, session.getSessionType());
+        return new SessionModel(courses, session.getSessionType());
     }
 
-    public static CourseResponseModel generateCourseResponse(Course course){
-        ArrayList<SectionResponseModel> sections = new ArrayList<SectionResponseModel>();
+    public static CourseModel generateCourseResponse(Course course){
+        ArrayList<SectionModel> sections = new ArrayList<SectionModel>();
 
         for (Section section : course.getSections()){
             sections.add(generateSectionResponse(section));
         }
 
-        return new CourseResponseModel(course.getTitle(), sections, course.getCourseSession(), course.getCourseCode(),
+        return new CourseModel(course.getTitle(), sections, course.getCourseSession(), course.getCourseCode(),
                 course.getBreadth());
     }
 
-    public static SectionResponseModel generateSectionResponse(Section section){
-        ArrayList<BlockResponseModel> blocks = new ArrayList<BlockResponseModel>();
+    public static SectionModel generateSectionResponse(Section section){
+        ArrayList<BlockModel> blocks = new ArrayList<BlockModel>();
 
         for (Block block : section.getBlocks()){
             blocks.add(generateBlockResponse(block));
         }
 
-        return new SectionResponseModel(section.getCode(), section.getInstructorName(), blocks);
+        return new SectionModel(section.getCode(), section.getInstructorName(), blocks);
     }
 
-    public static BlockResponseModel generateBlockResponse(Block block){
-        return new BlockResponseModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
+    public static BlockModel generateBlockResponse(Block block){
+        return new BlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
 
 }
