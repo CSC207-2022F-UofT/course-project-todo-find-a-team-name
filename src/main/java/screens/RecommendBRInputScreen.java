@@ -1,7 +1,5 @@
 package screens;
 
-import screens.RecommendBRController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +14,6 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
 
     private final String timetableId;
     private final RecommendBRController controller;
-
     private final JCheckBox[] checkBoxes;
     private final JRadioButton[] radioButtons;
 
@@ -93,7 +90,6 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         panel.add(panel1);
         panel.add(panel2);
         add(panel, BorderLayout.CENTER);
-
 
         JButton recommendBr = new JButton("Submit Input");
         recommendBr.addActionListener(this);
