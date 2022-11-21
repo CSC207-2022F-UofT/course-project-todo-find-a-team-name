@@ -8,19 +8,19 @@ public class RetrieveTimetableController {
         this.interactor = interactor;
     }
 
-    public CourseResponseModel retrieveCalendarCourse(String courseCode){
+    public CourseModel retrieveCalendarCourse(String courseCode){
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel("", courseCode, "");
         return interactor.retrieveCalendarCourse(requestModel);
     }
 
-    public CourseResponseModel retrieveTimetableCourse(String courseCode){
+    public CourseModel retrieveTimetableCourse(String courseCode){
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel("", courseCode, "");
         return interactor.retrieveTimetableCourse(requestModel);
     }
 
-    public TimetableResponseModel retrieveTimetable(String timetable){
+    public TimetableModel retrieveTimetable(String timetable){
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel(timetable, "", "");
         return interactor.retrieveTimetable(requestModel);

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TimetableResponseConverter {
+public class TimetableModelConverter {
 
-    public static SessionViewModel SessionToView(SessionResponseModel session){
+    public static SessionViewModel SessionToView(SessionModel session){
         HashMap<String, TimetableViewCourseModel> courses = new HashMap<String, TimetableViewCourseModel>();
         for (String courseCode : session.getCourses().keySet()){
             courses.put(courseCode, CourseToView(session.getCourses().get(courseCode)));
@@ -16,34 +16,34 @@ public class TimetableResponseConverter {
         return new SessionViewModel(courses, session.getSessionType());
     }
 
-    public static TimetableViewModel TimetableToView(TimetableResponseModel timetable){
+    public static TimetableViewModel TimetableToView(TimetableModel timetable){
         List<TimetableViewCourseModel> courses = new ArrayList<TimetableViewCourseModel>();
-        for (CourseResponseModel course : timetable.getCourses() ){
+        for (CourseModel course : timetable.getCourses() ){
             courses.add(CourseToView(course));
         }
 
         return new TimetableViewModel(courses);
     }
 
-    public static TimetableViewCourseModel CourseToView(CourseResponseModel course){
+    public static TimetableViewCourseModel CourseToView(CourseModel course){
         List<TimetableViewSectionModel> sections = new ArrayList<TimetableViewSectionModel>();
-        for (SectionResponseModel section : course.getSections()){
+        for (SectionModel section : course.getSections()){
             sections.add(SectionToView(section));
         }
 
         return new TimetableViewCourseModel(course.getCourseCode(), sections);
     }
 
-    public static TimetableViewSectionModel SectionToView(SectionResponseModel section){
+    public static TimetableViewSectionModel SectionToView(SectionModel section){
         List<TimetableViewBlockModel> blocks = new ArrayList<TimetableViewBlockModel>();
-        for (BlockResponseModel block : section.getBlocks()){
+        for (BlockModel block : section.getBlocks()){
             blocks.add(BlockToView(block));
         }
 
         return new TimetableViewSectionModel(section.getCode(), blocks);
     }
 
-    public static TimetableViewBlockModel BlockToView(BlockResponseModel block){
+    public static TimetableViewBlockModel BlockToView(BlockModel block){
         return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime());
     }
 }

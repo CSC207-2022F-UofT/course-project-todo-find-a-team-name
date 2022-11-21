@@ -2,13 +2,13 @@ package retrieve_timetable_use_case;
 
 import java.util.List;
 
-public class SectionResponseModel {
+public class SectionModel {
 
     private String code;
     private String instructor;
-    private List<BlockResponseModel> blocks;
+    private List<BlockModel> blocks;
 
-    public SectionResponseModel(String code, String instructor, List<BlockResponseModel> blocks){
+    public SectionModel(String code, String instructor, List<BlockModel> blocks){
         this.code = code;
         this.instructor = instructor;
         this.blocks = blocks;
@@ -22,7 +22,7 @@ public class SectionResponseModel {
         return instructor;
     }
 
-    public List<BlockResponseModel> getBlocks() {
+    public List<BlockModel> getBlocks() {
         return blocks;
     }
 }
