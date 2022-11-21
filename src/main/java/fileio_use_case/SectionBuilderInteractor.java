@@ -4,17 +4,18 @@ import entities.Block;
 import entities.Section;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SectionBuilderInteractor {
 
     private final String code;
     private final String instructorName;
-    private final ArrayList<Block> blocks;
+    private final List<Block> blocks;
 
     public SectionBuilderInteractor(String code, String instructorName, ArrayList<Block> blocks) {
         this.code = code;
         this.instructorName = instructorName;
-        this.blocks = new ArrayList<>(blocks);
+        this.blocks = blocks;
     }
 
     public Section newSection(){

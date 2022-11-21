@@ -4,10 +4,11 @@ import entities.CalendarCourse;
 import entities.Section;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarCourseBuilderInteractor {
     protected String title;
-    protected ArrayList<Section> sections;
+    protected List<Section> sections;
     protected String courseSession;
     protected String courseCode;
     protected String breadth;

@@ -23,11 +23,14 @@ public class SessionStorerInteractor {
      * @return Session - A session object if SessionType is found or else null
      */
     public Session getSession(String sessionType) {
-        return allSessions.getOrDefault(sessionType, null);
+        if (this.allSessions.containsKey(sessionType)) {
+            return this.allSessions.get(sessionType);
+        }
+        return null;
     }
 
-    /** Returns all Session
-     * @return allSession
+    /** Returns all Session (a HashMap representation)
+     * @return allSession - HashMap<String, Session>
      **/
     public HashMap<String, Session> getAllSessions() {
         return this.allSessions;

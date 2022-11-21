@@ -1,6 +1,10 @@
 package feature6;
 
+import entities.Block;
 import entities.CalendarCourse;
+import entities.Section;
+import entities.Session;
+import fileio_use_case.SessionStorerInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import screens.feature_6_frameworks_drivers.SessionGateway;
@@ -16,6 +20,27 @@ class SessionGatewayTest {
         SessionGateway convertingFile = new SessionGateway();
         String jsonToStr = convertingFile.fileToString("src/main/java/screens/courses_cleaned.json");
         HashMap<String, CalendarCourse> result = convertingFile.readFromFile(jsonToStr);
-        System.out.println(result);
+        // System.out.println(result);
     }
+    @Test
+    void checkingFormatAndValuesEquals() throws IOException, ParseException {
+        SessionGateway convertingFile1 = new SessionGateway();
+        // Course from testing.json
+        String jsonToStr1= convertingFile1.fileToString("src/test/java/feature6/testing.json");
+        HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
+        Session Winter = convertingFile1.extractSession(result1, "S");
+        CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
+
+        // Building Course Manually
+        ArrayList<Block> allBlocks = new ArrayList<Block>();
+        allBlocks.add(new Block("MO", "17:00", "20:00", ""));
+        Section section = new Section("LEC-5101", "", allBlocks);
+        CalendarCourse c1 = new CalendarCourse("Applied Concepts in Economics", new ArrayList<Section>(List.of(section)),
+                "S", "IFP040H1", "5");
+
+        System.out.println(c1);
+        System.out.println(wantedCourse);
+        assertTrue(c1.equals(wantedCourse));
+    }
+
 }

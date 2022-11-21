@@ -8,9 +8,25 @@ import java.util.HashMap;
 public class SessionBuilderInteractor {
     public SessionBuilderInteractor() {}
     /**
+     * Returns HashMap<String, CalendarCourse> of a Session given the HashMap representation of sessionType
+     * @param allCourses, sessionType
+     * @return Session
+     */
+    public Session aSessionBuilder(HashMap<String, CalendarCourse> allCourses, String sessionType) {
+        Session aSession = new Session(sessionType);
+
+        for (String courseName : allCourses.keySet()) {
+            if (allCourses.get(courseName).getCourseSession().equals(sessionType)) {
+                aSession.addCourse(allCourses.get(courseName));
+            }
+        }
+        return aSession;
+    }
+
+    /**
      * Returns HashMap<String, Session> containing Sessions from Fall and Winter
      */
-    public HashMap<String, Session> allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
+    public SessionStorerInteractor allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
         SessionStorerInteractor sessionStorer = new SessionStorerInteractor();
         Session Fall = new Session("F");
         sessionStorer.addSession("F", Fall);
@@ -26,7 +42,7 @@ public class SessionBuilderInteractor {
                 Winter.addCourse(calCourse);
             }
         }
-        return sessionStorer.getAllSessions();
+        return sessionStorer;
     }
 
 }
