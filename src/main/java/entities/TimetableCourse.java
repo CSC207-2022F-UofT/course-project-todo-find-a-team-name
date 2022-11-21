@@ -23,7 +23,7 @@ public class TimetableCourse extends Course{
      * @param courseCode The course's code.
      * @param breadth The course's breadth category (can be an empty string).
      * @throws InvalidSectionsException This exception is thrown when sections
-     * contains more than one section of any single type (eg: LEC0101 and LEC0102).
+     * contain more than one section of any single type (eg: LEC0101 and LEC0102).
      */
     public TimetableCourse(String title, List<Section> sections, String courseSession, String courseCode, String breadth)
             throws InvalidSectionsException{
@@ -55,6 +55,10 @@ public class TimetableCourse extends Course{
         }
     }
 
+    /**
+     * @param section the Section to be set as a Practical. This code does not check whether the code itself is a
+     *                practical or not, and requires any other code to check prior to calling it.
+     */
     public void setPractical(Section section) {
         if (practical != null){
             this.sections.remove(practical);
@@ -63,6 +67,10 @@ public class TimetableCourse extends Course{
         this.sections.add(section);
     }
 
+    /**
+     * @param section the Section to be set as a Lecture. This code does not check whether the code itself is a
+     *                lecture or not, and requires any other code to check prior to calling it.
+     */
     public void setLecture(Section section) {
         if (lecture != null){
             this.sections.remove(lecture);
@@ -71,6 +79,10 @@ public class TimetableCourse extends Course{
         this.sections.add(section);
     }
 
+    /**
+     * @param section the Section to be set as a Tutorial. This code does not check whether the code itself is a
+     *                tutorial or not, and requires any other code to check prior to calling it.
+     */
     public void setTutorial(Section section) {
         if (tutorial != null){
             this.sections.remove(tutorial);
@@ -79,6 +91,10 @@ public class TimetableCourse extends Course{
         this.sections.add(section);
     }
 
+    /**
+     * @param section the Section to be added to the course. Any section type that this section belongs to will be
+     *                overridden by this newly added section.
+     */
     public void setSection(Section section) {
         if (section.isLecture()){
             setLecture(section);
@@ -94,14 +110,23 @@ public class TimetableCourse extends Course{
         }
     }
 
+    /**
+     * @return the course's lecture section.
+     */
     public Section getLecture(){
         return this.lecture;
     }
 
+    /**
+     * @return the course's tutorial section.
+     */
     public Section getTutorial(){
         return this.tutorial;
     }
 
+    /**
+     * @return the course's practical section.
+     */
     public Section getPractical(){
         return this.practical;
     }

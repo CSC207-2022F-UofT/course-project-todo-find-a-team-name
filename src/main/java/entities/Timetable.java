@@ -41,6 +41,23 @@ public class Timetable {
         return sessionType;
     }
 
+    public boolean existsByCode(String code){
+        for (TimetableCourse course: this.courseList){
+            if (course.getCourseCode().equals(code)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeCourse(String code){
+        for (TimetableCourse course: this.courseList){
+            if (course.getCourseCode().equals(code)){
+                courseList.remove(course);
+                return;
+            }
+        }
+    }
     public ArrayList<TimetableCourse> getCourseList() {
         return courseList;
     }
