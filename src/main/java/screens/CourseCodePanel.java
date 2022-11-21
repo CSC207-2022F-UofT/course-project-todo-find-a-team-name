@@ -3,7 +3,7 @@ package screens;
 import javax.swing.*;
 
 /**
- * ConstraintsInputScreen UI component: a panel used for course codes input.
+ * ConstraintsInputScreen screen component: a panel used for course codes input.
  */
 public class CourseCodePanel extends JPanel{
 
