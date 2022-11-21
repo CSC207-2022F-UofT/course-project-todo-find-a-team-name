@@ -12,9 +12,19 @@ public class Timetable {
         this.CourseList.addAll(timetableCourses);
     }
     // Adds course
-    public void AddToCourseList(Course course){
-        CourseList.add(course);
-    }     
+    public void AddToCourseList(TimetableCourse course){
+        this.CourseList.add(course);
+    }
+    // returns true if there is a conflict
+    public boolean isConflicted(Section section){
+        for (TimetableCourse course : this.CourseList){
+            for (Section timetableSection : course.getSections()){
+                if (timetableSection.isConflicted(section))
+                    return true;
+            }
+        }
+        return false;
+    } 
     // Gets course
     public TimetableCourse getCourse(String code){
         for(TimetableCourse course: this.CourseList){
