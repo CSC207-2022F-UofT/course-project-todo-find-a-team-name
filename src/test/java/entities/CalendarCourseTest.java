@@ -52,4 +52,70 @@ class CalendarCourseTest {
                 "F", "EGX101", "BR1");
         assertFalse(c1.equals(c2));
     }
+
+    @Test
+    void hasLectureTrue(){
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertTrue(c1.hasLecture());
+    }
+
+    @Test
+    void hasLectureFalse(){
+        Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertFalse(c1.hasLecture());
+    }
+
+    @Test
+    void hasTutorialTrue(){
+        Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertTrue(c1.hasTutorial());
+    }
+
+    @Test
+    void hasTutorialFalse(){
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertFalse(c1.hasTutorial());
+    }
+
+    @Test
+    void hasPracticalTrue(){
+        Section s1 = new Section("PRA0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertTrue(c1.hasPractical());
+    }
+
+    @Test
+    void hasPracticalFalse(){
+        Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
+
+        CalendarCourse c1 = new CalendarCourse("Test Course",
+                new ArrayList<Section>(List.of(s1)),
+                "F", "EGX101", "BR1");
+
+        assertFalse(c1.hasPractical());
+    }
 }
