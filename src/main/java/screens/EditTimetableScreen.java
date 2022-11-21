@@ -22,19 +22,17 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private JFrame frame;
     private final EditTimetableController controller;
     private TimetableViewModel timetable;
-    /*private SessionViewModel session;*/
-
+    private SessionViewModel session;
     private TimetableView ttView;
+
+    private JPanel courseButtons;
 
 
     /**
      * @param controller
      */
-    public EditTimetableScreen(JFrame frame, EditTimetableController controller, TimetableViewModel timetable/*,
-                               SessionViewModel session*/) {
+    public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
         this.controller = controller;
-        this.timetable = timetable;
-        /*this.session = session;*/
 
         JButton recommendBR = new JButton("Recommend BR Courses");
         recommendBR.addActionListener(this);
@@ -52,22 +50,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
-
-        JPanel courseButtons = new JPanel();
-        for (TimetableViewCourseModel course : timetable.getCourseData()) {
-            /*JButton editButton = new JButton("Edit " + course.getCode());
-            editButton.addActionListener(this);
-            courseButtons.add(editButton);*/
-
-            JButton removeButton = new JButton("Remove " + course.getCode());
-            removeButton.addActionListener(this);
-            courseButtons.add(removeButton);
-        }
-        this.add(courseButtons);
-        courseButtons.setVisible(true);
-
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
 
         this.setVisible(true);
     }
@@ -152,7 +134,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
             AddCourseInputBoundary addInteractor = new AddCourseInteractor(timetable, new Session("S"), addPresenter);
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor);
-            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, timetableViewModel);
+            EditTimetableScreen screen = new EditTimetableScreen(frame, controller);
+            screen.updateTimetable(timetableViewModel);
             removePresenter.setView(screen);
             frame.add(screen);
         } catch (InvalidSectionsException e) {
@@ -211,10 +194,32 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        ttView.setVisible(false);
+        if (ttView != null){
+            ttView.setVisible(false);
+        }
+        if (courseButtons != null){
+            courseButtons.setVisible(false);
+        }
+
+        this.timetable = timetable;
+
         ttView = new TimetableView(1280, 720, timetable);
         this.add(ttView);
+
+        courseButtons = new JPanel();
+        for (TimetableViewCourseModel course : timetable.getCourseData()) {
+            /*JButton editButton = new JButton("Edit " + course.getCode());
+            editButton.addActionListener(this);
+            courseButtons.add(editButton);*/
+
+            JButton removeButton = new JButton("Remove " + course.getCode());
+            removeButton.addActionListener(this);
+            courseButtons.add(removeButton);
+        }
+        this.add(courseButtons);
+
         ttView.setVisible(true);
+        courseButtons.setVisible(true);
     }
 
     /**
@@ -223,5 +228,13 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     @Override
     public void displayResponse(String successMessage) {
         JOptionPane.showMessageDialog(frame, successMessage);
+    }
+
+    public void setTimetable(TimetableViewModel timetable){
+        this.timetable = timetable;
+    }
+
+    public void setSession(SessionViewModel session){
+        this.session = session;
     }
 }
