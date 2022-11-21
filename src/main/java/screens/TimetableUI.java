@@ -2,8 +2,6 @@ package screens;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +73,8 @@ public class TimetableUI extends JPanel {
         return timetableView;
     }
 
+    // This method is only used for testing during the development, it will be deleted soon
+    // TODO: Delete this method
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
