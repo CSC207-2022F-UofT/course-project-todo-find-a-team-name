@@ -83,12 +83,21 @@ public class SessionGateway implements SessionGatewayInterface {
                 return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             } else if (aBlock.get("endTime") == null) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"), " ", (String) aBlock.get("room")).newBlock();
+                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"), " ",
+                        (String) aBlock.get("room")).newBlock();
             } else {
                 return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             }
         }
         return null;
+    }
+    /**
+     * Returns a HashMap of all sessions (Fall and Winter) based on given HashMap of String to CalendarCourse
+     * @param allCourses HashMap<String, CalendarCourse>
+     * @return HashMap<String, Session>
+     */
+    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
+        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
     }
 }

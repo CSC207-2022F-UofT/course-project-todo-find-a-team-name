@@ -25,4 +25,13 @@ public class SessionStorerInteractor {
     public Session getSession(String sessionType) {
         return allSessions.getOrDefault(sessionType, null);
     }
+
+    /** Returns all Session
+     * @return allSession
+     **/
+    public HashMap<String, Session> getAllSessions() {
+        return this.allSessions;
+    }
+
+
 }
