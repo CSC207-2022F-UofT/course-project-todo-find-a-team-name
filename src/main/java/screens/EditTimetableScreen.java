@@ -174,6 +174,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         if (cmd.startsWith("Remove ")) {
             remove(cmd.substring("Remove ".length(), cmd.length()));
         }
+        else if (e.getActionCommand().equals("Add Course")){
+            openAddCourseMenu();
+        }
+
         /*
         else if (cmd.startsWith("Edit ")){
 
@@ -183,10 +187,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
         else if (cmd.equals("Recommend BR Courses")){
 
-        }
-        else if (e.getActionCommand().equals("Add Course")){
-            openAddCourseMenu();
         }*/
+
     }
 
     /**
