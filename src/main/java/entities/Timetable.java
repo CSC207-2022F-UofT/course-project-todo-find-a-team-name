@@ -6,10 +6,16 @@ import java.util.*;
  */
 public class Timetable {
     private ArrayList<TimetableCourse> CourseList;
+    
     public Timetable(ArrayList<TimetableCourse> timetableCourses){
         this.CourseList = new ArrayList<TimetableCourse>();
         this.CourseList.addAll(timetableCourses);
-        }
+    }
+    // Adds course
+    public void AddToCourseList(Course course){
+        CourseList.add(course);
+    }     
+    // Gets course
     public TimetableCourse getCourse(String code){
         for(TimetableCourse course: this.CourseList){
             if(course.courseCode.equals(code)){
@@ -19,7 +25,6 @@ public class Timetable {
         return null;
     }
 
-
-    }
+}
 
 
