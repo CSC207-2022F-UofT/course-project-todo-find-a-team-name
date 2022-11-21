@@ -28,4 +28,7 @@ public class SorterController {
         SorterRequestModel sorterRequestModel = new SorterRequestModel(timeButton, breakButton);
         interactor.preferenceSort(sorterRequestModel);
     }
+    public void errorMessage() {
+
+    }
 }
