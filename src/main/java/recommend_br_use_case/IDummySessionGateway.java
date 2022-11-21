@@ -9,5 +9,5 @@ import entities.Session;
 // actual gateway without changing crucial part of the code
 // TODO: Replace this with actual gateway interface
 public interface IDummySessionGateway {
-    Session[] get(String sessionType);
+    Session get(String sessionType);
 }
