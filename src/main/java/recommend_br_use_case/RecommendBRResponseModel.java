@@ -1,6 +1,6 @@
 package recommend_br_use_case;
 
-import retrieve_timetable_use_case.CourseResponseModel;
+import retrieve_timetable_use_case.CourseModel;
 
 import java.util.List;
 
@@ -8,14 +8,14 @@ import java.util.List;
  * Class representing data outputted by recommend BR use case
  */
 public class RecommendBRResponseModel {
-    private final List<CourseResponseModel> courses;
+    private final List<CourseModel> courses;
 
     /**
      * Constructs RecommendBRResponseModel with the given courses
      *
      * @param courses List of courses represented by BRCourseResponseModel
      */
-    public RecommendBRResponseModel(List<CourseResponseModel> courses){
+    public RecommendBRResponseModel(List<CourseModel> courses){
         this.courses = courses;
     }
 
@@ -24,7 +24,7 @@ public class RecommendBRResponseModel {
      * BRCourseResponseModel
      * @return list of course response model this response model contains
      */
-    public List<CourseResponseModel> getCourses() {
+    public List<CourseModel> getCourses() {
         return courses;
     }
 }

@@ -43,7 +43,7 @@ public class RecommendBRTestMain {
         RecommendBRPresenter presenter = new RecommendBRPresenter(null);
         RecommendBRInteractor interactor = new RecommendBRInteractor(presenter);
         RecommendBRController controller = new RecommendBRController(interactor);
-        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller);
+        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, );
         presenter.setView(recommendBRWindow);
 
         JButton button = new JButton("Recommend BR");

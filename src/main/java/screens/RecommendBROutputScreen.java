@@ -1,9 +1,13 @@
 package screens;
 
+import edit_timetable_use_case.EditTimetableController;
+import entities.InvalidSectionsException;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * JPanel used to display output of recommend BR use case
@@ -14,6 +18,7 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
     private final CourseInfoPanel courseInfoPanel;
 
     private final RecommendBRViewModel viewModel;
+    private EditTimetableController editTimetableController;
 
     /**
      * Constructs RecommendBROutputScreen from the given RecommendBRViewModel
@@ -21,9 +26,10 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
      *
      * @param viewModel object containing all the information shown to the user in this screen
      */
-    public RecommendBROutputScreen(RecommendBRViewModel viewModel){
+    public RecommendBROutputScreen(RecommendBRViewModel viewModel, EditTimetableController editTimetableController){
         super();
         this.viewModel = viewModel;
+        this.editTimetableController = editTimetableController;
         setLayout(new BorderLayout());
 
         String[] items = new String[viewModel.getCourseViewModels().size()];
@@ -50,7 +56,21 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
         rightPanel.add(scrollPane2, BorderLayout.CENTER);
         JButton addCourseButton = new JButton("Add Course");
         addCourseButton.addActionListener(e -> {
-            // Create request model from viewModel and send it to another use case
+            RecommendBRCourseViewModel course = viewModel.getCourseViewModels().get(recommendedCourses.getSelectedIndex());
+            ArrayList<String> sectionCodes = new ArrayList<>();
+            if (course.getLectureCode() != null)
+                sectionCodes.add(course.getLectureCode());
+            else if (course.getTutorialCode() != null)
+                sectionCodes.add(course.getTutorialCode());
+            else if (course.getPracticalCode() != null)
+                sectionCodes.add(course.getPracticalCode());
+
+            try {
+                editTimetableController.add(course.getCode(), sectionCodes);
+            } catch (InvalidSectionsException ex) {
+                throw new RuntimeException(ex);
+            }
+
             SwingUtilities.getWindowAncestor(this).dispose();
         });
         rightPanel.add(addCourseButton, BorderLayout.PAGE_END);

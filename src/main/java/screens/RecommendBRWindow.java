@@ -1,5 +1,7 @@
 package screens;
 
+import edit_timetable_use_case.EditTimetableController;
+
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
@@ -14,13 +16,15 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
      * It displays the RecommendBRInputScreen.
      */
     RecommendBRInputScreen inputScreen;
-    RecommendBRController controller;
+    RecommendBRController brController;
+    EditTimetableController editTimetableController;
 
-    public RecommendBRWindow(JFrame frame, RecommendBRController controller){
+    public RecommendBRWindow(JFrame frame, RecommendBRController brController, EditTimetableController editTimetableController){
         super(frame, "Recommend BR", true);
         this.setSize(600, 400);
         this.setResizable(false);
-        this.controller = controller;
+        this.brController = brController;
+        this.editTimetableController = editTimetableController;
     }
 
     /**
@@ -30,7 +34,7 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
      * @param timetableId id of the timetable
      */
     public void showInputViw(String timetableId){
-        inputScreen = new RecommendBRInputScreen(controller, timetableId);
+        inputScreen = new RecommendBRInputScreen(brController, timetableId);
         add(inputScreen);
         setVisible(true);
     }
@@ -43,7 +47,7 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
     @Override
     public void showSuccessView(RecommendBRViewModel viewModel) {
         this.remove(inputScreen);
-        add(new RecommendBROutputScreen(viewModel));
+        add(new RecommendBROutputScreen(viewModel, editTimetableController));
         revalidate();
     }
 

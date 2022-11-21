@@ -1,7 +1,7 @@
 package recommend_br_use_case;
 
 import entities.*;
-import retrieve_timetable_use_case.CourseResponseModel;
+import retrieve_timetable_use_case.CourseModel;
 import retrieve_timetable_use_case.EntityConverter;
 
 
@@ -79,7 +79,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
             return;
         }
 
-        List<CourseResponseModel> courseModels = new ArrayList<>();
+        List<CourseModel> courseModels = new ArrayList<>();
 
         for (TimetableCourse course : recommendedCourses){
             courseModels.add(EntityConverter.generateCourseResponse(course));

@@ -1,9 +1,9 @@
 package screens;
 
 import recommend_br_use_case.*;
-import retrieve_timetable_use_case.BlockResponseModel;
-import retrieve_timetable_use_case.CourseResponseModel;
-import retrieve_timetable_use_case.SectionResponseModel;
+import retrieve_timetable_use_case.BlockModel;
+import retrieve_timetable_use_case.CourseModel;
+import retrieve_timetable_use_case.SectionModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +33,15 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
     @Override
     public void prepareSuccessView(RecommendBRResponseModel responseModel) {
         List<RecommendBRCourseViewModel> courseViewModels = new ArrayList<>();
-        for (CourseResponseModel courseModel : responseModel.getCourses()){
+        for (CourseModel courseModel : responseModel.getCourses()){
 
             String brCategory = formatBrCategory(courseModel.getBreadth());
 
-            SectionResponseModel lectureModel = null;
-            SectionResponseModel tutorialModel = null;
-            SectionResponseModel practicalModel = null;
+            SectionModel lectureModel = null;
+            SectionModel tutorialModel = null;
+            SectionModel practicalModel = null;
 
-            for (SectionResponseModel sectionModel : courseModel.getSections()){
+            for (SectionModel sectionModel : courseModel.getSections()){
                 if (sectionModel.getCode().startsWith("LEC")){
                     lectureModel = sectionModel;
                 } else if (sectionModel.getCode().startsWith("TUT")){
@@ -116,12 +116,12 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      * @param sectionResponseModel response model representing section
      * @return list of block information from the given BRSectionResponseModel
      */
-    private static List<String> createBlockInfos(SectionResponseModel sectionResponseModel){
+    private static List<String> createBlockInfos(SectionModel sectionResponseModel){
         if (sectionResponseModel == null)
             return new ArrayList<>();
 
         List<String> blockInfos = new ArrayList<>();
-        for (BlockResponseModel blockResponseModel : sectionResponseModel.getBlocks()){
+        for (BlockModel blockResponseModel : sectionResponseModel.getBlocks()){
 
             String day = intToStringDay(blockResponseModel.getDay());
             String startTime = doubleToStringTime(blockResponseModel.getStartTime());
