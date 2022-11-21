@@ -1,16 +1,12 @@
 package screens;
 
-import edit_timetable_use_case.RemoveCourseOutputBoundary;
+import edit_timetable_use_case.AddCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
 import edit_timetable_use_case.RemoveCourseFailedException;
 import retrieve_timetable_use_case.TimetableResponseConverter;
 import retrieve_timetable_use_case.TimetableResponseModel;
 
-/**
- *
- */
-public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
-
+public class AddCoursePresenter implements AddCourseOutputBoundary {
     private EditTimetableView view;
 
     /**
@@ -18,16 +14,16 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
      * @return
      */
 
-    public RemoveCoursePresenter(){}
-    public RemoveCoursePresenter(EditTimetableView view){
+    public AddCoursePresenter(){}
+    public AddCoursePresenter(EditTimetableView view){
         this.view = view;
     }
     @Override
-    public void prepareView(EditTimetableResponseModel responseModel) {
+    public void prepareView(EditTimetableResponseModel responseModel)  {
         TimetableResponseModel updatedTimetable = responseModel.getUpdatedTimetable();
         TimetableViewModel ttViewModel = TimetableResponseConverter.timetableToView(updatedTimetable);
         view.updateTimetable(ttViewModel);
-        view.displayResponse(responseModel.getCourseCode() + " was succesfully removed.");
+        view.displayResponse(responseModel.getCourseCode() + " was successfully added.");
     }
 
     public void setView(EditTimetableView view){

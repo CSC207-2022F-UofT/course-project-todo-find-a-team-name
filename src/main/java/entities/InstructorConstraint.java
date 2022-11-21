@@ -3,7 +3,6 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 /** An entity representing an InstructorConstraint.
- *
  * Instance Attributes:
  * - instructor: A list of all instructorNames in the Constraint domain.
  * - super(isBlackList): a boolean showing b/w lists.
@@ -24,15 +23,32 @@ public class InstructorConstraint extends Constraint{
      * @param course a Course Object with section instance variable.
      */
     @Override
-    public void filter(CalendarCourse course) {
+    public boolean filter(CalendarCourse course) {
         List<Section> copy = new ArrayList<>(course.getSections());
-        for (Section section : copy) {
-            if (this.evalRemoveSectionCondition(instructorNames.contains(section.getInstructorName()))) {
-                course.removeSection(section);
+        boolean hasTutorial = course.hasTutorial();
+        boolean hasLecture = course.hasLecture();
+        boolean hasPractical = course.hasPractical();
+        if (this.isBlackList()) {
+            for (Section section : copy) {
+                if (instructorNames.contains(section.getInstructorName())) {
+                    course.removeSection(section);
+                }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
+            }
+        }
+        } else {
+            for (Section section : copy) {
+                if (! instructorNames.contains(section.getInstructorName())) {
+                    course.removeSection(section);
+                }
+                if (hasTutorial != course.hasTutorial() || hasLecture != course.hasLecture() || hasPractical != course.hasPractical()) {
+                    return false;
             }
         }
     }
-
+       return true;
+    }
     /**
      * getter method
      * @return a list of String instructor's names
@@ -43,7 +59,7 @@ public class InstructorConstraint extends Constraint{
 
     @Override
     public String toString(){
-        return super.toString() + "instructor: " + instructorNames;
+        return "Instructor "+ super.toString() + ": "+ instructorNames;
     }
 
 }

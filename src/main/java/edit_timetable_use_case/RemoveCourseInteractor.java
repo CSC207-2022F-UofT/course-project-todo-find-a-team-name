@@ -1,15 +1,22 @@
 package edit_timetable_use_case;
 
-/** The interactor used to remove, add or edit a course in a timetable.
+import entities.Session;
+import entities.Timetable;
+import retrieve_timetable_use_case.RetrieveTimetableController;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.TimetableResponseModel;
+import screens.TimetableViewModel;
+
+import java.util.ArrayList;
+
+/** The interactor used to remove a course from a timetable.
  * Instance Attributes:
  * timetable - the timetable being edited by the interactor.
- * session - the currently loaded session that determines which courses are available.
- * presenter - the presenter used by the user.
+ * presenter - the presenter attached to the use case.
  */
 public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
 
     private Timetable timetable;
-    private Session session;
     private RemoveCourseOutputBoundary presenter;
 
 
@@ -22,21 +29,25 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
      * @param requestModel an EditTimetableRequestModel that stores the code of the
      *                     course to be removed.
      * @return returns a EditTimetableResponseModel contains a message and the success
-     * of the action.
+     * of the action. See EditTimetableResponseModel for further details.
      * @throws RemoveCourseFailedException if the interactor was unable to remove the
-     *                                     course from the timetable (likely because it couldn't find a course in timetable
-     *                                     with the corresponding course code).
+     *                                     course from the timetable (likely because it couldn't find a course in
+     *                                     timetable with the corresponding course code).
      */
     @Override
-    public EditTimetableResponseModel remove(EditTimetableRequestModel requestModel)
+    public void remove(EditTimetableRequestModel requestModel)
             throws RemoveCourseFailedException {
         String courseCode = requestModel.getCourseCode();
         if (timetable.existsByCode(courseCode)) {
             timetable.removeCourse(courseCode);
         }
+
+        RetrieveTimetableInteractor
+                RTInteractor = new RetrieveTimetableInteractor(timetable, new Session(""));
+
+        TimetableResponseModel updatedTimetable = RTInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableResponseModel(courseCode,
-                        timetable.existsByCode(courseCode));
-        return presenter.prepareView(editTimetableResponseModel);
+                new EditTimetableResponseModel(courseCode, new ArrayList<>(), updatedTimetable);
+        presenter.prepareView(editTimetableResponseModel);
     }
 }

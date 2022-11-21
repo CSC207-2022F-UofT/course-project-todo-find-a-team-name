@@ -1,4 +1,4 @@
-package edit_timetable_use_case;
+package retrieve_timetable_use_case;
 
 public class RetrieveTimetableController {
 
@@ -6,7 +6,6 @@ public class RetrieveTimetableController {
 
     public RetrieveTimetableController(RetrieveTimetableInputBoundary interactor){
         this.interactor = interactor;
-
     }
 
     public CourseResponseModel retrieveCalendarCourse(String courseCode){
@@ -19,5 +18,9 @@ public class RetrieveTimetableController {
         RetrieveTimetableRequestModel requestModel =
                 new RetrieveTimetableRequestModel("", courseCode, "");
         return interactor.retrieveTimetableCourse(requestModel);
+    }
+
+    public TimetableResponseModel retrieveTimetable(){
+        return interactor.retrieveTimetable();
     }
 }

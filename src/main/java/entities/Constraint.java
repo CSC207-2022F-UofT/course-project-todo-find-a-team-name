@@ -15,7 +15,7 @@ public abstract class Constraint {
     }
 
     /**
-     * Create a Entity.Constraint Entity with the given constraint and blacklist/whitelist
+     * Create an Entity.Constraint Entity with the given constraint and blacklist/whitelist
      *
      * @param isBlackList a boolean indicating whether the constraint is blacklist or whitelist.
      */
@@ -37,20 +37,11 @@ public abstract class Constraint {
      * type of constraint.
      *
      * @param course the course to be modified with filtered sections.
+     * @return a boolean value. First check if the course sections contain a lecture, practical, or tutorial, and
+     *  return true if the modified course sections still contain at least one of each original course section type.
      */
-    public abstract void filter(CalendarCourse course);
+    public abstract boolean filter(CalendarCourse course);
 
-    /**
-     * A helper method used to evaluate the RemoveSectionCondition based on Blacklist or Whitelist.
-     * Since BlackList Constraints Domain is the complement of Whitelist Constraint Domain.
-     */
-    protected boolean evalRemoveSectionCondition(boolean condition) {
-        if (this.isBlackList()) {
-            return condition;
-        } else {
-            return !condition;
-        }
-    }
 
     /**
      * @return a String representation of the Constraint with listType.

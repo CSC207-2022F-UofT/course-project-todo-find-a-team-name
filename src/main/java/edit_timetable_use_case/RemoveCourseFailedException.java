@@ -1,13 +1,13 @@
 package edit_timetable_use_case;
 
 /**
- *
+ * An exception that is raised when the user attempts to remove a course from a timetable, but fails.
  */
 public class RemoveCourseFailedException extends Exception {
     /**
-     * @param courseName
+     * @param courseCode: the course code of the course that the user attempted to remove.
      */
-    public RemoveCourseFailedException(String courseName){
-        super(courseName + " could not be removed.");
+    public RemoveCourseFailedException(String courseCode){
+        super(courseCode + " could not be removed.");
     }
 }

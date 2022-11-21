@@ -1,6 +1,6 @@
-package screens;
+/*package screens;
 
-import edit_timetable_use_case.RetrieveTimetableController;
+import retrieve_timetable_use_case.RetrieveTimetableController;
 import entities.Section;
 
 import javax.swing.*;
@@ -28,4 +28,4 @@ public class EditCourseScreen extends JPanel {
         this.setVisible(true);
 
     }
-}
+}*/
