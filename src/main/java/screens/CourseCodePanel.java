@@ -16,5 +16,4 @@ public class CourseCodePanel extends JPanel{
         this.textField = textField;
         this.add(textField);
     }
-
 }
