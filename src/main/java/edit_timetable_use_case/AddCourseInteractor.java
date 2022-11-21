@@ -13,7 +13,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
     private Session session;
     private AddCourseOutputBoundary presenter;
 
-    AddCourseInteractor(Timetable timetable, Session session, AddCourseOutputBoundary presenter){
+    public AddCourseInteractor(Timetable timetable, Session session, AddCourseOutputBoundary presenter){
         this.timetable = timetable;
         this.session = session;
         this.presenter = presenter;
@@ -27,7 +27,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         boolean success;
         CalendarCourse calCourse = session.getCalendarCourse(request.getCourseCode());
         List<Section> sections = new ArrayList<Section>();
-        
+
         for (Section section : calCourse.getSections()){
             if (request.getSectionCodes().contains(section.getCode())){
                 sections.add(section);

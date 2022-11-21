@@ -1,9 +1,6 @@
 package screens;
 
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.EditTimetableController;
-import edit_timetable_use_case.RemoveCourseFailedException;
-import edit_timetable_use_case.RemoveCourseInteractor;
+import edit_timetable_use_case.*;
 import entities.*;
 
 import javax.swing.*;
@@ -150,11 +147,13 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             courses.add(c2);
             Timetable timetable = new Timetable(courses);
 
-            RemoveCoursePresenter presenter = new RemoveCoursePresenter();
-            RemoveCourseInteractor interactor = new RemoveCourseInteractor(timetable, presenter);
-            EditTimetableController controller = new EditTimetableController(interactor);
+            RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
+            RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(timetable, removePresenter);
+            AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
+            AddCourseInputBoundary addInteractor = new AddCourseInteractor(timetable, new Session("S"), addPresenter);
+            EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor);
             EditTimetableScreen screen = new EditTimetableScreen(frame, controller, timetableViewModel);
-            presenter.setView(screen);
+            removePresenter.setView(screen);
             frame.add(screen);
         } catch (InvalidSectionsException e) {
             System.out.println("InvalidSectionsException thrown.");

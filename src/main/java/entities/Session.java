@@ -142,7 +142,4 @@ public class Session {
         return "Session: " + this.sessionType + " { " + allSessionCourses + " }";
     }
 
-    public HashMap<String, CalendarCourse> getAllSessionCourses() {
-        return allSessionCourses;
-    }
 }
