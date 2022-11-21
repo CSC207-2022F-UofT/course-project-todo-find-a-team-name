@@ -38,10 +38,10 @@ public class RecommendBRTestMain {
             return session;
         };
 
-        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>());
+        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
 
         RecommendBRPresenter presenter = new RecommendBRPresenter(null);
-        RecommendBRInteractor interactor = new RecommendBRInteractor(sessionGateway, timetableGateway, presenter);
+        RecommendBRInteractor interactor = new RecommendBRInteractor(presenter);
         RecommendBRController controller = new RecommendBRController(interactor);
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller);
         presenter.setView(recommendBRWindow);

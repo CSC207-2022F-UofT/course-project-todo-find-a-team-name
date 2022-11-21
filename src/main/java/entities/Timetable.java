@@ -40,6 +40,10 @@ public class Timetable {
     public String getSessionType() {
         return sessionType;
     }
+
+    public ArrayList<TimetableCourse> getCourseList() {
+        return courseList;
+    }
 }
 
 

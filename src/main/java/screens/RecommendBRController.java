@@ -25,13 +25,12 @@ public class RecommendBRController {
     /**
      * Recommends breadth courses to the user and displays the result
      *
-     * @param timetableId id of the timetable
      * @param brCategoriesSelected breadth categories selected by user
      * @param preferredTime preferred time selected by user
      */
-    public void recommendBr(String timetableId, HashSet<String> brCategoriesSelected, String preferredTime){
+    public void recommendBr(HashSet<String> brCategoriesSelected, String preferredTime){
 
-        RecommendBRRequestModel recommendBRRequestModel = new RecommendBRRequestModel(timetableId, brCategoriesSelected, preferredTime);
+        RecommendBRRequestModel recommendBRRequestModel = new RecommendBRRequestModel(brCategoriesSelected, preferredTime);
 
         interactor.recommendBr(recommendBRRequestModel);
     }

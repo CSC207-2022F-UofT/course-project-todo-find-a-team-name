@@ -16,21 +16,18 @@ import java.util.List;
  */
 public class RecommendBRInteractor implements RecommendBRInputBoundary{
 
-    private final IDummySessionGateway sessionGateway;
-    private final IDummyTimetableGateway timetableGateway;
+    private Session fSession = null;
+    private Session sSession = null;
+    private Timetable timetable = null;
     private final RecommendBROutputBoundary presenter;
 
     /**
      * Constructs RecommendBRInteractor based on the given SessionGateway, TimetableGateway, and
      * RecommendBROutputBoundary (presenter)
      *
-     * @param sessionGateway gateway for the session
-     * @param timetableGateway gateway for the timetable
      * @param presenter presenter used to prepare appropriate view
      */
-    public RecommendBRInteractor(IDummySessionGateway sessionGateway, IDummyTimetableGateway timetableGateway, RecommendBROutputBoundary presenter){
-        this.sessionGateway = sessionGateway;
-        this.timetableGateway = timetableGateway;
+    public RecommendBRInteractor(RecommendBROutputBoundary presenter){
         this.presenter = presenter;
     }
 
@@ -44,12 +41,19 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
      */
     @Override
     public void recommendBr(RecommendBRRequestModel requestModel) {
-        Timetable timetable = timetableGateway.get(requestModel.getTimetableId());
+        Session session = null;
+        if (timetable.getSessionType().equals("F")){
+            session = fSession;
+        } else if (timetable.getSessionType().equals("S")){
+            session = sSession;
+        }
 
-        Session session = sessionGateway.get(timetable.getSessionType());
+        if (session == null)
+            presenter.prepareFailView("Session not loaded yet!");
+        else if (timetable == null)
+            presenter.prepareFailView("Timetable not loaded yet!");
 
         Comparator<Course> courseComparator;
-
         switch (requestModel.getPreferredTime()){
             case "early":
                 courseComparator = new TargetTimeCourseComparator(0);
@@ -64,6 +68,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
                 courseComparator = null;
         }
 
+        session = new Session(timetable.getSessionType());
         BRRecommender brRecommender = new BRRecommender(timetable, session,
                 requestModel.getBrCategoriesSelected(), courseComparator);
 
@@ -77,37 +82,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
         List<CourseResponseModel> courseModels = new ArrayList<>();
 
         for (TimetableCourse course : recommendedCourses){
-
             courseModels.add(EntityConverter.generateCourseResponse(course));
-
-//            BRSectionResponseModel lectureModel = null;
-//            if (course.getLecture() != null) {
-//                List<BRBlockResponseModel> lectureBlockModels = new ArrayList<>();
-//                for (Block lectureBlock : course.getLecture().getBlocks()) {
-//                    lectureBlockModels.add(new BRBlockResponseModel(lectureBlock.getDay(), lectureBlock.getStartTime(), lectureBlock.getEndTime()));
-//                }
-//                lectureModel = new BRSectionResponseModel(course.getLecture().getCode(), lectureBlockModels);
-//            }
-//
-//            BRSectionResponseModel tutorialModel = null;
-//            if (course.getTutorial() != null) {
-//                List<BRBlockResponseModel> tutorialBlockModels = new ArrayList<>();
-//                for (Block tutorialBlock : course.getTutorial().getBlocks()) {
-//                    tutorialBlockModels.add(new BRBlockResponseModel(tutorialBlock.getDay(), tutorialBlock.getStartTime(), tutorialBlock.getEndTime()));
-//                }
-//                tutorialModel = new BRSectionResponseModel(course.getTutorial().getCode(), tutorialBlockModels);
-//            }
-//
-//            BRSectionResponseModel practicalModel = null;
-//            if (course.getPractical() != null) {
-//                List<BRBlockResponseModel> practicalBlockModels = new ArrayList<>();
-//                for (Block practicalBlock : course.getPractical().getBlocks()) {
-//                    practicalBlockModels.add(new BRBlockResponseModel(practicalBlock.getDay(), practicalBlock.getStartTime(), practicalBlock.getEndTime()));
-//                }
-//                practicalModel = new BRSectionResponseModel(course.getPractical().getCode(), practicalBlockModels);
-//            }
-//
-//            courseModels.add(new BRCourseResponseModel(course.getCourseCode(), course.getTitle(), course.getBreadth(), lectureModel, tutorialModel, practicalModel));
         }
 
         presenter.prepareSuccessView(new RecommendBRResponseModel(courseModels));

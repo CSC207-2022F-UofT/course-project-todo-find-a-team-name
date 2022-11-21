@@ -123,6 +123,6 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
             }
         }
 
-        controller.recommendBr(timetableId, brCategoriesSelected, preferredTime);
+        controller.recommendBr(brCategoriesSelected, preferredTime);
     }
 }
