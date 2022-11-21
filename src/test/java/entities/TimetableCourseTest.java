@@ -11,12 +11,12 @@ class TimetableCourseTest {
 
     @Test
     void defaultConstructorSucceeds(){
-        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("TUT0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
 
         try{
-            TimetableCourse c = new TimetableCourse("Test Course",
-                    new ArrayList<Section>(List.of(s1, s2)),
+            new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s1, s2)),
                     "F", "EGX101", "BR1");
         }
         catch (InvalidSectionsException e){
@@ -26,17 +26,15 @@ class TimetableCourseTest {
 
     @Test
     void defaultConstructorFails(){
-        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("LEC0102", "inst2", new ArrayList<Block>());
-        boolean expectedExceptionThrown = false;
-
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("LEC0102", "inst2", new ArrayList<>());
         try{
-            TimetableCourse c = new TimetableCourse("Test Course",
-                    new ArrayList<Section>(List.of(s1, s2)),
+            new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s1, s2)),
                     "F", "EGX101", "BR1");
             fail("Constructor should have thrown InvalidSectionsException.");
         } catch (InvalidSectionsException e){
-            expectedExceptionThrown = true;
+            assertTrue(true);
         }
     }
 
@@ -45,7 +43,7 @@ class TimetableCourseTest {
         try{
             TimetableCourse c = new TimetableCourse("Test Course",
                     new ArrayList<>(), "", "", "");
-            Section s1 = new Section("PRA0101", "inst1", new ArrayList<Block>());
+            Section s1 = new Section("PRA0101", "inst1", new ArrayList<>());
             c.setPractical(s1);
             assertEquals(c.getPractical(), s1);
         }
@@ -56,8 +54,8 @@ class TimetableCourseTest {
 
     @Test
     void setPracticalOverride(){
-        Section s1 = new Section("PRA0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("PRA0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("PRA0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("PRA0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();
@@ -77,7 +75,7 @@ class TimetableCourseTest {
         try{
             TimetableCourse c = new TimetableCourse("Test Course",
                     new ArrayList<>(), "", "", "");
-            Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
+            Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
             c.setLecture(s1);
             assertEquals(c.getLecture(), s1);
         }
@@ -88,8 +86,8 @@ class TimetableCourseTest {
 
     @Test
     void setLectureOverride(){
-        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("LEC0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("LEC0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();
@@ -109,7 +107,7 @@ class TimetableCourseTest {
         try{
             TimetableCourse c = new TimetableCourse("Test Course",
                     new ArrayList<>(), "", "", "");
-            Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
+            Section s1 = new Section("TUT0101", "inst1", new ArrayList<>());
             c.setTutorial(s1);
             assertEquals(c.getTutorial(), s1);
         }
@@ -120,8 +118,8 @@ class TimetableCourseTest {
 
     @Test
     void setTutorialOverride(){
-        Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("TUT0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("TUT0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();
@@ -138,8 +136,8 @@ class TimetableCourseTest {
 
     @Test
     void SetSectionPractical(){
-        Section s1 = new Section("PRA0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("PRA0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("PRA0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("PRA0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();
@@ -157,8 +155,8 @@ class TimetableCourseTest {
 
     @Test
     void SetSectionLecture(){
-        Section s1 = new Section("LEC0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("LEC0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("LEC0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();
@@ -176,8 +174,8 @@ class TimetableCourseTest {
 
     @Test
     void SetSectionTutorial(){
-        Section s1 = new Section("TUT0101", "inst1", new ArrayList<Block>());
-        Section s2 = new Section("TUT0102", "inst2", new ArrayList<Block>());
+        Section s1 = new Section("TUT0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
 
         try{
             ArrayList<Section> sections = new ArrayList<>();

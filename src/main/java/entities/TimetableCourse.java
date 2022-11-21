@@ -23,7 +23,7 @@ public class TimetableCourse extends Course{
      * @param courseCode The course's code.
      * @param breadth The course's breadth category (can be an empty string).
      * @throws InvalidSectionsException This exception is thrown when sections
-     * contains more than one section of any single type (eg: LEC0101 and LEC0102).
+     * contain more than one section of any single type (eg: LEC0101 and LEC0102).
      */
     public TimetableCourse(String title, List<Section> sections, String courseSession, String courseCode, String breadth)
             throws InvalidSectionsException{
