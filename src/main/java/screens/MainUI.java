@@ -3,27 +3,37 @@ package screens;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MainUI extends JPanel{
+public class MainUI extends JPanel implements ActionListener {
+
+    private JLabel filePathSession;
+    private JLabel filePathTimetable;
 
     public MainUI(){
         super();
         setLayout(new BorderLayout());
 
-        JButton generateTimetable = new JButton("Generate timetable");
 
         JLabel title = new JLabel("Main menu");
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setFont(title.getFont().deriveFont(18F));
         add(title, BorderLayout.PAGE_START);
 
+
         JPanel centerPanel = new JPanel();
-//        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        JPanel centerPanel2 = new JPanel();
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
 
         JPanel timetablePanel = new JPanel();
         timetablePanel.setLayout(new BoxLayout(timetablePanel, BoxLayout.PAGE_AXIS));
+
 
         TitledBorder timetableBorder = BorderFactory.createTitledBorder("Existing Timetable Operations");
         timetableBorder.setTitleJustification(TitledBorder.CENTER);
@@ -31,41 +41,76 @@ public class MainUI extends JPanel{
 
         JPanel importTimetablePanel = new JPanel();
         JButton importTimetable = new JButton("Import timetable");
-        JLabel filePath1 = new JLabel("Choose the file...");
+        importTimetable.addActionListener(this);
+        filePathTimetable = new JLabel("Choose the file...");
         importTimetablePanel.add(importTimetable);
-        importTimetablePanel.add(filePath1);
+        importTimetablePanel.add(filePathTimetable);
 
         timetablePanel.add(importTimetablePanel);
 
         JPanel timetableButtons = new JPanel();
-        JButton editButton= new JButton("Edit");
+        JButton editButton = new JButton("Edit");
+        editButton.addActionListener(this);
         JButton displayButton = new JButton("Display");
+        displayButton.addActionListener(this);
+
         timetableButtons.add(editButton);
         timetableButtons.add(displayButton);
-
         timetablePanel.add(timetableButtons);
 
-        centerPanel.add(timetablePanel);
+        JButton generateTimetable = new JButton("Generate timetable");
+        generateTimetable.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
-        centerPanel.add(generateTimetable);
+
+        panel.add(Box.createVerticalStrut(50));
+
+        panel.add(timetablePanel);
+
+        panel.add(Box.createVerticalStrut(50));
+
+        panel.add(generateTimetable);
+
+        centerPanel.add(panel);
 
 
         JPanel importSessionPanel = new JPanel();
         JButton importSession = new JButton("Import session");
+        importSession.addActionListener(this);
 
-        JLabel filePath2 = new JLabel("Choose the file...");
+        filePathSession = new JLabel("Choose the file...");
         importSessionPanel.add(importSession);
-        importSessionPanel.add(filePath2);
+        importSessionPanel.add(filePathSession);
 
         add(centerPanel, BorderLayout.CENTER);
         add(importSessionPanel, BorderLayout.PAGE_END);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("Import timetable")){
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+            if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)){
+                filePathTimetable.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            }
+        } else if (command.equals("Import session")){
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+            if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)){
+                filePathSession.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            }
+        } else if (command.equals("Edit")){
+
+        } else if (command.equals("Display")){
+
+        }
+    }
+
+    // TODO: Remove this
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
         MainUI mainUI = new MainUI();
-        mainUI.setPreferredSize(new Dimension(500, 500));
+        mainUI.setPreferredSize(new Dimension(500, 400));
         frame.add(mainUI);
 
         frame.pack();
