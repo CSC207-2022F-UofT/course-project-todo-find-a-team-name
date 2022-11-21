@@ -1,5 +1,6 @@
 package screens;
 
+import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseFailedException;
 import edit_timetable_use_case.RemoveCourseInteractor;

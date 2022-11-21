@@ -38,10 +38,8 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
     public void remove(EditTimetableRequestModel requestModel)
             throws RemoveCourseFailedException {
         String courseCode = requestModel.getCourseCode();
-        boolean success = false;
         if (timetable.existsByCode(courseCode)) {
             timetable.removeCourse(courseCode);
-            success = true;
         }
 
         RetrieveTimetableInteractor
@@ -49,8 +47,7 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
 
         TimetableResponseModel updatedTimetable = RTInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableResponseModel(courseCode, new ArrayList<>(),
-                        success, updatedTimetable);
+                new EditTimetableResponseModel(courseCode, new ArrayList<>(), updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
     }
 }

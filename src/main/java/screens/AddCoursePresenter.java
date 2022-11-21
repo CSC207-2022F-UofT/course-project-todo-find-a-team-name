@@ -19,17 +19,11 @@ public class AddCoursePresenter implements AddCourseOutputBoundary {
         this.view = view;
     }
     @Override
-    public void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException {
+    public void prepareView(EditTimetableResponseModel responseModel)  {
         TimetableResponseModel updatedTimetable = responseModel.getUpdatedTimetable();
         TimetableViewModel ttViewModel = TimetableResponseConverter.timetableToView(updatedTimetable);
         view.updateTimetable(ttViewModel);
-        if (responseModel.isSuccess()){
-            String successMessage = responseModel.getCourseCode() + " has been successfully removed.";
-            view.displayResponse(successMessage);
-        }
-        else{
-            throw new RemoveCourseFailedException(responseModel.getCourseCode());
-        }
+        view.displayResponse(responseModel.getCourseCode() + " was successfully added.");
     }
 
     public void setView(EditTimetableView view){

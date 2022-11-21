@@ -17,7 +17,6 @@ import java.util.List;
 public class EditTimetableResponseModel {
     private String courseCode;
     private List<String> sectionCodes;
-    private boolean success;
 
     private TimetableResponseModel updatedTimetable;
 
@@ -25,13 +24,11 @@ public class EditTimetableResponseModel {
 
     /**
      * @param courseCode
-     * @param success
      */
-    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, boolean success, TimetableResponseModel
+    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, TimetableResponseModel
                                       updatedTimetable){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;
-        this.success = success;
         this.updatedTimetable = updatedTimetable;
     }
 
@@ -44,13 +41,6 @@ public class EditTimetableResponseModel {
 
     public List<String> getSectionCodes(){
         return sectionCodes;
-    }
-
-    /**
-     * @return
-     */
-    public boolean isSuccess() {
-        return success;
     }
 
     /**
