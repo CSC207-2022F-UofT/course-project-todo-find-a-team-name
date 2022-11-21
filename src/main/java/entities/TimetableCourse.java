@@ -29,6 +29,10 @@ public class TimetableCourse extends Course{
             throws InvalidSectionsException{
         super(title, sections, courseSession, courseCode, breadth);
 
+        boolean hasTutorial = false;
+        boolean hasPractical = false;
+        boolean hasLecture = false;
+
         for (Section section : sections){
             if (section.isLecture()){
                 if (lecture != null){
