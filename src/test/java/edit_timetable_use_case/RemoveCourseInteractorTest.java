@@ -1,13 +1,13 @@
 package edit_timetable_use_case;
 
-import entities.*;
+import entities.InvalidSectionsException;
+import entities.Section;
+import entities.Timetable;
+import entities.TimetableCourse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import screens.AddCoursePresenter;
-import screens.EditTimetableScreen;
 import screens.RemoveCoursePresenter;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +28,7 @@ class RemoveCourseInteractorTest {
             t = new Timetable(courses, "F");
             RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
             interactor = new RemoveCourseInteractor(presenter);
-            presenter.setView(new EditTimetableScreen(new JFrame(), new EditTimetableController(interactor,
-                    new AddCourseInteractor(
-                            new AddCoursePresenter()))));
+            presenter.setView(new TestEditTimetableView());
             interactor.setTimetable(t);
         }
         catch (InvalidSectionsException e) {
