@@ -25,7 +25,7 @@ class EditTimetableControllerTest {
             TimetableCourse c = new TimetableCourse("", new ArrayList<Section>(),
                 "", "EGX101", "");
             ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
-            Timetable t = new Timetable(courses);
+            Timetable t = new Timetable(courses, "F");
             Session s = new Session("F");
             RemoveCourseOutputBoundary p = new RemoveCoursePresenter();
             RCInteractor = new RemoveCourseInteractor(p);
