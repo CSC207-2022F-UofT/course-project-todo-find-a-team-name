@@ -64,8 +64,8 @@ class TimeIntervalConstraintTest {
 
         // testing to check original and modified course section type consistency.
         CalendarCourse courseWithNoSections = new CalendarCourse("Course1", emptySections, "", "", "");
-        timeIntervalConstraint.filter(course1);
-        assertTrue(courseWithNoSections.equals(course1));
+        assertFalse(timeIntervalConstraint.filter(course1));
+
 
     }
 
