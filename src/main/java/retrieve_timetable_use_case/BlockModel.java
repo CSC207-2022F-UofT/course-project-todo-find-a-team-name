@@ -1,13 +1,13 @@
 package retrieve_timetable_use_case;
 
-public class BlockResponseModel {
+public class BlockModel {
 
     private int day;
     private double startTime;
     private double endTime;
     private String room;
 
-    public BlockResponseModel(int day, double startTime, double endTime, String room){
+    public BlockModel(int day, double startTime, double endTime, String room){
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
