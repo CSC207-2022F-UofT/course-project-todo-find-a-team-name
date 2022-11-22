@@ -27,6 +27,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
     private JPanel courseButtons;
 
+    private RecommendBRWindow BRwindow;
+
     public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
         this.frame = frame;
         this.controller = controller;
@@ -127,7 +129,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             ArrayList<TimetableCourse> courses = new ArrayList<>();
             courses.add(c1);
             courses.add(c2);
-            Timetable timetable = new Timetable(courses);
+            Timetable timetable = new Timetable(courses, "F");
 
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
             RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
@@ -185,6 +187,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         if (cmd.startsWith("Remove ")) {
             remove(cmd.substring("Remove ".length()));
         }
+        else if (cmd.equals("Recommend BR Courses")){
+            BRwindow.showInputView();
+        }
         /*else if (e.getActionCommand().equals("Add Course")){
             openAddCourseMenu();
         }*/
@@ -196,7 +201,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (cmd.equals("Save")){
 
         }
-        else if (cmd.equals("Recommend BR Courses")){
+
 
         }*/
 
@@ -240,5 +245,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     @Override
     public void displayResponse(String successMessage) {
         JOptionPane.showMessageDialog(frame, successMessage);
+    }
+
+    public void setBRWindow(RecommendBRWindow window){
+        BRwindow = window;
     }
 }
