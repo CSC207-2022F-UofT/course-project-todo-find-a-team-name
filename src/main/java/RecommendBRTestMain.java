@@ -25,7 +25,7 @@ public class RecommendBRTestMain {
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
 
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
-        Timetable timetable = new Timetable(new ArrayList<>(), "F")
+        Timetable timetable = new Timetable(new ArrayList<>(), "F");
         addCourseInteractor.setTimetable(timetable);
 
         RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
