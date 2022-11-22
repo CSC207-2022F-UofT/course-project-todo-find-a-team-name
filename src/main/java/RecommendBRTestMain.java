@@ -25,7 +25,7 @@ public class RecommendBRTestMain {
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
 
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
-        Timetable timetable = new Timetable(new ArrayList<>(), "F")
+        Timetable timetable = new Timetable(new ArrayList<>(), "F");
         addCourseInteractor.setTimetable(timetable);
 
         RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
@@ -34,7 +34,8 @@ public class RecommendBRTestMain {
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, editTimetableController);
         presenter.setView(recommendBRWindow);
 
-        EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController, recommendBRWindow);
+        EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController);
+        timetableView.setBRWindow(recommendBRWindow);
         removeCoursePresenter.setView(timetableView);
         addCoursePresenter.setView(timetableView);
 

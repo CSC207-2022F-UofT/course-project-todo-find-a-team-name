@@ -2,6 +2,8 @@ package screens;
 
 import edit_timetable_use_case.*;
 import entities.*;
+import recommend_br_use_case.IDummyTimetableGateway;
+import recommend_br_use_case.RecommendBRInteractor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,7 @@ import java.util.List;
  * Controller refers to the EditTimetableController that processes user inputs.
  * ttView is the timetable view used to display the timetable.
  * courseButtons refer to buttons used to remove a given course.
+ * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
 public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView {
 
@@ -26,6 +29,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private TimetableView ttView;
 
     private JPanel courseButtons;
+    private RecommendBRWindow BRWindow;
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
         this.frame = frame;
@@ -56,6 +60,12 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
+
+        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
+
+        RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
+        RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter);
+        RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
 
         java.util.List<TimetableViewCourseModel> courseData = new ArrayList<>();
         java.util.List<TimetableViewSectionModel> sectionModels1 = new ArrayList<>();
@@ -129,6 +139,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             courses.add(c2);
             Timetable timetable = new Timetable(courses, "F");
 
+
+
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
             RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
             removeInteractor.setTimetable(timetable);
@@ -138,9 +150,14 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             addInteractor.setSession(new Session("S"));
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor);
             EditTimetableScreen screen = new EditTimetableScreen(frame, controller);
+            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
+            BRpresenter.setView(recommendBRWindow);
+            screen.setBRWindow(recommendBRWindow);
             screen.updateTimetable(timetableViewModel);
             removePresenter.setView(screen);
             frame.add(screen);
+
+
         } catch (InvalidSectionsException e) {
             System.out.println("InvalidSectionsException thrown.");
         }
@@ -184,6 +201,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         String cmd = e.getActionCommand();
         if (cmd.startsWith("Remove ")) {
             remove(cmd.substring("Remove ".length()));
+        }
+        else if (cmd.equals("Recommend BR Courses")){
+            BRWindow.showInputView();
         }
         /*else if (e.getActionCommand().equals("Add Course")){
             openAddCourseMenu();
@@ -240,5 +260,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     @Override
     public void displayResponse(String successMessage) {
         JOptionPane.showMessageDialog(frame, successMessage);
+    }
+
+    public void setBRWindow(RecommendBRWindow recommendBRWindow) {
+        this.BRWindow = recommendBRWindow;
     }
 }
