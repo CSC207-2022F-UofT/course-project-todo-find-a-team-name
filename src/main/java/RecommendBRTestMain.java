@@ -2,7 +2,6 @@ import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
-import recommend_br_use_case.IDummySessionGateway;
 import recommend_br_use_case.IDummyTimetableGateway;
 import recommend_br_use_case.RecommendBRInteractor;
 import screens.*;
@@ -40,7 +39,7 @@ public class RecommendBRTestMain {
         addCoursePresenter.setView(timetableView);
 
         JButton button = new JButton("Recommend BR");
-        button.addActionListener(e -> recommendBRWindow.showInputViw());
+        button.addActionListener(e -> recommendBRWindow.showInputView());
 
         frame.add(timetableView);
 

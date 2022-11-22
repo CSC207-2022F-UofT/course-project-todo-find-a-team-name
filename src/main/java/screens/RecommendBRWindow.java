@@ -32,7 +32,7 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
      * preferred time to recommend breadth courses
      *
      */
-    public void showInputViw(){
+    public void showInputView(){
         this.getContentPane().removeAll();
         inputScreen = new RecommendBRInputScreen(brController);
         add(inputScreen);
