@@ -5,7 +5,7 @@ import entities.Section;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** Builds Section **/
 public class SectionBuilderInteractor {
 
     private final String code;

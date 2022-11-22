@@ -1,7 +1,7 @@
 package fileio_use_case;
 
 import entities.Block;
-
+/** Builds Block class **/
 public class BlockBuilderInteractor {
     private final String day;
     private final String startTime;

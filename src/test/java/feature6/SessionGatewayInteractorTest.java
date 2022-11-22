@@ -5,6 +5,7 @@ import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
 import fileio_use_case.SessionGatewayInteractor;
+import fileio_use_case.SessionStorerInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
@@ -13,15 +14,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionGatewayInteractorTest {
     @Test
-    void testingReadFromFile() throws IOException, ParseException {
-        SessionGatewayInteractor convertingFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
-        String jsonToStr = convertingFile.fileToString();
-        HashMap<String, CalendarCourse> result = convertingFile.readFromFile(jsonToStr);
-        // System.out.println(result);
+    void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
+        String jsonToStr = convertFile.fileToString();
+        HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
+
+        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
+        assertTrue(allSessions.getAllSessions().containsKey("S"));
+        assertTrue(allSessions.getAllSessions().containsKey("F"));
+
+        // Get Winter (S) session
+        Session Winter = allSessions.getSession("S");
+        assertEquals("S", Winter.getSessionType());
     }
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {

@@ -4,7 +4,7 @@ import entities.CalendarCourse;
 import entities.Session;
 
 import java.util.HashMap;
-
+/** Builds Session **/
 public class SessionBuilderInteractor {
     public SessionBuilderInteractor() {}
     /**
@@ -24,7 +24,9 @@ public class SessionBuilderInteractor {
     }
 
     /**
-     * Returns HashMap<String, Session> containing Sessions from Fall and Winter
+     * Returns HashMap<String, Session> containing Sessions from Fall and Winter.
+     * @param allCourses - a hashmap where keys are course code and values are CalendarCourse.
+     * @return SessionStorerInteractor
      */
     public SessionStorerInteractor allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
         SessionStorerInteractor sessionStorer = new SessionStorerInteractor();

@@ -4,7 +4,7 @@ import entities.Session;
 import java.util.HashMap;
 
 /**
- * SessionStorerInteractor stores session, Fall (F) and Winter (S). Can add and get a session
+ * SessionStorerInteractor stores session, Fall (F) and Winter (S). Can add and get a session.
  */
 public class SessionStorerInteractor {
     private final HashMap<String, Session> allSessions;
@@ -35,6 +35,5 @@ public class SessionStorerInteractor {
     public HashMap<String, Session> getAllSessions() {
         return this.allSessions;
     }
-
 
 }

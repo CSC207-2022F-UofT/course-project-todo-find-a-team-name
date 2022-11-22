@@ -8,6 +8,7 @@ import screens.feature_6_frameworks_drivers.SessionGateway;
 import java.io.IOException;
 import java.util.HashMap;
 
+/** Interactor for SessionGateway **/
 public class SessionGatewayInteractor {
     private final SessionGateway sessionGateway;
     public SessionGatewayInteractor(String file) {

@@ -5,7 +5,7 @@ import entities.Section;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** Builds CalendarCourse **/
 public class CalendarCourseBuilderInteractor {
     protected String title;
     protected List<Section> sections;
