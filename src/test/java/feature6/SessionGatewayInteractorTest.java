@@ -4,28 +4,30 @@ import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
+import fileio_use_case.SessionGatewayInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import screens.feature_6_frameworks_drivers.SessionGateway;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SessionGatewayTest {
+public class SessionGatewayInteractorTest {
     @Test
     void testingReadFromFile() throws IOException, ParseException {
-        SessionGateway convertingFile = new SessionGateway("src/main/java/screens/courses_cleaned.json");
+        SessionGatewayInteractor convertingFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
         String jsonToStr = convertingFile.fileToString();
         HashMap<String, CalendarCourse> result = convertingFile.readFromFile(jsonToStr);
         // System.out.println(result);
     }
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        SessionGateway convertingFile1 = new SessionGateway("src/test/java/feature6/testing.json");
+        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor("src/test/java/feature6/testing.json");
         // Course from testing.json
-        String jsonToStr1= convertingFile1.fileToString();
+        String jsonToStr1 = convertingFile1.fileToString();
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
         Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
@@ -41,5 +43,4 @@ class SessionGatewayTest {
         System.out.println(wantedCourse);
         assertTrue(c1.equals(wantedCourse));
     }
-
 }
