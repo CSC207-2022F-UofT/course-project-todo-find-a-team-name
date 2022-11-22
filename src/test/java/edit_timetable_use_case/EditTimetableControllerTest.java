@@ -19,6 +19,8 @@ class EditTimetableControllerTest {
 
     AddCourseInteractor ACInteractor;
 
+    TestEditTimetableView view;
+
     @BeforeEach
     void setUp() {
         try{
@@ -27,10 +29,14 @@ class EditTimetableControllerTest {
             ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
             Timetable t = new Timetable(courses, "F");
             Session s = new Session("F");
-            RemoveCourseOutputBoundary p = new RemoveCoursePresenter();
-            RCInteractor = new RemoveCourseInteractor(p);
+            view = new TestEditTimetableView();
+            RemoveCourseOutputBoundary RCPresenter = new RemoveCoursePresenter();
+            RCPresenter.setView(view);
+            RCInteractor = new RemoveCourseInteractor(RCPresenter);
             RCInteractor.setTimetable(t);
-            ACInteractor = new AddCourseInteractor(new AddCoursePresenter());
+            AddCoursePresenter ACPresenter = new AddCoursePresenter();
+            ACPresenter.setView(view);
+            ACInteractor = new AddCourseInteractor(ACPresenter);
             controller = new EditTimetableController(RCInteractor, ACInteractor);
         }
         catch (InvalidSectionsException e){
