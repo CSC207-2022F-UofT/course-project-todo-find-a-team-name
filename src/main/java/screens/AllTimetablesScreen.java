@@ -13,6 +13,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
     private JFrame frame;
     private final AllTimetablesController AllTimetablesController;
     private TimetableViewModel[] timetables;
+    private EditTimetableScreen editTimetableScreen;
     public AllTimetablesScreen(JFrame frame, AllTimetablesController controller, TimetableViewModel[] timetables) {
         this.AllTimetablesController = controller;
         this.timetables = timetables;
@@ -58,10 +59,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
         } else if (e.getActionCommand().equals("mainMenu")) {
 
         } else {
+            int i = e.getActionCommand().length() - 1;
+            TimetableViewModel timetable = this.timetables[i];
 
         }
     }
-
     /**
      * THIS IS FOR TESTING PURPOSES ONLY
      */
@@ -104,9 +106,9 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
 
 
         JFrame frame = new JFrame();
-        AllTimetablesController controller = new AllTimetablesController();
-        AllTimetablesScreen screen = new AllTimetablesScreen(frame, controller, timetables);
-        frame.add(screen);
+        AllTimetablesController allTimetablesController = new AllTimetablesController();
+        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, allTimetablesController, timetables);
+        frame.add(allTimetablesScreen);
         frame.pack();
         frame.setVisible(true);
     }

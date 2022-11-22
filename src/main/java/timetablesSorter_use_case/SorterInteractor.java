@@ -21,6 +21,7 @@ public class SorterInteractor implements SorterInputBoundary{
      * @return returns a SorterResponseModel which contains an array of timetableViewModels to present in order in
      * AllTimetablesScreen
      * TODO: implement preferenceSort and getScore and figure out a different way that using viewmodel here for clean
+     * since interactor
      */
     @Override
     public SorterResponseModel preferenceSort(SorterRequestModel requestModel) {
