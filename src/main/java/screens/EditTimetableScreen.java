@@ -127,7 +127,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             ArrayList<TimetableCourse> courses = new ArrayList<>();
             courses.add(c1);
             courses.add(c2);
-            Timetable timetable = new Timetable(courses);
+            Timetable timetable = new Timetable(courses, "F");
 
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
             RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
