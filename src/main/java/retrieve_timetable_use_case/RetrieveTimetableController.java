@@ -20,9 +20,7 @@ public class RetrieveTimetableController {
         return interactor.retrieveTimetableCourse(requestModel);
     }
 
-    public TimetableModel retrieveTimetable(String timetable){
-        RetrieveTimetableRequestModel requestModel =
-                new RetrieveTimetableRequestModel(timetable, "", "");
-        return interactor.retrieveTimetable(requestModel);
+    public TimetableModel retrieveTimetable(){
+        return interactor.retrieveTimetable();
     }
 }
