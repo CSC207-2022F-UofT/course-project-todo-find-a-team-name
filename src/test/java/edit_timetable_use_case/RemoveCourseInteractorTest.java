@@ -25,7 +25,7 @@ class RemoveCourseInteractorTest {
             c = new TimetableCourse("", new ArrayList<Section>(),
                     "", "EGX101", "");
             ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
-            t = new Timetable(courses);
+            t = new Timetable(courses, "F");
             RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
             interactor = new RemoveCourseInteractor(presenter);
             presenter.setView(new EditTimetableScreen(new JFrame(), new EditTimetableController(interactor,

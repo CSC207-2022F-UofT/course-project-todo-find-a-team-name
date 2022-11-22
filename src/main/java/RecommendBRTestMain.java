@@ -34,7 +34,8 @@ public class RecommendBRTestMain {
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, editTimetableController);
         presenter.setView(recommendBRWindow);
 
-        EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController, recommendBRWindow);
+        EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController);
+        timetableView.setBRWindow(recommendBRWindow);
         removeCoursePresenter.setView(timetableView);
         addCoursePresenter.setView(timetableView);
 
