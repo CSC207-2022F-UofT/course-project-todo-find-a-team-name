@@ -12,7 +12,6 @@ import java.util.HashSet;
  */
 public class RecommendBRInputScreen extends JPanel implements ActionListener{
 
-    private final String timetableId;
     private final RecommendBRController controller;
     private final JCheckBox[] checkBoxes;
     private final JRadioButton[] radioButtons;
@@ -25,10 +24,9 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
      * @param controller controller used to recommend breadth courses
      * @param timetableId id of the timetable
      */
-    public RecommendBRInputScreen(RecommendBRController controller, String timetableId) {
+    public RecommendBRInputScreen(RecommendBRController controller) {
         super();
         this.controller = controller;
-        this.timetableId = timetableId;
 
         setLayout(new BorderLayout());
         JLabel title = new JLabel("<html><u>BR Recommender</u></html>");

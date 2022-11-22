@@ -58,13 +58,14 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
         addCourseButton.addActionListener(e -> {
             RecommendBRCourseViewModel course = viewModel.getCourseViewModels().get(recommendedCourses.getSelectedIndex());
             ArrayList<String> sectionCodes = new ArrayList<>();
+
             if (course.getLectureCode() != null)
                 sectionCodes.add(course.getLectureCode());
             else if (course.getTutorialCode() != null)
                 sectionCodes.add(course.getTutorialCode());
             else if (course.getPracticalCode() != null)
                 sectionCodes.add(course.getPracticalCode());
-
+            System.out.println(course.getCode());
             try {
                 editTimetableController.add(course.getCode(), sectionCodes);
             } catch (InvalidSectionsException ex) {

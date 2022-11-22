@@ -41,6 +41,15 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
      */
     @Override
     public void recommendBr(RecommendBRRequestModel requestModel) {
+
+        // TODO: Remove this
+        timetable = new Timetable(new ArrayList<>(), "F");
+
+        if (timetable == null) {
+            presenter.prepareFailView("Timetable not loaded yet!");
+            return;
+        }
+
         Session session = null;
         if (timetable.getSessionType().equals("F")){
             session = fSession;
@@ -48,10 +57,33 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
             session = sSession;
         }
 
-        if (session == null)
+        // TODO: Remove this
+        session = new Session("F");
+        for (int i = 8; i < 21; i++){
+            List<Block> blocks = new ArrayList<>();
+            List<Section> sections1 = new ArrayList<>();
+
+            blocks.add(new Block("MO", i + ":00", i + ":00", "room1"));
+            blocks.add(new Block("MO", i + ":00", i + ":00", "room2"));
+            blocks.add(new Block("TU", i + ":00", i + ":00", "room2"));
+            blocks.add(new Block("TH", i + ":00", i + ":00", "room3"));
+
+            sections1.add(new Section("LEC0101", "Kai", blocks));
+            sections1.add(new Section("LEC0201", "Kai", blocks));
+            sections1.add(new Section("LEC0301", "Kai", blocks));
+            sections1.add(new Section("TUT0101", "Kai", blocks));
+            sections1.add(new Section("TUT0201", "Kai", blocks));
+            sections1.add(new Section("PRA0301", "Kai", blocks));
+            sections1.add(new Section("PRA0401", "Kai", blocks));
+
+            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COSF" + i, "1"));
+        }
+
+        if (session == null) {
             presenter.prepareFailView("Session not loaded yet!");
-        else if (timetable == null)
-            presenter.prepareFailView("Timetable not loaded yet!");
+            return;
+        }
+
 
         Comparator<Course> courseComparator;
         switch (requestModel.getPreferredTime()){
@@ -68,7 +100,6 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
                 courseComparator = null;
         }
 
-        session = new Session(timetable.getSessionType());
         BRRecommender brRecommender = new BRRecommender(timetable, session,
                 requestModel.getBrCategoriesSelected(), courseComparator);
 
