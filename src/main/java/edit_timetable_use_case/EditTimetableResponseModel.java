@@ -1,6 +1,6 @@
 package edit_timetable_use_case;
 
-import retrieve_timetable_use_case.TimetableResponseModel;
+import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.List;
 
@@ -18,14 +18,14 @@ public class EditTimetableResponseModel {
     private String courseCode;
     private List<String> sectionCodes;
 
-    private TimetableResponseModel updatedTimetable;
+    private TimetableModel updatedTimetable;
 
     private String message;
 
     /**
      * @param courseCode
      */
-    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, TimetableResponseModel
+    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, TimetableModel
                                       updatedTimetable){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;
@@ -57,7 +57,7 @@ public class EditTimetableResponseModel {
         this.message = message;
     }
 
-    public TimetableResponseModel getUpdatedTimetable() {
+    public TimetableModel getUpdatedTimetable() {
         return updatedTimetable;
     }
 }

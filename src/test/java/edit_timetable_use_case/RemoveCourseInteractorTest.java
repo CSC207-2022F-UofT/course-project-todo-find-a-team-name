@@ -1,7 +1,7 @@
 package edit_timetable_use_case;
 
-import entities.Section;
-import entities.TimetableCourse;
+import entities.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import screens.RemoveCoursePresenter;
 
@@ -18,15 +18,17 @@ class RemoveCourseInteractorTest {
 
     @BeforeEach
     public void setUp(){
-        c = new TimetableCourse("", new ArrayList<Section>(),
-                "", "EGX101", "");
-        ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
-        Timetable t = new Timetable(.....);
-        Session s = new Session(.....);
+        try{
+            c = new TimetableCourse("", new ArrayList<Section>(),
+                    "", "EGX101", "");
+            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
+            Timetable t = new Timetable(courses);
+            interactor = new RemoveCourseInteractor(t, new RemoveCoursePresenter());
+        }
+        catch (InvalidSectionsException e) {
+            fail("Should not have thrown an error.");
+        }
 
-        RemoveCoursePresenter p = new RemoveCoursePresenter();
-
-        interactor = new RemoveCourseInteractor(t, p);
     }
 
 
@@ -38,15 +40,13 @@ class RemoveCourseInteractorTest {
     @Test
     void removeSucceeds() {
         EditTimetableRequestModel request = new EditTimetableRequestModel("EGX101", new ArrayList<>());
-
-        try{
-            String message = interactor.remove(request).getCourseCode();
-            assertEquals("EGX101", message);
-            assertFalse(t.getCourses.contains(c));
+        try {
+            interactor.remove(request);
         }
-        catch(RemoveCourseFailedException e){
+        catch (RemoveCourseFailedException e){
             fail("Remove should have succeeded here.");
         }
+        assertFalse(t.getCourseList().contains(c));
     }
 
 
