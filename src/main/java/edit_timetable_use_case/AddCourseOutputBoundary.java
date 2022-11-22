@@ -5,6 +5,6 @@ package edit_timetable_use_case;
  */
 public interface AddCourseOutputBoundary{
 
-    public void prepareView(EditTimetableResponseModel responseModel);
+    void prepareView(EditTimetableResponseModel responseModel);
 
 }

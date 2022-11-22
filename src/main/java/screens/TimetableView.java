@@ -19,14 +19,11 @@ public class TimetableView extends JPanel implements MouseListener {
     private final TimetableViewModel timetableViewModel;
     private final Color[] courseColors;
     private final List<TimetableViewEventListener> observers;
-//    private final HashMap<String, Boolean> isSectionSelected;
 
-    public TimetableView(int width, int height, TimetableViewModel timetableViewModel){
+
+    public TimetableView(TimetableViewModel timetableViewModel) {
         super();
         this.timetableViewModel = timetableViewModel;
-//        this.isSectionSelected = new HashMap<>();
-
-        setPreferredSize(new Dimension(width, height));
 
         courseColors = new Color[timetableViewModel.getCourseData().size()];
         Random rand = new Random();
@@ -36,6 +33,13 @@ public class TimetableView extends JPanel implements MouseListener {
         }
         observers = new ArrayList<>();
         addMouseListener(this);
+
+    }
+
+    public TimetableView(int width, int height, TimetableViewModel timetableViewModel){
+        this(timetableViewModel);
+        setPreferredSize(new Dimension(width, height));
+
     }
 
     @Override
@@ -86,12 +90,6 @@ public class TimetableView extends JPanel implements MouseListener {
                     g.setColor(courseColors[i]);
                     g.fillRect(x1, y1, cellWidth, y2 - y1);
                     String text = courseModel.getCode() + "; " + sectionModel.getCode();
-
-//                    if (isSectionSelected.containsKey(text) && isSectionSelected.get(text)){
-//                        g.setColor(Color.RED);
-//                        g.drawRect(x1, y1, cellWidth, y2 - y1);
-//                        g.setColor(courseColors[i]);
-//                    }
 
                     g.setColor(Color.BLACK);
 

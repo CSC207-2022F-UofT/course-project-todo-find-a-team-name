@@ -5,29 +5,31 @@ import java.util.*;
  * each timetable block either is empty or corresponds to a Timetable course.
  */
 public class Timetable {
-    private ArrayList<TimetableCourse> CourseList;
-
-    public Timetable(ArrayList<TimetableCourse> timetableCourses){
-        this.CourseList = new ArrayList<TimetableCourse>();
-        this.CourseList.addAll(timetableCourses);
+    private ArrayList<TimetableCourse> courseList;
+    private String sessionType;
+    
+    public Timetable(ArrayList<TimetableCourse> timetableCourses, String sessionType){
+        this.courseList = new ArrayList<TimetableCourse>();
+        this.courseList.addAll(timetableCourses);
+        this.sessionType = sessionType;
     }
     // Adds course
     public void AddToCourseList(TimetableCourse course){
-        this.CourseList.add(course);
+        this.courseList.add(course);
     }
     // returns true if there is a conflict
     public boolean isConflicted(Section section){
-        for (TimetableCourse course : this.CourseList){
+        for (TimetableCourse course : this.courseList){
             for (Section timetableSection : course.getSections()){
                 if (timetableSection.isConflicted(section))
                     return true;
             }
         }
         return false;
-    }
+    } 
     // Gets course
     public TimetableCourse getCourse(String code){
-        for(TimetableCourse course: this.CourseList){
+        for(TimetableCourse course: this.courseList){
             if(course.courseCode.equals(code)){
                 return course;
             }
@@ -35,8 +37,12 @@ public class Timetable {
         return null;
     }
 
+    public String getSessionType() {
+        return sessionType;
+    }
+
     public boolean existsByCode(String code){
-        for (TimetableCourse course: this.CourseList){
+        for (TimetableCourse course: this.courseList){
             if (course.getCourseCode().equals(code)){
                 return true;
             }
@@ -45,15 +51,15 @@ public class Timetable {
     }
 
     public void removeCourse(String code){
-        for (TimetableCourse course: this.CourseList){
+        for (TimetableCourse course: this.courseList){
             if (course.getCourseCode().equals(code)){
-                CourseList.remove(course);
+                courseList.remove(course);
                 return;
             }
         }
     }
     public ArrayList<TimetableCourse> getCourseList() {
-        return CourseList;
+        return courseList;
     }
 }
 

@@ -2,39 +2,38 @@ package screens;
 
 import edit_timetable_use_case.*;
 import entities.*;
+import recommend_br_use_case.IDummyTimetableGateway;
+import recommend_br_use_case.RecommendBRInteractor;
 
 import javax.swing.*;
-
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.JOptionPane.showMessageDialog;
-
 
 /**
- *
+ * An implementation of the EditTimetableView in JSwing.
+ * <p>
+ * Frame refers to the frame that the screen is added to.
+ * Controller refers to the EditTimetableController that processes user inputs.
+ * ttView is the timetable view used to display the timetable.
+ * courseButtons refer to buttons used to remove a given course.
+ * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
 public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView {
 
-    private JFrame frame;
+    private final JFrame frame;
     private final EditTimetableController controller;
-    private TimetableViewModel timetable;
-    /*private SessionViewModel session;*/
 
     private TimetableView ttView;
 
+    private JPanel courseButtons;
+    private RecommendBRWindow BRWindow;
 
-    /**
-     * @param controller
-     */
-    public EditTimetableScreen(JFrame frame, EditTimetableController controller, TimetableViewModel timetable/*,
-                               SessionViewModel session*/) {
+    public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
+        this.frame = frame;
         this.controller = controller;
-        this.timetable = timetable;
-        /*this.session = session;*/
 
         JButton recommendBR = new JButton("Recommend BR Courses");
         recommendBR.addActionListener(this);
@@ -53,27 +52,20 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
 
-        JPanel courseButtons = new JPanel();
-        for (TimetableViewCourseModel course : timetable.getCourseData()) {
-            /*JButton editButton = new JButton("Edit " + course.getCode());
-            editButton.addActionListener(this);
-            courseButtons.add(editButton);*/
-
-            JButton removeButton = new JButton("Remove " + course.getCode());
-            removeButton.addActionListener(this);
-            courseButtons.add(removeButton);
-        }
-        this.add(courseButtons);
-        courseButtons.setVisible(true);
-
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
-
         this.setVisible(true);
     }
 
+
+    /** A temporary method used to demonstrate RemoveCourse with minimal integration.
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
+
+        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
+
+        RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
+        RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter);
+        RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
 
         java.util.List<TimetableViewCourseModel> courseData = new ArrayList<>();
         java.util.List<TimetableViewSectionModel> sectionModels1 = new ArrayList<>();
@@ -107,22 +99,22 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         Block block1 = new Block("MO", "11:00", "12:00", "");
         Block block2 = new Block("FR", "11:00", "12:00", "");
-        List<Block> blocks1 = new ArrayList<Block>();
+        List<Block> blocks1 = new ArrayList<>();
         blocks1.add(block1);
         blocks1.add(block2);
 
         Block block3 = new Block("WE", "11:00", "12:00", "");
-        List<Block> blocks2 = new ArrayList<Block>();
+        List<Block> blocks2 = new ArrayList<>();
         blocks2.add(block3);
 
         Block block4 = new Block("TU", "16:00", "17:00", "");
         Block block5 = new Block("FR", "16:00", "17:00", "");
-        List<Block> blocks3 = new ArrayList<Block>();
+        List<Block> blocks3 = new ArrayList<>();
         blocks3.add(block4);
         blocks3.add(block5);
 
         Block block6 = new Block("MO", "14:00", "16:00", "");
-        List<Block> blocks4 = new ArrayList<Block>();
+        List<Block> blocks4 = new ArrayList<>();
         blocks4.add(block6);
 
         Section s1 = new Section("LEC0101", "", blocks1);
@@ -131,10 +123,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         Section s3 = new Section("LEC0401", "", blocks3);
         Section s4 = new Section("TUT0301", "", blocks4);
 
-        List<Section> sections1 = new ArrayList<Section>();
+        List<Section> sections1 = new ArrayList<>();
         sections1.add(s1);
         sections1.add(s2);
-        List<Section> sections2 = new ArrayList<Section>();
+        List<Section> sections2 = new ArrayList<>();
         sections2.add(s3);
         sections2.add(s4);
 
@@ -142,19 +134,30 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             TimetableCourse c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
             TimetableCourse c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
 
-            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>();
+            ArrayList<TimetableCourse> courses = new ArrayList<>();
             courses.add(c1);
             courses.add(c2);
-            Timetable timetable = new Timetable(courses);
+            Timetable timetable = new Timetable(courses, "F");
+
+
 
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-            RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(timetable, removePresenter);
+            RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
+            removeInteractor.setTimetable(timetable);
             AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
-            AddCourseInputBoundary addInteractor = new AddCourseInteractor(timetable, new Session("S"), addPresenter);
+            AddCourseInputBoundary addInteractor = new AddCourseInteractor(addPresenter);
+            addInteractor.setTimetable(timetable);
+            addInteractor.setSession(new Session("S"));
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor);
-            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, timetableViewModel);
+            EditTimetableScreen screen = new EditTimetableScreen(frame, controller);
+            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
+            BRpresenter.setView(recommendBRWindow);
+            screen.setBRWindow(recommendBRWindow);
+            screen.updateTimetable(timetableViewModel);
             removePresenter.setView(screen);
             frame.add(screen);
+
+
         } catch (InvalidSectionsException e) {
             System.out.println("InvalidSectionsException thrown.");
         }
@@ -164,6 +167,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         frame.setVisible(true);
     }
 
+    /** This method removes a course as indicated by the user pressing the "Remove [Course]" button, or displays
+     * an error message if the course is not in the timetable.
+     * @param courseCode The code of the course to be removed.
+     */
     public void remove(String courseCode) {
         try {
             this.controller.remove(courseCode);
@@ -172,25 +179,36 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
     }
 
-    public void openAddCourseMenu() {
+    /*public void openAddCourseMenu() {
 
-    }
+    }*/
+
 
     /*public void openEditCourseScreen(String courseCode){
         EditCourseScreen screen = new EditCourseScreen(this, courseCode);
         screen.setVisible(true);
         this.setVisible(false);
-    }/*
+    }*/
 
-    /**
-     * @param e the event to be processed
+    /** Processes button presses with appropriate function calls.
+     * Pressing a "Remove [Course]" button calls the remove use case, pressing "Add Course" will begin the input
+     * process for the Add Course use case. "Edit [Course]" will begin the input process for the Edit Course use case.
+     * "Save" saves the timetable on the view, and "Recommend BR Courses" begins the Recommend BR use case.
+     * @param e the event to be processed.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         if (cmd.startsWith("Remove ")) {
-            remove(cmd.substring("Remove ".length(), cmd.length()));
+            remove(cmd.substring("Remove ".length()));
         }
+        else if (cmd.equals("Recommend BR Courses")){
+            BRWindow.showInputView();
+        }
+        /*else if (e.getActionCommand().equals("Add Course")){
+            openAddCourseMenu();
+        }*/
+
         /*
         else if (cmd.startsWith("Edit ")){
 
@@ -200,28 +218,51 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
         else if (cmd.equals("Recommend BR Courses")){
 
-        }
-        else if (e.getActionCommand().equals("Add Course")){
-            openAddCourseMenu();
         }*/
+
     }
 
     /**
-     * @param timetable
+     * @param timetable Updates the view with the given TimetableViewModel.
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        ttView.setVisible(false);
+        if (ttView != null){
+            ttView.setVisible(false);
+        }
+        if (courseButtons != null){
+            courseButtons.setVisible(false);
+        }
+
         ttView = new TimetableView(1280, 720, timetable);
         this.add(ttView);
+
+        courseButtons = new JPanel();
+        for (TimetableViewCourseModel course : timetable.getCourseData()) {
+            /*JButton editButton = new JButton("Edit " + course.getCode());
+            editButton.addActionListener(this);
+            courseButtons.add(editButton);*/
+
+            JButton removeButton = new JButton("Remove " + course.getCode());
+            removeButton.addActionListener(this);
+            courseButtons.add(removeButton);
+        }
+        this.add(courseButtons);
+
         ttView.setVisible(true);
+        courseButtons.setVisible(true);
     }
 
     /**
-     * @param successMessage
+     * @param successMessage A success message as determined by the presenter.
+     *                       This method creates a message dialog with the given message.
      */
     @Override
     public void displayResponse(String successMessage) {
         JOptionPane.showMessageDialog(frame, successMessage);
+    }
+
+    public void setBRWindow(RecommendBRWindow recommendBRWindow) {
+        this.BRWindow = recommendBRWindow;
     }
 }
