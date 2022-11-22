@@ -6,25 +6,17 @@ import java.util.List;
 
 /**
  * A response model that contains the relevant information needed by the presenter's view.
- *
  * If this response model was used in the RemoveCourse use case, courseCode is the course code of the
  * that the user attempted to remove. SectionCodes is never used in this case.
+ * UpdatedTimetable is a TimetableModel used to update the view after the operation is done.
  *
- *
- *
- * Success is true iff the operation was successful.
  */
 public class EditTimetableResponseModel {
-    private String courseCode;
-    private List<String> sectionCodes;
+    private final String courseCode;
+    private final List<String> sectionCodes;
 
-    private TimetableModel updatedTimetable;
+    private final TimetableModel updatedTimetable;
 
-    private String message;
-
-    /**
-     * @param courseCode
-     */
     public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, TimetableModel
                                       updatedTimetable){
         this.courseCode = courseCode;
@@ -32,30 +24,15 @@ public class EditTimetableResponseModel {
         this.updatedTimetable = updatedTimetable;
     }
 
-    /**
-     * @return
-     */
     public String getCourseCode() {
         return courseCode;
     }
 
+    /*This method is unused, creating an IntelliJ warning. It will be used in the AddCourse use case.*/
     public List<String> getSectionCodes(){
         return sectionCodes;
     }
 
-    /**
-     * @return
-     */
-    public String getMessage(){
-        return message;
-    }
-
-    /**
-     * @param message
-     */
-    public void setMessage(String message){
-        this.message = message;
-    }
 
     public TimetableModel getUpdatedTimetable() {
         return updatedTimetable;

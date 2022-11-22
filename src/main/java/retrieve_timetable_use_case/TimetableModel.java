@@ -6,7 +6,7 @@ public class TimetableModel {
 
     private List<CourseModel> courses;
 
-    TimetableModel(List<CourseModel> courses){
+    public TimetableModel(List<CourseModel> courses){
         this.courses = courses;
     }
 

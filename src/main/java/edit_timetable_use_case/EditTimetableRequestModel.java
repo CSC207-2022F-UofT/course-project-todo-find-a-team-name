@@ -10,12 +10,9 @@ import java.util.List;
  * - sectionCodes (optional): the section codes of the sections desired in a course to be added or edited.
  */
 public class EditTimetableRequestModel {
-    private String courseCode;
-    private List<String> sectionCodes;
+    private final String courseCode;
+    private final List<String> sectionCodes;
 
-    /**
-     * @param courseCode
-     */
     EditTimetableRequestModel(String courseCode,List<String> sectionCodes){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;

@@ -3,8 +3,11 @@ package edit_timetable_use_case;
 import entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import screens.AddCoursePresenter;
+import screens.EditTimetableScreen;
 import screens.RemoveCoursePresenter;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +25,13 @@ class RemoveCourseInteractorTest {
             c = new TimetableCourse("", new ArrayList<Section>(),
                     "", "EGX101", "");
             ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
-            Timetable t = new Timetable(courses);
-            interactor = new RemoveCourseInteractor(t, new RemoveCoursePresenter());
+            t = new Timetable(courses);
+            RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
+            interactor = new RemoveCourseInteractor(presenter);
+            presenter.setView(new EditTimetableScreen(new JFrame(), new EditTimetableController(interactor,
+                    new AddCourseInteractor(
+                            new AddCoursePresenter()))));
+            interactor.setTimetable(t);
         }
         catch (InvalidSectionsException e) {
             fail("Should not have thrown an error.");
@@ -42,18 +50,18 @@ class RemoveCourseInteractorTest {
         EditTimetableRequestModel request = new EditTimetableRequestModel("EGX101", new ArrayList<>());
         try {
             interactor.remove(request);
+            assertFalse(t.getCourseList().contains(c));
         }
         catch (RemoveCourseFailedException e){
             fail("Remove should have succeeded here.");
         }
-        assertFalse(t.getCourseList().contains(c));
     }
 
 
 
     @Test
     void removeFails(){
-        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new Arraylist<String>());
+        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<String>());
         try{
             interactor.remove(request);
             fail("Interactor should have thrown RemoveCourseFailed exception.");
@@ -63,11 +71,5 @@ class RemoveCourseInteractorTest {
         }
     }
 
-    @Test
-    void add() {
-    }
 
-    @Test
-    void edit() {
-    }
 }
