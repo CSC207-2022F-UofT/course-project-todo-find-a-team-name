@@ -39,7 +39,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         RetrieveTimetableInteractor RTInteractor = new RetrieveTimetableInteractor(timetable, session);
         TimetableModel updatedTimetable = RTInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableModel(request.getCourseCode(), request.getSectionCodes(), updatedTimetable);
+                new EditTimetableResponseModel(request.getCourseCode(), request.getSectionCodes(), updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
     }
 }
