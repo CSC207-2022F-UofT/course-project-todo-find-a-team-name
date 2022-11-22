@@ -141,8 +141,4 @@ public class Session {
     public String toString() {
         return "Session: " + this.sessionType + " { " + allSessionCourses + " }";
     }
-
-    public HashMap<String, CalendarCourse> getAllSessionCourses() {
-        return allSessionCourses;
-    }
 }
