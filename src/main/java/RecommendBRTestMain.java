@@ -24,11 +24,11 @@ public class RecommendBRTestMain {
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
 
-        AddCourseInteractor addCourseInteractor =
-                new AddCourseInteractor(new Timetable(new ArrayList<>(), "F"), generateSession(), addCoursePresenter);
+        AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
+        Timetable timetable = new Timetable(new ArrayList<>(), "F")
+        addCourseInteractor.setTimetable(timetable);
 
-        RemoveCourseInteractor removeCourseInteractor =
-                new RemoveCourseInteractor(new Timetable(new ArrayList<>(), "F"), removeCoursePresenter);
+        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
 
         EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, editTimetableController);
