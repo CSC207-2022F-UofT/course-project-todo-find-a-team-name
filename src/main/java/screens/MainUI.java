@@ -1,7 +1,6 @@
 package screens;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
@@ -10,8 +9,8 @@ import java.awt.event.ActionListener;
 
 public class MainUI extends JPanel implements ActionListener {
 
-    private JLabel filePathSession;
-    private JLabel filePathTimetable;
+    private final JLabel filePathSession;
+    private final JLabel filePathTimetable;
 
     public MainUI(){
         super();
@@ -88,20 +87,24 @@ public class MainUI extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("Import timetable")){
-            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
-            if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)){
-                filePathTimetable.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        switch (command) {
+            case "Import timetable": {
+                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
+                    filePathTimetable.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                }
+                break;
             }
-        } else if (command.equals("Import session")){
-            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
-            if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)){
-                filePathSession.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            case "Import session": {
+                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
+                    filePathSession.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                }
+                break;
             }
-        } else if (command.equals("Edit")){
-
-        } else if (command.equals("Display")){
-
+            case "Edit":
+            case "Display":
+                break;
         }
     }
 
