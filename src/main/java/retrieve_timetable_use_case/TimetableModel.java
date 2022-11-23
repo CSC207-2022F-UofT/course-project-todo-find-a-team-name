@@ -2,9 +2,15 @@ package retrieve_timetable_use_case;
 
 import java.util.List;
 
+/**
+ *  A data carrier class that doubles as a request and response model containing all information
+ *  that a Session would contain while protecting Controllers and Presenters from changes to
+ *  the original entity.
+ *  courses is a list of CourseModels that are contained in the timetable.
+ */
 public class TimetableModel {
 
-    private List<CourseModel> courses;
+    private final List<CourseModel> courses;
 
     public TimetableModel(List<CourseModel> courses){
         this.courses = courses;
