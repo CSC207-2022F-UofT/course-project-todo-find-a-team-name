@@ -1,8 +1,5 @@
 package screens;
 
-
-
-
 import blacklist_whitelist_use_case.SectionFilterInteractor;
 import blacklist_whitelist_use_case.SectionFilterRequestModel;
 
@@ -36,6 +33,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     JComboBox<String> startTime = new JComboBox<>(TIME);
     JComboBox<String> endTime = new JComboBox<>(TIME);
     JButton submit = new JButton("submit and filter");
+    JButton help = new JButton("help");
 
 
     ConstraintsInputScreen(SectionFilterController controller) {
@@ -92,6 +90,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardLayout cardLayout = new CardLayout();
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
@@ -134,6 +133,9 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             System.out.println("Enter: " + requestModel);
             sectionFilterController.filter(requestModel);
         }
+//        if (e.getSource() == help){
+//
+//        }
     }
 
     @Override
