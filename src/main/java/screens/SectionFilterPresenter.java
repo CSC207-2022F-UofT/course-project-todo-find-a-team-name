@@ -3,6 +3,8 @@ package screens;
 import blacklist_whitelist_use_case.SectionFilterOutputBoundary;
 import blacklist_whitelist_use_case.SectionFilterResponseModel;
 
+import java.util.Collections;
+
 /**
  * Presenter is responsible for format the response model to prepare for success view to the output window.
  */
@@ -22,6 +24,9 @@ public class SectionFilterPresenter implements SectionFilterOutputBoundary {
      */
     @Override
     public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+        for (String course: responseModel.getModifiedCourses().keySet()){
+            Collections.sort(responseModel.getModifiedCourses().get(course));
+        }
         SectionFilterViewModel viewModel = new SectionFilterViewModel(responseModel.getModifiedCourses(), responseModel.getSessionType());
         view.showSuccessView(viewModel);
     }
