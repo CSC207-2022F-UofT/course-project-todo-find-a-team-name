@@ -1,7 +1,5 @@
 package retrieve_timetable_use_case;
 
-import java.util.Objects;
-
 /**
  * A data carrier class that doubles as a request and resposne model containing all information
  * that a Block would contain while protecting Controllers and Presenters from changes to

@@ -16,7 +16,7 @@ public class TimetableModelConverter {
      * @return A SessionViewModel containing equivalent data.
      */
     public static SessionViewModel sessionToView(SessionModel session){
-        HashMap<String, TimetableViewCourseModel> courses = new HashMap<String, TimetableViewCourseModel>();
+        HashMap<String, TimetableViewCourseModel> courses = new HashMap<>();
         for (String courseCode : session.getCourses().keySet()){
             courses.put(courseCode, courseToView(session.getCourses().get(courseCode)));
         }
@@ -28,7 +28,7 @@ public class TimetableModelConverter {
      * @return A TimetableViewModel containing equivalent data.
      */
     public static TimetableViewModel timetableToView(TimetableModel timetable){
-        List<TimetableViewCourseModel> courses = new ArrayList<TimetableViewCourseModel>();
+        List<TimetableViewCourseModel> courses = new ArrayList<>();
         for (CourseModel course : timetable.getCourses() ){
             courses.add(courseToView(course));
         }
@@ -41,7 +41,7 @@ public class TimetableModelConverter {
      * @return A CourseViewModel containing equivalent data.
      */
     public static TimetableViewCourseModel courseToView(CourseModel course){
-        List<TimetableViewSectionModel> sections = new ArrayList<TimetableViewSectionModel>();
+        List<TimetableViewSectionModel> sections = new ArrayList<>();
         for (SectionModel section : course.getSections()){
             sections.add(sectionToView(section));
         }
@@ -54,7 +54,7 @@ public class TimetableModelConverter {
      * @return A SectionViewModel containing equivalent data.
      */
     public static TimetableViewSectionModel sectionToView(SectionModel section){
-        List<TimetableViewBlockModel> blocks = new ArrayList<TimetableViewBlockModel>();
+        List<TimetableViewBlockModel> blocks = new ArrayList<>();
         for (BlockModel block : section.getBlocks()){
             blocks.add(blockToView(block));
         }
