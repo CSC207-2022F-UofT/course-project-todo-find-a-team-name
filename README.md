@@ -1,5 +1,11 @@
 # Timetable Generator
 
+## Summary of How The Program Works 
+
+The Timetable Generator is a program, which stores courses on the University of Toronto’s Arts & Science Fall-Winter academic calendar and has the ability to generate timetables based on user-inputted requirements and preferences. Timetables can be exported and imported as files. Sections in generated timetables can also be edited, removed, or added through the user interface. The user can also prompt the program to display breadth course sections that fit a particular time slot and breadth category.
+
+## Generated Information Below [To be deleted later] 
+
 This is a template repository for CSC 207 projects. 
 This repository contains starter code for a gradle project.
 It also contains workflow documents that give instructions on how to manage your Github repository and how to use Github Projects for efficient collaboration.
