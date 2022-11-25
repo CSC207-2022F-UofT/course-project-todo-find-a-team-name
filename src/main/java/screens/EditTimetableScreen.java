@@ -227,15 +227,16 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        if (ttView != null){
-            ttView.setVisible(false);
+        if (ttView == null){
+            ttView = new TimetableView(1280, 720, timetable);
+            this.add(ttView);
         }
         if (courseButtons != null){
             courseButtons.setVisible(false);
         }
 
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
+        ttView.setVisible(false);
+        ttView.updateViewModel(timetable);
 
         courseButtons = new JPanel();
         for (TimetableViewCourseModel course : timetable.getCourseData()) {

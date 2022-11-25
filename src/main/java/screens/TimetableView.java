@@ -4,9 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Class that is used to display the timetable given timetableViewModel.
@@ -22,8 +21,8 @@ public class TimetableView extends JPanel implements MouseListener {
     public static final int NUM_ROWS = (END_TIME - START_TIME) * 2 + 1;
     public static final int NUM_COLUMNS = 6;
     public static final String[] WEEK_DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-    private final TimetableViewModel timetableViewModel;
-    private final Color[] courseColors;
+    private TimetableViewModel timetableViewModel;
+    private final HashMap<String, Color> courseColors;
     private final List<TimetableViewEventListener> observers;
 
     /**
@@ -34,17 +33,10 @@ public class TimetableView extends JPanel implements MouseListener {
      */
     public TimetableView(TimetableViewModel timetableViewModel) {
         super();
-        this.timetableViewModel = timetableViewModel;
-
-        courseColors = new Color[timetableViewModel.getCourseData().size()];
-        Random rand = new Random();
-        for (int i = 0; i < courseColors.length; i++){
-            courseColors[i] = new Color(rand.nextInt(256), rand.nextInt(256),
-                    rand.nextInt(256), 125);
-        }
+        courseColors = new HashMap<>();
+        updateViewModel(timetableViewModel);
         observers = new ArrayList<>();
         addMouseListener(this);
-
     }
 
     /**
@@ -59,7 +51,6 @@ public class TimetableView extends JPanel implements MouseListener {
     public TimetableView(int width, int height, TimetableViewModel timetableViewModel){
         this(timetableViewModel);
         setPreferredSize(new Dimension(width, height));
-
     }
 
     /**
@@ -113,7 +104,7 @@ public class TimetableView extends JPanel implements MouseListener {
                     int y2 = (int) ((blockModel.getEndTime() - START_TIME) * 2 *  cellHeight) + cellHeight;
                     int x1 = (blockModel.getDay() + 1) * cellWidth;
 
-                    g.setColor(courseColors[i]);
+                    g.setColor(courseColors.get(courseModel.getCode()));
                     g.fillRect(x1, y1, cellWidth, y2 - y1);
                     String text = courseModel.getCode() + "; " + sectionModel.getCode();
 
@@ -221,6 +212,31 @@ public class TimetableView extends JPanel implements MouseListener {
      */
     @Override
     public void mouseExited(MouseEvent e) {}
+
+    /**
+     * Sets the timetableViewModel to the given TimetableViewModel, and
+     * update courseColors to assign new color to newly added courses.
+     *
+     * @param timetableViewModel new TimetableViewModel
+     */
+    public void updateViewModel(TimetableViewModel timetableViewModel){
+        this.timetableViewModel = timetableViewModel;
+
+        Random rand = new Random();
+        HashSet<String> diff = new HashSet<>();
+        for (TimetableViewCourseModel course : timetableViewModel.getCourseData()){
+            diff.add(course.getCode());
+            if (!courseColors.containsKey(course.getCode())) {
+                Color color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256), 125);
+                courseColors.put(course.getCode(), color);
+            }
+        }
+        for (String code : new HashSet<>(courseColors.keySet())) {
+            if (!diff.contains(code)){
+                courseColors.remove(code);
+            }
+        }
+    }
 
     // This method is only used for testing during the development, it will be deleted soon
     // TODO: Delete this method

@@ -42,9 +42,6 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
     @Override
     public void recommendBr(RecommendBRRequestModel requestModel) {
 
-        // TODO: Remove this
-        timetable = new Timetable(new ArrayList<>(), "F");
-
         if (timetable == null) {
             presenter.prepareFailView("Timetable not loaded yet!");
             return;
@@ -55,28 +52,6 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
             session = fSession;
         } else if (timetable.getSessionType().equals("S")){
             session = sSession;
-        }
-
-        // TODO: Remove this
-        session = new Session("F");
-        for (int i = 8; i < 21; i++){
-            List<Block> blocks = new ArrayList<>();
-            List<Section> sections1 = new ArrayList<>();
-
-            blocks.add(new Block("MO", i + ":00", i + ":00", "room1"));
-            blocks.add(new Block("MO", i + ":00", i + ":00", "room2"));
-            blocks.add(new Block("TU", i + ":00", i + ":00", "room2"));
-            blocks.add(new Block("TH", i + ":00", i + ":00", "room3"));
-
-            sections1.add(new Section("LEC0101", "Kai", blocks));
-            sections1.add(new Section("LEC0201", "Kai", blocks));
-            sections1.add(new Section("LEC0301", "Kai", blocks));
-            sections1.add(new Section("TUT0101", "Kai", blocks));
-            sections1.add(new Section("TUT0201", "Kai", blocks));
-            sections1.add(new Section("PRA0301", "Kai", blocks));
-            sections1.add(new Section("PRA0401", "Kai", blocks));
-
-            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COSF" + i, "1"));
         }
 
         if (session == null) {
@@ -117,5 +92,32 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary{
         }
 
         presenter.prepareSuccessView(new RecommendBRResponseModel(courseModels));
+    }
+
+    /**
+     * Sets the fall session contained in this class to the given Session entity
+     *
+     * @param fSession new fall session
+     */
+    public void setFSession(Session fSession) {
+        this.fSession = fSession;
+    }
+
+    /**
+     * Sets the winter session contained in this class to the given Session entity
+     *
+     * @param sSession new winter session
+     */
+    public void setSSession(Session sSession) {
+        this.sSession = sSession;
+    }
+
+    /**
+     * Sets the timetable contained in this class to the given Timetable entity
+     *
+     * @param timetable new timetable entity
+     */
+    public void setTimetable(Timetable timetable) {
+        this.timetable = timetable;
     }
 }
