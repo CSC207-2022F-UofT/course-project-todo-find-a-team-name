@@ -236,10 +236,6 @@ public class TimetableView extends JPanel implements MouseListener {
                 courseColors.remove(code);
             }
         }
-
-
-        System.out.println(courseColors);
-
     }
 
     // This method is only used for testing during the development, it will be deleted soon
