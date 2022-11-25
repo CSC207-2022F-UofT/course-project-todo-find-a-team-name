@@ -10,11 +10,13 @@ import java.util.List;
  * Instance Attributes:
  *      - timetableViewModel: model containing all timetable information displayed
  *      - timetableView: JPanel that displays the timetable
+ *      - prevPanel: previous panel displayed before this panel (null if it doesn't exist)
  */
 public class TimetableUI extends JPanel {
 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
+    private JPanel prevPanel = null;
 
     /**
      * Constructs TimetableUI from the given TimetableViewModel, containing
@@ -51,7 +53,13 @@ public class TimetableUI extends JPanel {
         });
 
         goBack.addActionListener(e -> {
-            // TODO: add previous screen
+            if (prevPanel != null) {
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                this.setVisible(false);
+                frame.getContentPane().removeAll();
+                frame.add(prevPanel);
+                frame.revalidate();
+            }
         });
 
         JPanel buttons = new JPanel();
@@ -103,6 +111,15 @@ public class TimetableUI extends JPanel {
      */
     public TimetableView getTimetableView() {
         return timetableView;
+    }
+
+    /**
+     * Set previous panel of this panel to the given panel
+     *
+     * @param prevPanel new panel set to previous panel
+     */
+    public void setPrevPanel(JPanel prevPanel) {
+        this.prevPanel = prevPanel;
     }
 
     // This method is only used for testing during the development, it will be deleted soon
