@@ -67,8 +67,8 @@ public class RecommendBRTestMain {
             sections1.add(new Section("PRA0301", "Kai", blocks));
             sections1.add(new Section("PRA0401", "Kai", blocks));
 
-            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COS-" +
-                    i + i + i + i, "1"));
+            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COS-" + i,
+                    "1"));
         }
         return session;
     }
