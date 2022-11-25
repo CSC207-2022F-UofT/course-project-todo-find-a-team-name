@@ -13,7 +13,8 @@ public class EditTimetableRequestModel {
     private final String courseCode;
     private final List<String> sectionCodes;
 
-    EditTimetableRequestModel(String courseCode,List<String> sectionCodes){
+
+    public EditTimetableRequestModel(String courseCode, List<String> sectionCodes){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;
     }

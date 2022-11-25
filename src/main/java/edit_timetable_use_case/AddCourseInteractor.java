@@ -7,6 +7,12 @@ import retrieve_timetable_use_case.TimetableModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A concrete implementation of the AddCourseInputBoundary, used in the add course use case.
+ * timetable is the timetable being edited.
+ * session is the session corresponding to the timetable, and determines the sections available to choose from.
+ * presenter is the AddCourseOutputBoundary that updates in response to the user's input.
+ */
 public class AddCourseInteractor implements AddCourseInputBoundary{
 
     private Timetable timetable;
@@ -44,11 +50,17 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         presenter.prepareView(editTimetableResponseModel);
     }
 
+    /**
+     * @param timetable Updates the timetable used by the interactor.
+     */
     @Override
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
     }
 
+    /**
+     * @param session Updates the session used by the interactor.
+     */
     @Override
     public void setSession(Session session) {
         this.session = session;

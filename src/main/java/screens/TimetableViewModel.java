@@ -30,6 +30,15 @@ public class TimetableViewModel {
     public List<TimetableViewCourseModel> getCourseData() {
         return timetableCourseData;
     }
+
+    public TimetableViewCourseModel getCourse(String courseCode){
+        for (TimetableViewCourseModel course : timetableCourseData){
+            if (course.getCode().equals(courseCode)){
+                return course;
+            }
+        }
+        return null;
+    }
 }
 
 

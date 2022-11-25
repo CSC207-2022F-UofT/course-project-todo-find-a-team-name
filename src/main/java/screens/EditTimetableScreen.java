@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,9 +32,17 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private JPanel courseButtons;
     private RecommendBRWindow BRWindow;
 
+    private JPanel courseMenu;
+    private SessionViewModel session;
+    private TimetableViewModel timetable;
+
+
     public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
         this.frame = frame;
         this.controller = controller;
+
+        this.ttView = null;
+        this.courseMenu = null;
 
         JButton recommendBR = new JButton("Recommend BR Courses");
         recommendBR.addActionListener(this);
@@ -51,8 +60,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
-
-        this.setVisible(true);
     }
 
 
@@ -93,9 +100,14 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         blockModels4.add(new TimetableViewBlockModel(0, 14, 16));
         sectionModels2.add(new TimetableViewSectionModel("TUT0301", blockModels4));
 
-        courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
+        //courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
 
         TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
+        HashMap<String, TimetableViewCourseModel> calCourses = new HashMap<>();
+        calCourses.put("CSC207H1", new TimetableViewCourseModel("CSC207H1", sectionModels2));
+        calCourses.put("CSC236H1", new TimetableViewCourseModel("CSC236H1", sectionModels1));
+        SessionViewModel sessionViewModel = new SessionViewModel(calCourses, "");
+
 
         Block block1 = new Block("MO", "11:00", "12:00", "");
         Block block2 = new Block("FR", "11:00", "12:00", "");
@@ -136,10 +148,15 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
             ArrayList<TimetableCourse> courses = new ArrayList<>();
             courses.add(c1);
-            courses.add(c2);
+            //courses.add(c2);
             Timetable timetable = new Timetable(courses, "F");
 
+            CalendarCourse cc1 = new CalendarCourse("some title", sections1, "F", "CSC236H1", "");
+            CalendarCourse cc2 = new CalendarCourse("some other title", sections2, "F", "CSC207H1", "");
 
+            Session session = new Session("F");
+            session.addCourse(cc1);
+            session.addCourse(cc2);
 
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
             RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
@@ -147,15 +164,18 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
             AddCourseInputBoundary addInteractor = new AddCourseInteractor(addPresenter);
             addInteractor.setTimetable(timetable);
-            addInteractor.setSession(new Session("S"));
+            addInteractor.setSession(session);
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor);
             EditTimetableScreen screen = new EditTimetableScreen(frame, controller);
             RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
             BRpresenter.setView(recommendBRWindow);
             screen.setBRWindow(recommendBRWindow);
             screen.updateTimetable(timetableViewModel);
+            screen.updateSession(sessionViewModel);
             removePresenter.setView(screen);
+            addPresenter.setView(screen);
             frame.add(screen);
+            screen.setVisible(true);
 
 
         } catch (InvalidSectionsException e) {
@@ -179,9 +199,33 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
     }
 
-    /*public void openAddCourseMenu() {
+    /**
+     * @param courseCode the course code of the course being added.
+     * @param sectionCodes the section codes of the sections that will be added to the course.
+     */
+    public void add(String courseCode, List<String> sectionCodes){
+        try{
+            controller.add(courseCode, sectionCodes);
+        }
+        catch (InvalidSectionsException e){
+            JOptionPane.showMessageDialog(frame, e.getMessage());
+        }
+    }
 
-    }*/
+    /**
+     * Removes the courseMenu if it exists and replaces it with a new one based on the current timetable and session,
+     * then sends the display to the courseMenu.
+     */
+    public void openCourseMenu() {
+        if (courseMenu != null){
+            courseMenu.setVisible(false);
+            frame.remove(courseMenu);
+        }
+        courseMenu = new AddCourseMenu(session, timetable, this, frame);
+        frame.add(courseMenu);
+        this.setVisible(false);
+        courseMenu.setVisible(true);
+    }
 
 
     /*public void openEditCourseScreen(String courseCode){
@@ -194,6 +238,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      * Pressing a "Remove [Course]" button calls the remove use case, pressing "Add Course" will begin the input
      * process for the Add Course use case. "Edit [Course]" will begin the input process for the Edit Course use case.
      * "Save" saves the timetable on the view, and "Recommend BR Courses" begins the Recommend BR use case.
+     * "Add Course" opens an AddCourseMenu that will call the add course use case, given valid inputs.
      * @param e the event to be processed.
      */
     @Override
@@ -205,19 +250,15 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (cmd.equals("Recommend BR Courses")){
             BRWindow.showInputView();
         }
-        /*else if (e.getActionCommand().equals("Add Course")){
-            openAddCourseMenu();
-        }*/
+        else if (e.getActionCommand().equals("Add Course")){
+            openCourseMenu();
+        }
 
         /*
         else if (cmd.startsWith("Edit ")){
 
         }
         else if (cmd.equals("Save")){
-
-        }
-        else if (cmd.equals("Recommend BR Courses")){
-
         }*/
 
     }
@@ -227,6 +268,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
+        this.timetable = timetable;
         if (ttView == null){
             ttView = new TimetableView(1280, 720, timetable);
             this.add(ttView);
@@ -237,6 +279,11 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         ttView.setVisible(false);
         ttView.updateViewModel(timetable);
+
+        if (courseButtons != null){
+            courseButtons.setVisible(false);
+        }
+
 
         courseButtons = new JPanel();
         for (TimetableViewCourseModel course : timetable.getCourseData()) {
@@ -255,6 +302,12 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     }
 
     /**
+     * @param session Updates the screen's session view model.
+     */
+    public void updateSession(SessionViewModel session) {
+        this.session = session;
+    }
+    /**
      * @param successMessage A success message as determined by the presenter.
      *                       This method creates a message dialog with the given message.
      */
@@ -263,6 +316,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         JOptionPane.showMessageDialog(frame, successMessage);
     }
 
+    /**
+     * @param recommendBRWindow sets the RecommendBRWindow that is used when the "Recommend BR" button is pressed.
+     */
     public void setBRWindow(RecommendBRWindow recommendBRWindow) {
         this.BRWindow = recommendBRWindow;
     }

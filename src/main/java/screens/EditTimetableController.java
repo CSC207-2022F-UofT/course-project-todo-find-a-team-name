@@ -1,5 +1,9 @@
-package edit_timetable_use_case;
+package screens;
 
+import edit_timetable_use_case.AddCourseInputBoundary;
+import edit_timetable_use_case.EditTimetableRequestModel;
+import edit_timetable_use_case.RemoveCourseFailedException;
+import edit_timetable_use_case.RemoveCourseInputBoundary;
 import entities.InvalidSectionsException;
 
 import java.util.ArrayList;

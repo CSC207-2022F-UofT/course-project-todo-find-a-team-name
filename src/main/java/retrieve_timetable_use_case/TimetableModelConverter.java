@@ -44,6 +44,6 @@ public class TimetableModelConverter {
     }
 
     public static TimetableViewBlockModel blockToView(BlockModel block){
-        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime());
+        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
 }
