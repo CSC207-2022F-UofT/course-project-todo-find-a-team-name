@@ -5,11 +5,23 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class used to display timetable, as well as buttons used to navigate to other screens.
+ * Instance Attributes:
+ *      - timetableViewModel: model containing all timetable information displayed
+ *      - timetableView: JPanel that displays the timetable
+ */
 public class TimetableUI extends JPanel {
 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
 
+    /**
+     * Constructs TimetableUI from the given TimetableViewModel, containing
+     * all information to be displayed in this JPanel
+     *
+     * @param timetableViewModel timetable data displayed in this component
+     */
     public TimetableUI(TimetableViewModel timetableViewModel){
         this.timetableViewModel = timetableViewModel;
         this.timetableView = new TimetableView(timetableViewModel);
@@ -60,15 +72,35 @@ public class TimetableUI extends JPanel {
         add(timetableView, BorderLayout.CENTER);
     }
 
+    /**
+     * Constructs TimetableUI from the given TimetableViewModel, containing
+     * all information to be displayed in this JPanel, with preferred size set to given
+     * width and height
+     *
+     * @param width width of the preferred size of this component
+     * @param height height of the preferred size of this component
+     * @param timetableViewModel timetable data displayed in this component
+     */
     public TimetableUI(int width, int height, TimetableViewModel timetableViewModel){
         this(timetableViewModel);
         setPreferredSize(new Dimension(width, height));
     }
 
+    /**
+     * Returns timetableViewModel of this class, containing all timetable information displayed
+     * in this class
+     *
+     * @return timetableViewModel containing all timetable information displayed
+     */
     public TimetableViewModel getTimetableViewModel() {
         return timetableViewModel;
     }
 
+    /**
+     * Returns JPanel displaying the timetable
+     *
+     * @return JPanel displaying the timetable
+     */
     public TimetableView getTimetableView() {
         return timetableView;
     }
