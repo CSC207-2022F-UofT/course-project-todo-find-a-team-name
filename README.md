@@ -10,7 +10,6 @@ Coming Soon!
 ## How to Use 
 Coming soon!
 
-
 ## Generated Information Below [To be deleted later] 
 
 This is a template repository for CSC 207 projects. 
