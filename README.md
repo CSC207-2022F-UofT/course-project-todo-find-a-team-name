@@ -5,7 +5,7 @@
 The Timetable Generator is a program, which stores courses on the University of Toronto’s Arts & Science Fall-Winter academic calendar and has the ability to generate timetables based on user-inputted requirements and preferences. Timetables can be exported and imported as files. Sections in generated timetables can also be edited, removed, or added through the user interface. The user can also prompt the program to display breadth course sections that fit a particular time slot and breadth category.
 
 ## Organization
-We organized the repository based on the 4 clean architecture layers and for the Application Business Rules layers, we further divided it by use case. Screens contains all classes in the Interface adapters layer and Framework & Drivers layer. The rest are use case folders containing a use case's classes in the Application Business Rules layer and entities. 
+We organized the repository based on the 4 clean architecture layers and for the Application Business Rules layers, we further divided it by use case. The screens package contains all classes in the Interface adapters layer and Framework & Drivers layer. The rest are use case packages containing a use case's classes in the Application Business Rules layer and there is the entities package containing all entities used in the program. 
 
 ## Design Approach 
 Coming soon!
