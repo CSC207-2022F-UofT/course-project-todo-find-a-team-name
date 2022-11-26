@@ -139,26 +139,26 @@ public class MainUI extends JPanel implements ActionListener {
                 break;
             }
             case "Generate timetable": {
-                frame.getContentPane().removeAll();
-                frame.add(constraintsInputScreen);
-                frame.revalidate();
+                changeScreen(constraintsInputScreen);
                 break;
             }
             case "Edit":
-                frame.getContentPane().removeAll();
-                frame.add(editTimetableScreen);
-                frame.revalidate();
+                changeScreen(editTimetableScreen);
                 break;
             case "Display": {
-                this.setVisible(false);
-                frame.getContentPane().removeAll();
-                timetableUI.setVisible(true);
-                frame.add(timetableUI);
-                frame.revalidate();
-                this.setVisible(true);
+                changeScreen(timetableUI);
                 break;
             }
         }
+    }
+
+    private void changeScreen(JPanel panel){
+        this.setVisible(false);
+        frame.getContentPane().removeAll();
+        panel.setVisible(true);
+        frame.add(panel);
+        frame.revalidate();
+        this.setVisible(true);
     }
 
     // TODO: Remove this
