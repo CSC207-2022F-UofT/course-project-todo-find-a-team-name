@@ -4,6 +4,7 @@ import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
+import fileio_use_case.FileImportRequestModel;
 import fileio_use_case.SessionGatewayInteractor;
 import fileio_use_case.SessionStorerInteractor;
 import org.json.simple.parser.ParseException;
@@ -20,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SessionGatewayInteractorTest {
     @Test
     void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
+        FileImportRequestModel filePath = new FileImportRequestModel("src/main/java/screens/courses_cleaned.json");
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor(filePath);
         String jsonToStr = convertFile.fileToString();
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
 
@@ -34,7 +36,8 @@ public class SessionGatewayInteractorTest {
     }
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor("src/test/java/feature6/testing.json");
+        FileImportRequestModel filePath1 = new FileImportRequestModel("src/test/java/feature6/testing.json");
+        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor(filePath1);
         // Course from testing.json
         String jsonToStr1 = convertingFile1.fileToString();
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);

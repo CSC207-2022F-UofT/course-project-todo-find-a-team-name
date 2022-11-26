@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor {
+public class SessionGatewayInteractor implements FileImportInputBoundary{
     private final SessionGateway sessionGateway;
-    public SessionGatewayInteractor(String file) {
+    public SessionGatewayInteractor(FileImportRequestModel file) {
         this.sessionGateway = new SessionGateway(file);
     }
     /**
@@ -51,5 +51,4 @@ public class SessionGatewayInteractor {
     public SessionStorerInteractor creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
         return this.sessionGateway.creatingSessionsFromFile(allCourses);
     }
-
 }

@@ -18,8 +18,8 @@ import java.util.*;
 
 public class SessionGateway implements GatewayInterface {
     private final String file;
-    public SessionGateway(String file) {
-        this.file = file;
+    public SessionGateway(FileImportRequestModel file) {
+        this.file = file.getFilePath();
     }
     /**
      * Returns a string representation of the JSON file it reads.
