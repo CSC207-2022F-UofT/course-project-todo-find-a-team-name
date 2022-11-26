@@ -7,7 +7,7 @@ The Timetable Generator is a program, which stores courses on the University of 
 ## Organization
 We organized the repository based on the 4 clean architecture layers and for the Application Business Rules layers, we further divided it by use case. The screens package contains all classes in the Interface adapters layer and Framework & Drivers layer. The rest are use case packages containing a use case's classes in the Application Business Rules layer and there is the entities package containing all entities used in the program. 
 
-## Design Approach 
+## Design Decisions 
 Coming soon!
 
 ## Setup Requirements 
