@@ -2,8 +2,6 @@ package screens;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to display timetable, as well as buttons used to navigate to other screens.
@@ -24,7 +22,7 @@ public class TimetableUI extends JPanel {
      *
      * @param timetableViewModel timetable data displayed in this component
      */
-    public TimetableUI(TimetableViewModel timetableViewModel){
+    public TimetableUI(TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
         this.timetableViewModel = timetableViewModel;
         this.timetableView = new TimetableView(timetableViewModel);
 
@@ -48,17 +46,11 @@ public class TimetableUI extends JPanel {
             // TODO: add save screen
         });
 
-        edit.addActionListener(e -> {
-            // TODO: add edit screen
-        });
+        edit.addActionListener(e -> changeScreen(editTimetableScreen));
 
         goBack.addActionListener(e -> {
             if (prevPanel != null) {
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                this.setVisible(false);
-                frame.getContentPane().removeAll();
-                frame.add(prevPanel);
-                frame.revalidate();
+                changeScreen(prevPanel);
             }
         });
 
@@ -89,8 +81,8 @@ public class TimetableUI extends JPanel {
      * @param height height of the preferred size of this component
      * @param timetableViewModel timetable data displayed in this component
      */
-    public TimetableUI(int width, int height, TimetableViewModel timetableViewModel){
-        this(timetableViewModel);
+    public TimetableUI(int width, int height, TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
+        this(timetableViewModel, editTimetableScreen);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -122,47 +114,17 @@ public class TimetableUI extends JPanel {
         this.prevPanel = prevPanel;
     }
 
-    // This method is only used for testing during the development, it will be deleted soon
-    // TODO: Delete this method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        java.util.List<TimetableViewCourseModel> courseData = new ArrayList<>();
-        java.util.List<TimetableViewSectionModel> sectionModels1 = new ArrayList<>();
-
-        java.util.List<TimetableViewBlockModel> blockModels1 = new ArrayList<>();
-        blockModels1.add(new TimetableViewBlockModel(0, 11, 12));
-        blockModels1.add(new TimetableViewBlockModel(4, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("LEC0101", blockModels1));
-
-        java.util.List<TimetableViewBlockModel> blockModels2 = new ArrayList<>();
-        blockModels2.add(new TimetableViewBlockModel(2, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("TUT0101", blockModels2));
-
-        courseData.add(new TimetableViewCourseModel("CSC236H1", sectionModels1));
-
-
-        java.util.List<TimetableViewSectionModel> sectionModels2 = new ArrayList<>();
-
-        java.util.List<TimetableViewBlockModel> blockModels3 = new ArrayList<>();
-        blockModels3.add(new TimetableViewBlockModel(1, 16, 17));
-        blockModels3.add(new TimetableViewBlockModel(4, 16, 17));
-        sectionModels2.add(new TimetableViewSectionModel("LEC0401", blockModels3));
-
-        List<TimetableViewBlockModel> blockModels4 = new ArrayList<>();
-        blockModels4.add(new TimetableViewBlockModel(0, 14, 16));
-        sectionModels2.add(new TimetableViewSectionModel("TUT0301", blockModels4));
-
-        courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
-
-
-        TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
-        TimetableUI timetableView = new TimetableUI(700, 700, timetableViewModel);
-
-        frame.add(timetableView);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    /**
+     * Change the screen of the frame to the given panel
+     *
+     * @param panel new screen
+     */
+    private void changeScreen(JPanel panel){
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        this.setVisible(false);
+        frame.getContentPane().removeAll();
+        frame.add(panel);
+        frame.revalidate();
+        this.setVisible(true);
     }
 }

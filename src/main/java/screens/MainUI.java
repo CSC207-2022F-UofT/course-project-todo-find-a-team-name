@@ -199,7 +199,7 @@ public class MainUI extends JPanel implements ActionListener {
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(sectionFilterController1);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
-        TimetableUI timetableUI = new TimetableUI(new TimetableViewModel(new ArrayList<>()));
+        TimetableUI timetableUI = new TimetableUI(new TimetableViewModel(new ArrayList<>()), editTimetableScreen);
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
         timetableUI.setPrevPanel(mainUI);
