@@ -152,6 +152,11 @@ public class MainUI extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Change the screen of the frame to the given panel
+     *
+     * @param panel new screen
+     */
     private void changeScreen(JPanel panel){
         this.setVisible(false);
         frame.getContentPane().removeAll();
