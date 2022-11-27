@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * A test suite for the SectionModel class, primarily to confirm the correctness of its equal method.
+ * The setters and getters are currently too simple to require testing, but must be tested if more complex
+ * behaviour is introduced.
+ */
 class SectionModelTest {
     private SectionModel section;
 
@@ -18,6 +23,9 @@ class SectionModelTest {
 
     }
 
+    /**
+     * Tests that the Block and its equivalent BlockModel are considered equal.
+     */
     @Test
     void testEquals() {
         ArrayList<BlockModel> blocks = new ArrayList<>();
@@ -26,6 +34,9 @@ class SectionModelTest {
         assertEquals(other, section);
     }
 
+    /**
+     * Tests that the Block and a non-equivalent BlockModel are non-equal.
+     */
     @Test
     void testNotEquals() {
         ArrayList<BlockModel> otherBlocks = new ArrayList<>();

@@ -9,12 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * A suite of tests for the RetrieveTimetableInteractor.
+ */
 class RetrieveTimetableInteractorTest {
     private RetrieveTimetableInteractor interactor;
     private CourseModel courseModel;
     private SessionModel sessionModel;
     private TimetableModel timetableModel;
 
+    /**
+     * Creates a mock-up session and timetable with non-empty courses, sections and blocks, as well as
+     * equivalent Models.
+     */
     @BeforeEach
     void setUp() {
         BlockModel blockModel = new BlockModel(2, 14, 16, "AB106");
@@ -69,6 +76,9 @@ class RetrieveTimetableInteractorTest {
     void tearDown() {
     }
 
+    /**
+     * Asserts that the CourseModel object returned by the interactor is equivalent to the input TimetableCourse.
+     */
     @Test
     void retrieveTimetableCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
@@ -76,6 +86,9 @@ class RetrieveTimetableInteractorTest {
         assertEquals(courseModel, interactor.retrieveTimetableCourse(request));
     }
 
+    /**
+     * Asserts that the CourseModel object returned by the interactor is equivalent to the input CalendarCourse.
+     */
     @Test
     void retrieveCalendarCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
@@ -83,11 +96,17 @@ class RetrieveTimetableInteractorTest {
         assertEquals(courseModel, interactor.retrieveCalendarCourse(request));
     }
 
+    /**
+     * Asserts that the SessionModel object returned by the interactor is equivalent to the input Session.
+     */
     @Test
     void retrieveSession() {
         assertEquals(sessionModel, interactor.retrieveSession());
     }
 
+    /**
+     * Asserts that the TimetableModel object returned by the interactor is equivalent to the input Timetable.
+     */
     @Test
     void retrieveTimetable() {
         assertEquals(timetableModel, interactor.retrieveTimetable());

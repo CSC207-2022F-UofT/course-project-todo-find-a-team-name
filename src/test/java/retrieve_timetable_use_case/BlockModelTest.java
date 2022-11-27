@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * A test suite for the BlockModel class, primarily to confirm the correctness of BlockModel's equal method.
+ * The setters and getters are currently too simple to require testing, but must be tested if more complex
+ * behaviour is introduced.
+ */
 class BlockModelTest {
     private BlockModel block;
 

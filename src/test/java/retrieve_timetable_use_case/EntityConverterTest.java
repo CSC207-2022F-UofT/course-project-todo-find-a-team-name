@@ -9,6 +9,9 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * A suite of tests for the EntityConverter class of static methods.
+ */
 class EntityConverterTest {
     private BlockModel blockModel;
     private Block blockActual;
@@ -19,6 +22,10 @@ class EntityConverterTest {
     private SessionModel sessionModel;
     private Session sessionActual;
 
+    /**
+     * Creates a set of timetable data structures (Sessions, Timetables, Courses, Sections, Blocks) and their
+     * corresponding Models, which are each encapsulated by the structure that is one layer higher than it.
+     */
     @BeforeEach
     public void setUp() {
         blockModel = new BlockModel(2, 14, 16, "AB106");
@@ -52,21 +59,33 @@ class EntityConverterTest {
         sessionActual.addCourse(courseActual);
     }
 
+    /**
+     * Tests that the model created by generateSessionResponse has data equivalent to the input session.
+     */
     @Test
     void generateSessionResponse() {
         assertEquals(sessionModel, EntityConverter.generateSessionResponse(sessionActual));
     }
 
+    /**
+     * Tests that the model created by generateCourseResponse has data equivalent to the input session.
+     */
     @Test
     void generateCourseResponse() {
         assertEquals(courseModel, EntityConverter.generateCourseResponse(courseActual));
     }
 
+    /**
+     * Tests that the model created by generateSectionResponse has data equivalent to the input session.
+     */
     @Test
     void generateSectionResponse() {
         assertEquals(sectionModel, EntityConverter.generateSectionResponse(sectionActual));
     }
 
+    /**
+     * Tests that the model created by generateBlockResponse has data equivalent to the input session.
+     */
     @Test
     void generateBlockResponse() {
         assertEquals(blockModel, EntityConverter.generateBlockResponse(blockActual));

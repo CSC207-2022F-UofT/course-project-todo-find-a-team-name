@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * A test suite for the SessionModel class, primarily to confirm the correctness of its equal method.
+ * The setters and getters are currently too simple to require testing, but must be tested if more complex
+ * behaviour is introduced.
+ */
 class SessionModelTest {
     private SessionModel session;
 
@@ -22,6 +27,9 @@ class SessionModelTest {
     void tearDown() {
     }
 
+    /**
+     * Tests that the Session and its equivalent SessionModel are considered equal.
+     */
     @Test
     void testEquals() {
         HashMap<String, CourseModel> courses = new HashMap<>();
@@ -29,6 +37,9 @@ class SessionModelTest {
         assertEquals(new SessionModel(courses, "F"), session);
     }
 
+    /**
+     * Tests that the Session and a non-equivalent SessionModel are non-equal.
+     */
     @Test
     void testNotEquals() {
         assertNotEquals(new SessionModel(new HashMap<>(), "F"), session);
