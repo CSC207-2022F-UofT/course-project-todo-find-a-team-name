@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor implements FileImportInputBoundary{
+public class SessionGatewayInteractor {
     private final SessionGateway sessionGateway;
     public SessionGatewayInteractor(FileImportRequestModel file) {
         this.sessionGateway = new SessionGateway(file);
