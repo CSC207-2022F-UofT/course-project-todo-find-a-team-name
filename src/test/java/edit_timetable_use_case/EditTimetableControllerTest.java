@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * A testing class for EditTimetableController that verifies that the controller throws the correct exceptions (or
  * lack of exceptions) when remove, add or edit are called.
+ * These tests do not test the correctness of corresponding interactors so much as testing that inputs result in the
+ * correct exceptions being thrown. See the tests of the corresponding interactors for the above.
  */
 class EditTimetableControllerTest {
 

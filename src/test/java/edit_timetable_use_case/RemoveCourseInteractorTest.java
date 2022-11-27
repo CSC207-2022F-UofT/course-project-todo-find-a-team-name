@@ -23,7 +23,7 @@ class RemoveCourseInteractorTest {
     RemoveCourseInteractor interactor;
 
     /**
-     * Creates a itmetable with a course EGX101, and a corresponding view and presenter.
+     * Creates a timetable with a course EGX101, and a corresponding view and presenter.
      */
     @BeforeEach
     public void setUp(){
