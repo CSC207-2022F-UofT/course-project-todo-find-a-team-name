@@ -17,17 +17,14 @@ import java.util.*;
  */
 
 public class SessionGateway implements GatewayInterface {
-    private final String file;
-    public SessionGateway(FileImportRequestModel file) {
-        this.file = file.getFilePath();
-    }
+    public SessionGateway() {}
     /**
      * Returns a string representation of the JSON file it reads.
      * @return String
      */
-    public String fileToString() throws IOException {
+    public String fileToString(String file) throws IOException {
         // Files.readString(Path.of("src/main/java/screens/courses_cleaned.json"));
-        return Files.readString(Path.of(this.file));
+        return Files.readString(Path.of(file));
     }
     /**
      * Given a string representation of a JSON file, return a HashMap of all course info from the JSON file

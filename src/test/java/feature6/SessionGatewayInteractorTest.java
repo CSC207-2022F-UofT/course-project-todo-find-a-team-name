@@ -22,8 +22,8 @@ public class SessionGatewayInteractorTest {
     @Test
     void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
         FileImportRequestModel filePath = new FileImportRequestModel("src/main/java/screens/courses_cleaned.json");
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor(filePath);
-        String jsonToStr = convertFile.fileToString();
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor();
+        String jsonToStr = convertFile.fileToString(filePath);
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
 
         SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
@@ -37,9 +37,9 @@ public class SessionGatewayInteractorTest {
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
         FileImportRequestModel filePath1 = new FileImportRequestModel("src/test/java/feature6/testing.json");
-        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor(filePath1);
+        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor();
         // Course from testing.json
-        String jsonToStr1 = convertingFile1.fileToString();
+        String jsonToStr1 = convertingFile1.fileToString(filePath1);
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
         Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");

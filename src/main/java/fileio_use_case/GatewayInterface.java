@@ -6,5 +6,5 @@ public interface GatewayInterface {
     /** Converts JSON file to string
      * @return String
      */
-    String fileToString() throws IOException;
+    String fileToString(String filePath) throws IOException;
 }
