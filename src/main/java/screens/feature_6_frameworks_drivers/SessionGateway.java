@@ -37,6 +37,8 @@ public class SessionGateway implements GatewayInterface {
      */
     public HashMap<String, CalendarCourse> readFromFile(String jsonData) throws ParseException {
         HashMap<String, CalendarCourse> allCourses = new HashMap<>();
+        ArrayList<Section> allSections = new ArrayList<>();
+        ArrayList<Block> allBlocks = new ArrayList<>();
         // Parse String
         JSONParser parser = new JSONParser();
         JSONObject jsonObj = (JSONObject) parser.parse(jsonData);
@@ -45,11 +47,9 @@ public class SessionGateway implements GatewayInterface {
             JSONObject courseInfo = (JSONObject) jsonObj.get(key);
             // Iterate through sections
             JSONObject sections = (JSONObject) courseInfo.get("sections"); // Looks at value of "sections"
-            ArrayList<Section> allSections = new ArrayList<>();
             for (Object section : sections.keySet()) {
                 JSONObject aSection = (JSONObject) sections.get(section);
                 // Iterate through blocks
-                ArrayList<Block> allBlocks = new ArrayList<>();
                 JSONObject blocks = (JSONObject) aSection.get("blocks"); // Looks at value of "blocks"
                 for (Object block : blocks.keySet()) {
                     JSONObject aBlock = (JSONObject) blocks.get(block);
@@ -66,9 +66,9 @@ public class SessionGateway implements GatewayInterface {
             CalendarCourse calCourse = new CalendarCourseBuilderInteractor((String) courseInfo.get("title"),
                     allSections, (String) courseInfo.get("session"),
                     (String) courseInfo.get("code"), (String) courseInfo.get("breadth")).newCourse();
+            // Add course code as key and new Calendar Course as a value into allCourses
             allCourses.put((String) courseInfo.get("code"), calCourse);
         }
-        // Return all courses in the JSON file
         return allCourses;
     }
     /**
