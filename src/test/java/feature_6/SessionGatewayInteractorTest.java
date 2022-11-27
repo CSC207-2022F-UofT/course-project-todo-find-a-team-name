@@ -1,12 +1,12 @@
-package feature6;
+package feature_6;
 
 import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
-import fileio_use_case.FileImportRequestModel;
-import fileio_use_case.SessionGatewayInteractor;
-import fileio_use_case.SessionStorerInteractor;
+import fileio_use_case.fileImportRequestModel;
+import fileio_use_case.sessionGatewayInteractor;
+import fileio_use_case.sessionStorerInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +18,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SessionGatewayInteractorTest {
+class SessionGatewayInteractorTest {
     @Test
     void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
-        FileImportRequestModel filePath = new FileImportRequestModel("src/main/java/screens/courses_cleaned.json");
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor();
+        fileImportRequestModel filePath = new fileImportRequestModel("src/main/java/screens/courses_cleaned.json");
+        sessionGatewayInteractor convertFile = new sessionGatewayInteractor();
         String jsonToStr = convertFile.fileToString(filePath);
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
 
-        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
+        sessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
         assertTrue(allSessions.getAllSessions().containsKey("S"));
         assertTrue(allSessions.getAllSessions().containsKey("F"));
 
@@ -36,8 +36,8 @@ public class SessionGatewayInteractorTest {
     }
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        FileImportRequestModel filePath1 = new FileImportRequestModel("src/test/java/feature6/testing.json");
-        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor();
+        fileImportRequestModel filePath1 = new fileImportRequestModel("src/test/java/feature_6/testing.json");
+        sessionGatewayInteractor convertingFile1 = new sessionGatewayInteractor();
         // Course from testing.json
         String jsonToStr1 = convertingFile1.fileToString(filePath1);
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);

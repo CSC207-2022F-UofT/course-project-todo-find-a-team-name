@@ -2,7 +2,7 @@ package fileio_use_case;
 
 import java.io.IOException;
 
-public interface GatewayInterface {
+public interface gatewayInterface {
     /** Converts JSON file to string
      * @return String
      */

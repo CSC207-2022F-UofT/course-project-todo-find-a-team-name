@@ -6,13 +6,13 @@ import entities.Section;
 import java.util.ArrayList;
 import java.util.List;
 /** Builds CalendarCourse **/
-public class CalendarCourseBuilderInteractor {
+public class calendarCourseBuilderInteractor {
     protected String title;
     protected List<Section> sections;
     protected String courseSession;
     protected String courseCode;
     protected String breadth;
-    public CalendarCourseBuilderInteractor(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
+    public calendarCourseBuilderInteractor(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
         this.title = title;
         this.sections = sections;
         this.courseSession = courseSession;

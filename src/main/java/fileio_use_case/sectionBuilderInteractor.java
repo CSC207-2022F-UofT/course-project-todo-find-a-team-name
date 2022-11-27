@@ -6,13 +6,13 @@ import entities.Section;
 import java.util.ArrayList;
 import java.util.List;
 /** Builds Section **/
-public class SectionBuilderInteractor {
+public class sectionBuilderInteractor {
 
     private final String code;
     private final String instructorName;
     private final List<Block> blocks;
 
-    public SectionBuilderInteractor(String code, String instructorName, ArrayList<Block> blocks) {
+    public sectionBuilderInteractor(String code, String instructorName, ArrayList<Block> blocks) {
         this.code = code;
         this.instructorName = instructorName;
         this.blocks = blocks;

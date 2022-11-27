@@ -1,4 +1,4 @@
-package feature6;
+package feature_6;
 
 import entities.Block;
 import entities.CalendarCourse;
@@ -6,7 +6,7 @@ import entities.Section;
 import entities.Session;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import screens.feature_6_frameworks_drivers.SessionGateway;
+import screens.feature_6_frameworks_drivers.sessionGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class SessionGatewayTest {
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        SessionGateway convertingFile1 = new SessionGateway();
+        sessionGateway convertingFile1 = new sessionGateway();
         // Course from testing.json
-        String jsonToStr1 = convertingFile1.fileToString("src/test/java/feature6/testing.json");
+        String jsonToStr1 = convertingFile1.fileToString("src/test/java/feature_6/testing.json");
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
         Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
