@@ -1,5 +1,7 @@
 package screens;
 
+import edit_timetable_use_case.EditTimetableController;
+
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 

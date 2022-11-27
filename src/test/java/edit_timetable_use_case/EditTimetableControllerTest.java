@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import screens.AddCoursePresenter;
-import screens.EditTimetableController;
 import screens.RemoveCoursePresenter;
 
 import java.util.ArrayList;
@@ -48,6 +47,19 @@ class EditTimetableControllerTest {
             ACPresenter.setView(view);
             ACInteractor = new AddCourseInteractor(ACPresenter);
             controller = new EditTimetableController(RCInteractor, ACInteractor);
+            ACPresenter.setView(view);
+            ACInteractor.setTimetable(t);
+
+            Session session = new Session("F");
+            List<Section> sections = new ArrayList<>();
+            sections.add(new Section("LEC0101", "instr1", new ArrayList<>()));
+            sections.add(new Section("TUT0102", "instr1", new ArrayList<>()));
+            sections.add(new Section("TUT0101", "instr1", new ArrayList<>()));
+            sections.add(new Section("PRA0101", "instr1", new ArrayList<>()));
+            CalendarCourse course = new CalendarCourse("some course", sections, "F",
+                    "CSC108", "1");
+            session.addCourse(course);
+            ACInteractor.setSession(session);
         }
         catch (InvalidSectionsException e){
             fail("Should not have thrown an exception here.");
@@ -86,4 +98,40 @@ class EditTimetableControllerTest {
             assertTrue(true);
         }
     }
+
+    /**
+     * Tests that a correct call (without more than 1 section of any given type) does not raise an exception.
+     */
+    @Test
+    void addSucceeds(){
+        List<String> sectionCodes = new ArrayList<>();
+        sectionCodes.add("TUT0101");
+        sectionCodes.add("LEC0101");
+        sectionCodes.add("PRA0101");
+        try{
+            controller.add("CSC108", sectionCodes);
+            assertTrue(true);
+        }
+        catch(InvalidSectionsException e){
+            fail("Valid sections were given. Add should not have failed here.");
+        }
+    }
+
+    /**
+     * Tests that an invalid call (with more than 1 section of a given type) raises an InvalidSectionsException.
+     */
+    @Test
+    void addFails(){
+        List<String> sectionCodes = new ArrayList<>();
+        sectionCodes.add("TUT0101");
+        sectionCodes.add("TUT0102");
+        try{
+            controller.add("CSC108", sectionCodes);
+            fail("This call should have thrown an InvalidSectionsException.");
+        }
+        catch(InvalidSectionsException e){
+            assertTrue(true);
+        }
+    }
+
 }

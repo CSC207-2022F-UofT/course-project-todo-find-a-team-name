@@ -1,8 +1,6 @@
 package screens;
 
-import edit_timetable_use_case.EditTimetableRequestModel;
 import edit_timetable_use_case.EditTimetableResponseModel;
-import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.TestEditTimetableView;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,12 +9,11 @@ import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RemoveCoursePresenterTest {
     private RemoveCoursePresenter presenter;
     private TestEditTimetableView testView;
-    private
 
     @BeforeEach
     void setUp() {

@@ -1,5 +1,5 @@
 import edit_timetable_use_case.AddCourseInteractor;
-import screens.EditTimetableController;
+import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
 import recommend_br_use_case.RecommendBRInteractor;
