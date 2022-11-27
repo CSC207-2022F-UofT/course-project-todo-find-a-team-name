@@ -13,12 +13,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * A class to test the RemoveCourseInteractor.
+ */
 class RemoveCourseInteractorTest {
 
     TimetableCourse c;
     Timetable t;
     RemoveCourseInteractor interactor;
 
+    /**
+     * Creates a itmetable with a course EGX101, and a corresponding view and presenter.
+     */
     @BeforeEach
     public void setUp(){
         try{
@@ -56,7 +62,9 @@ class RemoveCourseInteractorTest {
     }
 
 
-
+    /**
+     * Remove should fail here, since no course in the timetable has course code NAC300.
+     */
     @Test
     void removeFails(){
         EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<String>());

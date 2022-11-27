@@ -5,6 +5,8 @@ import screens.TimetableViewModel;
 
 /**
  * A test view that mocks up EditTimetableView.
+ * response is used to store the message the presenter passes to the View.
+ * timetable is the TimetableViewModel passed to the view.
  */
 public class TestEditTimetableView implements EditTimetableView {
 

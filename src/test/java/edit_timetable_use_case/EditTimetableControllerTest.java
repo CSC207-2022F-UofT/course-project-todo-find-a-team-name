@@ -13,6 +13,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * A testing class for EditTimetableController that verifies that the controller throws the correct exceptions (or
+ * lack of exceptions) when remove, add or edit are called.
+ */
 class EditTimetableControllerTest {
 
     RemoveCourseInputBoundary RCInteractor;
@@ -22,6 +26,10 @@ class EditTimetableControllerTest {
 
     TestEditTimetableView view;
 
+    /**
+     * Creates an EditTimetableController (controller), corresponding interactors from the edit, remove and add
+     * use cases, and the view, and inserts a non-empty timetable.
+     */
     @BeforeEach
     void setUp() {
         try{
@@ -49,6 +57,9 @@ class EditTimetableControllerTest {
     void tearDown() {
     }
 
+    /**
+     * Remove should be successfully called in this case.
+     */
     @Test
     void removeSucceeds() {
         try {
@@ -60,6 +71,9 @@ class EditTimetableControllerTest {
         }
     }
 
+    /**
+     * Remove should throw a RemoveCourseFailedException because the course code given doesn't exist in the timetable.
+     */
     @Test
     void removeFails(){
         try{
