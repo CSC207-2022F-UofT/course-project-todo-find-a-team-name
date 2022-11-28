@@ -1,8 +1,7 @@
 package edit_timetable_use_case;
 
-import entities.Session;
 import entities.Timetable;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
 
     private Timetable timetable;
     private final RemoveCourseOutputBoundary presenter;
+    private RetrieveTimetableInputBoundary retrieveInteractor;
 
 
     public RemoveCourseInteractor(RemoveCourseOutputBoundary presenter) {
@@ -39,11 +39,8 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
         else {
             throw new RemoveCourseFailedException(courseCode);
         }
-
-        RetrieveTimetableInteractor
-                RTInteractor = new RetrieveTimetableInteractor(timetable, new Session(""));
-
-        TimetableModel updatedTimetable = RTInteractor.retrieveTimetable();
+        retrieveInteractor.setTimetable(timetable);
+        TimetableModel updatedTimetable = retrieveInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
                 new EditTimetableResponseModel(courseCode, new ArrayList<>(), updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
@@ -51,5 +48,9 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
 
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
+    }
+
+    public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
+    this.retrieveInteractor = retrieveInteractor;
     }
 }

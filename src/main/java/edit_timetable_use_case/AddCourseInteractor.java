@@ -1,6 +1,7 @@
 package edit_timetable_use_case;
 
 import entities.*;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.TimetableModel;
 
@@ -18,6 +19,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
     private Timetable timetable;
     private Session session;
     private final AddCourseOutputBoundary presenter;
+    private RetrieveTimetableInputBoundary retrieveInteractor;
 
     public AddCourseInteractor(AddCourseOutputBoundary presenter){
         this.presenter = presenter;
@@ -43,8 +45,9 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         TimetableCourse course = new TimetableCourse(calCourse.getTitle(), sections, calCourse.getCourseSession(),
                 calCourse.getCourseCode(), calCourse.getBreadth());
         timetable.AddToCourseList(course);
-        RetrieveTimetableInteractor RTInteractor = new RetrieveTimetableInteractor(timetable, session);
-        TimetableModel updatedTimetable = RTInteractor.retrieveTimetable();
+        retrieveInteractor.setTimetable(timetable);
+        retrieveInteractor.setSession(session);
+        TimetableModel updatedTimetable = retrieveInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
                 new EditTimetableResponseModel(request.getCourseCode(), request.getSectionCodes(), updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
@@ -64,5 +67,13 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
     @Override
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    /**
+     * @param retrieveInteractor the RetrieveTimetableInputBoundary used to create a view model of
+     *                           the updated timetable.
+     */
+    public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
+        this.retrieveInteractor = retrieveInteractor;
     }
 }
