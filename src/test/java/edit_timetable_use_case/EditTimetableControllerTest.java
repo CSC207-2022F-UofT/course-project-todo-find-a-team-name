@@ -66,7 +66,6 @@ class EditTimetableControllerTest {
     void removeSucceeds() {
         try {
             controller.remove("EGX101");
-            assertTrue(true);
         }
         catch (RemoveCourseFailedException e){
             fail("This call should not have resulted in a RemoveCourseFailedException.");

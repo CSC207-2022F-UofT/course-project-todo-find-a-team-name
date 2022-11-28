@@ -12,17 +12,12 @@ public class TestEditTimetableView implements EditTimetableView {
 
     public String response;
     public TimetableViewModel timetable;
-    /**
-     * @param timetable
-     */
+
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
         this.timetable = timetable;
     }
 
-    /**
-     * @param successMessage
-     */
     @Override
     public void displayResponse(String successMessage) {
         this.response = successMessage;
