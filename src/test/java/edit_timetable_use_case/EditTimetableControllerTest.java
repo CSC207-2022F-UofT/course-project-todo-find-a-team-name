@@ -41,6 +41,16 @@ class EditTimetableControllerTest {
                 "", "EGX101", "");
             ArrayList<TimetableCourse> courses = new ArrayList<>(List.of(c));
             Timetable t = new Timetable(courses, "F");
+
+            Session session = new Session("F");
+            List<Section> sections = new ArrayList<>();
+            sections.add(new Section("LEC0101", "instr1", new ArrayList<>()));
+            sections.add(new Section("TUT0102", "instr1", new ArrayList<>()));
+            sections.add(new Section("TUT0101", "instr1", new ArrayList<>()));
+            sections.add(new Section("PRA0101", "instr1", new ArrayList<>()));
+            CalendarCourse course = new CalendarCourse("some course", sections, "F",
+                    "CSC108", "1");
+
             view = new TestEditTimetableView();
             RemoveCourseOutputBoundary RCPresenter = new RemoveCoursePresenter();
             RCPresenter.setView(view);
@@ -57,18 +67,9 @@ class EditTimetableControllerTest {
             ECInteractor = new EditCourseInteractor(ECPresenter);
             ECInteractor.setRetrieveInteractor(retrieveInteractor);
             controller = new EditTimetableController(RCInteractor, ACInteractor, ECInteractor);
-            controller = new EditTimetableController(RCInteractor, ACInteractor);
             ACPresenter.setView(view);
             ACInteractor.setTimetable(t);
 
-            Session session = new Session("F");
-            List<Section> sections = new ArrayList<>();
-            sections.add(new Section("LEC0101", "instr1", new ArrayList<>()));
-            sections.add(new Section("TUT0102", "instr1", new ArrayList<>()));
-            sections.add(new Section("TUT0101", "instr1", new ArrayList<>()));
-            sections.add(new Section("PRA0101", "instr1", new ArrayList<>()));
-            CalendarCourse course = new CalendarCourse("some course", sections, "F",
-                    "CSC108", "1");
             session.addCourse(course);
             ACInteractor.setSession(session);
         }
