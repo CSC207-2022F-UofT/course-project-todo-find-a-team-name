@@ -66,7 +66,6 @@ public class MainUI extends JPanel implements ActionListener {
         TitledBorder timetableBorder = BorderFactory.createTitledBorder("Existing Timetable Operations");
         timetableBorder.setTitleJustification(TitledBorder.CENTER);
         timetablePanel.setBorder(timetableBorder);
-
         JPanel importTimetablePanel = new JPanel();
         JButton importTimetable = new JButton("Import timetable");
         importTimetable.addActionListener(this);
@@ -208,7 +207,7 @@ public class MainUI extends JPanel implements ActionListener {
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
         timetableUI.setPrevPanel(mainUI);
-        mainUI.setPreferredSize(new Dimension(800, 500));
+        mainUI.setPreferredSize(new Dimension(1280, 720));
         frame.add(mainUI);
 
         frame.pack();
