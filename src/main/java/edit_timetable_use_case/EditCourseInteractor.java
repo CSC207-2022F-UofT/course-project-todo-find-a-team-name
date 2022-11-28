@@ -2,41 +2,66 @@ package edit_timetable_use_case;
 
 import entities.*;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * A concrete implementation of the EditCourseInputBoundary.
+ * timetable is the Timetable being edited.
+ * session is the Session being edited.
+ * addInteractor is an AddCourseInputBoundary used in the edit method.
+ * removeInteractor is a RemoveCourseInputBoundary used in the edit method.
+ * presenter is the presenter responsible for updating the view.
+ * retrieveInteractor is a RetrieveTimetableInteractor used in the edit method.
+ */
 public class EditCourseInteractor implements EditCourseInputBoundary {
 
     private Timetable timetable;
     private Session session;
-    private final AddCourseInteractor addInteractor;
-    private final RemoveCourseInteractor removeInteractor;
     private final EditCourseOutputBoundary presenter;
     private RetrieveTimetableInputBoundary retrieveInteractor;
 
-    public EditCourseInteractor(EditCoursePresenter presenter, AddCourseInteractor addInteractor,
-                                RemoveCourseInteractor removeInteractor){
+    public EditCourseInteractor(EditCourseOutputBoundary presenter){
         this.presenter = presenter;
-        this.addInteractor = addInteractor;
-        this.removeInteractor = removeInteractor;
     }
 
+    /**
+     * @param request A EditTimetableRequestModel with the course code of the existing course to be edited
+     *                and the section codes of all sections that the edited course should have.
+     * @throws InvalidSectionsException if request contains section codes for more than 1 section of any
+     * given type (LEC, PRA or TUT)
+     * @throws NotInTimetableException if the course code of the course is not contained in the timetable.
+     * This method works by calling the RemoveCourseInteractor to remove the existing course and the AddCourseInteractor
+     * to add a new version of the course with all the input sections.
+     */
     @Override
     public void edit(EditTimetableRequestModel request) throws InvalidSectionsException, NotInTimetableException {
-        EditTimetableRequestModel removeRequest = new EditTimetableRequestModel(request.getCourseCode(),
-                new ArrayList<>());
-        removeInteractor.setTimetable(timetable);
-        try{
-            removeInteractor.remove(removeRequest);
+        TimetableCourse ttCourse = null;
+        for (TimetableCourse course : timetable.getCourseList()){
+            if (course.getCourseCode().equals(request.getCourseCode())){
+                ttCourse = course;
+            }
         }
-        catch (RemoveCourseFailedException e){
+
+        if (ttCourse == null){
             throw new NotInTimetableException(request.getCourseCode());
         }
-        addInteractor.setSession(session);
-        addInteractor.setTimetable(timetable);
-        EditTimetableRequestModel addRequest = new EditTimetableRequestModel(request.getCourseCode(), request.getSectionCodes());
-        addInteractor.add(addRequest);
+
+        timetable.removeCourse(request.getCourseCode());
+
+        CalendarCourse calCourse = session.getCalendarCourse(request.getCourseCode());
+        List<Section> newSections = new ArrayList<>();
+        for (Section section : calCourse.getSections()){
+            if (request.getSectionCodes().contains(section.getCode())){
+                newSections.add(section);
+            }
+        }
+
+        timetable.AddToCourseList(new TimetableCourse(calCourse.getTitle(), newSections,
+                calCourse.getCourseSession(), calCourse.getCourseCode(), calCourse.getBreadth()));
 
         retrieveInteractor.setTimetable(timetable);
         retrieveInteractor.setSession(session);
@@ -55,5 +80,10 @@ public class EditCourseInteractor implements EditCourseInputBoundary {
     @Override
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
+    }
+
+    @Override
+    public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
+        this.retrieveInteractor = retrieveInteractor;
     }
 }

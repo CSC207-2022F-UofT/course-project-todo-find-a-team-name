@@ -12,7 +12,7 @@ import java.util.List;
 // This method for testing purposes only during development
 // TODO: remove this class
 public class RecommendBRTestMain {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
@@ -23,7 +23,7 @@ public class RecommendBRTestMain {
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
         RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
+        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor, editCourseInteractor);
 
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
         EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
@@ -47,7 +47,7 @@ public class RecommendBRTestMain {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
+    }*/
 
     private static Session generateSession(){
         Session session = new Session("F");

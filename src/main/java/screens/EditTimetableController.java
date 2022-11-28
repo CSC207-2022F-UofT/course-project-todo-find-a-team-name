@@ -1,9 +1,6 @@
 package screens;
 
-import edit_timetable_use_case.AddCourseInputBoundary;
-import edit_timetable_use_case.EditTimetableRequestModel;
-import edit_timetable_use_case.RemoveCourseFailedException;
-import edit_timetable_use_case.RemoveCourseInputBoundary;
+import edit_timetable_use_case.*;
 import entities.InvalidSectionsException;
 
 import java.util.ArrayList;
@@ -14,13 +11,16 @@ import java.util.List;
  * for each type of request (removing a course, adding a new course, editing an existing course).
  */
 public class EditTimetableController {
-    private final RemoveCourseInputBoundary removeCourseInteractor;
-    private final AddCourseInputBoundary addCourseInteractor;
+    private final RemoveCourseInputBoundary removeInteractor;
+    private final AddCourseInputBoundary addInteractor;
+    private EditCourseInputBoundary editInteractor;
 
     public EditTimetableController(RemoveCourseInputBoundary removeCourseInteractor,
-                                   AddCourseInputBoundary addCourseInteractor){
-        this.removeCourseInteractor = removeCourseInteractor;
-        this.addCourseInteractor = addCourseInteractor;
+                                   AddCourseInputBoundary addCourseInteractor,
+                                   EditCourseInputBoundary editCourseInteractor){
+        this.removeInteractor = removeCourseInteractor;
+        this.addInteractor = addCourseInteractor;
+        this.editInteractor = editCourseInteractor;
     }
 
 
@@ -30,7 +30,7 @@ public class EditTimetableController {
      */
     public void remove(String courseCode) throws RemoveCourseFailedException {
         EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode, new ArrayList<>());
-        removeCourseInteractor.remove(requestModel);
+        removeInteractor.remove(requestModel);
     }
 
     /**
@@ -41,6 +41,16 @@ public class EditTimetableController {
      */
     public void add(String courseCode, List<String> sectionCodes) throws InvalidSectionsException {
         EditTimetableRequestModel requestModel = new EditTimetableRequestModel(courseCode, sectionCodes);
-        addCourseInteractor.add(requestModel);
+        addInteractor.add(requestModel);
+    }
+
+    /**
+     * @param courseCode The code of the course to be edited. This course must be in the timetable.
+     * @param sectionCodes The section codes of the course to be edited. These section codes must be in
+     *                     the session.
+     */
+    public void edit(String courseCode, List<String> sectionCodes) throws NotInTimetableException, InvalidSectionsException {
+        EditTimetableRequestModel request = new EditTimetableRequestModel(courseCode, sectionCodes);
+        editInteractor.edit(request);
     }
 }

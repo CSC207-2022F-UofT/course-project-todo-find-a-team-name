@@ -2,6 +2,9 @@ package edit_timetable_use_case;
 
 import screens.EditTimetableView;
 
+/**
+ * The output boundary of the edit course use case.
+ */
 public interface EditCourseOutputBoundary {
 
     /**

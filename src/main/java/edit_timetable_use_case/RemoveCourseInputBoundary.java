@@ -1,6 +1,7 @@
 package edit_timetable_use_case;
 
 import entities.Timetable;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 
 /**
  * The input boundary used in the RemoveCourse use case.
@@ -18,4 +19,6 @@ public interface RemoveCourseInputBoundary {
      * @param timetable the Timetable from which the course is to be removed. Must be set before using the interactor.
      */
     void setTimetable(Timetable timetable);
+
+    void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor);
 }

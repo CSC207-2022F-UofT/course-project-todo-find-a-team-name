@@ -4,6 +4,8 @@ import entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import screens.AddCoursePresenter;
 import screens.EditTimetableController;
 import screens.RemoveCoursePresenter;
@@ -24,8 +26,9 @@ class EditTimetableControllerTest {
     RemoveCourseInputBoundary RCInteractor;
     EditTimetableController controller;
 
-    AddCourseInteractor ACInteractor;
+    AddCourseInputBoundary ACInteractor;
 
+    EditCourseInputBoundary ECInteractor;
     TestEditTimetableView view;
 
     /**
@@ -44,10 +47,17 @@ class EditTimetableControllerTest {
             RCPresenter.setView(view);
             RCInteractor = new RemoveCourseInteractor(RCPresenter);
             RCInteractor.setTimetable(t);
+            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, session);
+            RCInteractor.setRetrieveInteractor(retrieveInteractor);
             AddCoursePresenter ACPresenter = new AddCoursePresenter();
             ACPresenter.setView(view);
             ACInteractor = new AddCourseInteractor(ACPresenter);
-            controller = new EditTimetableController(RCInteractor, ACInteractor);
+            ACInteractor.setRetrieveInteractor(retrieveInteractor);
+            EditCoursePresenter ECPresenter = new EditCoursePresenter();
+            ECPresenter.setView(view);
+            ECInteractor = new EditCourseInteractor(ECPresenter);
+            ECInteractor.setRetrieveInteractor(retrieveInteractor);
+            controller = new EditTimetableController(RCInteractor, ACInteractor, ECInteractor);
         }
         catch (InvalidSectionsException e){
             fail("Should not have thrown an exception here.");
