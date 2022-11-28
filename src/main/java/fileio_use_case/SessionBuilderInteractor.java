@@ -5,8 +5,8 @@ import entities.Session;
 
 import java.util.HashMap;
 /** Builds Session **/
-public class sessionBuilderInteractor {
-    public sessionBuilderInteractor() {}
+public class SessionBuilderInteractor {
+    public SessionBuilderInteractor() {}
     /**
      * Returns HashMap<String, CalendarCourse> of a Session given the HashMap representation of sessionType
      * @param allCourses, sessionType
@@ -26,10 +26,10 @@ public class sessionBuilderInteractor {
     /**
      * Returns HashMap<String, Session> containing Sessions from Fall and Winter.
      * @param allCourses - a hashmap where keys are course code and values are CalendarCourse.
-     * @return sessionStorerInteractor
+     * @return SessionStorerInteractor
      */
-    public sessionStorerInteractor allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
-        sessionStorerInteractor sessionStorer = new sessionStorerInteractor();
+    public SessionStorerInteractor allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
+        SessionStorerInteractor sessionStorer = new SessionStorerInteractor();
         Session Fall = new Session("F");
         sessionStorer.addSession("F", Fall);
         Session Winter = new Session("S");

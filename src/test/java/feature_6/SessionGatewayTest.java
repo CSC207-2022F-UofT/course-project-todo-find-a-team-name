@@ -6,7 +6,7 @@ import entities.Section;
 import entities.Session;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import screens.feature_6_frameworks_drivers.sessionGateway;
+import screens.feature_6_frameworks_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,7 +19,7 @@ class SessionGatewayTest {
      */
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        sessionGateway convertingFile1 = new sessionGateway();
+        SessionGateway convertingFile1 = new SessionGateway();
         // Course from testing.json
         String jsonToStr1 = convertingFile1.fileToString("src/test/java/feature_6/testing.json");
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
