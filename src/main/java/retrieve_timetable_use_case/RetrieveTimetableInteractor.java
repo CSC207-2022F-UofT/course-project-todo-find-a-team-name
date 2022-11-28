@@ -17,8 +17,8 @@ import java.util.ArrayList;
  */
 public class RetrieveTimetableInteractor implements RetrieveTimetableInputBoundary {
 
-    private final Timetable timetable;
-    private final Session session;
+    private Timetable timetable;
+    private Session session;
 
     public RetrieveTimetableInteractor(Timetable timetable, Session session){
         this.timetable = timetable;
@@ -50,6 +50,16 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
     @Override
     public SessionModel retrieveSession(){
         return EntityConverter.generateSessionResponse(session);
+    }
+
+    @Override
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public void setTimetable(Timetable timetable) {
+        this.timetable = timetable;
     }
 
     /**

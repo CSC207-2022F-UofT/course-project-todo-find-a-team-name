@@ -1,5 +1,8 @@
 package retrieve_timetable_use_case;
 
+import entities.Session;
+import entities.Timetable;
+
 /**
  * The input boundary used in the RetrieveTimetable use case.
  * All implementations should be able to retrieve the data of the entities below and return the
@@ -7,10 +10,14 @@ package retrieve_timetable_use_case;
  */
 public interface RetrieveTimetableInputBoundary {
 
-    public CourseModel retrieveTimetableCourse(RetrieveTimetableRequestModel requestModel);
+    CourseModel retrieveTimetableCourse(RetrieveTimetableRequestModel requestModel);
 
-    public CourseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
+    CourseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
 
-    public TimetableModel retrieveTimetable();
-    public SessionModel retrieveSession();
+    TimetableModel retrieveTimetable();
+    SessionModel retrieveSession();
+
+    void setSession(Session session);
+
+    void setTimetable(Timetable timetable);
 }
