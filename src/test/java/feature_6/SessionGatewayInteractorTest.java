@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SessionGatewayInteractorTest {
+    /** Tests if sessions can be created given a JSON file */
     @Test
     void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
         fileImportRequestModel filePath = new fileImportRequestModel("src/main/java/screens/courses_cleaned.json");
@@ -34,6 +35,9 @@ class SessionGatewayInteractorTest {
         Session Winter = allSessions.getSession("S");
         assertEquals("S", Winter.getSessionType());
     }
+    /** Checks if SessionGatewayInteractor when calling on SessionGateway can correctly parse the text in JSON file
+     * into a Calendar Course with the right format and values.
+     */
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
         fileImportRequestModel filePath1 = new fileImportRequestModel("src/test/java/feature_6/testing.json");

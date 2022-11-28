@@ -14,6 +14,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SessionGatewayTest {
+    /** Checks if SessionGateway can correctly parse the text in JSON file
+     * into a Calendar Course with the right format and values.
+     */
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
         sessionGateway convertingFile1 = new sessionGateway();
