@@ -26,4 +26,12 @@ public class SessionModel {
     public String getSessionType() {
         return sessionType;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SessionModel that = (SessionModel) o;
+        return getCourses().equals(that.getCourses()) && getSessionType().equals(that.getSessionType());
+    }
 }

@@ -19,4 +19,12 @@ public class TimetableModel {
     public List<CourseModel> getCourses() {
         return courses;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimetableModel that = (TimetableModel) o;
+        return getCourses().equals(that.getCourses());
+    }
 }

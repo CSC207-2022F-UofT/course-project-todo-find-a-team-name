@@ -15,6 +15,7 @@ public interface RetrieveTimetableInputBoundary {
     CourseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
 
     TimetableModel retrieveTimetable();
+
     SessionModel retrieveSession();
 
     void setSession(Session session);
