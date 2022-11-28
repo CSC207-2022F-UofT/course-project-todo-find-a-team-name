@@ -5,6 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import screens.AddCoursePresenter;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ class AddCourseInteractorTest {
         presenter.setView(new TestEditTimetableView());
         interactor = new AddCourseInteractor(presenter);
 
+
         timetable = new Timetable(new ArrayList<>(), "F");
         Session session = new Session("F");
         List<Section> sections = new ArrayList<>();
@@ -34,8 +37,10 @@ class AddCourseInteractorTest {
         CalendarCourse course = new CalendarCourse("some course", sections, "F",
                 "CSC108", "1");
         session.addCourse(course);
+        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(timetable, session);
 
         interactor.setTimetable(timetable);
+        interactor.setRetrieveInteractor(retrieveInteractor);
         interactor.setSession(session);
     }
 
