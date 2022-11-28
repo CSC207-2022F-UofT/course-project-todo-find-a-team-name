@@ -1,4 +1,4 @@
-package screens.feature_6_frameworks_drivers;
+package fileio_use_case.rameworks_and_drivers;
 
 import entities.*;
 import fileio_use_case.*;
@@ -55,12 +55,12 @@ public class SessionGateway implements GatewayInterface {
                         allBlocks.add(resultBlock);
                     }
                 }
-                // Pass to SectionBuilderInteractor
-                allSections.add(new SectionBuilderInteractor((String) aSection.get("section"),
+                // Pass to SectionBuilder
+                allSections.add(new SectionBuilder((String) aSection.get("section"),
                         (String) aSection.get("prof"), allBlocks).newSection());
             }
             // Pass to CourseBuilderInteractor and add to all courses
-            CalendarCourse calCourse = new CalendarCourseBuilderInteractor((String) courseInfo.get("title"),
+            CalendarCourse calCourse = new CalendarCourseBuilder((String) courseInfo.get("title"),
                     allSections, (String) courseInfo.get("session"),
                     (String) courseInfo.get("code"), (String) courseInfo.get("breadth")).newCourse();
             // Add course code as key and new Calendar Course as a value into allCourses
@@ -74,43 +74,22 @@ public class SessionGateway implements GatewayInterface {
     public Block readFromFileHelper(JSONObject aBlock) {
         if (!(aBlock.get("day") == null && aBlock.get("startTime") == null && aBlock.get("endTime") == null && aBlock.get("room") == null)) {
             if (aBlock.get("room") == null) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), "").newBlock();
             } else if (aBlock.get("day") == null) {
-                return new BlockBuilderInteractor("", (String) aBlock.get("startTime"),
+                return new BlockBuilder("", (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             } else if ((aBlock.get("startTime") == null)) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), "",
+                return new BlockBuilder((String) aBlock.get("day"), "",
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             } else if (aBlock.get("endTime") == null) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         "", (String) aBlock.get("room")).newBlock();
             } else {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             }
         }
         return null;
-    }
-    /**
-     * Returns a session if given the HashMap representation of all courses and sessionType
-     * @param allCourses - contains all sessions, String - session type (Fall (F), Winter (S))
-     * @return Session
-     */
-    public Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
-        return new SessionBuilderInteractor().aSessionBuilder(allCourses, sessionType);
-    }
-
-    /**
-     * Returns a SessionStorerInteractor class of all sessions (Fall and Winter) based on given HashMap of String
-     * to CalendarCourse.
-     * Note: Use .getAllSessions() method in SessionStorerInteractor to get
-     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
-     *
-     * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
-     */
-    public SessionStorerInteractor creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
-        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
     }
 }

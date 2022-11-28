@@ -4,9 +4,10 @@ import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
+import fileio_use_case.SessionBuilderInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import screens.feature_6_frameworks_drivers.SessionGateway;
+import fileio_use_case.rameworks_and_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,7 +24,7 @@ class SessionGatewayTest {
         // Course from testing.json
         String jsonToStr1 = convertingFile1.fileToString("src/test/java/feature_6/testing.json");
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
-        Session Winter = convertingFile1.extractSession(result1, "S");
+        Session Winter = new SessionBuilderInteractor().extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
 
         // Building Course Manually
