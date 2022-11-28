@@ -73,8 +73,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
 
         JPanel buttons = new JPanel();
         buttons.add(submit);
-//        buttons.add(help);
-//        help.addActionListener(this);
+        buttons.add(help);
+        help.addActionListener(this);
         this.add(title, BorderLayout.PAGE_START);
         panel.add(courseInput);
         panel.add(instructorInput);
@@ -133,9 +133,10 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             System.out.println("Enter: " + requestModel);
             sectionFilterController.filter(requestModel);
         }
-//        if (e.getSource() == help){
-//
-//        }
+        if (e.getSource() == help){
+            JDialog helpDialogue = new HelpInstructionScreen();
+            helpDialogue.setVisible(true);
+        }
     }
 
     @Override
