@@ -2,7 +2,7 @@ package fileio_use_case;
 
 import entities.CalendarCourse;
 import org.json.simple.parser.ParseException;
-import fileio_use_case.rameworks_and_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.HashMap;

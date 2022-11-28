@@ -7,7 +7,7 @@ import entities.Session;
 import fileio_use_case.SessionBuilderInteractor;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import fileio_use_case.rameworks_and_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.*;

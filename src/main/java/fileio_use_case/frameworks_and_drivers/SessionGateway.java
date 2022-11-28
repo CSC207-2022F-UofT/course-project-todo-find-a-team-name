@@ -1,4 +1,4 @@
-package fileio_use_case.rameworks_and_drivers;
+package fileio_use_case.frameworks_and_drivers;
 
 import entities.*;
 import fileio_use_case.*;
