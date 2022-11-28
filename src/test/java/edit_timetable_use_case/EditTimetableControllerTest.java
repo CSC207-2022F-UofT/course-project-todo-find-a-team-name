@@ -4,6 +4,8 @@ import entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import screens.AddCoursePresenter;
 import screens.RemoveCoursePresenter;
 
@@ -23,8 +25,9 @@ class EditTimetableControllerTest {
     RemoveCourseInputBoundary RCInteractor;
     EditTimetableController controller;
 
-    AddCourseInteractor ACInteractor;
+    AddCourseInputBoundary ACInteractor;
 
+    EditCourseInputBoundary ECInteractor;
     TestEditTimetableView view;
 
     /**
@@ -43,9 +46,17 @@ class EditTimetableControllerTest {
             RCPresenter.setView(view);
             RCInteractor = new RemoveCourseInteractor(RCPresenter);
             RCInteractor.setTimetable(t);
+            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, session);
+            RCInteractor.setRetrieveInteractor(retrieveInteractor);
             AddCoursePresenter ACPresenter = new AddCoursePresenter();
             ACPresenter.setView(view);
             ACInteractor = new AddCourseInteractor(ACPresenter);
+            ACInteractor.setRetrieveInteractor(retrieveInteractor);
+            EditCoursePresenter ECPresenter = new EditCoursePresenter();
+            ECPresenter.setView(view);
+            ECInteractor = new EditCourseInteractor(ECPresenter);
+            ECInteractor.setRetrieveInteractor(retrieveInteractor);
+            controller = new EditTimetableController(RCInteractor, ACInteractor, ECInteractor);
             controller = new EditTimetableController(RCInteractor, ACInteractor);
             ACPresenter.setView(view);
             ACInteractor.setTimetable(t);
@@ -78,7 +89,6 @@ class EditTimetableControllerTest {
     void removeSucceeds() {
         try {
             controller.remove("EGX101");
-            assertTrue(true);
         }
         catch (RemoveCourseFailedException e){
             fail("This call should not have resulted in a RemoveCourseFailedException.");

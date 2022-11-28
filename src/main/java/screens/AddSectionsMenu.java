@@ -3,6 +3,7 @@ package screens;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -51,6 +52,18 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
      */
     private void display(){
         TimetableViewCourseModel calendarCourse = session.getCourses().get(courseCode);
+
+        Vector<String> sectionDescriptions = new Vector<>();
+        sectionCodes = new ArrayList<>();
+        for (TimetableViewSectionModel section : calendarCourse.getSectionModels()){
+            sectionDescriptions.add(describe(section));
+            sectionCodes.add(section.getCode());
+        }
+        sections = new JList<>(sectionDescriptions);
+        sections.setSelectionMode(
+                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+
         if (timetable != null){
             TimetableViewCourseModel timetableCourse = timetable.getCourse(courseCode);
             if (timetableCourse != null){
@@ -72,17 +85,6 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
 
 
         this.add(new JLabel("Select sections. Shift + Left Click to select multiple."));
-
-        Vector<String> sectionDescriptions = new Vector<>();
-        sectionCodes = new ArrayList<>();
-        for (TimetableViewSectionModel section : calendarCourse.getSectionModels()){
-            sectionDescriptions.add(describe(section));
-            sectionCodes.add(section.getCode());
-        }
-
-        sections = new JList<>(sectionDescriptions);
-        sections.setSelectionMode(
-                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         this.add(sections);
 
@@ -157,11 +159,15 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("Continue")){
             this.setVisible(false);
             editScreen.setVisible(true);
+            ArrayList<String> selectedCodes = new ArrayList<>();
+            for (int i : sections.getSelectedIndices()){
+                selectedCodes.add(sectionCodes.get(i));
+            }
             if (this.timetable == null){
-                editScreen.add(courseCode, sectionCodes);
+                editScreen.add(courseCode, selectedCodes);
             }
             else{
-//                editScreen.edit(courseCode, sectionCodes);
+                editScreen.edit(courseCode, selectedCodes);
             }
         }
         else if(e.getActionCommand().equals("Go back")){

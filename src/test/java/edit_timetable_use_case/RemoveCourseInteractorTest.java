@@ -1,11 +1,13 @@
 package edit_timetable_use_case;
 
 import entities.InvalidSectionsException;
-import entities.Section;
+import entities.Session;
 import entities.Timetable;
 import entities.TimetableCourse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import screens.RemoveCoursePresenter;
 
 import java.util.ArrayList;
@@ -28,14 +30,16 @@ class RemoveCourseInteractorTest {
     @BeforeEach
     public void setUp(){
         try{
-            c = new TimetableCourse("", new ArrayList<Section>(),
+            c = new TimetableCourse("", new ArrayList<>(),
                     "", "EGX101", "");
-            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
+            ArrayList<TimetableCourse> courses = new ArrayList<>(List.of(c));
             t = new Timetable(courses, "F");
             RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
             interactor = new RemoveCourseInteractor(presenter);
             presenter.setView(new TestEditTimetableView());
             interactor.setTimetable(t);
+            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, new Session(""));
+            interactor.setRetrieveInteractor(retrieveInteractor);
         }
         catch (InvalidSectionsException e) {
             fail("Should not have thrown an error.");
@@ -67,7 +71,7 @@ class RemoveCourseInteractorTest {
      */
     @Test
     void removeFails(){
-        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<String>());
+        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<>());
         try{
             interactor.remove(request);
             fail("Interactor should have thrown RemoveCourseFailed exception.");
