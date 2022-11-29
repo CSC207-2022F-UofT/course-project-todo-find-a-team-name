@@ -101,7 +101,13 @@ public class TimetableCourseGenerator {
         if (sections.get(depth).size() == 0)
             generateAllTimetableCourses(sections, result, depth + 1, curr);
 
-        for (Section section : sections.get(depth)) {
+        for (Section newSection : sections.get(depth)) {
+            for (Section section : curr.getSections()){
+                if (section.isConflicted(newSection)){
+                    return;
+                }
+            }
+
             TimetableCourse course;
             try {
                 course = new TimetableCourse(curr.getTitle(), new ArrayList<>(curr.getSections()), curr.getCourseSession(),
@@ -109,7 +115,7 @@ public class TimetableCourseGenerator {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            course.setSection(section);
+            course.setSection(newSection);
             generateAllTimetableCourses(sections, result, depth + 1, course);
         }
     }

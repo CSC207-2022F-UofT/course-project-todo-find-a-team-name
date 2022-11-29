@@ -16,6 +16,7 @@ class TimetableCourseGeneratorTest {
     static Section tut0101;
     static Section tut0201;
     static Section pra0101;
+    static Section pra0201;
     static CalendarCourse calCourse;
 
     @BeforeAll
@@ -49,6 +50,11 @@ class TimetableCourseGeneratorTest {
         pra0101 = new Section("PRA-0101", "inst1", blocks5);
         sections.add(pra0101);
 
+        List<Block> blocks6 = new ArrayList<>();
+        blocks6.add(new Block("MO", "10:00", "12:00", ""));
+        pra0201 = new Section("PRA-0201", "inst1", blocks6);
+        sections.add(pra0201);
+
         calCourse = new CalendarCourse("course", sections, "S",
                 "COS111", "3");
     }
@@ -68,8 +74,8 @@ class TimetableCourseGeneratorTest {
 
         List<Section> sections2 = new ArrayList<>();
         sections2.add(lec0101);
-        sections2.add(tut0201);
-        sections2.add(pra0101);
+        sections2.add(tut0101);
+        sections2.add(pra0201);
         try {
             expected.add(new TimetableCourse("course", sections2, "S", "COS111", "3"));
         } catch (InvalidSectionsException e) {
@@ -77,8 +83,8 @@ class TimetableCourseGeneratorTest {
         }
 
         List<Section> sections3 = new ArrayList<>();
-        sections3.add(lec0201);
-        sections3.add(tut0101);
+        sections3.add(lec0101);
+        sections3.add(tut0201);
         sections3.add(pra0101);
         try {
             expected.add(new TimetableCourse("course", sections3, "S", "COS111", "3"));
@@ -87,11 +93,31 @@ class TimetableCourseGeneratorTest {
         }
 
         List<Section> sections4 = new ArrayList<>();
-        sections4.add(lec0201);
+        sections4.add(lec0101);
         sections4.add(tut0201);
-        sections4.add(pra0101);
+        sections4.add(pra0201);
         try {
             expected.add(new TimetableCourse("course", sections4, "S", "COS111", "3"));
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Section> sections5 = new ArrayList<>();
+        sections5.add(lec0201);
+        sections5.add(tut0101);
+        sections5.add(pra0101);
+        try {
+            expected.add(new TimetableCourse("course", sections5, "S", "COS111", "3"));
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Section> sections6 = new ArrayList<>();
+        sections6.add(lec0201);
+        sections6.add(tut0201);
+        sections6.add(pra0101);
+        try {
+            expected.add(new TimetableCourse("course", sections6, "S", "COS111", "3"));
         } catch (InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
