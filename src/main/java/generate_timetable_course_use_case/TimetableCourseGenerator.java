@@ -104,7 +104,7 @@ public class TimetableCourseGenerator {
         for (Section section : sections.get(depth)) {
             TimetableCourse course;
             try {
-                course = new TimetableCourse(curr.getTitle(), curr.getSections(), curr.getCourseSession(),
+                course = new TimetableCourse(curr.getTitle(), new ArrayList<>(curr.getSections()), curr.getCourseSession(),
                         curr.getCourseCode(), curr.getBreadth());
             } catch (Exception e) {
                 throw new RuntimeException(e);
