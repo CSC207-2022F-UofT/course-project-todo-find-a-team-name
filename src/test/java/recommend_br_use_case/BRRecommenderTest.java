@@ -9,6 +9,7 @@ import recommend_br_use_case.application_business.BRRecommender;
 import recommend_br_use_case.application_business.TargetTimeCourseComparator;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,17 +46,57 @@ class BRRecommenderTest {
         CalendarCourse calSLA106 = session.getCalendarCourse("SLA106H1");
         CalendarCourse calENG220 = session.getCalendarCourse("ENG220H1");
         CalendarCourse calESS205 = session.getCalendarCourse("ESS205H1");
-        CalendarCourse calBIO255 = session.getCalendarCourse("BIO255H1");
+        CalendarCourse calBIO120 = session.getCalendarCourse("BIO120H1");
+
         try {
             courses.add(createTimetableCourse(calCSC207, "LEC-0401", "TUT-0301", ""));
             courses.add(createTimetableCourse(calCSC236, "LEC-0101", "TUT-0103", ""));
             courses.add(createTimetableCourse(calSTA247, "LEC-0201", "TUT-0202", ""));
 
+//            expected.add(createTimetableCourse(calENG220, "LEC-0101", "", ""));
+//            expected.add(createTimetableCourse(calSLA106, "LEC-5101", "", ""));
+//            expected.add(createTimetableCourse(calESS205, "LEC-5101", "", ""));
+//
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0201"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0202"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5101"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5102"));
+//
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0201"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0202"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5101"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5102"));
+//
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0201"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0202"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5101"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5102"));
+//
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0201"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0202"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5101"));
+//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5102"));
+
+
             expected.add(createTimetableCourse(calENG220, "LEC-0101", "", ""));
-            expected.add(createTimetableCourse(calBIO255, "LEC-0101", "", "PRA-0101"));
-            expected.add(createTimetableCourse(calBIO255, "LEC-5101", "", "PRA-0101"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0201"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0202"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0201"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0202"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0201"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0202"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5101"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5102"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5101"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5102"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5101"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5102"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0201"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0202"));
             expected.add(createTimetableCourse(calSLA106, "LEC-5101", "", ""));
             expected.add(createTimetableCourse(calESS205, "LEC-5101", "", ""));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5101"));
+            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5102"));
 
         } catch (InvalidSectionsException e) {
             throw new RuntimeException(e);
@@ -78,18 +119,18 @@ class BRRecommenderTest {
      * code, and practical code.
      *
      * @param calCourse calendar course
-     * @param lecture lecture code
-     * @param tutorial tutorial code
-     * @param practical practical code
+     * @param lectureCode lecture code
+     * @param tutorialCode tutorial code
+     * @param practicalCode practical code
      * @return timetable course generated from the given calendar course and lecture, tutorial, and practical code.
      * @throws InvalidSectionsException when section codes are invalid (e.g. two tutorials)
      */
-    private TimetableCourse createTimetableCourse(CalendarCourse calCourse, String lecture, String tutorial,
-                                                  String practical) throws InvalidSectionsException {
+    private TimetableCourse createTimetableCourse(CalendarCourse calCourse, String lectureCode, String tutorialCode,
+                                                  String practicalCode) throws InvalidSectionsException {
         List<Section> sections = new ArrayList<>();
         for (Section section : calCourse.getSections()){
-            if (section.getCode().equals(lecture) || section.getCode().equals(tutorial)
-                    || section.getCode().equals(practical)){
+            if (section.getCode().equals(lectureCode) || section.getCode().equals(tutorialCode)
+                    || section.getCode().equals(practicalCode)){
                 sections.add(section);
             }
         }
