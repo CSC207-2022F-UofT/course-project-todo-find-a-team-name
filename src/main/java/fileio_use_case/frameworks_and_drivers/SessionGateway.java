@@ -102,15 +102,15 @@ public class SessionGateway implements GatewayInterface {
     }
 
     /**
-     * Returns a SessionStorer class of all sessions (Fall and Winter) based on given HashMap of String
-     * to CalendarCourse.
+     * Returns HashMap<String, Session> of all sessions (Fall and Winter) based on given HashMap of String
+     * to CalendarCourse, where the key is the SessionType.
      * Note: Use .getAllSessions() method in SessionStorer to get
      * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
      *
      * @param allCourses HashMap<String, CalendarCourse>
-     * @return SessionStorer
+     * @return HashMap<String, Session>
      */
-    public SessionStorer creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
+    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
         return new SessionBuilderInteractor().allSessionBuilder(allCourses);
     }
 }
