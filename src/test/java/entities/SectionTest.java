@@ -8,6 +8,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for testing Section entity
+ */
 class SectionTest {
 
     static Section lecture;
@@ -15,6 +18,9 @@ class SectionTest {
     static Section practical;
     static List<Block> blocks;
 
+    /**
+     * Initialize lecture, tutorial, practical, and blocks that is used throughout the tests
+     */
     @BeforeAll
     static void setUp(){
         blocks = new ArrayList<>();
@@ -27,6 +33,9 @@ class SectionTest {
         practical = new Section("PRA-0301", "inst3", blocks);
     }
 
+    /**
+     * Check whether isConflicted returns false when there is no time conflict between two sessions
+     */
     @Test
     void isConflictedFalse() {
         List<Block> blocks2 = new ArrayList<>();
@@ -38,6 +47,9 @@ class SectionTest {
         assertFalse(lecture.isConflicted(other));
     }
 
+    /**
+     * Check whether isConflicted returns false when there is time conflict between two sessions
+     */
     @Test
     void isConflictedTrue() {
         List<Block> blocks2 = new ArrayList<>();
@@ -49,16 +61,39 @@ class SectionTest {
         assertTrue(lecture.isConflicted(other));
     }
 
+    /**
+     * Check whether isConflicted returns true when there is time conflict between two sessions where
+     * some block of one section is containing block of another
+     * (e.g. the time interval 11:00-14:00 is containing 12:00-13:00)
+     */
+    @Test
+    void isConflictedSectionContainsAnotherSection(){
+        List<Block> blocks2 = new ArrayList<>();
+        blocks2.add(new Block("TH", "11:00", "14:00", "room3"));
+        Section other = new Section("LEC-0201", "inst2", blocks2);
+
+        assertTrue(lecture.isConflicted(other));
+    }
+
+    /**
+     * Check whether getCode is returning the correct section code
+     */
     @Test
     void getCode() {
         assertEquals("LEC-0101", lecture.getCode());
     }
 
+    /**
+     * Check whether getInstructorName is retuning correct instructor name
+     */
     @Test
     void getInstructorName() {
         assertEquals("inst1", lecture.getInstructorName());
     }
 
+    /**
+     * Check whether getBlocks is returning correct list of blocks
+     */
     @Test
     void getBlocks() {
         for (Block block : lecture.getBlocks()) {
@@ -66,38 +101,59 @@ class SectionTest {
         }
     }
 
+    /**
+     * Check whether toString is returning String representation of the section in correct format
+     */
     @Test
     void testToString() {
         assertEquals("Section {code: LEC-0101, instructor name: inst1, # of blocks: 4}", lecture.toString());
     }
 
+    /**
+     * Check whether isLecture is returning true for lecture section
+     */
     @Test
     void isLectureTrue() {
         assertTrue(lecture.isLecture());
     }
 
+    /**
+     * Check whether isLecture is returning false for tutorial and practical sections
+     */
     @Test
     void isLectureFalse() {
         assertFalse(tutorial.isLecture());
         assertFalse(practical.isLecture());
     }
 
+    /**
+     * Check whether isTutorial is returning true for tutorial section
+     */
     @Test
     void isTutorialTrue() {
         assertTrue(tutorial.isTutorial());
     }
 
+    /**
+     * Check whether isTutorial is returning false for lecture and practical sections
+     */
     @Test
     void isTutorialFalse() {
         assertFalse(lecture.isTutorial());
         assertFalse(practical.isTutorial());
-
     }
+
+    /**
+     * Check whether isPractical is returning true for practical section
+     */
     @Test
     void isPracticalTrue(){
         assertTrue(practical.isPractical());
     }
 
+    /**
+     * Check whether isPractical is returning false for lecture and tutorial section
+     */
     @Test
     void isPracticalFalse(){
         assertFalse(lecture.isPractical());
