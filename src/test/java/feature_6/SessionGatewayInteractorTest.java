@@ -5,7 +5,6 @@ import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
 import fileio_use_case.FileImportRequestModel;
-import fileio_use_case.SessionBuilderInteractor;
 import fileio_use_case.SessionGatewayInteractor;
 import fileio_use_case.SessionStorer;
 import org.json.simple.parser.ParseException;
@@ -28,7 +27,7 @@ class SessionGatewayInteractorTest {
         String jsonToStr = convertFile.fileToString(filePath);
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
 
-        SessionStorer allSessions = new SessionBuilderInteractor().extractAllSession(result);
+        SessionStorer allSessions = convertFile.creatingSessionsFromFile(result);
         assertTrue(allSessions.getAllSessions().containsKey("S"));
         assertTrue(allSessions.getAllSessions().containsKey("F"));
 
@@ -46,7 +45,7 @@ class SessionGatewayInteractorTest {
         // Course from testing.json
         String jsonToStr1 = convertingFile1.fileToString(filePath1);
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
-        Session Winter = new SessionBuilderInteractor().extractSession(result1, "S");
+        Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
 
         // Building Course Manually
