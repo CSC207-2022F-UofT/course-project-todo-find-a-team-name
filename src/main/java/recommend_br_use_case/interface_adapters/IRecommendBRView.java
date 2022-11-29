@@ -1,4 +1,6 @@
-package screens;
+package recommend_br_use_case.interface_adapters;
+
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRViewModel;
 
 /**
  * Interface used to do dependency inversion for IRecommendView

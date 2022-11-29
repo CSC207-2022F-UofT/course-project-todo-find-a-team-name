@@ -1,4 +1,6 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
+
+import recommend_br_use_case.application_business.BRBlockResponseModel;
 
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package screens;
+package recommend_br_use_case.frameworks_and_drivers;
+
+import recommend_br_use_case.interface_adapters.RecommendBRController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +24,6 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
      * select preferred time. It also displays submit input button to start recommending breadth courses.
      *
      * @param controller controller used to recommend breadth courses
-     * @param timetableId id of the timetable
      */
     public RecommendBRInputScreen(RecommendBRController controller) {
         super();

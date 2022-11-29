@@ -1,4 +1,6 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
+
+import recommend_br_use_case.application_business.BRSectionResponseModel;
 
 /**
  * Class representing TimetableCourse entity containing code, title, breadth category, and sections

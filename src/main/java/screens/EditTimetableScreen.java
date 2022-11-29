@@ -3,7 +3,10 @@ package screens;
 import edit_timetable_use_case.*;
 import entities.*;
 import recommend_br_use_case.IDummyTimetableGateway;
-import recommend_br_use_case.RecommendBRInteractor;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

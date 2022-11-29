@@ -1,4 +1,4 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
 
 /**
  * The class containing day, start time and end time of the block.

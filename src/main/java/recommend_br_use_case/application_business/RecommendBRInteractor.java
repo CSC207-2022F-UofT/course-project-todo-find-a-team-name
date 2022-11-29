@@ -1,4 +1,4 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
 
 import entities.*;
 import retrieve_timetable_use_case.CourseModel;
@@ -14,7 +14,7 @@ import java.util.List;
  * based on the given the request model and output the result to presenter
  * to prepare appropriate view.
  */
-public class RecommendBRInteractor implements RecommendBRInputBoundary{
+public class RecommendBRInteractor implements RecommendBRInputBoundary {
 
     private Session fSession = null;
     private Session sSession = null;

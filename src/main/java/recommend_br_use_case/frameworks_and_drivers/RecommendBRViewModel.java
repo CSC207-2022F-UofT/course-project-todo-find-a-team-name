@@ -1,4 +1,6 @@
-package screens;
+package recommend_br_use_case.frameworks_and_drivers;
+
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
 
 import java.util.List;
 

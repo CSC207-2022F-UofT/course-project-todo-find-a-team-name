@@ -1,7 +1,7 @@
-package screens;
+package recommend_br_use_case.interface_adapters;
 
-import recommend_br_use_case.RecommendBRInputBoundary;
-import recommend_br_use_case.RecommendBRRequestModel;
+import recommend_br_use_case.application_business.RecommendBRInputBoundary;
+import recommend_br_use_case.application_business.RecommendBRRequestModel;
 
 import java.util.HashSet;
 

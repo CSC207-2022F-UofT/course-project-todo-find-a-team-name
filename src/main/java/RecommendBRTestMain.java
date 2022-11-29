@@ -2,7 +2,10 @@ import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
-import recommend_br_use_case.RecommendBRInteractor;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import screens.*;
 
 import javax.swing.*;
