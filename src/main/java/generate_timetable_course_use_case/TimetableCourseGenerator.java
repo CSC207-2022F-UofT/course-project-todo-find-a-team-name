@@ -101,10 +101,11 @@ public class TimetableCourseGenerator {
         if (sections.get(depth).size() == 0)
             generateAllTimetableCourses(sections, result, depth + 1, curr);
 
+        outerLoop:
         for (Section newSection : sections.get(depth)) {
             for (Section section : curr.getSections()){
                 if (section.isConflicted(newSection)){
-                    return;
+                    continue outerLoop;
                 }
             }
 
