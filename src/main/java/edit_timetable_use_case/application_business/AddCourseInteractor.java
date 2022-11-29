@@ -1,8 +1,7 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 import entities.*;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         retrieveInteractor.setSession(session);
         TimetableModel updatedTimetable = retrieveInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableResponseModel(request.getCourseCode(), request.getSectionCodes(), updatedTimetable);
+                new EditTimetableResponseModel(request.getCourseCode(), updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
     }
 

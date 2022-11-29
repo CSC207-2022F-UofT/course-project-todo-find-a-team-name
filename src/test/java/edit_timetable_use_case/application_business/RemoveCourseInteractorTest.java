@@ -1,5 +1,6 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
+import edit_timetable_use_case.interface_adapters.TestEditTimetableView;
 import entities.InvalidSectionsException;
 import entities.Session;
 import entities.Timetable;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.RetrieveTimetableInteractor;
-import screens.RemoveCoursePresenter;
+import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 
 import java.util.ArrayList;
 import java.util.List;

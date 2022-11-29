@@ -1,4 +1,4 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 import entities.Timetable;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;

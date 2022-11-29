@@ -1,8 +1,6 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 import retrieve_timetable_use_case.TimetableModel;
-
-import java.util.List;
 
 /**
  * A response model that contains the relevant information needed by the presenter's view.
@@ -13,24 +11,17 @@ import java.util.List;
  */
 public class EditTimetableResponseModel {
     private final String courseCode;
-    private final List<String> sectionCodes;
 
     private final TimetableModel updatedTimetable;
 
-    public EditTimetableResponseModel(String courseCode, List<String> sectionCodes, TimetableModel
+    public EditTimetableResponseModel(String courseCode, TimetableModel
                                       updatedTimetable){
         this.courseCode = courseCode;
-        this.sectionCodes = sectionCodes;
         this.updatedTimetable = updatedTimetable;
     }
 
     public String getCourseCode() {
         return courseCode;
-    }
-
-    /*This method is unused, creating an IntelliJ warning. It will be used in the AddCourse use case.*/
-    public List<String> getSectionCodes(){
-        return sectionCodes;
     }
 
 

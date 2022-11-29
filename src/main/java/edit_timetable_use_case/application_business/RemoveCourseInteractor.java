@@ -1,10 +1,8 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 import entities.Timetable;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.TimetableModel;
-
-import java.util.ArrayList;
 
 /** The interactor used to remove a course from a timetable.
  * Instance Attributes:
@@ -42,7 +40,7 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
         retrieveInteractor.setTimetable(timetable);
         TimetableModel updatedTimetable = retrieveInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
-                new EditTimetableResponseModel(courseCode, new ArrayList<>(), updatedTimetable);
+                new EditTimetableResponseModel(courseCode, updatedTimetable);
         presenter.prepareView(editTimetableResponseModel);
     }
 

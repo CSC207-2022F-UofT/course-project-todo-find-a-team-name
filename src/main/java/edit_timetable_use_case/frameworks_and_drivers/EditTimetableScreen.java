@@ -1,11 +1,13 @@
-package screens;
+package edit_timetable_use_case.frameworks_and_drivers;
 
-import edit_timetable_use_case.*;
+import edit_timetable_use_case.application_business.*;
+import edit_timetable_use_case.interface_adapters.*;
 import entities.*;
 import recommend_br_use_case.IDummyTimetableGateway;
 import recommend_br_use_case.RecommendBRInteractor;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import screens.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

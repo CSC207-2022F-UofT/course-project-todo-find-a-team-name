@@ -1,9 +1,10 @@
-package screens;
+package edit_timetable_use_case.frameworks_and_drivers;
+
+import screens.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -137,9 +138,9 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
             description.append("Friday ");
         }
 
-        description.append(Integer.toString((int) block.getStartTime()));
+        description.append((int) block.getStartTime());
         description.append(":00 - ");
-        description.append(Integer.toString((int) block.getEndTime()));
+        description.append((int) block.getEndTime());
         description.append(":00");
 
         if (! block.getRoom().equals("")){

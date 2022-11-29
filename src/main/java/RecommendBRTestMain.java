@@ -1,11 +1,5 @@
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.EditTimetableController;
-import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
-import recommend_br_use_case.RecommendBRInteractor;
-import screens.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package screens;
+package edit_timetable_use_case.interface_adapters;
 
-import edit_timetable_use_case.EditTimetableResponseModel;
-import edit_timetable_use_case.TestEditTimetableView;
+import edit_timetable_use_case.application_business.EditTimetableResponseModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class RemoveCoursePresenterTest {
 
     @Test
     void prepareViewOnSuccess() {
-        EditTimetableResponseModel response = new EditTimetableResponseModel("CSC207", new ArrayList<>(),
+        EditTimetableResponseModel response = new EditTimetableResponseModel("CSC207",
                 new TimetableModel(new ArrayList<>()));
         presenter.prepareView(response);
         assertEquals("CSC207 was successfully removed.", testView.response);

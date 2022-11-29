@@ -1,4 +1,8 @@
-package screens;
+package edit_timetable_use_case.frameworks_and_drivers;
+
+import screens.SessionViewModel;
+import screens.TimetableViewCourseModel;
+import screens.TimetableViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

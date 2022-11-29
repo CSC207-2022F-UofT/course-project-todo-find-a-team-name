@@ -1,9 +1,10 @@
-package screens;
+package edit_timetable_use_case.interface_adapters;
 
-import edit_timetable_use_case.AddCourseOutputBoundary;
-import edit_timetable_use_case.EditTimetableResponseModel;
+import edit_timetable_use_case.application_business.AddCourseOutputBoundary;
+import edit_timetable_use_case.application_business.EditTimetableResponseModel;
 import retrieve_timetable_use_case.TimetableModel;
 import retrieve_timetable_use_case.TimetableModelConverter;
+import screens.TimetableViewModel;
 
 /**
  * The presenter used in the add course use case.
@@ -12,9 +13,7 @@ import retrieve_timetable_use_case.TimetableModelConverter;
 public class AddCoursePresenter implements AddCourseOutputBoundary {
     private EditTimetableView view;
     public AddCoursePresenter(){}
-    public AddCoursePresenter(EditTimetableView view){
-        this.view = view;
-    }
+
     @Override
     public void prepareView(EditTimetableResponseModel responseModel)  {
         TimetableModel updatedTimetable = responseModel.getUpdatedTimetable();

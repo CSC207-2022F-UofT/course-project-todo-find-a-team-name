@@ -1,6 +1,6 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
-import screens.EditTimetableView;
+import edit_timetable_use_case.interface_adapters.EditTimetableView;
 
 /**
  * The output boundary of the RemoveCourse use case.

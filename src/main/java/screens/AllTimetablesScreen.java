@@ -1,5 +1,7 @@
 package screens;
 
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

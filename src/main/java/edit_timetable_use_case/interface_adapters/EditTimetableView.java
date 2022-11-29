@@ -1,4 +1,6 @@
-package screens;
+package edit_timetable_use_case.interface_adapters;
+
+import screens.TimetableViewModel;
 
 public interface EditTimetableView {
 

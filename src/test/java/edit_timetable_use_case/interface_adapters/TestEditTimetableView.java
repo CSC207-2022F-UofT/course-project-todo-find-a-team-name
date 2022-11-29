@@ -1,6 +1,5 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.interface_adapters;
 
-import screens.EditTimetableView;
 import screens.TimetableViewModel;
 
 /**

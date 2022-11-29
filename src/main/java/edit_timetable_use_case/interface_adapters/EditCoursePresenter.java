@@ -1,23 +1,20 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.interface_adapters;
 
+import edit_timetable_use_case.application_business.EditTimetableResponseModel;
+import edit_timetable_use_case.application_business.EditCourseOutputBoundary;
 import retrieve_timetable_use_case.TimetableModel;
 import retrieve_timetable_use_case.TimetableModelConverter;
-import screens.EditTimetableView;
 import screens.TimetableViewModel;
 
 /**
  * A concrete implementation of the EditCourseOutputBoundary.
  * view is the view that the presenter updates and controls.
  */
-public class EditCoursePresenter implements EditCourseOutputBoundary{
+public class EditCoursePresenter implements EditCourseOutputBoundary {
 
     private EditTimetableView view;
 
     public EditCoursePresenter(){}
-
-    public EditCoursePresenter(EditTimetableView view){
-        this.view = view;
-    }
 
     /**
      * @param responseModel a response model with the codes of the courses and sections that the user tried to edit.

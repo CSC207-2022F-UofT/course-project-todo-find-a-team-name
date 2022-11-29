@@ -1,6 +1,6 @@
 package screens;
 
-import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import entities.InvalidSectionsException;
 
 import javax.swing.*;

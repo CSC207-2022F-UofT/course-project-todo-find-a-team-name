@@ -1,18 +1,18 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.interface_adapters;
 
+import edit_timetable_use_case.application_business.*;
 import entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.RetrieveTimetableInteractor;
-import screens.AddCoursePresenter;
-import screens.RemoveCoursePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * A testing class for EditTimetableController that verifies that the controller throws the correct exceptions (or
