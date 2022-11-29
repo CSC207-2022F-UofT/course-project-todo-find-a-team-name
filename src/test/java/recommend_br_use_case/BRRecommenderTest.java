@@ -30,7 +30,7 @@ class BRRecommenderTest {
         Session session;
         try {
             session = sessionGateway.extractSession(
-                    sessionGateway.readFromFile(sessionGateway.fileToString("src/main/resources/test_session_data.json")),
+                    sessionGateway.readFromFile("src/main/resources/test_session_data.json"),
                     "F"
             );
         } catch (ParseException | IOException e) {
@@ -52,31 +52,6 @@ class BRRecommenderTest {
             courses.add(createTimetableCourse(calCSC207, "LEC-0401", "TUT-0301", ""));
             courses.add(createTimetableCourse(calCSC236, "LEC-0101", "TUT-0103", ""));
             courses.add(createTimetableCourse(calSTA247, "LEC-0201", "TUT-0202", ""));
-
-//            expected.add(createTimetableCourse(calENG220, "LEC-0101", "", ""));
-//            expected.add(createTimetableCourse(calSLA106, "LEC-5101", "", ""));
-//            expected.add(createTimetableCourse(calESS205, "LEC-5101", "", ""));
-//
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0201"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0202"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5101"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-5102"));
-//
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0201"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-0202"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5101"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-0201", "", "PRA-5102"));
-//
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0201"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-0202"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5101"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2000", "", "PRA-5102"));
-//
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0201"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-0202"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5101"));
-//            expected.add(createTimetableCourse(calBIO120, "LEC-2002", "", "PRA-5102"));
-
 
             expected.add(createTimetableCourse(calENG220, "LEC-0101", "", ""));
             expected.add(createTimetableCourse(calBIO120, "LEC-0101", "", "PRA-0201"));
