@@ -12,7 +12,7 @@ public class SessionBuilderInteractor {
      * @param allCourses - contains all sessions, String - session type (Fall (F), Winter (S))
      * @return Session
      */
-    public Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
+    public Session aSessionBuilder(HashMap<String, CalendarCourse> allCourses, String sessionType) {
         Session aSession = new Session(sessionType);
 
         for (String courseName : allCourses.keySet()) {
@@ -29,9 +29,9 @@ public class SessionBuilderInteractor {
      * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
      *
      * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
+     * @return SessionStorer
      */
-    public SessionStorer extractAllSession(HashMap<String, CalendarCourse> allCourses) {
+    public SessionStorer allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
         SessionStorer sessionStorer = new SessionStorer();
         Session Fall = new Session("F");
         sessionStorer.addSession("F", Fall);
