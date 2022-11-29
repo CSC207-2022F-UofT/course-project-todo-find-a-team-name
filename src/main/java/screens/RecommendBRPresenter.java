@@ -1,9 +1,9 @@
 package screens;
 
 import recommend_br_use_case.*;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
 
 import java.util.ArrayList;
 import java.util.List;

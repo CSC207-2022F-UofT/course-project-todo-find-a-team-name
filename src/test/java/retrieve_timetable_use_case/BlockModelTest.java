@@ -2,6 +2,7 @@ package retrieve_timetable_use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.BlockModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

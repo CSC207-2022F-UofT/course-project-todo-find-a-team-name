@@ -1,4 +1,4 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
 
 /**
  * A data carrier class that doubles as a request and resposne model containing all information

@@ -1,6 +1,6 @@
 /*package screens;
 
-import retrieve_timetable_use_case.RetrieveTimetableController;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import entities.Section;
 
 import javax.swing.*;

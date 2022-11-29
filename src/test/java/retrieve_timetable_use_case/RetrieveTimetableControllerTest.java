@@ -2,12 +2,13 @@ package retrieve_timetable_use_case;
 
 import entities.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.*;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A suite of tests for RetrieveTimetableController.
@@ -81,7 +82,7 @@ class RetrieveTimetableControllerTest {
      */
     @Test
     void retrieveCalendarCourse() {
-        assertEquals(controller.retrieveCalendarCourse("EGG100"), courseModel);
+        Assertions.assertEquals(controller.retrieveCalendarCourse("EGG100"), courseModel);
     }
 
     /**
@@ -90,7 +91,7 @@ class RetrieveTimetableControllerTest {
      */
     @Test
     void retrieveTimetableCourse() {
-        assertEquals(controller.retrieveTimetableCourse("EGG100"), courseModel);
+        Assertions.assertEquals(controller.retrieveTimetableCourse("EGG100"), courseModel);
     }
 
     /**
@@ -99,6 +100,6 @@ class RetrieveTimetableControllerTest {
      */
     @Test
     void retrieveTimetable() {
-        assertEquals(controller.retrieveTimetable(), timetableModel);
+        Assertions.assertEquals(controller.retrieveTimetable(), timetableModel);
     }
 }

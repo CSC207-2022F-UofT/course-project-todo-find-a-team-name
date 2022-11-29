@@ -1,4 +1,4 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
 
 import entities.Course;
 import entities.Session;

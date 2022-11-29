@@ -1,13 +1,16 @@
 package retrieve_timetable_use_case;
 
-import entities.*;
+import entities.Block;
+import entities.CalendarCourse;
+import entities.Section;
+import entities.Session;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A suite of tests for the EntityConverter class of static methods.
@@ -64,7 +67,7 @@ class EntityConverterTest {
      */
     @Test
     void generateSessionResponse() {
-        assertEquals(sessionModel, EntityConverter.generateSessionResponse(sessionActual));
+        Assertions.assertEquals(sessionModel, EntityConverter.generateSessionResponse(sessionActual));
     }
 
     /**
@@ -72,7 +75,7 @@ class EntityConverterTest {
      */
     @Test
     void generateCourseResponse() {
-        assertEquals(courseModel, EntityConverter.generateCourseResponse(courseActual));
+        Assertions.assertEquals(courseModel, EntityConverter.generateCourseResponse(courseActual));
     }
 
     /**
@@ -80,7 +83,7 @@ class EntityConverterTest {
      */
     @Test
     void generateSectionResponse() {
-        assertEquals(sectionModel, EntityConverter.generateSectionResponse(sectionActual));
+        Assertions.assertEquals(sectionModel, EntityConverter.generateSectionResponse(sectionActual));
     }
 
     /**
@@ -88,7 +91,7 @@ class EntityConverterTest {
      */
     @Test
     void generateBlockResponse() {
-        assertEquals(blockModel, EntityConverter.generateBlockResponse(blockActual));
+        Assertions.assertEquals(blockModel, EntityConverter.generateBlockResponse(blockActual));
     }
 
 }
