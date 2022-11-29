@@ -2,13 +2,13 @@ package fileio_use_case;
 
 import entities.Block;
 /** Builds Block class **/
-public class BlockBuilderInteractor {
+public class BlockBuilder {
     private final String day;
     private final String startTime;
     private final String endTime;
     private final String room;
 
-    public BlockBuilderInteractor(String day, String startTime, String endTime, String room) {
+    public BlockBuilder(String day, String startTime, String endTime, String room) {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;

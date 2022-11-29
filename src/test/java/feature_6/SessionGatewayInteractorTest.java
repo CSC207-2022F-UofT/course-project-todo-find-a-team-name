@@ -1,11 +1,12 @@
-package feature6;
+package feature_6;
 
 import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
+import fileio_use_case.FileImportRequestModel;
 import fileio_use_case.SessionGatewayInteractor;
-import fileio_use_case.SessionStorerInteractor;
+import fileio_use_case.SessionStorer;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
@@ -17,14 +18,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SessionGatewayInteractorTest {
+class SessionGatewayInteractorTest {
+    /** Tests if sessions can be created given a JSON file */
     @Test
     void creatingAllSessionsAndGetSessionType() throws ParseException, IOException {
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
-        String jsonToStr = convertFile.fileToString();
+        FileImportRequestModel filePath = new FileImportRequestModel("src/main/java/screens/courses_cleaned.json");
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor();
+        String jsonToStr = convertFile.fileToString(filePath);
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
 
-        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
+        SessionStorer allSessions = convertFile.creatingSessionsFromFile(result);
         assertTrue(allSessions.getAllSessions().containsKey("S"));
         assertTrue(allSessions.getAllSessions().containsKey("F"));
 
@@ -32,11 +35,15 @@ public class SessionGatewayInteractorTest {
         Session Winter = allSessions.getSession("S");
         assertEquals("S", Winter.getSessionType());
     }
+    /** Checks if SessionGatewayInteractor when calling on SessionGateway can correctly parse the text in JSON file
+     * into a Calendar Course with the right format and values.
+     */
     @Test
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
-        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor("src/test/java/feature6/testing.json");
+        FileImportRequestModel filePath1 = new FileImportRequestModel("src/test/java/feature_6/testing.json");
+        SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor();
         // Course from testing.json
-        String jsonToStr1 = convertingFile1.fileToString();
+        String jsonToStr1 = convertingFile1.fileToString(filePath1);
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
         Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");

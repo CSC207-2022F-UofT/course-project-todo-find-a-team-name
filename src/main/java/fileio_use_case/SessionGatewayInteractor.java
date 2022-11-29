@@ -3,23 +3,24 @@ package fileio_use_case;
 import entities.CalendarCourse;
 import entities.Session;
 import org.json.simple.parser.ParseException;
-import screens.feature_6_frameworks_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor {
+public class SessionGatewayInteractor implements FileImportInputBoundary {
     private final SessionGateway sessionGateway;
-    public SessionGatewayInteractor(String file) {
-        this.sessionGateway = new SessionGateway(file);
+    public SessionGatewayInteractor() {
+        this.sessionGateway = new SessionGateway();
     }
     /**
      * Returns a string representation of the JSON file it reads.
      * @return String
      */
-    public String fileToString() throws IOException {
-        return this.sessionGateway.fileToString();
+    public String fileToString(FileImportRequestModel file) throws IOException {
+        String filePath = file.getFilePath();
+        return this.sessionGateway.fileToString(filePath);
     }
     /**
      * Given a string representation of a JSON file, return a HashMap of all course info from the JSON file
@@ -40,16 +41,15 @@ public class SessionGatewayInteractor {
     }
 
     /**
-     * Returns a SessionStorerInteractor class of all sessions (Fall and Winter) based on given HashMap of String
+     * Returns a SessionStorer class of all sessions (Fall and Winter) based on given HashMap of String
      * to CalendarCourse.
-     * Note: Use .getAllSessions() method in SessionStorerInteractor to get
+     * Note: Use .getAllSessions() method in SessionStorer to get
      * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
      *
      * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
+     * @return SessionStorer
      */
-    public SessionStorerInteractor creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
+    public SessionStorer creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
         return this.sessionGateway.creatingSessionsFromFile(allCourses);
     }
-
 }
