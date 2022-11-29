@@ -14,6 +14,24 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SessionGatewayTest {
+    /** Checks extract Session Method with empty and non-empty hashmap **/
+    @Test
+    void checkExtractSession() throws IOException, ParseException {
+        // Empty Hashmap
+        SessionGateway convertingFile2 = new SessionGateway();
+        HashMap<String, CalendarCourse> empty= new HashMap<>();
+        Session emptySession = convertingFile2.extractSession(empty, "F");
+        assertEquals(emptySession.getSessionType(), "F");
+        assertEquals((emptySession.getAllSessionCourses()).size(), 0);
+
+        // Hashmap
+        SessionGateway convertingFile3 = new SessionGateway();
+        String jsonToStr1 = convertingFile3.fileToString("src/main/resources/test_session_data.json");
+        HashMap<String, CalendarCourse> result1 = convertingFile3.readFromFile(jsonToStr1);
+        Session fallSession = convertingFile3.extractSession(result1, "F");
+        assertEquals(fallSession.getAllSessionCourses().size(), 8);
+    }
+
     /** Checks if SessionGateway can correctly parse the text in JSON file
      * into a Calendar Course with the right format and values.
      */
@@ -21,7 +39,7 @@ class SessionGatewayTest {
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
         SessionGateway convertingFile1 = new SessionGateway();
         // Course from testing.json
-        String jsonToStr1 = convertingFile1.fileToString("src/test/java/feature_6/testing.json");
+        String jsonToStr1 = convertingFile1.fileToString("src/main/resources/testing.json");
         HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(jsonToStr1);
         Session Winter = convertingFile1.extractSession(result1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
