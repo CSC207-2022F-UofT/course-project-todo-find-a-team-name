@@ -15,21 +15,14 @@ public class SessionGatewayInteractor implements FileImportInputBoundary {
         this.sessionGateway = new SessionGateway();
     }
     /**
-     * Returns a string representation of the JSON file it reads.
-     * @return String
-     */
-    public String fileToString(FileImportRequestModel file) throws IOException {
-        String filePath = file.getFilePath();
-        return this.sessionGateway.fileToString(filePath);
-    }
-    /**
-     * Given a string representation of a JSON file, return a HashMap of all course info from the JSON file
+     * Given a string of the file path of a JSON file, return a HashMap of all course info from the JSON file
      * where the key is the course code and value is course information.
      * @param jsonData JSON data
      * @return HashMap<String, CalendarCourse>
      */
-    public HashMap<String, CalendarCourse> readFromFile(String jsonData) throws ParseException {
-        return this.sessionGateway.readFromFile(jsonData);
+    public HashMap<String, CalendarCourse> readFromFile(FileImportRequestModel jsonData) throws IOException, ParseException {
+        String filePath = jsonData.getFilePath();
+        return this.sessionGateway.readFromFile(filePath);
     }
     /**
      * Returns a session if given the HashMap representation of all courses and sessionType

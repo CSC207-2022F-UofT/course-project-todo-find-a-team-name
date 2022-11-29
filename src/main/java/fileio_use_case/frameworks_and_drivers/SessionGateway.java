@@ -19,20 +19,19 @@ import java.util.*;
 public class SessionGateway implements GatewayInterface {
     public SessionGateway() {}
     /**
-     * Returns a string representation of the JSON file it reads.
-     * @return String
-     */
-    public String fileToString(String file) throws IOException {
-        // Files.readString(Path.of("src/main/java/screens/courses_cleaned.json"));
-        return Files.readString(Path.of(file));
-    }
-    /**
-     * Given a string representation of a JSON file, return a HashMap of all course info from the JSON file
+     * Given a string of the JSON file path, return a HashMap of all course info from the JSON file
      * where the key is the course code and value is course information.
-     * @param jsonData JSON data
+     * @param filePath file path for JSON file
      * @return HashMap<String, CalendarCourse>
      */
-    public HashMap<String, CalendarCourse> readFromFile(String jsonData) throws ParseException {
+    public HashMap<String, CalendarCourse> readFromFile(String filePath) throws IOException, ParseException {
+        // Files.readString(Path.of("src/main/java/screens/courses_cleaned.json"));
+        return parseString(Files.readString(Path.of(filePath)));
+    }
+    /**
+     * HELPER METHOD
+     */
+    private HashMap<String, CalendarCourse> parseString(String jsonData) throws ParseException {
         HashMap<String, CalendarCourse> allCourses = new HashMap<>();
         // Parse String
         JSONParser parser = new JSONParser();
@@ -69,9 +68,9 @@ public class SessionGateway implements GatewayInterface {
         return allCourses;
     }
     /**
-     * Helper method of readFromFile to check for conditions of block's values and builds block
+     * Helper method of the helper method parseString to check for conditions of block's values and builds block
      */
-    public Block readFromFileHelper(JSONObject aBlock) {
+    private Block readFromFileHelper(JSONObject aBlock) {
         if (!(aBlock.get("day") == null && aBlock.get("startTime") == null && aBlock.get("endTime") == null && aBlock.get("room") == null)) {
             if (aBlock.get("room") == null) {
                 return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
