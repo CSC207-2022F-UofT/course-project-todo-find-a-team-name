@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -158,7 +159,8 @@ public class Section {
 
         Section other = (Section) obj;
 
-        return code.equals(other.code) && instructorName.equals(other.instructorName) && blocks.equals(other.blocks);
+        return code.equals(other.code) && instructorName.equals(other.instructorName)
+                && new HashSet<>(blocks).equals(new HashSet<>(other.blocks));
     }
 
     /**

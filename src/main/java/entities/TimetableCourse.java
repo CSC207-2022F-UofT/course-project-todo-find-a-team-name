@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.HashSet;
 import java.util.List;
 
 /** A concrete implementation of Course that stores at most one tutorial section,
@@ -129,6 +130,27 @@ public class TimetableCourse extends Course{
      */
     public Section getPractical(){
         return this.practical;
+    }
+
+    /**
+     * Returns whether obj is equal to this object
+     *
+     * @param obj object comparing
+     * @return whether obj is equal to this object
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimetableCourse)){
+            return false;
+        }
+
+        TimetableCourse other = (TimetableCourse) obj;
+
+        return courseCode.equals(other.courseCode) &&
+                title.equals(other.title) &&
+                courseSession.equals(other.courseSession) &&
+                breadth.equals(other.breadth) &&
+                new HashSet<>(sections).equals(new HashSet<>(other.sections));
     }
 }
 
