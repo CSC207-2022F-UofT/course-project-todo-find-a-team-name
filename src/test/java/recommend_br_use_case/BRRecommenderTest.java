@@ -2,12 +2,11 @@ package recommend_br_use_case;
 
 import entities.*;
 import fileio_use_case.SessionGatewayInteractor;
-import fileio_use_case.SessionStorerInteractor;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import recommend_br_use_case.application_business.BRRecommender;
 import recommend_br_use_case.application_business.TargetTimeCourseComparator;
-import screens.feature_6_frameworks_drivers.SessionGateway;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,38 +15,47 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BRRecommenderTest {
 
+    /**
+     * Test whether BRRecommender returns correct list of timetable courses, if...
+     *      - the given timetable has CSC207H1, CSC247H1, and STA247 (from the test_session_data.json)
+     *      - the given Session is loaded from "src/main/resources/test_session_data.json"
+     *      - "1" and "4" is selected for breadth categories
+     *      - new TargetTimeCourseComparator(0) is given
+     */
     @Test
-    void testRecommendBr() throws IOException, ParseException {
+    void testRecommendBr(){
         // Load session from test file
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/resources/test_session_data.json");
-        String jsonToStr = convertFile.fileToString();
-        HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
-        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
-        Session session = allSessions.getSession("F");
+        SessionGateway sessionGateway = new SessionGateway();
+        Session session;
+        try {
+            session = sessionGateway.extractSession(
+                    sessionGateway.readFromFile(sessionGateway.fileToString("src/main/resources/test_session_data.json")),
+                    "F"
+            );
+        } catch (ParseException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        // Construct timetable course
+        // Construct timetable courses
         ArrayList<TimetableCourse> courses = new ArrayList<>();
         List<TimetableCourse> expected = new ArrayList<>();
-
         CalendarCourse calCSC207 = session.getCalendarCourse("CSC207H1");
-        CalendarCourse calCSC236 = session.getCalendarCourse("CSC207H1");
+        CalendarCourse calCSC236 = session.getCalendarCourse("CSC236H1");
         CalendarCourse calSTA247 = session.getCalendarCourse("STA247H1");
         CalendarCourse calSLA106 = session.getCalendarCourse("SLA106H1");
         CalendarCourse calENG220 = session.getCalendarCourse("ENG220H1");
         CalendarCourse calESS205 = session.getCalendarCourse("ESS205H1");
         CalendarCourse calBIO255 = session.getCalendarCourse("BIO255H1");
-
-
         try {
             courses.add(createTimetableCourse(calCSC207, "LEC-0401", "TUT-0301", ""));
             courses.add(createTimetableCourse(calCSC236, "LEC-0101", "TUT-0103", ""));
             courses.add(createTimetableCourse(calSTA247, "LEC-0201", "TUT-0202", ""));
 
-            expected.add(createTimetableCourse(calSLA106, "LEC-5101", "", ""));
             expected.add(createTimetableCourse(calENG220, "LEC-0101", "", ""));
-            expected.add(createTimetableCourse(calESS205, "LEC-5101", "", ""));
             expected.add(createTimetableCourse(calBIO255, "LEC-0101", "", "PRA-0101"));
             expected.add(createTimetableCourse(calBIO255, "LEC-5101", "", "PRA-0101"));
+            expected.add(createTimetableCourse(calSLA106, "LEC-5101", "", ""));
+            expected.add(createTimetableCourse(calESS205, "LEC-5101", "", ""));
 
         } catch (InvalidSectionsException e) {
             throw new RuntimeException(e);
@@ -58,29 +66,30 @@ class BRRecommenderTest {
         brCategoriesSelected.add("1");
         brCategoriesSelected.add("4");
         TargetTimeCourseComparator courseComparator = new TargetTimeCourseComparator(0);
-        expected.sort(courseComparator);
-
         BRRecommender brRecommender = new BRRecommender(timetable, session, brCategoriesSelected, courseComparator);
-
-        System.out.println(timetable.isConflicted(calBIO255.getSections().get(1)));
-        System.out.println(calBIO255.getSections().get(1));
-        assertEquals(expected, brRecommender.recommendBr());
-
+        List<TimetableCourse> result = brRecommender.recommendBr();
+        assertEquals(expected, result);
     }
 
+    /**
+     * Create timetable course from the given calendar course and lecture code, tutorial code, and practical code.
+     * The returned timetable course will have same title, course session, course code, and breadth category as the
+     * given calendar course. However, it will only contain sections corresponding to the given lecture code, tutorial
+     * code, and practical code.
+     *
+     * @param calCourse calendar course
+     * @param lecture lecture code
+     * @param tutorial tutorial code
+     * @param practical practical code
+     * @return timetable course generated from the given calendar course and lecture, tutorial, and practical code.
+     * @throws InvalidSectionsException when section codes are invalid (e.g. two tutorials)
+     */
     private TimetableCourse createTimetableCourse(CalendarCourse calCourse, String lecture, String tutorial,
                                                   String practical) throws InvalidSectionsException {
-        HashSet<String> sectionCodes = new HashSet<>();
-        if (!lecture.isEmpty())
-            sectionCodes.add(lecture);
-        if (!tutorial.isEmpty())
-            sectionCodes.add(tutorial);
-        if (!practical.isEmpty())
-            sectionCodes.add(practical);
-
         List<Section> sections = new ArrayList<>();
         for (Section section : calCourse.getSections()){
-            if (sectionCodes.contains(section.getCode())){
+            if (section.getCode().equals(lecture) || section.getCode().equals(tutorial)
+                    || section.getCode().equals(practical)){
                 sections.add(section);
             }
         }
