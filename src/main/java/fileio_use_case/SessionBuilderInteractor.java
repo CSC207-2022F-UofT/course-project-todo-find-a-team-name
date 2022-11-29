@@ -23,15 +23,15 @@ public class SessionBuilderInteractor {
         return aSession;
     }
     /**
-     * Returns a SessionStorer class of all sessions (Fall and Winter) based on given HashMap of String
+     * Returns a HashMap<String, Session> class of all sessions (Fall and Winter) based on given HashMap of String
      * to CalendarCourse.
      * Note: Use .getAllSessions() method in SessionStorer to get
      * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
      *
      * @param allCourses HashMap<String, CalendarCourse>
-     * @return SessionStorer
+     * @return HashMap<String, Session>
      */
-    public SessionStorer allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
+    public HashMap<String, Session> allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
         SessionStorer sessionStorer = new SessionStorer();
         Session Fall = new Session("F");
         sessionStorer.addSession("F", Fall);
@@ -47,7 +47,7 @@ public class SessionBuilderInteractor {
                 Winter.addCourse(calCourse);
             }
         }
-        return sessionStorer;
+        return sessionStorer.getAllSessions();
     }
 
 }
