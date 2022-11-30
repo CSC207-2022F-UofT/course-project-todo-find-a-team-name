@@ -1,6 +1,6 @@
 package edit_timetable_use_case;
 
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.List;
 
@@ -26,11 +26,6 @@ public class EditTimetableResponseModel {
 
     public String getCourseCode() {
         return courseCode;
-    }
-
-    /*This method is unused, creating an IntelliJ warning. It will be used in the AddCourse use case.*/
-    public List<String> getSectionCodes(){
-        return sectionCodes;
     }
 
 
