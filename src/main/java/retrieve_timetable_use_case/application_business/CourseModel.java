@@ -1,6 +1,7 @@
 package retrieve_timetable_use_case.application_business;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -55,6 +56,10 @@ public class CourseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CourseModel that = (CourseModel) o;
-        return getTitle().equals(that.getTitle()) && getSections().equals(that.getSections()) && getCourseSession().equals(that.getCourseSession()) && getCourseCode().equals(that.getCourseCode()) && getBreadth().equals(that.getBreadth());
+        return getTitle().equals(that.getTitle()) &&
+                new HashSet<>(getSections()).equals(new HashSet<>(that.getSections()))
+                && getCourseSession().equals(that.getCourseSession())
+                && getCourseCode().equals(that.getCourseCode())
+                && getBreadth().equals(that.getBreadth());
     }
 }
