@@ -1,13 +1,12 @@
 package overlap_crap_fix_locations_later;
 
-import entities.Timetable;
+import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.HashMap;
 
 public interface TimetableMatchInputBoundary {
 
-    public Timetable determineBestMatchingTimetable();
+    TimetableModel determineBestMatchingTimetable();
 
-    public HashMap<Timetable, Double> calculateTimetableOverlaps();
-
+    HashMap<TimetableModel, Double> calculateTimetableOverlaps();
 }

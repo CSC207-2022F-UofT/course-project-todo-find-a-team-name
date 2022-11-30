@@ -1,10 +1,9 @@
 package overlap_crap_fix_locations_later;
 
-import entities.*;
+import entities.Constraint;
+import entities.Timetable;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -43,7 +42,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         for (int i = 0; i < timeTableOptions.size(); i++) {
             timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
         }
-        $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

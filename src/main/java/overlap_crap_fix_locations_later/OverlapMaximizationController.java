@@ -2,16 +2,24 @@ package overlap_crap_fix_locations_later;
 
 import entities.Constraint;
 import entities.Timetable;
+import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
 public class OverlapMaximizationController implements Flow.Subscriber {
 
-    public Timetable getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints,
+    private final SectionHoursInputBoundary sectionHourCalculator;
+    private final TimetableMatchInputBoundary timetableMatcher;
+
+    OverlapMaximizationController(SectionHoursInputBoundary sectionHourCalculator, TimetableMatchInputBoundary timeTableMatcher){
+        this.sectionHourCalculator = sectionHourCalculator;
+        this.timetableMatcher = timeTableMatcher;
+    }
+
+    public TimetableModel getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints,
                                               ArrayList<Constraint> constraints){
-        Timetable bestMatch = new TimeTableMatchInteractor(Timetables, mainTable, lightConstraints, constraints)
-                .determineBestMatchingTimetable();
+        TimetableModel bestMatch = timetableMatcher.determineBestMatchingTimetable();
         return bestMatch;
 
 
