@@ -19,14 +19,15 @@ import java.util.*;
 public class SessionGateway implements GatewayInterface {
     public SessionGateway() {}
     /**
-     * Given a string of the JSON file path, return a HashMap of all course info from the JSON file
-     * where the key is the course code and value is course information.
-     * @param filePath file path for JSON file
-     * @return HashMap<String, CalendarCourse>
+     * Given a string of the JSON file path and session type, return a Session with specified session type
+     * from the JSON file where the key is the course code and value is course information.
+     * @param filePath file path for JSON file, Session Type
+     * @return Session
      */
-    public HashMap<String, CalendarCourse> readFromFile(String filePath) throws IOException, ParseException {
+    public Session readFromFile(String filePath, String sessionType) throws IOException, ParseException {
         // Files.readString(Path.of("src/main/java/screens/courses_cleaned.json"));
-        return parseString(Files.readString(Path.of(filePath)));
+        HashMap<String, CalendarCourse> calendarCourseHashMap = parseString(Files.readString(Path.of(filePath)));
+        return extractSession(calendarCourseHashMap, sessionType);
     }
     /**
      * HELPER METHOD
@@ -92,24 +93,20 @@ public class SessionGateway implements GatewayInterface {
         return null;
     }
     /**
-     * Returns a session if given the HashMap representation of all courses and sessionType
-     * @param allCourses - contains all sessions, String - session type (Fall (F), Winter (S))
-     * @return Session
+     * HELPER METHOD
      */
-    public Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
+    private Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
         return new SessionBuilderInteractor().aSessionBuilder(allCourses, sessionType);
     }
-
-    /**
-     * Returns HashMap<String, Session> of all sessions (Fall and Winter) based on given HashMap of String
-     * to CalendarCourse, where the key is the SessionType.
-     * Note: Use .getAllSessions() method in SessionStorer to get
-     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
-     *
-     * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
-     */
-    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
-        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
-    }
+//    /**
+//     * Returns HashMap<String, Session> of all sessions (Fall and Winter) based on given HashMap of String
+//     * to CalendarCourse, where the key is the SessionType.
+//     * Note: Use .getAllSessions() method in SessionStorer to get
+//     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
+//     *
+//     * @param allCourses HashMap<String, CalendarCourse>
+//     * @return HashMap<String, Session>
+//     */
+//    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses)
+//        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
 }

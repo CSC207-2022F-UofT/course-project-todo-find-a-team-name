@@ -7,11 +7,11 @@ import entities.Session;
 import fileio_use_case.FileImportRequestModel;
 import fileio_use_case.SessionGatewayInteractor;
 import org.json.simple.parser.ParseException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,11 +22,9 @@ class SessionGatewayInteractorTest {
     void testingCreatingAllSessions() throws ParseException, IOException {
         FileImportRequestModel filePath = new FileImportRequestModel("src/main/resources/courses_cleaned.json");
         SessionGatewayInteractor convertFile = new SessionGatewayInteractor();
-        HashMap<String, CalendarCourse> result = convertFile.readFromFile(filePath);
+        Session result = convertFile.readFromFile(filePath, "S");
 
-        HashMap<String, Session> allSessions = convertFile.creatingSessionsFromFile(result);
-        assertTrue(allSessions.containsKey("S"));
-        assertTrue(allSessions.containsKey("F"));
+        Assertions.assertEquals(result.getSessionType(), "S");
     }
     /** Checks if SessionGatewayInteractor when calling on SessionGateway can correctly parse the text in JSON file
      * into a Calendar Course with the right format and values.
@@ -36,8 +34,7 @@ class SessionGatewayInteractorTest {
         FileImportRequestModel filePath1 = new FileImportRequestModel("src/main/resources/testing.json");
         SessionGatewayInteractor convertingFile1 = new SessionGatewayInteractor();
         // Course from testing.json
-        HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile(filePath1);
-        Session Winter = convertingFile1.extractSession(result1, "S");
+        Session Winter = convertingFile1.readFromFile(filePath1, "S");
         CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
 
         // Building Course Manually
