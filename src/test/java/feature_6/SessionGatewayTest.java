@@ -17,17 +17,8 @@ class SessionGatewayTest {
     /** Checks extract Session Method with empty and non-empty hashmap **/
     @Test
     void checkExtractSession() throws IOException, ParseException {
-        // Empty Hashmap
-        SessionGateway convertingFile2 = new SessionGateway();
-        HashMap<String, CalendarCourse> empty= new HashMap<>();
-        Session emptySession = convertingFile2.extractSession(empty, "F");
-        assertEquals(emptySession.getSessionType(), "F");
-        assertEquals((emptySession.getAllSessionCourses()).size(), 0);
-
-        // Hashmap
         SessionGateway convertingFile3 = new SessionGateway();
-        HashMap<String, CalendarCourse> result1 = convertingFile3.readFromFile("src/main/resources/test_session_data.json");
-        Session fallSession = convertingFile3.extractSession(result1, "F");
+        Session fallSession = convertingFile3.readFromFile("src/main/resources/test_session_data.json", "F");
         assertEquals(fallSession.getAllSessionCourses().size(), 8);
     }
 
@@ -38,9 +29,8 @@ class SessionGatewayTest {
     void checkingFormatAndValuesEquals() throws IOException, ParseException {
         SessionGateway convertingFile1 = new SessionGateway();
         // Course from testing.json
-        HashMap<String, CalendarCourse> result1 = convertingFile1.readFromFile("src/main/resources/testing.json");
-        Session Winter = convertingFile1.extractSession(result1, "S");
-        CalendarCourse wantedCourse = Winter.getCalendarCourse("IFP040H1");
+        Session winter = convertingFile1.readFromFile("src/main/resources/testing.json", "S");
+        CalendarCourse wantedCourse = winter.getCalendarCourse("IFP040H1");
 
         // Building Course Manually
         ArrayList<Block> allBlocks = new ArrayList<>();

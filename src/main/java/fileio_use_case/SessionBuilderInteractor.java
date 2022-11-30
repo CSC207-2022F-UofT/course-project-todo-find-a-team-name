@@ -22,32 +22,30 @@ public class SessionBuilderInteractor {
         }
         return aSession;
     }
-    /**
-     * Returns a HashMap<String, Session> class of all sessions (Fall and Winter) based on given HashMap of String
-     * to CalendarCourse.
-     * Note: Use .getAllSessions() method in SessionStorer to get
-     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
-     *
-     * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
-     */
-    public HashMap<String, Session> allSessionBuilder(HashMap<String, CalendarCourse> allCourses) {
-        SessionStorer sessionStorer = new SessionStorer();
-        Session Fall = new Session("F");
-        sessionStorer.addSession("F", Fall);
-        Session Winter = new Session("S");
-        sessionStorer.addSession("S", Winter);
-
-        for (String courseName : allCourses.keySet()) {
-            CalendarCourse calCourse = allCourses.get(courseName);
-            if (calCourse.getCourseSession().equals("F")) {
-                Fall.addCourse(calCourse);
-            }
-            else {
-                Winter.addCourse(calCourse);
-            }
-        }
-        return sessionStorer.getAllSessions();
-    }
-
+//    /**
+//     * Returns a HashMap<String, Session> class of all sessions (Fall and Winter) based on given HashMap of String
+//     * to CalendarCourse.
+//     * Note: Use .getAllSessions() method in SessionStorer to get
+//     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
+//     *
+//     * @param allCourses HashMap<String, CalendarCourse>
+//     * @return HashMap<String, Session>
+//     */
+//    public HashMap<String, Session> allSessionBuilder(HashMap<String, CalendarCourse> allCourses)
+//        SessionStorer sessionStore = new SessionStorer();
+//        Session Fall = new Session("F");
+//        sessionStore.addSession("F", Fall);
+//        Session Winter = new Session("S");
+//        sessionStore.addSession("S", Winter);
+//
+//        for (String courseName : allCourses.keySet()) {
+//            CalendarCourse calCourse = allCourses.get(courseName);
+//            if (calCourse.getCourseSession().equals("F")) {
+//                Fall.addCourse(calCourse);
+//            }
+//            else {
+//                Winter.addCourse(calCourse);
+//            }
+//        }
+//        return sessionStore.getAllSessions();
 }

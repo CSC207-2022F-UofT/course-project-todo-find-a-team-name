@@ -7,7 +7,7 @@ import javax.swing.*;
  */
 public class CourseInfoPanel extends JPanel {
 
-    JLabel courseInfo;
+    private final JLabel courseInfo;
 
     /**
      * Constructs courseInfoPanel with empty JLabel assigned to courseInfo.
@@ -26,6 +26,18 @@ public class CourseInfoPanel extends JPanel {
      * @param courseViewModel object containing all the information of the course shown to the user
      */
     public void showCourseInfo(RecommendBRCourseViewModel courseViewModel){
+        String courseInfoHtml = courseViewModelToCourseInfoHtml(courseViewModel);
+        courseInfo.setText(courseInfoHtml);
+    }
+
+    /**
+     * Converts course information contained in the given RecommendBRCourseViewModel to
+     * String storing course information that is suitable for displaying it as a text, using html.
+     *
+     * @param courseViewModel view model containing all course information
+     * @return String storing course information that is suitable for displaying it as a text
+     */
+    private String courseViewModelToCourseInfoHtml(RecommendBRCourseViewModel courseViewModel){
         StringBuilder sb = new StringBuilder();
         sb.append("<html><p>Code: ")
                 .append(courseViewModel.getCode()).append("<br>")
@@ -54,7 +66,7 @@ public class CourseInfoPanel extends JPanel {
             sb.append("</ul>");
         }
         sb.append("</ul></html>");
-        courseInfo.setText(sb.toString());
+        return sb.toString();
     }
 
 

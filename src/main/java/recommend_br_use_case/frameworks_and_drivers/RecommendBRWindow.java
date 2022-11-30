@@ -1,9 +1,6 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
 import edit_timetable_use_case.EditTimetableController;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRInputScreen;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBROutputScreen;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRViewModel;
 import recommend_br_use_case.interface_adapters.IRecommendBRView;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 
@@ -20,9 +17,9 @@ public class RecommendBRWindow extends JDialog implements IRecommendBRView {
      * User cannot perform any action on the given frame until this window is closed.
      * It displays the RecommendBRInputScreen.
      */
-    RecommendBRInputScreen inputScreen;
-    RecommendBRController brController;
-    EditTimetableController editTimetableController;
+    private RecommendBRInputScreen inputScreen;
+    private final RecommendBRController brController;
+    private final EditTimetableController editTimetableController;
 
     public RecommendBRWindow(JFrame frame, RecommendBRController brController, EditTimetableController editTimetableController){
         super(frame, "Recommend BR", true);
