@@ -4,7 +4,7 @@ import entities.*;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.CourseModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static retrieve_timetable_use_case.EntityConverter.generateCourseResponse;
+import static retrieve_timetable_use_case.application_business.EntityConverter.generateCourseResponse;
 
 /**
  * Test class used for testing RecommendBRInteractor
