@@ -58,7 +58,7 @@ public class SectionFilterRequestModel {
         this.endTime = endTime;
     }
 
-    public String sessionType() {
+    public String getSessionType() {
         return sessionType;
     }
 

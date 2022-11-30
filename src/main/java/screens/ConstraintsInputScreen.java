@@ -99,7 +99,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         String jsonToStr = convertFile.fileToString();
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
         SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
-        Session s = allSessions.getSession("S"); //delete
+        Session fall = allSessions.getSession("F"); //delete
+        Session winter = allSessions.getSession("S");
 
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
@@ -109,7 +110,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.setSession(s); //delete
+        sectionFilterInterator.setFallSession(fall); //delete
+        sectionFilterInterator.setWinterSession(winter); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(sectionFilterController1);
         sectionFilterPresenter.setView(c);

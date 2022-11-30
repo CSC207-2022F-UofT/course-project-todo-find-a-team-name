@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class SectionFilterInteractor implements SectionFilterInputBoundary{
     final SectionFilterOutputBoundary presenter;
-    private Session session; // only for testing, delete when the team finishe the gateway.
+    private Session fallSession; // only for testing, delete when the team finishe the gateway.
+    private Session winterSession;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
         this.presenter = presenter;
     }
@@ -102,6 +103,7 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
 //        session.addCourse(new CalendarCourse("CSC236", sections4, "S", "CSC236H1", "5"));
 //        session.addCourse(new CalendarCourse("STA247", sections5, "S", "STA247H1", "5"));
         // delete
+
         ArrayList<String> courseCodes = (ArrayList<String>) this.formatInputString(requestModel.getCourseCodes());
         ArrayList<CalendarCourse> calendarCourses = new ArrayList<CalendarCourse>();
 
@@ -113,14 +115,26 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
             presenter.prepareFailView("StartTime Must be BEFORE EndTime");
             return;
         }
-        for (String code: courseCodes) {
-            if (session.checkCourseCode(code)){
-                calendarCourses.add(session.getCalendarCourse(code));
-            } else {
-                presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
-                return;
+        if (requestModel.getSessionType().equals("F")){
+            for (String code: courseCodes) {
+                if (fallSession.checkCourseCode(code)){
+                    calendarCourses.add(fallSession.getCalendarCourse(code));
+                } else {
+                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
+                    return;
+                }
+            }
+        } else{
+            for (String code: courseCodes) {
+                if (winterSession.checkCourseCode(code)){
+                    calendarCourses.add(winterSession.getCalendarCourse(code));
+                } else {
+                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
+                    return;
+                }
             }
         }
+
         ArrayList<Constraint> constraints = (ArrayList<Constraint>) this.buildConstraints(requestModel);
         for (CalendarCourse course: calendarCourses) {
             for (Constraint constraint: constraints) {
@@ -135,7 +149,7 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
         for (CalendarCourse course: calendarCourses) {
             courseSectionsData.put(course.getCourseCode(), course.getSectionCodes());
         }
-        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.sessionType());
+        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.getSessionType());
 
         presenter.prepareSuccessView(responseModel);
 
@@ -208,8 +222,12 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
 
     }
 
-    public void setSession(Session session) {
-        this.session = session;
+    public void setFallSession(Session session) {
+        this.fallSession = session;
+    }
+
+    public void setWinterSession(Session session) {
+        this.winterSession = session;
     }
 
     /**
