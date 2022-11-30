@@ -1,11 +1,10 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
 
 import entities.Block;
 import entities.InvalidSectionsException;
 import entities.Section;
 import entities.TimetableCourse;
 import org.junit.jupiter.api.Test;
-import recommend_br_use_case.application_business.TargetTimeCourseComparator;
 
 import java.util.ArrayList;
 import java.util.List;

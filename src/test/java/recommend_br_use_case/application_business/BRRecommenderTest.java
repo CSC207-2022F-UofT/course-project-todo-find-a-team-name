@@ -1,11 +1,9 @@
-package recommend_br_use_case;
+package recommend_br_use_case.application_business;
 
 import entities.*;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
-import recommend_br_use_case.application_business.BRRecommender;
-import recommend_br_use_case.application_business.TargetTimeCourseComparator;
 
 import java.io.IOException;
 import java.util.*;

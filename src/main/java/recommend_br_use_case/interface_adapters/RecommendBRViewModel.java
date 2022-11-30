@@ -1,4 +1,6 @@
-package recommend_br_use_case.frameworks_and_drivers;
+package recommend_br_use_case.interface_adapters;
+
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
 
 import java.util.List;
 
