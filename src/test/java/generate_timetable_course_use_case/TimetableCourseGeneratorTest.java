@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class used for testing TimetableCourseGenerator
+ */
 class TimetableCourseGeneratorTest {
 
     static Section lec0101;
@@ -19,6 +22,9 @@ class TimetableCourseGeneratorTest {
     static Section pra0201;
     static CalendarCourse calCourse;
 
+    /**
+     * Set up the sections and calendar course used throughout the testing
+     */
     @BeforeAll
     static void setUp(){
         List<Section> sections = new ArrayList<>();
@@ -58,6 +64,11 @@ class TimetableCourseGeneratorTest {
         calCourse = new CalendarCourse("course", sections, "S",
                 "COS111", "3");
     }
+
+    /**
+     * Test whether generateAllTimetableCourses returns correct output when arguments
+     * are not given.
+     */
     @Test
     void testGenerateAllTimetableCoursesWithoutArgument() {
         List<TimetableCourse> expected = new ArrayList<>();
@@ -125,6 +136,10 @@ class TimetableCourseGeneratorTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test whether generateAllTimetableCourses returns correct output when lectures, tutorials,
+     * and practicals are given as an argument.
+     */
     @Test
     void testGenerateAllTimetableCoursesWithArgument() {
         List<TimetableCourse> expected = new ArrayList<>();
