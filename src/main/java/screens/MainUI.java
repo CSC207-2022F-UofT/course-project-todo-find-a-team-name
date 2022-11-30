@@ -5,10 +5,17 @@ import blacklist_whitelist_use_case.SectionFilterInteractor;
 import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
-import recommend_br_use_case.RecommendBRInteractor;
 
 
 import edit_timetable_use_case.EditTimetableController;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import org.json.simple.parser.ParseException;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -16,8 +23,8 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -31,7 +38,7 @@ import java.util.List;
 public class MainUI extends JPanel implements ActionListener {
 
     private final JLabel filePathSession;
-    private final JLabel filePathTimetable;
+    private JLabel filePathTimetable;
 
     private final ConstraintsInputScreen constraintsInputScreen;
     private final EditTimetableScreen editTimetableScreen;
@@ -55,13 +62,45 @@ public class MainUI extends JPanel implements ActionListener {
         title.setFont(title.getFont().deriveFont(18F));
         add(title, BorderLayout.PAGE_START);
 
-        JPanel centerPanel = new JPanel();
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
 
+        JPanel timetablePanel = createTimetablePanel();
+
+        JButton generateTimetable = new JButton("Generate timetable");
+        generateTimetable.addActionListener(this);
+        generateTimetable.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+        wrapperPanel.add(Box.createVerticalStrut(50));
+        wrapperPanel.add(timetablePanel);
+        wrapperPanel.add(Box.createVerticalStrut(50));
+        wrapperPanel.add(generateTimetable);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(wrapperPanel);
+
+        JPanel importSessionPanel = new JPanel();
+        JButton importSession = new JButton("Import session");
+        importSession.addActionListener(this);
+
+        filePathSession = new JLabel("Choose the file...");
+        importSessionPanel.add(importSession);
+        importSessionPanel.add(filePathSession);
+
+        add(centerPanel, BorderLayout.CENTER);
+        add(importSessionPanel, BorderLayout.PAGE_END);
+    }
+
+    /**
+     * Create and return panel that allow user to import, edit and display existing timetable.
+     * filePathTimetable instance attribute is also updated to the JLabel representing the current
+     * file path imported for timetable
+     *
+     * @return panel that allow user to import, edit and display existing timetable
+     */
+    private JPanel createTimetablePanel(){
         JPanel timetablePanel = new JPanel();
         timetablePanel.setLayout(new BoxLayout(timetablePanel, BoxLayout.PAGE_AXIS));
-
 
         TitledBorder timetableBorder = BorderFactory.createTitledBorder("Existing Timetable Operations");
         timetableBorder.setTitleJustification(TitledBorder.CENTER);
@@ -84,33 +123,21 @@ public class MainUI extends JPanel implements ActionListener {
         timetableButtons.add(editButton);
         timetableButtons.add(displayButton);
         timetablePanel.add(timetableButtons);
+        return timetablePanel;
+    }
 
-        JButton generateTimetable = new JButton("Generate timetable");
-        generateTimetable.addActionListener(this);
-        generateTimetable.setAlignmentX(JButton.CENTER_ALIGNMENT);
-
-
-        panel.add(Box.createVerticalStrut(50));
-
-        panel.add(timetablePanel);
-
-        panel.add(Box.createVerticalStrut(50));
-
-        panel.add(generateTimetable);
-
-        centerPanel.add(panel);
-
-
-        JPanel importSessionPanel = new JPanel();
-        JButton importSession = new JButton("Import session");
-        importSession.addActionListener(this);
-
-        filePathSession = new JLabel("Choose the file...");
-        importSessionPanel.add(importSession);
-        importSessionPanel.add(filePathSession);
-
-        add(centerPanel, BorderLayout.CENTER);
-        add(importSessionPanel, BorderLayout.PAGE_END);
+    /**
+     * Change the screen of the frame to the given panel
+     *
+     * @param panel new screen
+     */
+    private void changeScreen(JPanel panel){
+        this.setVisible(false);
+        frame.getContentPane().removeAll();
+        panel.setVisible(true);
+        frame.add(panel);
+        frame.revalidate();
+        this.setVisible(true);
     }
 
     /**
@@ -151,26 +178,16 @@ public class MainUI extends JPanel implements ActionListener {
         }
     }
 
-    /**
-     * Change the screen of the frame to the given panel
-     *
-     * @param panel new screen
-     */
-    private void changeScreen(JPanel panel){
-        this.setVisible(false);
-        frame.getContentPane().removeAll();
-        panel.setVisible(true);
-        frame.add(panel);
-        frame.revalidate();
-        this.setVisible(true);
-    }
+
 
     // TODO: Remove this
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
-        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter);
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
+                courseComparatorFactory);
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
@@ -193,13 +210,19 @@ public class MainUI extends JPanel implements ActionListener {
         removeCourseInteractor.setTimetable(timetable);
         recommendBRInteractor.setTimetable(timetable);
 
-        Session fSession = generateSession();
+        SessionGateway sessionGateway = new SessionGateway();
+        Session fSession;
+        try {
+            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
         addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFSession(fSession);
+        recommendBRInteractor.setFallSession(fSession);
 
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInteractor);
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(sectionFilterController1);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
@@ -213,29 +236,5 @@ public class MainUI extends JPanel implements ActionListener {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-    }
-
-    private static Session generateSession(){
-        Session session = new Session("F");
-        for (int i = 8; i < 21; i++){
-            List<Block> blocks = new ArrayList<>();
-            List<Section> sections1 = new ArrayList<>();
-
-            blocks.add(new Block("MO", i + ":00", (i + 1) + ":00", "room1"));
-            blocks.add(new Block("TU", i + ":00", (i + 1) + ":00", "room2"));
-            blocks.add(new Block("TH", i + ":00", (i + 1) + ":00", "room3"));
-
-            sections1.add(new Section("LEC0101", "Kai", blocks));
-            sections1.add(new Section("LEC0201", "Kai", blocks));
-            sections1.add(new Section("LEC0301", "Kai", blocks));
-            sections1.add(new Section("TUT0101", "Kai", blocks));
-            sections1.add(new Section("TUT0201", "Kai", blocks));
-            sections1.add(new Section("PRA0301", "Kai", blocks));
-            sections1.add(new Section("PRA0401", "Kai", blocks));
-
-            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COS-" + i,
-                    "1"));
-        }
-        return session;
     }
 }
