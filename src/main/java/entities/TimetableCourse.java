@@ -2,6 +2,7 @@ package entities;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /** A concrete implementation of Course that stores at most one tutorial section,
  * one practical section, and one lecture section.
@@ -134,6 +135,7 @@ public class TimetableCourse extends Course{
 
     /**
      * Returns whether obj is equal to this object
+     * The order of the sections does not matter for the equality.
      *
      * @param obj object comparing
      * @return whether obj is equal to this object
@@ -151,6 +153,17 @@ public class TimetableCourse extends Course{
                 courseSession.equals(other.courseSession) &&
                 breadth.equals(other.breadth) &&
                 new HashSet<>(sections).equals(new HashSet<>(other.sections));
+    }
+
+    /**
+     * Returns a hash code value for this timetable course.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this timetable course.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(lecture, tutorial, practical);
     }
 }
 
