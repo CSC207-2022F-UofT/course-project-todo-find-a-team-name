@@ -12,6 +12,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class used for testing BRRecommender
+ */
 class BRRecommenderTest {
 
     /**
