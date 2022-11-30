@@ -12,35 +12,41 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// This for testing purposes only during development
+// This method for testing purposes only during development
 // TODO: remove this class
 public class RecommendBRTestMain {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        RecommendBRPresenter presenter = new RecommendBRPresenter(null);
-        RecommendBRInteractor interactor = new RecommendBRInteractor(presenter);
-        RecommendBRController controller = new RecommendBRController(interactor);
+
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter);
+        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
-        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
-
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
+        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
+        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
+        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
+
+        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
+        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
+        editTimetableScreen.setBRWindow(recommendBRWindow);
+        editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
+
+        recommendBRPresenter.setView(recommendBRWindow);
+        addCoursePresenter.setView(editTimetableScreen);
+        removeCoursePresenter.setView(editTimetableScreen);
+
         Timetable timetable = new Timetable(new ArrayList<>(), "F");
         addCourseInteractor.setTimetable(timetable);
+        removeCourseInteractor.setTimetable(timetable);
+        recommendBRInteractor.setTimetable(timetable);
 
-        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
+        Session fSession = generateSession();
+        addCourseInteractor.setSession(fSession);
+        recommendBRInteractor.setFSession(fSession);
 
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
-        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, editTimetableController);
-        presenter.setView(recommendBRWindow);
-        EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController);
-        timetableView.setBRWindow(recommendBRWindow);
-        removeCoursePresenter.setView(timetableView);
-        addCoursePresenter.setView(timetableView);
-        addCourseInteractor.setSession(generateSession());
-
-        frame.add(timetableView);
-
+        frame.add(editTimetableScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -52,10 +58,9 @@ public class RecommendBRTestMain {
             List<Block> blocks = new ArrayList<>();
             List<Section> sections1 = new ArrayList<>();
 
-            blocks.add(new Block("MO", i + ":00", i + ":00", "room1"));
-            blocks.add(new Block("MO", i + ":00", i + ":00", "room2"));
-            blocks.add(new Block("TU", i + ":00", i + ":00", "room2"));
-            blocks.add(new Block("TH", i + ":00", i + ":00", "room3"));
+            blocks.add(new Block("MO", i + ":00", (i + 1) + ":00", "room1"));
+            blocks.add(new Block("TU", i + ":00", (i + 1) + ":00", "room2"));
+            blocks.add(new Block("TH", i + ":00", (i + 1) + ":00", "room3"));
 
             sections1.add(new Section("LEC0101", "Kai", blocks));
             sections1.add(new Section("LEC0201", "Kai", blocks));
@@ -65,7 +70,8 @@ public class RecommendBRTestMain {
             sections1.add(new Section("PRA0301", "Kai", blocks));
             sections1.add(new Section("PRA0401", "Kai", blocks));
 
-            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COSF" + i, "1"));
+            session.addCourse(new CalendarCourse("courseF", sections1, "F", "COS-" + i,
+                    "1"));
         }
         return session;
     }
