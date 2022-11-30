@@ -134,9 +134,11 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
                 }
             }
         }
+        ArrayList<CalendarCourse> calendarCoursesCopy = (ArrayList<CalendarCourse>) copyCalendarCourseList(calendarCourses);
+
 
         ArrayList<Constraint> constraints = (ArrayList<Constraint>) this.buildConstraints(requestModel);
-        for (CalendarCourse course: calendarCourses) {
+        for (CalendarCourse course: calendarCoursesCopy) {
             for (Constraint constraint: constraints) {
                 if (! constraint.filter(course)){
                     presenter.prepareFailView("Filtering Condition Failed: " + course.getCourseCode()
@@ -146,7 +148,7 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
             }
         }
         HashMap<String, List<String>> courseSectionsData = new HashMap<>();
-        for (CalendarCourse course: calendarCourses) {
+        for (CalendarCourse course: calendarCoursesCopy) {
             courseSectionsData.put(course.getCourseCode(), course.getSectionCodes());
         }
         SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.getSessionType());
@@ -156,6 +158,26 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
 
 //  SectionFilterResponseModel sectionFilterResponseModel = new SectionFilterResponseModel();
     }
+    private CalendarCourse copyCalendarCourse(CalendarCourse course){
+        return new CalendarCourse(course.getCourseCode(),
+                new ArrayList<>(course.getSections()),
+                course.getCourseSession(),
+                course.getCourseCode(),
+                course.getBreadth());
+    }
+
+    private List<CalendarCourse> copyCalendarCourseList(List<CalendarCourse> calendarCourses){
+        ArrayList<CalendarCourse> copy = new ArrayList<>();
+        for (CalendarCourse course: calendarCourses) {
+            copy.add(copyCalendarCourse(course));
+        }
+        return copy;
+    }
+//    private ArrayList<CalendarCourse> copyCalendarCourseList(ArrayList<CalendarCourse> calendarCourses){
+//        for (CalendarCourse course: calendarCourses) {
+//            CalendarCourse course_copy = course;
+//        }
+//    }
 
     /**
      * A helper method that creates a List of Constraints from the given requestModel that could be
