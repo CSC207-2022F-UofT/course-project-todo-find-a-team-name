@@ -161,19 +161,22 @@ class SectionTest {
     }
 
     /**
-     *
+     * Check whether equals method returns true when two sections are equal
      */
     @Test
     void testEqualsTrue(){
         ArrayList<Block> blocks = new ArrayList<>();
+        blocks.add(new Block("TH", "12:00", "13:30", "room3"));
+        blocks.add(new Block("TU", "16:00", "19:30", "room2"));
         blocks.add(new Block("MO", "12:30", "14:00", "room1"));
         blocks.add(new Block("MO", "10:30", "12:00", "room2"));
-        blocks.add(new Block("TU", "16:00", "19:30", "room2"));
-        blocks.add(new Block("TH", "12:00", "13:30", "room3"));
         Section lecture2 = new Section("LEC-0101", "inst1", blocks);
         assertEquals(lecture, lecture2);
     }
 
+    /**
+     * Check whether equals method returns false when two sections are not equal
+     */
     @Test
     void testEqualsFalse(){
         ArrayList<Block> blocks = new ArrayList<>();
@@ -183,6 +186,20 @@ class SectionTest {
         blocks.add(new Block("TU", "16:00", "19:30", "room2"));
         Section lecture2 = new Section("LEC-0101", "inst1", blocks);
         assertNotEquals(lecture, lecture2);
+    }
+
+    /**
+     * Check whether hashCode returns same value if two sections are equal
+     */
+    @Test
+    void testHashCode(){
+        ArrayList<Block> blocks = new ArrayList<>();
+        blocks.add(new Block("TH", "12:00", "13:30", "room3"));
+        blocks.add(new Block("TU", "16:00", "19:30", "room2"));
+        blocks.add(new Block("MO", "12:30", "14:00", "room1"));
+        blocks.add(new Block("MO", "10:30", "12:00", "room2"));
+        Section lecture2 = new Section("LEC-0101", "inst1", blocks);
+        assertEquals(lecture.hashCode(), lecture2.hashCode());
     }
 
 }

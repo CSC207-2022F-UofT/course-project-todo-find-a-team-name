@@ -116,7 +116,7 @@ public class Section {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(code, instructorName, blocks);
+        return Objects.hash(code, instructorName) + blocks.size();
     }
 
     /**
