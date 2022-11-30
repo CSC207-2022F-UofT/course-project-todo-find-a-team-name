@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * - startTime: A Limit for startTime.
  * - endTime: A Limit for EndTime.
  * - super(isBlackList): a boolean showing b/w lists.
- *
  */
 public class TimeIntervalConstraint extends Constraint{
     private final double startTime;
@@ -60,7 +59,7 @@ public class TimeIntervalConstraint extends Constraint{
      * removed if the timeConstraint is a blacklist.
      *
      * @param section a Section Entity
-     * @return a boolean indicating the RemoveCondition of a BlackList.
+     * @return a boolean indicating the RemoveCondition of a BlackList
      */
     private boolean evalBlackListRemoveCondition(Section section) {
         ArrayList<Block> blocks = new ArrayList<>(section.getBlocks());
@@ -113,7 +112,7 @@ public class TimeIntervalConstraint extends Constraint{
     /**
      * helper method for formatting.
      * @param time a double representing time.
-     * @return a string that is in the form of HH:MM
+     * @return a string that is in the form of HH:MM.
      */
     private String formatTime(Double time) {
         int hour = time.intValue();
