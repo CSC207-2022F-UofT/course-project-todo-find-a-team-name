@@ -37,7 +37,7 @@ import java.util.ArrayList;
  */
 public class MainUI extends JPanel implements ActionListener {
 
-    private final JLabel filePathSession;
+    private JLabel filePathSession;
     private JLabel filePathTimetable;
 
     private final ConstraintsInputScreen constraintsInputScreen;
@@ -79,13 +79,7 @@ public class MainUI extends JPanel implements ActionListener {
         JPanel centerPanel = new JPanel();
         centerPanel.add(wrapperPanel);
 
-        JPanel importSessionPanel = new JPanel();
-        JButton importSession = new JButton("Import session");
-        importSession.addActionListener(this);
-
-        filePathSession = new JLabel("Choose the file...");
-        importSessionPanel.add(importSession);
-        importSessionPanel.add(filePathSession);
+        JPanel importSessionPanel = createImportSessionPanel();
 
         add(centerPanel, BorderLayout.CENTER);
         add(importSessionPanel, BorderLayout.PAGE_END);
@@ -124,6 +118,24 @@ public class MainUI extends JPanel implements ActionListener {
         timetableButtons.add(displayButton);
         timetablePanel.add(timetableButtons);
         return timetablePanel;
+    }
+
+    /**
+     * Create and returns panel that allow user to import session.
+     * filePathSession instance attribute is also updated to the JLabel representing the current
+     * file path imported for session.
+     *
+     * @return panel that allow user to import session
+     */
+    private JPanel createImportSessionPanel(){
+        JPanel importSessionPanel = new JPanel();
+        JButton importSession = new JButton("Import session");
+        importSession.addActionListener(this);
+
+        filePathSession = new JLabel("Choose the file...");
+        importSessionPanel.add(importSession);
+        importSessionPanel.add(filePathSession);
+        return importSessionPanel;
     }
 
     /**
