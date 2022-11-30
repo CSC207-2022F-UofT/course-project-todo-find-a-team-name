@@ -1,4 +1,4 @@
-package screens.feature_6_frameworks_drivers;
+package fileio_use_case.frameworks_and_drivers;
 
 import entities.*;
 import fileio_use_case.*;
@@ -17,25 +17,22 @@ import java.util.*;
  */
 
 public class SessionGateway implements GatewayInterface {
-    private final String file;
-    public SessionGateway(String file) {
-        this.file = file;
-    }
+    public SessionGateway() {}
     /**
-     * Returns a string representation of the JSON file it reads.
-     * @return String
+     * Given a string of the JSON file path and session type, return a Session with specified session type
+     * from the JSON file where the key is the course code and value is course information.
+     * @param filePath file path for JSON file, Session Type
+     * @return Session
      */
-    public String fileToString() throws IOException {
+    public Session readFromFile(String filePath, String sessionType) throws IOException, ParseException {
         // Files.readString(Path.of("src/main/java/screens/courses_cleaned.json"));
-        return Files.readString(Path.of(this.file));
+        HashMap<String, CalendarCourse> calendarCourseHashMap = parseString(Files.readString(Path.of(filePath)));
+        return extractSession(calendarCourseHashMap, sessionType);
     }
     /**
-     * Given a string representation of a JSON file, return a HashMap of all course info from the JSON file
-     * where the key is the course code and value is course information.
-     * @param jsonData JSON data
-     * @return HashMap<String, CalendarCourse>
+     * HELPER METHOD
      */
-    public HashMap<String, CalendarCourse> readFromFile(String jsonData) throws ParseException {
+    private HashMap<String, CalendarCourse> parseString(String jsonData) throws ParseException {
         HashMap<String, CalendarCourse> allCourses = new HashMap<>();
         // Parse String
         JSONParser parser = new JSONParser();
@@ -49,8 +46,8 @@ public class SessionGateway implements GatewayInterface {
             for (Object section : sections.keySet()) {
                 JSONObject aSection = (JSONObject) sections.get(section);
                 // Iterate through blocks
-                ArrayList<Block> allBlocks = new ArrayList<>();
                 JSONObject blocks = (JSONObject) aSection.get("blocks"); // Looks at value of "blocks"
+                ArrayList<Block> allBlocks = new ArrayList<>();
                 for (Object block : blocks.keySet()) {
                     JSONObject aBlock = (JSONObject) blocks.get(block);
                     Block resultBlock = readFromFileHelper(aBlock);
@@ -58,62 +55,58 @@ public class SessionGateway implements GatewayInterface {
                         allBlocks.add(resultBlock);
                     }
                 }
-                // Pass to SectionBuilderInteractor
-                allSections.add(new SectionBuilderInteractor((String) aSection.get("section"),
+                // Pass to SectionBuilder
+                allSections.add(new SectionBuilder((String) aSection.get("section"),
                         (String) aSection.get("prof"), allBlocks).newSection());
             }
             // Pass to CourseBuilderInteractor and add to all courses
-            CalendarCourse calCourse = new CalendarCourseBuilderInteractor((String) courseInfo.get("title"),
-                    allSections, (String) courseInfo.get("session"),
-                    (String) courseInfo.get("code"), (String) courseInfo.get("breadth")).newCourse();
+            CalendarCourse calCourse = new CalendarCourseBuilder((String) courseInfo.get("title"), allSections,
+                    (String) courseInfo.get("session"), (String) courseInfo.get("code"),
+                    (String) courseInfo.get("breadth")).newCourse();
+            // Add course code as key and new Calendar Course as a value into allCourses
             allCourses.put((String) courseInfo.get("code"), calCourse);
         }
-        // Return all courses in the JSON file
         return allCourses;
     }
     /**
-     * Helper method of readFromFile to check for conditions of block's values and builds block
+     * Helper method of the helper method parseString to check for conditions of block's values and builds block
      */
-    public Block readFromFileHelper(JSONObject aBlock) {
+    private Block readFromFileHelper(JSONObject aBlock) {
         if (!(aBlock.get("day") == null && aBlock.get("startTime") == null && aBlock.get("endTime") == null && aBlock.get("room") == null)) {
             if (aBlock.get("room") == null) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), "").newBlock();
             } else if (aBlock.get("day") == null) {
-                return new BlockBuilderInteractor("", (String) aBlock.get("startTime"),
+                return new BlockBuilder("", (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             } else if ((aBlock.get("startTime") == null)) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), "",
+                return new BlockBuilder((String) aBlock.get("day"), "",
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             } else if (aBlock.get("endTime") == null) {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         "", (String) aBlock.get("room")).newBlock();
             } else {
-                return new BlockBuilderInteractor((String) aBlock.get("day"), (String) aBlock.get("startTime"),
+                return new BlockBuilder((String) aBlock.get("day"), (String) aBlock.get("startTime"),
                         (String) aBlock.get("endTime"), (String) aBlock.get("room")).newBlock();
             }
         }
         return null;
     }
     /**
-     * Returns a session if given the HashMap representation of all courses and sessionType
-     * @param allCourses - contains all sessions, String - session type (Fall (F), Winter (S))
-     * @return Session
+     * HELPER METHOD
      */
-    public Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
+    private Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
         return new SessionBuilderInteractor().aSessionBuilder(allCourses, sessionType);
     }
-
-    /**
-     * Returns a SessionStorerInteractor class of all sessions (Fall and Winter) based on given HashMap of String
-     * to CalendarCourse.
-     * Note: Use .getAllSessions() method in SessionStorerInteractor to get
-     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
-     *
-     * @param allCourses HashMap<String, CalendarCourse>
-     * @return HashMap<String, Session>
-     */
-    public SessionStorerInteractor creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses) {
-        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
-    }
+//    /**
+//     * Returns HashMap<String, Session> of all sessions (Fall and Winter) based on given HashMap of String
+//     * to CalendarCourse, where the key is the SessionType.
+//     * Note: Use .getAllSessions() method in SessionStorer to get
+//     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
+//     *
+//     * @param allCourses HashMap<String, CalendarCourse>
+//     * @return HashMap<String, Session>
+//     */
+//    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses)
+//        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
 }
