@@ -1,8 +1,8 @@
 package recommend_br_use_case.application_business;
 
 import entities.*;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.EntityConverter;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.EntityConverter;
 
 
 import java.util.ArrayList;
