@@ -1,4 +1,4 @@
-package generate_timetable_course_use_case;
+package generate_timetable_course_use_case.application_business;
 
 import entities.CalendarCourse;
 import entities.Section;

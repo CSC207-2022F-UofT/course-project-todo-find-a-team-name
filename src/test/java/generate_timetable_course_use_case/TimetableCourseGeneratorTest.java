@@ -1,6 +1,7 @@
 package generate_timetable_course_use_case;
 
 import entities.*;
+import generate_timetable_course_use_case.application_business.TimetableCourseGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
