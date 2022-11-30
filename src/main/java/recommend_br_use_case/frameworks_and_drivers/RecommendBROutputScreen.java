@@ -18,7 +18,6 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
     private final CourseInfoPanel courseInfoPanel;
 
     private final RecommendBRViewModel viewModel;
-    private EditTimetableController editTimetableController;
 
     /**
      * Constructs RecommendBROutputScreen from the given RecommendBRViewModel
@@ -29,7 +28,6 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
     public RecommendBROutputScreen(RecommendBRViewModel viewModel, EditTimetableController editTimetableController){
         super();
         this.viewModel = viewModel;
-        this.editTimetableController = editTimetableController;
         setLayout(new BorderLayout());
 
         String[] items = new String[viewModel.getCourseViewModels().size()];

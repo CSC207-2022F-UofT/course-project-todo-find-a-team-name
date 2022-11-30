@@ -2,7 +2,6 @@ package screens;
 
 import edit_timetable_use_case.*;
 import entities.*;
-import recommend_br_use_case.IDummyTimetableGateway;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
@@ -63,8 +62,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-
-        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
 
         RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
         RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter);

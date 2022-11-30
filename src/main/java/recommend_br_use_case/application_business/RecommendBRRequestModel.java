@@ -7,7 +7,6 @@ import java.util.HashSet;
  */
 public class RecommendBRRequestModel {
 
-    private String timetableId;
     private HashSet<String> brCategoriesSelected;
     private String preferredTime;
 

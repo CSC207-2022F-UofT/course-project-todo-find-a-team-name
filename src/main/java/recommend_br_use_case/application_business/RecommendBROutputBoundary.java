@@ -1,7 +1,5 @@
 package recommend_br_use_case.application_business;
 
-import recommend_br_use_case.application_business.RecommendBRResponseModel;
-
 /**
  * Interface used to do dependence inversion for RecommendBRPresenter.
  */

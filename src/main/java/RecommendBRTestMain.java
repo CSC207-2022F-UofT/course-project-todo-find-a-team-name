@@ -44,7 +44,7 @@ public class RecommendBRTestMain {
 
         Session fSession = generateSession();
         addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFSession(fSession);
+        recommendBRInteractor.setFallSession(fSession);
 
         frame.add(editTimetableScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

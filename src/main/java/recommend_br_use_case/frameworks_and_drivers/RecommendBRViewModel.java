@@ -1,7 +1,5 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
-
 import java.util.List;
 
 /**
@@ -10,7 +8,7 @@ import java.util.List;
  * It contains list of course data shown to the user.
  */
 public class RecommendBRViewModel {
-    List<RecommendBRCourseViewModel> courseViewModels;
+    private final List<RecommendBRCourseViewModel> courseViewModels;
 
     /**
      * Constructs RecommendBRViewModel from the given list of BRCourseViewModel

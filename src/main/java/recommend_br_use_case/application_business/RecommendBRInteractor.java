@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class RecommendBRInteractor implements RecommendBRInputBoundary {
 
-    private Session fSession = null;
-    private Session sSession = null;
+    private Session fallSession = null;
+    private Session winterSession = null;
     private Timetable timetable = null;
     private final RecommendBROutputBoundary presenter;
 
@@ -49,9 +49,9 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
 
         Session session = null;
         if (timetable.getSessionType().equals("F")){
-            session = fSession;
+            session = fallSession;
         } else if (timetable.getSessionType().equals("S")){
-            session = sSession;
+            session = winterSession;
         }
 
         if (session == null) {
@@ -99,8 +99,8 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
      *
      * @param fSession new fall session
      */
-    public void setFSession(Session fSession) {
-        this.fSession = fSession;
+    public void setFallSession(Session fSession) {
+        this.fallSession = fSession;
     }
 
     /**
@@ -108,8 +108,8 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
      *
      * @param sSession new winter session
      */
-    public void setSSession(Session sSession) {
-        this.sSession = sSession;
+    public void setWinterSession(Session sSession) {
+        this.winterSession = sSession;
     }
 
     /**

@@ -7,7 +7,7 @@ import javax.swing.*;
  */
 public class CourseInfoPanel extends JPanel {
 
-    JLabel courseInfo;
+    private final JLabel courseInfo;
 
     /**
      * Constructs courseInfoPanel with empty JLabel assigned to courseInfo.
