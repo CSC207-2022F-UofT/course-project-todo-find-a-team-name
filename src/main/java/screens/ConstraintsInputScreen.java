@@ -2,12 +2,19 @@ package screens;
 
 import blacklist_whitelist_use_case.SectionFilterInteractor;
 import blacklist_whitelist_use_case.SectionFilterRequestModel;
+import entities.CalendarCourse;
+import entities.Session;
+import fileio_use_case.SessionGatewayInteractor;
+import fileio_use_case.SessionStorerInteractor;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ConstraintsInputScreen extends JPanel implements ActionListener, ISectionFilterView {
     SectionFilterController sectionFilterController;
@@ -86,7 +93,14 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JOptionPane.showMessageDialog(this,"forTestingOnly: Choose S session. Copy and Paste: CSC236H1, CSC258H1, CSC207H1, MAT235H1, STA247H1 to input as CourseCodes. blacklist time from 9-12");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ParseException {
+        //delete
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
+        String jsonToStr = convertFile.fileToString();
+        HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
+        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
+        Session s = allSessions.getSession("S"); //delete
+
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
@@ -95,6 +109,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
+        sectionFilterInterator.setSession(s); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(sectionFilterController1);
         sectionFilterPresenter.setView(c);
