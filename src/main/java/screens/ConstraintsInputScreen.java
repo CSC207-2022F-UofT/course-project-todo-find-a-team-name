@@ -5,7 +5,8 @@ import blacklist_whitelist_use_case.SectionFilterRequestModel;
 import entities.CalendarCourse;
 import entities.Session;
 import fileio_use_case.SessionGatewayInteractor;
-import fileio_use_case.SessionStorerInteractor;
+
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
@@ -95,12 +96,15 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
 
     public static void main(String[] args) throws IOException, ParseException {
         //delete
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/resources/courses_cleaned.json");
-        String jsonToStr = convertFile.fileToString();
-        HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
-        SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
-        Session fall = allSessions.getSession("F"); //delete
-        Session winter = allSessions.getSession("S");
+        SessionGateway sessionGateway = new SessionGateway();
+        Session fall;
+        Session winter;
+        try {
+            fall = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "F");
+            winter = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "W");
+        } catch (ParseException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
