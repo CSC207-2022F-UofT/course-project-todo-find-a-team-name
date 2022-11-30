@@ -95,7 +95,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
 
     public static void main(String[] args) throws IOException, ParseException {
         //delete
-        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/java/screens/courses_cleaned.json");
+        SessionGatewayInteractor convertFile = new SessionGatewayInteractor("src/main/resources/courses_cleaned.json");
         String jsonToStr = convertFile.fileToString();
         HashMap<String, CalendarCourse> result = convertFile.readFromFile(jsonToStr);
         SessionStorerInteractor allSessions = convertFile.creatingSessionsFromFile(result);
