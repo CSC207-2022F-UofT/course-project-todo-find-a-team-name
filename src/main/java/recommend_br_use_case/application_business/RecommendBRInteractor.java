@@ -20,15 +20,18 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
     private Session winterSession = null;
     private Timetable timetable = null;
     private final RecommendBROutputBoundary presenter;
+    private final CourseComparatorFactory courseComparatorFactory;
 
     /**
      * Constructs RecommendBRInteractor based on the given SessionGateway, TimetableGateway, and
      * RecommendBROutputBoundary (presenter)
      *
      * @param presenter presenter used to prepare appropriate view
+     * @param courseComparatorFactory c
      */
-    public RecommendBRInteractor(RecommendBROutputBoundary presenter){
+    public RecommendBRInteractor(RecommendBROutputBoundary presenter, CourseComparatorFactory courseComparatorFactory){
         this.presenter = presenter;
+        this.courseComparatorFactory = courseComparatorFactory;
     }
 
     /**
@@ -59,21 +62,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
             return;
         }
 
-
-        Comparator<Course> courseComparator;
-        switch (requestModel.getPreferredTime()){
-            case "early":
-                courseComparator = new TargetTimeCourseComparator(0);
-                break;
-            case "balanced":
-                courseComparator = new TargetTimeCourseComparator(14);
-                break;
-            case "late":
-                courseComparator = new TargetTimeCourseComparator(24);
-                break;
-            default:
-                courseComparator = null;
-        }
+        Comparator<Course> courseComparator = courseComparatorFactory.createComparator(requestModel.getPreferredTime());
 
         BRRecommender brRecommender = new BRRecommender(timetable, session,
                 requestModel.getBrCategoriesSelected(), courseComparator);
@@ -86,7 +75,6 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
         }
 
         List<CourseModel> courseModels = new ArrayList<>();
-
         for (TimetableCourse course : recommendedCourses){
             courseModels.add(EntityConverter.generateCourseResponse(course));
         }

@@ -7,7 +7,7 @@ import entities.Section;
 import java.util.Comparator;
 
 /**
- * Class used to sort courses by its distance between average time and the specified target time
+ * Class used to sort courses by its distance between average start time and the specified target time
  */
 public class TargetTimeCourseComparator implements Comparator<Course> {
 

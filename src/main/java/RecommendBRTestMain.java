@@ -2,7 +2,9 @@ import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
@@ -19,7 +21,8 @@ public class RecommendBRTestMain {
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
-        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter);
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
