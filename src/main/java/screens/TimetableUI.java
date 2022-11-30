@@ -2,6 +2,8 @@ package screens;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Class used to display timetable, as well as buttons used to navigate to other screens.
@@ -10,11 +12,13 @@ import java.awt.*;
  *      - timetableView: JPanel that displays the timetable
  *      - prevPanel: previous panel displayed before this panel (null if it doesn't exist)
  */
-public class TimetableUI extends JPanel {
+public class TimetableUI extends JPanel implements ActionListener {
 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
+    private final EditTimetableScreen editTimetableScreen;
     private JPanel prevPanel = null;
+
 
     /**
      * Constructs TimetableUI from the given TimetableViewModel, containing
@@ -25,6 +29,7 @@ public class TimetableUI extends JPanel {
     public TimetableUI(TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
         this.timetableViewModel = timetableViewModel;
         this.timetableView = new TimetableView(timetableViewModel);
+        this.editTimetableScreen = editTimetableScreen;
 
         setLayout(new BorderLayout());
 
@@ -37,22 +42,10 @@ public class TimetableUI extends JPanel {
         JButton save = new JButton("save");
         JButton edit = new JButton("edit");
         JButton goBack = new JButton("<=");
-
-        match.addActionListener(e -> {
-            // TODO: add match screen
-        });
-
-        save.addActionListener(e -> {
-            // TODO: add save screen
-        });
-
-        edit.addActionListener(e -> changeScreen(editTimetableScreen));
-
-        goBack.addActionListener(e -> {
-            if (prevPanel != null) {
-                changeScreen(prevPanel);
-            }
-        });
+        match.addActionListener(this);
+        save.addActionListener(this);
+        edit.addActionListener(this);
+        goBack.addActionListener(this);
 
         JPanel buttons = new JPanel();
         BoxLayout boxLayout = new BoxLayout(buttons, BoxLayout.LINE_AXIS);
@@ -126,5 +119,27 @@ public class TimetableUI extends JPanel {
         frame.add(panel);
         frame.revalidate();
         this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        switch (command) {
+            case "match":
+                // TODO: implement match
+                break;
+            case "save":
+                // TODO: implement save
+                break;
+            case "edit":
+                changeScreen(editTimetableScreen);
+                break;
+            case "<=":
+                if (prevPanel != null) {
+                    changeScreen(prevPanel);
+                }
+                break;
+        }
     }
 }
