@@ -35,6 +35,26 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      */
     @Override
     public void prepareSuccessView(RecommendBRResponseModel responseModel) {
+        view.showSuccessView(responseToViewModel(responseModel));
+    }
+
+    /**
+     * Display message to the user
+     *
+     * @param message text presented to the view
+     */
+    @Override
+    public void prepareFailView(String message) {
+        view.showFailView(message);
+    }
+
+    /**
+     * Perform formatting to convert given RecommendBRResponseModel to RecommendBRViewModel
+     *
+     * @param responseModel response model containing all information outputted for Recommend BR use case
+     * @return view model corresponding to the given response model, formatted in a way that is suitable for displaying
+     */
+    private static RecommendBRViewModel responseToViewModel(RecommendBRResponseModel responseModel){
         List<RecommendBRCourseViewModel> courseViewModels = new ArrayList<>();
         for (CourseModel courseModel : responseModel.getCourses()){
 
@@ -64,19 +84,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
                     createBlockInfos(tutorialModel),
                     createBlockInfos(practicalModel)));
         }
-        RecommendBRViewModel viewModel = new RecommendBRViewModel(courseViewModels);
-        view.showSuccessView(viewModel);
-
-    }
-
-    /**
-     * Display message to the user
-     *
-     * @param message text presented to the view
-     */
-    @Override
-    public void prepareFailView(String message) {
-        view.showFailView(message);
+        return new RecommendBRViewModel(courseViewModels);
     }
 
     /**

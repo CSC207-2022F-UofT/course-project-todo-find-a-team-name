@@ -40,7 +40,6 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         JCheckBox br3CheckBox = new JCheckBox("Society and Its Institutions");
         JCheckBox br4CheckBox = new JCheckBox("Living Things and Their Environment");
         JCheckBox br5CheckBox = new JCheckBox("The Physical and Mathematical Universes");
-
         checkBoxes = new JCheckBox[] {br1CheckBox, br2CheckBox, br3CheckBox, br4CheckBox, br5CheckBox};
 
         JPanel panel1 = new JPanel();

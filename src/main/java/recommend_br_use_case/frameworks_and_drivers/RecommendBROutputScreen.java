@@ -7,17 +7,20 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
  * JPanel used to display output of recommend BR use case
  */
-public class RecommendBROutputScreen extends JPanel implements ListSelectionListener{
+public class RecommendBROutputScreen extends JPanel implements ListSelectionListener, ActionListener {
 
     private final JList<String> recommendedCourses;
     private final CourseInfoPanel courseInfoPanel;
 
     private final RecommendBRViewModel viewModel;
+    private final EditTimetableController editTimetableController;
 
     /**
      * Constructs RecommendBROutputScreen from the given RecommendBRViewModel
@@ -28,8 +31,40 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
     public RecommendBROutputScreen(RecommendBRViewModel viewModel, EditTimetableController editTimetableController){
         super();
         this.viewModel = viewModel;
-        setLayout(new BorderLayout());
+        this.editTimetableController = editTimetableController;
 
+        setLayout(new BorderLayout());
+        recommendedCourses = createCourseJList();
+        recommendedCourses.addListSelectionListener(this);
+
+        JScrollPane scrollPane1 = new JScrollPane(recommendedCourses);
+        courseInfoPanel = new CourseInfoPanel();
+
+        JScrollPane scrollPane2 = new JScrollPane(courseInfoPanel);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.add(scrollPane2, BorderLayout.CENTER);
+        JButton addCourseButton = new JButton("Add Course");
+        addCourseButton.addActionListener(this);
+        rightPanel.add(addCourseButton, BorderLayout.PAGE_END);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane1, rightPanel);
+        add(splitPane, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    /**
+     * Create and return JList that displays list of recommended breadth courses.
+     * Each item displays the basic course information in the following format:
+     *      [course code]; [lecture code]; [tutorial code]; [practical code]
+     * If one of the section codes is null in viewModel, it will be skipped.
+     * For example, if tutorial code is null, we get:
+     *      [course code]; [lecture code]; [practical code]
+     *
+     * @return JList that displays list of recommended breadth courses in the viewModel
+     */
+    private JList<String> createCourseJList(){
         String[] items = new String[viewModel.getCourseViewModels().size()];
         for (int i = 0; i < items.length; i++){
             String courseCode = viewModel.getCourseViewModels().get(i).getCode();
@@ -41,42 +76,7 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
                     + (tutorialCode == null ? "" : ("; " + tutorialCode))
                     + (practicalCode == null ? "": ("; " + practicalCode));
         }
-        recommendedCourses = new JList<>(items);
-
-        JScrollPane scrollPane1 = new JScrollPane(recommendedCourses);
-        courseInfoPanel = new CourseInfoPanel();
-
-        JScrollPane scrollPane2 = new JScrollPane(courseInfoPanel);
-        recommendedCourses.addListSelectionListener(this);
-
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BorderLayout());
-        rightPanel.add(scrollPane2, BorderLayout.CENTER);
-        JButton addCourseButton = new JButton("Add Course");
-        addCourseButton.addActionListener(e -> {
-            RecommendBRCourseViewModel course = viewModel.getCourseViewModels().get(recommendedCourses.getSelectedIndex());
-            ArrayList<String> sectionCodes = new ArrayList<>();
-
-            if (course.getLectureCode() != null)
-                sectionCodes.add(course.getLectureCode());
-            else if (course.getTutorialCode() != null)
-                sectionCodes.add(course.getTutorialCode());
-            else if (course.getPracticalCode() != null)
-                sectionCodes.add(course.getPracticalCode());
-            System.out.println(course.getCode());
-            try {
-                editTimetableController.add(course.getCode(), sectionCodes);
-            } catch (InvalidSectionsException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            SwingUtilities.getWindowAncestor(this).dispose();
-        });
-        rightPanel.add(addCourseButton, BorderLayout.PAGE_END);
-
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane1, rightPanel);
-        add(splitPane, BorderLayout.CENTER);
-        setVisible(true);
+        return new JList<>(items);
     }
 
     /**
@@ -88,5 +88,31 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
         if (!e.getValueIsAdjusting()) {
             courseInfoPanel.showCourseInfo(viewModel.getCourseViewModels().get(recommendedCourses.getSelectedIndex()));
         }
+    }
+
+    /**
+     * If event occurs, close the window and add the selected course to the timetable in EditTimetableScreen
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        RecommendBRCourseViewModel course = viewModel.getCourseViewModels().get(recommendedCourses.getSelectedIndex());
+        ArrayList<String> sectionCodes = new ArrayList<>();
+
+        if (course.getLectureCode() != null)
+            sectionCodes.add(course.getLectureCode());
+        else if (course.getTutorialCode() != null)
+            sectionCodes.add(course.getTutorialCode());
+        else if (course.getPracticalCode() != null)
+            sectionCodes.add(course.getPracticalCode());
+
+        try {
+            editTimetableController.add(course.getCode(), sectionCodes);
+        } catch (InvalidSectionsException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        SwingUtilities.getWindowAncestor(this).dispose();
     }
 }
