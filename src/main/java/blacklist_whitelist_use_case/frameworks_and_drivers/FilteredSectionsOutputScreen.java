@@ -9,7 +9,7 @@ import java.awt.*;
  * JPanel used to display output of Filtered Sections.
  */
 public class FilteredSectionsOutputScreen extends JDialog {
-    private SectionFilterViewModel viewModel;
+    private final SectionFilterViewModel viewModel;
     private JFrame frame;
 
     /**

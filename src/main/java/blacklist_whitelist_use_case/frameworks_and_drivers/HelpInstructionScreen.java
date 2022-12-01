@@ -3,6 +3,9 @@ package blacklist_whitelist_use_case.frameworks_and_drivers;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * UI component of Constraint input Screen that provides help on input format to the user.
+ */
 public class HelpInstructionScreen extends JDialog {
     public HelpInstructionScreen(){
         JLabel title = new JLabel("Input Format");
