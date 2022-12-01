@@ -192,6 +192,7 @@ public class RecommendBRCourseViewModel {
         }
 
         RecommendBRCourseViewModel other = (RecommendBRCourseViewModel) obj;
+
         return code.equals(other.code) && title.equals(other.title) &&
                 brCategory.equals(other.brCategory) && Objects.equals(lectureCode, other.lectureCode) &&
                 Objects.equals(tutorialCode, other.tutorialCode) && Objects.equals(practicalCode, other.practicalCode) &&

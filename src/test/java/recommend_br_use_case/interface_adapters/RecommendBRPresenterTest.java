@@ -45,16 +45,16 @@ class RecommendBRPresenterTest {
                 expectedLectureBlockInfos2.add("Wednesday, 9:00 ~ 10:30");
 
                 List<String> expectedTutorialBlockInfos2 = new ArrayList<>();
-                expectedTutorialBlockInfos2.add("Tuesday, 13:00 ~ 15:00");
 
                 List<String> expectedPracticalBlockInfos2 = new ArrayList<>();
+                expectedPracticalBlockInfos2.add("Tuesday, 13:00 ~ 15:00");
 
                 expectedCourseModels.add(new RecommendBRCourseViewModel("COS2", "course2",
                         "Thought, Belief, and Behaviour",
                         "LEC-0101", null, "PRA-0101",
                         expectedLectureBlockInfos2, expectedTutorialBlockInfos2, expectedPracticalBlockInfos2));
-
                 RecommendBRViewModel expected = new RecommendBRViewModel(expectedCourseModels);
+
                 assertEquals(expected, viewModel);
             }
 

@@ -5,11 +5,6 @@ import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
 import recommend_br_use_case.application_business.RecommendBROutputBoundary;
 import recommend_br_use_case.application_business.RecommendBRResponseModel;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRViewModel;
-import retrieve_timetable_use_case.application_business.BlockModel;
-import retrieve_timetable_use_case.application_business.CourseModel;
-import retrieve_timetable_use_case.application_business.SectionModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +151,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      */
     private static String doubleToStringTime(double doubleTime){
         int hour = (int) doubleTime;
-        String min = String.valueOf((int) ((doubleTime - hour) * 100));
+        String min = String.valueOf((int) ((doubleTime - hour) * 60));
         return hour + ":" + (min.length() == 1 ? "0":"") + min;
     }
 
