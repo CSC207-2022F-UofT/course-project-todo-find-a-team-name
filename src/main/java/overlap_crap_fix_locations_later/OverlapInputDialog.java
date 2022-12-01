@@ -2,6 +2,7 @@ package overlap_crap_fix_locations_later;
 
 import blacklist_whitelist_use_case.SectionFilterInteractor;
 import entities.*;
+import org.junit.Ignore;
 import screens.ConstraintsInputScreen;
 import screens.SectionFilterController;
 import screens.SectionFilterPresenter;
@@ -68,7 +69,10 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         for (Flow.Subscriber subscriber : dataReceivers) {
             subscriber.onNext(this.selectedMainTimetable);
         }
+        callInHans();
+    }
 
+    private void callInHans() {
         /* This is mostly taken from Hans' use case to get his to start. **/
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
@@ -84,15 +88,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         screens.add(c, "hi");
         jFrame.add(screens);
         jFrame.setVisible(true);
-
-
-        // Then, call Hans' Dialog to open it up.
-        // Receive its completed constraints, store them in this Dialog as well.
-
-        // Call JD's stuff to get the timetables.
-        // Pass them to the controller.
-
-
     }
 
     private void onCancel() {

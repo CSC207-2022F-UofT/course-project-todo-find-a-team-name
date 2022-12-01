@@ -23,6 +23,10 @@ class TimeTableMatchCalculateSectionHoursInteractor {
         for (BlockModel block : section.getBlocks()){
             hoursAccumulator += block.getEndTime() - block.getStartTime();
         }
+        if (hoursAccumulator >= 24.0 || hoursAccumulator < 0.0){
+            throw new IllegalArgumentException("The program attempted to calculate the hours of a section that seems" +
+                    "to have negative or greater than 24 hour length. Something may be wrong with the data.");
+        }
         return hoursAccumulator;
     }
 }

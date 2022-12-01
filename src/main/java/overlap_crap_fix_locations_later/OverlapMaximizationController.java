@@ -7,7 +7,7 @@ import retrieve_timetable_use_case.TimetableModel;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
-public class OverlapMaximizationController implements Flow.Subscriber {
+public class OverlapMaximizationController implements Flow.Subscriber, OverlapMaxInputBoundary {
 
     private final SectionHoursInputBoundary sectionHourCalculator;
     private final TimetableMatchInputBoundary timetableMatcher;
