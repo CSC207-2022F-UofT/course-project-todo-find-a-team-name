@@ -15,8 +15,8 @@ import java.util.HashSet;
 public class RecommendBRInputScreen extends JPanel implements ActionListener{
 
     private final RecommendBRController controller;
-    private final JCheckBox[] checkBoxes;
-    private final JRadioButton[] radioButtons;
+    private JCheckBox[] checkBoxes;
+    private JRadioButton[] radioButtons;
 
     /**
      * Constructs RecommendBRInputScreen from the given RecommendBRController and timetable id.
@@ -35,6 +35,32 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
         add(title, BorderLayout.PAGE_START);
 
+        JPanel breadthCategoriesSelectionPanel = createBreadthCategoriesSelectionPanel();
+        JPanel preferredTimeSelectionPanel = createPreferredTimeSelectionPanel();
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanel.add(breadthCategoriesSelectionPanel);
+        mainPanel.add(preferredTimeSelectionPanel);
+        add(mainPanel, BorderLayout.CENTER);
+
+        JButton recommendBr = new JButton("Submit Input");
+        recommendBr.addActionListener(this);
+
+        this.add(recommendBr, BorderLayout.PAGE_END);
+
+        this.setVisible(true);
+
+    }
+
+    /**
+     * Create and return panel that allow user to select breadth categories using check boxes.
+     * checkBoxes instance attributes is also updated to the new array of JCheckBox created for
+     * breadth categories selection.
+     *
+     * @return panel that allow user to select breadth categories using check boxes
+     */
+    private JPanel createBreadthCategoriesSelectionPanel(){
         JCheckBox br1CheckBox = new JCheckBox("Creative and Cultural Representations");
         JCheckBox br2CheckBox = new JCheckBox("Thought, Belief, and Behaviour");
         JCheckBox br3CheckBox = new JCheckBox("Society and Its Institutions");
@@ -42,10 +68,10 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         JCheckBox br5CheckBox = new JCheckBox("The Physical and Mathematical Universes");
         checkBoxes = new JCheckBox[] {br1CheckBox, br2CheckBox, br3CheckBox, br4CheckBox, br5CheckBox};
 
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout());
+        JPanel breadthCategoriesSelectionPanel = new JPanel();
+        breadthCategoriesSelectionPanel.setLayout(new BorderLayout());
         JLabel instruction1 = new JLabel("Choose breadth category(s): ");
-        panel1.add(instruction1, BorderLayout.PAGE_START);
+        breadthCategoriesSelectionPanel.add(instruction1, BorderLayout.PAGE_START);
 
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.add(br1CheckBox);
@@ -54,12 +80,22 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         checkBoxPanel.add(br4CheckBox);
         checkBoxPanel.add(br5CheckBox);
 
-        panel1.add(checkBoxPanel, BorderLayout.CENTER);
+        breadthCategoriesSelectionPanel.add(checkBoxPanel, BorderLayout.CENTER);
+        return breadthCategoriesSelectionPanel;
+    }
 
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(new BorderLayout());
+    /**
+     * Create and return panel that allow user to select preferred time using radio buttons.
+     * radioButtons instance attribute is also updated to the new array of JRadioButton created
+     * for preferred time selection.
+     *
+     * @return panel that allow user to select preferred time using radio buttons
+     */
+    private JPanel createPreferredTimeSelectionPanel(){
+        JPanel preferredTimeSelectionPanel = new JPanel();
+        preferredTimeSelectionPanel.setLayout(new BorderLayout());
         JLabel instruction2 = new JLabel("Choose the preferred time: ");
-        panel2.add(instruction2, BorderLayout.PAGE_START);
+        preferredTimeSelectionPanel.add(instruction2, BorderLayout.PAGE_START);
 
         JRadioButton early = new JRadioButton("early");
         JRadioButton balanced = new JRadioButton("balanced");
@@ -81,21 +117,8 @@ public class RecommendBRInputScreen extends JPanel implements ActionListener{
         radioButtonPanel.add(late);
         radioButtonPanel.add(dontCare);
 
-        panel2.add(radioButtonPanel, BorderLayout.CENTER);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(panel1);
-        panel.add(panel2);
-        add(panel, BorderLayout.CENTER);
-
-        JButton recommendBr = new JButton("Submit Input");
-        recommendBr.addActionListener(this);
-
-        this.add(recommendBr, BorderLayout.PAGE_END);
-
-        this.setVisible(true);
-
+        preferredTimeSelectionPanel.add(radioButtonPanel, BorderLayout.CENTER);
+        return preferredTimeSelectionPanel;
     }
 
     /**
