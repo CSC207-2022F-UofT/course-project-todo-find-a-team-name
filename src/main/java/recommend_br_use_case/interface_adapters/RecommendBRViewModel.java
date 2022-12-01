@@ -1,6 +1,5 @@
 package recommend_br_use_case.interface_adapters;
 
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
 
 import java.util.List;
 
@@ -28,5 +27,22 @@ public class RecommendBRViewModel {
      */
     public List<RecommendBRCourseViewModel> getCourseViewModels() {
         return courseViewModels;
+    }
+
+    /**
+     * Returns whether obj is equal to this object
+     *
+     * @param obj object compared
+     * @return whether obj is equal to this object
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RecommendBRViewModel)){
+            return false;
+        }
+
+        RecommendBRViewModel other = (RecommendBRViewModel) obj;
+
+        return courseViewModels.equals(other.courseViewModels);
     }
 }

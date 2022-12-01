@@ -1,6 +1,7 @@
-package recommend_br_use_case.frameworks_and_drivers;
+package recommend_br_use_case.interface_adapters;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class containing data needed for displaying course information for recommend BR use case.
@@ -182,5 +183,20 @@ public class RecommendBRCourseViewModel {
      */
     public void setPracticalCode(String practicalCode) {
         this.practicalCode = practicalCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RecommendBRCourseViewModel)){
+            return false;
+        }
+
+        RecommendBRCourseViewModel other = (RecommendBRCourseViewModel) obj;
+        return code.equals(other.code) && title.equals(other.title) &&
+                brCategory.equals(other.brCategory) && Objects.equals(lectureCode, other.lectureCode) &&
+                Objects.equals(tutorialCode, other.tutorialCode) && Objects.equals(practicalCode, other.practicalCode) &&
+                lectureBlockInfos.equals(other.lectureBlockInfos) &&
+                tutorialBlockInfos.equals(other.tutorialBlockInfos) &&
+                practicalBlockInfos.equals(other.practicalBlockInfos);
     }
 }
