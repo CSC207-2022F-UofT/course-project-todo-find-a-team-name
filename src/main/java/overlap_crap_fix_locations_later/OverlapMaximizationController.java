@@ -21,8 +21,6 @@ public class OverlapMaximizationController implements Flow.Subscriber {
                                               ArrayList<Constraint> constraints){
         TimetableModel bestMatch = timetableMatcher.determineBestMatchingTimetable();
         return bestMatch;
-
-
     }
 
     // TODO: For the moment, this is a string for testing. Change it later.
