@@ -123,6 +123,10 @@ public class TimeIntervalConstraint extends Constraint{
         return String.format("%s:%s", hour, min);
     }
 
+    /**
+     * ToString method (For testing)
+     * @return String representation of the Constraint
+     */
     @Override
     public String toString(){
         return "Time " + super.toString() + ": " + formatTime(startTime) + "-" + formatTime(endTime);

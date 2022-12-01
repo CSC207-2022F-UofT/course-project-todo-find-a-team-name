@@ -1,7 +1,6 @@
 package blacklist_whitelist_use_case.application_business;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Class representing the input data from the user for Blacklist/Whitelist use case.
