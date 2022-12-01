@@ -1,13 +1,14 @@
-package fileio_use_case;
+package fileio_use_case.application_business.session_specific_classes;
 
 import entities.Session;
+import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 
 import java.io.IOException;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor implements FileImportInputBoundary {
+public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
     private final SessionGateway sessionGateway;
     public SessionGatewayInteractor() {
         this.sessionGateway = new SessionGateway();

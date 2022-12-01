@@ -1,4 +1,4 @@
-package fileio_use_case;
+package fileio_use_case.application_business;
 
 /** Input data class that takes in string of a file's path **/
 public class FileImportRequestModel {

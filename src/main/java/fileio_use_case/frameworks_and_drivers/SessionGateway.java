@@ -1,7 +1,9 @@
 package fileio_use_case.frameworks_and_drivers;
 
 import entities.*;
-import fileio_use_case.*;
+import fileio_use_case.application_business.*;
+import fileio_use_case.application_business.session_specific_classes.CalendarCourseBuilder;
+import fileio_use_case.application_business.session_specific_classes.SessionBuilderInteractor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

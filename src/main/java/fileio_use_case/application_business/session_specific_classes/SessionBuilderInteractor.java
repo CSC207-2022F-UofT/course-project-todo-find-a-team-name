@@ -1,4 +1,4 @@
-package fileio_use_case;
+package fileio_use_case.application_business.session_specific_classes;
 
 import entities.CalendarCourse;
 import entities.Session;

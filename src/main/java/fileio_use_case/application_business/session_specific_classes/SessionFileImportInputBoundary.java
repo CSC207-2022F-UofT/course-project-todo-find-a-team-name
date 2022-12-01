@@ -1,11 +1,12 @@
-package fileio_use_case;
+package fileio_use_case.application_business.session_specific_classes;
 
 import entities.Session;
+import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 
-public interface FileImportInputBoundary {
+public interface SessionFileImportInputBoundary {
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
      * given a session type, return a Session with specified session type
