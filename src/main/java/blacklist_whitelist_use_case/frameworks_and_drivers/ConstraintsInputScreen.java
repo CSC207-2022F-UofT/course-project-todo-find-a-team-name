@@ -1,12 +1,16 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
 
-import blacklist_whitelist_use_case.SectionFilterInteractor;
-import blacklist_whitelist_use_case.SectionFilterRequestModel;
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
+import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
+import entities.Block;
 import entities.CalendarCourse;
+import entities.Section;
 import entities.Session;
-import fileio_use_case.SessionGatewayInteractor;
 
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
@@ -15,7 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class ConstraintsInputScreen extends JPanel implements ActionListener, ISectionFilterView {
     SectionFilterController sectionFilterController;
@@ -91,20 +95,100 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         panel.add(timeInput);
         this.add(panel, BorderLayout.CENTER);
         this.add(buttons, BorderLayout.PAGE_END);
-        JOptionPane.showMessageDialog(this,"forTestingOnly: Choose S session. Copy and Paste: CSC236H1, CSC258H1, CSC207H1, MAT235H1, STA247H1 to input as CourseCodes. blacklist time from 9-12");
+
     }
 
     public static void main(String[] args) throws IOException, ParseException {
+        java.util.List<Block> blocks1 = new ArrayList<>();
+        blocks1.add(new Block("MO", "14:30", "15:00", "room3"));
+        blocks1.add(new Block("TU", "12:30", "14:00", "room1"));
+        blocks1.add(new Block("TH", "14:00", "15:30", "room2"));
+
+        java.util.List<Block> blocks2 = new ArrayList<>();
+        blocks2.add(new Block("MO", "14:30", "15:00", "room3"));
+        blocks2.add(new Block("FR", "20:00", "21:00", "room1"));
+
+        java.util.List<Block> blocks3 = new ArrayList<>();
+        blocks3.add(new Block("MO", "14:30", "15:30", "room3"));
+
+        java.util.List<Block> blocks4 = new ArrayList<>();
+        blocks4.add(new Block("MO", "14:30", "15:30", "room3"));
+        blocks4.add(new Block("TU", "12:30", "14:30", "room4"));
+        blocks4.add(new Block("TH", "14:00", "15:30", "room5"));
+
+        java.util.List<Block> blocks5 = new ArrayList<>();
+        blocks5.add(new Block("MO", "14:30", "15:30", "room3"));
+        blocks5.add(new Block("WE", "16:30", "18:00", "room3"));
+
+        java.util.List<Block> blocks6 = new ArrayList<>();
+        blocks6.add(new Block("FR", "11:30", "12:30", "room3"));
+        blocks6.add(new Block("FR", "11:30", "12:30", "room4"));
+
+        //Create demo section entities for testing.
+        Section section1 = new Section("LEC-0101", "inst1", blocks1);
+        Section section2 = new Section("TUT-0401", "inst2", blocks2);
+        Section section3 = new Section("PRA-0301", "inst3", blocks3);
+        Section section4 = new Section("LEC-0201", "inst4", blocks4);
+        Section section5 = new Section("TUT-0402", "inst5", blocks5);
+        Section section6 = new Section("LEC-0509", "inst6", blocks6);
+
+        java.util.List<Section> sections1 = new ArrayList<>();
+        sections1.add(section1);
+        sections1.add(section2);
+
+        java.util.List<Section> sections2 = new ArrayList<>();
+        sections2.add(section1);
+        sections2.add(section2);
+        sections2.add(section3);
+        sections2.add(section4);
+        sections2.add(section5);
+        sections2.add(section6);
+
+        java.util.List<Section> sections3 = new ArrayList<>();
+        sections3.add(section1);
+        sections3.add(section2);
+        sections3.add(section3);
+        sections3.add(section4);
+        sections3.add(section5);
+        sections3.add(section6);
+
+        java.util.List<Section> sections4 = new ArrayList<>();
+        sections4.add(section1);
+        sections4.add(section2);
+        sections4.add(section3);
+        sections4.add(section4);
+        sections4.add(section5);
+        sections4.add(section6);
+
+        List<Section> sections5 = new ArrayList<>();
+        sections5.add(section1);
+        sections5.add(section4);
+
+        //Create fall and winter Session that will be used to test Constraints Applier.
+
+        Session fall = new Session("F");
+        fall.addCourse(new CalendarCourse("CSC207", sections1, "F", "CSC207H1", "5"));
+        fall.addCourse(new CalendarCourse("CSC258", sections2, "F", "CSC258H1", "5"));
+        fall.addCourse(new CalendarCourse("MAT235", sections3, "F", "MAT235H1", "5"));
+        fall.addCourse(new CalendarCourse("CSC236", sections4, "F", "CSC236H1", "5"));
+        fall.addCourse(new CalendarCourse("STA247", sections5, "F", "STA247H1", "5"));
+
+        Session winter = new Session("S");
+        winter.addCourse(new CalendarCourse("CSC207", sections1, "S", "CSC207H1", "5"));
+        winter.addCourse(new CalendarCourse("CSC258", sections2, "S", "CSC258H1", "5"));
+        winter.addCourse(new CalendarCourse("MAT235", sections3, "S", "MAT235H1", "5"));
+        winter.addCourse(new CalendarCourse("CSC236", sections4, "S", "CSC236H1", "5"));
+        winter.addCourse(new CalendarCourse("STA247", sections5, "S", "STA247H1", "5"));
         //delete
-        SessionGateway sessionGateway = new SessionGateway();
-        Session fall;
-        Session winter;
-        try {
-            fall = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "F");
-            winter = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "W");
-        } catch (ParseException | IOException e) {
-            throw new RuntimeException(e);
-        }
+//        SessionGateway sessionGateway = new SessionGateway();
+//        Session fall;
+//        Session winter;
+//        try {
+//            fall = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "F");
+//            winter = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "W");
+//        } catch (ParseException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);

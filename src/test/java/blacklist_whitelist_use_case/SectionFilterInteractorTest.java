@@ -1,23 +1,32 @@
 package blacklist_whitelist_use_case;
 
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.application_business.SectionFilterOutputBoundary;
+import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
+import blacklist_whitelist_use_case.application_business.SectionFilterResponseModel;
 import entities.Block;
 import entities.CalendarCourse;
 import entities.Section;
 import entities.Session;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Test Cases for SectionFilterInteractor
+ * Test all possibilities of Interactor filter method, including test for different
  * The main logic for filtering is tested inside the Entity folder, specifically the four
  * Constraints Concrete Class.
  */
 
 class SectionFilterInteractorTest {
+    static Session fall;
+    static Session winter;
     SectionFilterInteractor interactor;
 
     /**
@@ -25,7 +34,8 @@ class SectionFilterInteractorTest {
      */
     @BeforeEach
     public void setUp(){
-        //Create blocks entities.
+        //The following creates a Session Entity for testing purpose, which contains 5 Calendarcourses,
+        //each has seperate blocks documenting the info of time, instructorname, date, and room number.
         List<Block> blocks1 = new ArrayList<>();
         blocks1.add(new Block("MO", "14:30", "15:00", "room3"));
         blocks1.add(new Block("TU", "12:30", "14:00", "room1"));
@@ -93,32 +103,19 @@ class SectionFilterInteractorTest {
 
         //Create fall and winter Session that will be used to test Constraints Applier.
 
-        Session fall = new Session("F");
+        fall = new Session("F");
         fall.addCourse(new CalendarCourse("CSC207", sections1, "F", "CSC207H1", "5"));
         fall.addCourse(new CalendarCourse("CSC258", sections2, "F", "CSC258H1", "5"));
         fall.addCourse(new CalendarCourse("MAT235", sections3, "F", "MAT235H1", "5"));
         fall.addCourse(new CalendarCourse("CSC236", sections4, "F", "CSC236H1", "5"));
         fall.addCourse(new CalendarCourse("STA247", sections5, "F", "STA247H1", "5"));
 
-        Session winter = new Session("S");
+        winter = new Session("S");
         winter.addCourse(new CalendarCourse("CSC207", sections1, "S", "CSC207H1", "5"));
         winter.addCourse(new CalendarCourse("CSC258", sections2, "S", "CSC258H1", "5"));
         winter.addCourse(new CalendarCourse("MAT235", sections3, "S", "MAT235H1", "5"));
         winter.addCourse(new CalendarCourse("CSC236", sections4, "S", "CSC236H1", "5"));
         winter.addCourse(new CalendarCourse("STA247", sections5, "S", "STA247H1", "5"));
-
-        SectionFilterOutputBoundary presenter = new SectionFilterOutputBoundary() {
-            @Override
-            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
-            }
-
-            @Override
-            public void prepareFailView(String error) {
-            }
-        };
-        interactor = new SectionFilterInteractor(presenter);
-        interactor.setFallSession(fall);
-        interactor.setWinterSession(winter);
     }
 
     /**
@@ -127,6 +124,43 @@ class SectionFilterInteractorTest {
      */
     @Test
     void filterValidCoursesBL() {
+        SectionFilterOutputBoundary presenter1 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                HashMap<String, ArrayList<String>> expected = new HashMap<>();
+                expected.put("CSC207H1", new ArrayList<>(Arrays.asList("LEC-0101", "TUT-0401")));
+                expected.put("MAT235H1", new ArrayList<>(Arrays.asList("LEC-0101", "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509"
+                        )));
+                expected.put("CSC258H1", new ArrayList<>(Arrays.asList("LEC-0101",
+                        "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509"
+                        )));
+                expected.put("CSC236H1", new ArrayList<>(Arrays.asList("LEC-0101",
+                        "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509")));
+                Assertions.assertEquals("S", responseModel.getSessionType());
+                Assertions.assertEquals(expected, responseModel.getModifiedCourses()); //Expected to go through this success branch, since in this case
+                                           //filter is successful.
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.fail();
+            }
+        };
+        interactor = new SectionFilterInteractor(presenter1);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
         SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
                 "S",
                 "CSC207H1, CSC258H1, CSC236H1, MAT235H1",
@@ -149,8 +183,46 @@ class SectionFilterInteractorTest {
      */
     @Test
     void filterValidCoursesWL() {
+        SectionFilterOutputBoundary presenter2 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                HashMap<String, ArrayList<String>> expected = new HashMap<>();
+                expected.put("CSC207H1", new ArrayList<>(Arrays.asList("LEC-0101", "TUT-0401")));
+                expected.put("MAT235H1", new ArrayList<>(Arrays.asList("LEC-0101", "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509"
+                )));
+                expected.put("CSC258H1", new ArrayList<>(Arrays.asList("LEC-0101",
+                        "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509"
+                )));
+                expected.put("CSC236H1", new ArrayList<>(Arrays.asList("LEC-0101",
+                        "TUT-0401",
+                        "PRA-0301",
+                        "LEC-0201",
+                        "TUT-0402",
+                        "LEC-0509")));
+                Assertions.assertEquals("F", responseModel.getSessionType());
+                Assertions.assertEquals(expected, responseModel.getModifiedCourses()); //Expected to go through this success branch, since in this case
+                //filter is successful.
+
+            }
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.fail(); // Not supposed to go through this branch because in this case
+                                            // filtering is successful.
+            }
+        };
+        SectionFilterInteractor interactor = new SectionFilterInteractor(presenter2);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
         SectionFilterRequestModel requestModel2 = new SectionFilterRequestModel(
-                "S",
+                "F",
                 "CSC207H1, CSC258H1, CSC236H1, MAT235H1",
                 "/",
                 "/",
@@ -159,8 +231,8 @@ class SectionFilterInteractorTest {
                 "",
                 "",
                 new ArrayList<>(Arrays.asList(2, 3, 4)),
-                "11:30",
-                "12:30"
+                "7:00",
+                "22:30"
         );
         interactor.filter(requestModel2);
     }
@@ -170,6 +242,22 @@ class SectionFilterInteractorTest {
      */
     @Test
     void filterInValidCourses() {
+
+        SectionFilterOutputBoundary presenter3 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                 Assertions.fail(); //Not supposed to go from success Branch.
+
+            }
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.assertEquals("Course Code Input: CS888666 does not exist!", error);
+                //Supposed to display the error message of invalid course code.
+            }
+        };
+        SectionFilterInteractor interactor = new SectionFilterInteractor(presenter3);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
         SectionFilterRequestModel requestModel3 = new SectionFilterRequestModel(
                 "F",
                 "CS888666",
@@ -200,34 +288,30 @@ class SectionFilterInteractorTest {
         interactor.filter(requestModel3b);
     }
 
-    /**
-     * Test Correctness of the filter method when the user input Calendar Courses in Session F with Blacklist
-     * Constraints that result in missing mandatory tutorial, lecture, or practical sections.
-     */
-    @Test
-    void filterNoValidSections() {
-        SectionFilterRequestModel requestModel4 = new SectionFilterRequestModel(
-                "F",
-                "CSC207H1,  CSC258H1",
-                "/",
-                "/",
-                "/",
-                "WHITELIST",
-                "",
-                "",
-                new ArrayList<>(Arrays.asList(2, 3, 4)),
-                "19:30",
-                "22:30"
-        );
-        interactor.filter(requestModel4);
-    }
 
     /**
      * Test Correctness of the filter method when the user input Empty Course Code.
      */
     @Test
     void filterEmptyCourseCode() {
-        SectionFilterRequestModel requestModel5 = new SectionFilterRequestModel(
+        SectionFilterOutputBoundary presenter4 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                Assertions.fail();
+                //Not expected to go through this success branch, since in this case
+                //no course code is entered.
+
+            }
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.assertEquals("No course code has been entered.", error);
+                //Supposed to display the error message of empty course code input.
+            }
+        };
+        SectionFilterInteractor interactor = new SectionFilterInteractor(presenter4);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
+        SectionFilterRequestModel requestModel4 = new SectionFilterRequestModel(
                 "S",
                 "",
                 "/",
@@ -240,7 +324,7 @@ class SectionFilterInteractorTest {
                 "9:30",
                 "22:30"
         );
-        interactor.filter(requestModel5);
+        interactor.filter(requestModel4);
     }
 
     /**
@@ -249,7 +333,24 @@ class SectionFilterInteractorTest {
      */
     @Test
     void filterInvalidTime() {
-        SectionFilterRequestModel requestModel6 = new SectionFilterRequestModel(
+        SectionFilterOutputBoundary presenter5 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                Assertions.fail();
+                //Not expected to go through this success branch, since in this case
+                //incorrect time interval is entered.
+
+            }
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.assertEquals("StartTime Must be BEFORE EndTime", error);
+                //Supposed to display the error message of invalid time interval input.
+            }
+        };
+        SectionFilterInteractor interactor = new SectionFilterInteractor(presenter5);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
+        SectionFilterRequestModel requestModel5 = new SectionFilterRequestModel(
                 "S",
                 "CSC207H1",
                 "/",
@@ -261,9 +362,49 @@ class SectionFilterInteractorTest {
                 new ArrayList<>(Arrays.asList(2, 3, 4)),
                 "9:30",
                 "8:30"
-        );
-        interactor.filter(requestModel6);
+        );//Notice endTime is less than the startTime.
+        interactor.filter(requestModel5);
     }
 
+    /**
+     * Test Correctness of the filter method when the user enters coursecode and constraints such that
+     * the filtered courses do not include mandatory lecture, practical, or tutorial sections.
+     * eg. for CSC207H1, it has LEC0101, LEC0102, LEC0303, TUT0101, TUT0102.
+     * If after filtering it only has LEC0101, LEC0102, without any available tutorial sections,
+     * then the interactor asks the presenter to prepare fail view.
+     */
+    @Test
+    void filterNoAvailableSections() {
+        SectionFilterOutputBoundary presenter6 = new SectionFilterOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SectionFilterResponseModel responseModel) {
+                Assertions.fail();
+                //Not expected to go through this success branch, since in this case
+                //incorrect time interval is entered.
 
+            }
+            @Override
+            public void prepareFailView(String error) {
+                Assertions.assertEquals("Filtering Condition Failed: CSC207H1 is missing mandatory tutorial, lecture, or practical after filtering.", error);
+                //Supposed to display the error message of invalid time interval input.
+            }
+        };
+        SectionFilterInteractor interactor = new SectionFilterInteractor(presenter6);
+        interactor.setFallSession(fall);
+        interactor.setWinterSession(winter);
+        SectionFilterRequestModel requestModel6 = new SectionFilterRequestModel(
+                "S",
+                "CSC207H1",
+                "/",
+                "/",
+                "/",
+                "WHITELIST",
+                "",
+                "",
+                new ArrayList<>(Arrays.asList(2, 3, 4)),
+                "9:30",
+                "10:30"
+        );//Notice Sections Type is missing here after the constraints being applied.
+        interactor.filter(requestModel6);
+    }
 }

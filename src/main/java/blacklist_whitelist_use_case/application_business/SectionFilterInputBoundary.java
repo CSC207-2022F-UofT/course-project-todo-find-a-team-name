@@ -1,4 +1,4 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 /**
  * Interface used to make dependence inversion for SectionFilterInteractor.

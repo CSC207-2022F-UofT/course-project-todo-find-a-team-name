@@ -1,4 +1,4 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 import entities.*;
 
@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Blacklist, Whitelist use case Interactor.
  */
-public class SectionFilterInteractor implements SectionFilterInputBoundary{
+public class SectionFilterInteractor implements SectionFilterInputBoundary {
     final SectionFilterOutputBoundary presenter;
-    private Session fallSession; // only for testing, delete when the team finishe the gateway.
+    private Session fallSession; // only for testing, delete when the team finishes the gateway.
     private Session winterSession;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
         this.presenter = presenter;
@@ -21,22 +21,16 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
      * filter() what filter does is it first creates a list of Calendar course entities with a list of courseCodes
      * provided in the requestModel, and then build a list of Constraints from the requestModel data, eventually
      * applying all the constraint to a list of CalendarCourse Domain to modify the sections of each course based on
-     * the given constraints. And it make sure that if the original course has tutorial, lecture, practical sections,
+     * the given constraints. And it makes sure that if the original course has tutorial, lecture, practical sections,
      * the modified courses will have at least one of each section type as well.
      *
      * @param requestModel SectionFilterRequestModel that includes the courseCodes, and corresponding Constraints
-     * @return SectionFilterResponseModel that provides an error message if the courseCode does not exists, or
-     * if it is missing mandatory tutorial, lecture or practical section components.
+     *
      */
     @Override
     public void filter(SectionFilterRequestModel requestModel) {
-        // delete when the gateway is done.
-
-        // delete
-
         ArrayList<String> courseCodes = (ArrayList<String>) this.formatInputString(requestModel.getCourseCodes());
-        ArrayList<CalendarCourse> calendarCourses = new ArrayList<CalendarCourse>();
-
+        ArrayList<CalendarCourse> calendarCourses = new ArrayList<>();
         if (requestModel.getCourseCodes().isEmpty()){
             presenter.prepareFailView("No course code has been entered.");
             return;
@@ -66,7 +60,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
         }
         ArrayList<CalendarCourse> calendarCoursesCopy = (ArrayList<CalendarCourse>) copyCalendarCourseList(calendarCourses);
 
-
         ArrayList<Constraint> constraints = (ArrayList<Constraint>) this.buildConstraints(requestModel);
         for (CalendarCourse course: calendarCoursesCopy) {
             for (Constraint constraint: constraints) {
@@ -86,7 +79,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
         presenter.prepareSuccessView(responseModel);
 
 
-//  SectionFilterResponseModel sectionFilterResponseModel = new SectionFilterResponseModel();
     }
     private CalendarCourse copyCalendarCourse(CalendarCourse course){
         return new CalendarCourse(course.getCourseCode(),
@@ -103,11 +95,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
         }
         return copy;
     }
-//    private ArrayList<CalendarCourse> copyCalendarCourseList(ArrayList<CalendarCourse> calendarCourses){
-//        for (CalendarCourse course: calendarCourses) {
-//            CalendarCourse course_copy = course;
-//        }
-//    }
 
     /**
      * A helper method that creates a List of Constraints from the given requestModel that could be

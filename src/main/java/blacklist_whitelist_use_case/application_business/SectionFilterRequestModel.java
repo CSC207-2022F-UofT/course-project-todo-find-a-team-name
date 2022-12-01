@@ -1,6 +1,7 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class representing the input data from the user for Blacklist/Whitelist use case.
@@ -145,6 +146,15 @@ public class SectionFilterRequestModel {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SectionFilterRequestModel)) return false;
+        SectionFilterRequestModel that = (SectionFilterRequestModel) o;
+        return sessionType.equals(that.sessionType) && isInstructorBlackList.equals(that.isInstructorBlackList) && isRoomBlackList.equals(that.isRoomBlackList) && isDayBlackList.equals(that.isDayBlackList) && isTimeBlackList.equals(that.isTimeBlackList) && courseCodes.equals(that.courseCodes) && instructorConstraints.equals(that.instructorConstraints) && roomConstraints.equals(that.roomConstraints) && dayConstraints.equals(that.dayConstraints) && startTime.equals(that.startTime) && endTime.equals(that.endTime);
+    }
+
 
     /**
      * Used for testing purpose initially.

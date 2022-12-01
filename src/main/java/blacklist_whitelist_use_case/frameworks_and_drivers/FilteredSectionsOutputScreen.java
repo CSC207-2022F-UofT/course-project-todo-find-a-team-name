@@ -1,4 +1,6 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
+
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
 
 import javax.swing.*;
 import java.awt.*;
