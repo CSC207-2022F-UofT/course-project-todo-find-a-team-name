@@ -1,4 +1,4 @@
-package screens;
+package display_timetable_use_case.interface_adapters;
 
 /**
  * Class representing all information needed for the block in displaying the timetable

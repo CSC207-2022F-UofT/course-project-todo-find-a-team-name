@@ -1,9 +1,14 @@
-package screens;
+package display_timetable_use_case.interface_adapters;
+
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
+import screens.EditTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Class used to display timetable, as well as buttons used to navigate to other screens.
@@ -12,8 +17,9 @@ import java.awt.event.ActionListener;
  *      - timetableView: JPanel that displays the timetable
  *      - prevPanel: previous panel displayed before this panel (null if it doesn't exist)
  */
-public class TimetableUI extends JPanel implements ActionListener {
+public class TimetableUI extends JPanel implements ActionListener, ITimetableUI {
 
+    private final DisplayTimetableController displayTimetableController;
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
     private final EditTimetableScreen editTimetableScreen;
@@ -24,10 +30,12 @@ public class TimetableUI extends JPanel implements ActionListener {
      * Constructs TimetableUI from the given TimetableViewModel, containing
      * all information to be displayed in this JPanel
      *
-     * @param timetableViewModel timetable data displayed in this component
+     * @param displayTimetableController controller used for displaying timetable
      */
-    public TimetableUI(TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
-        this.timetableViewModel = timetableViewModel;
+    public TimetableUI(DisplayTimetableController displayTimetableController,
+                       EditTimetableScreen editTimetableScreen){
+        this.displayTimetableController = displayTimetableController;
+        this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
         this.editTimetableScreen = editTimetableScreen;
 
@@ -63,6 +71,7 @@ public class TimetableUI extends JPanel implements ActionListener {
         add(pageStart, BorderLayout.PAGE_START);
 
         add(timetableView, BorderLayout.CENTER);
+
     }
 
     /**
@@ -70,13 +79,20 @@ public class TimetableUI extends JPanel implements ActionListener {
      * all information to be displayed in this JPanel, with preferred size set to given
      * width and height
      *
-     * @param width width of the preferred size of this component
-     * @param height height of the preferred size of this component
-     * @param timetableViewModel timetable data displayed in this component
+     * @param width                      width of the preferred size of this component
+     * @param height                     height of the preferred size of this component
+     * @param displayTimetableController controller used for displaying timetable
      */
-    public TimetableUI(int width, int height, TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
-        this(timetableViewModel, editTimetableScreen);
+    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen, DisplayTimetableController displayTimetableController){
+        this(displayTimetableController, editTimetableScreen);
         setPreferredSize(new Dimension(width, height));
+    }
+
+    /**
+     *
+     */
+    public void initTimetable(){
+        displayTimetableController.displayTimetable();
     }
 
     /**
@@ -141,5 +157,18 @@ public class TimetableUI extends JPanel implements ActionListener {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void updateTimetable(TimetableViewModel viewModel) {
+        setVisible(false);
+        timetableView.updateViewModel(viewModel);
+        setVisible(true);
+    }
+
+    @Override
+    public void showTimetableFailView(String message) {
+        changeScreen(prevPanel);
+        JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), message);
     }
 }

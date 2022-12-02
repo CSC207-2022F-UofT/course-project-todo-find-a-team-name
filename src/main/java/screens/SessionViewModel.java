@@ -1,6 +1,6 @@
 package screens;
 
-import entities.CalendarCourse;
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
 
 import java.util.HashMap;
 

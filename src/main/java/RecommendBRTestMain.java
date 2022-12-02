@@ -1,3 +1,4 @@
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;

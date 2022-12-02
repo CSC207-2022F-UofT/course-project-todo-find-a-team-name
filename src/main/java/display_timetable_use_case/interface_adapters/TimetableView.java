@@ -1,4 +1,4 @@
-package screens;
+package display_timetable_use_case.interface_adapters;
 
 import javax.swing.*;
 import java.awt.*;

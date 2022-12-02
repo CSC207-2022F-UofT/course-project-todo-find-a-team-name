@@ -1,5 +1,7 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
