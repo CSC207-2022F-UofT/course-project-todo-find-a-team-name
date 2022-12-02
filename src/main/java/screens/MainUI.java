@@ -191,7 +191,7 @@ public class MainUI extends JPanel implements ActionListener {
                 break;
             case "Display": {
                 changeScreen(timetableUI);
-                timetableUI.initTimetable();
+                timetableUI.updateTimetable();
                 break;
             }
         }
@@ -271,9 +271,9 @@ public class MainUI extends JPanel implements ActionListener {
         recommendBRPresenter.setView(recommendBRWindow);
         addCoursePresenter.setView(editTimetableScreen);
         removeCoursePresenter.setView(editTimetableScreen);
-//        addCourseInteractor.setTimetable(timetable);
-//        removeCourseInteractor.setTimetable(timetable);
-//        recommendBRInteractor.setTimetable(timetable);
+        addCourseInteractor.setTimetable(timetable);
+        removeCourseInteractor.setTimetable(timetable);
+        recommendBRInteractor.setTimetable(timetable);
 
         SessionGateway sessionGateway = new SessionGateway();
         Session fSession;

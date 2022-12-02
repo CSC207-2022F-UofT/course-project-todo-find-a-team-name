@@ -89,13 +89,6 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     }
 
     /**
-     *
-     */
-    public void initTimetable(){
-        displayTimetableController.displayTimetable();
-    }
-
-    /**
      * Returns timetableViewModel of this class, containing all timetable information displayed
      * in this class
      *
@@ -157,6 +150,13 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
                 }
                 break;
         }
+    }
+
+    /**
+     *
+     */
+    public void updateTimetable(){
+        displayTimetableController.displayTimetable();
     }
 
     @Override
