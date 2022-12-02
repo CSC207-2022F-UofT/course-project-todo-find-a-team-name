@@ -1,7 +1,6 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.application_business.DisplayTimetableOutputBoundary;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
@@ -51,7 +50,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private SessionViewModel session;
     private TimetableViewModel timetable;
     private JPanel previousPanel;
-    private DisplayTimetableController displayTimetableController;
+    private final DisplayTimetableController displayTimetableController;
 
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
@@ -363,11 +362,11 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     }
 
     /**
-     * @param message
+     * @param message A message to be displayed to the user when a failure occurs.
      */
     @Override
     public void showTimetableFailView(String message) {
-        JOptionPane.showMessageDialog(frame, "Timetable could not be found.");
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     /**
