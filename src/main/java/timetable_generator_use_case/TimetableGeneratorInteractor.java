@@ -21,11 +21,11 @@ public class TimetableGeneratorInteractor implements TimeTableGeneratorInputBoun
      */
     public ArrayList<Timetable> timetableCourseAdder(CalendarCourse course, TimetableGeneratorRequestModel timetables){
         ArrayList<Timetable> allTimetables = timetables.getTimetables();
-        ArrayList<Timetable> newTimetables = new ArrayList<Timetable>();
+        ArrayList<Timetable> newTimetables = new ArrayList<>();
         for(Timetable timetable : allTimetables){
             TimetableCourseGenerator possibleTimes = new TimetableCourseGenerator(course);
             for(TimetableCourse possibleTime: possibleTimes.generateAllTimetableCourse()){
-                if (!timetable.hasCourseOverlap(possibleTime)){
+                if (!(timetable.hasCourseOverlap(possibleTime))){
                     ArrayList<TimetableCourse> currentCourses = timetable.getCourseList();
                     currentCourses.add(possibleTime);
                     newTimetables.add(new Timetable(currentCourses, timetable.getSessionType()));
