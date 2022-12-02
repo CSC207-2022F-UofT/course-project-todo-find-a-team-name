@@ -1,10 +1,10 @@
 package edit_timetable_use_case.interface_adapters;
 
-import edit_timetable_use_case.application_business.EditTimetableResponseModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.application_business.EditCourseOutputBoundary;
-import retrieve_timetable_use_case.TimetableModel;
-import retrieve_timetable_use_case.TimetableModelConverter;
-import screens.TimetableViewModel;
+import edit_timetable_use_case.application_business.EditTimetableResponseModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
 /**
  * A concrete implementation of the EditCourseOutputBoundary.

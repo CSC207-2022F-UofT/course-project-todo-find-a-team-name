@@ -1,21 +1,23 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.application_business.DisplayTimetableInteractor;
+import display_timetable_use_case.application_business.DisplayTimetableOutputBoundary;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
+import display_timetable_use_case.interface_adapters.*;
 import edit_timetable_use_case.application_business.*;
 import edit_timetable_use_case.interface_adapters.*;
-import display_timetable_use_case.interface_adapters.*;
-import edit_timetable_use_case.*;
 import entities.*;
-import recommend_br_use_case.IDummyTimetableGateway;
-import recommend_br_use_case.RecommendBRInteractor;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
-import screens.*;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import screens.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,7 @@ import java.util.List;
  * courseButtons refer to buttons used to remove a given course.
  * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
-public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView,  {
+public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView, ITimetableUI {
 
     private final JFrame frame;
     private final EditTimetableController controller;
@@ -200,6 +202,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
             editInteractor.setRetrieveInteractor(retrieveInteractor);
             JPanel prevPanel = new JPanel();
+            DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
+            DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
             EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
             RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
             BRpresenter.setView(recommendBRWindow);
@@ -209,6 +213,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             removePresenter.setView(screen);
             addPresenter.setView(screen);
             editPresenter.setView(screen);
+            displayPresenter.setView(screen);
             frame.add(screen);
             screen.setVisible(true);
 
@@ -358,6 +363,14 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     }
 
     /**
+     * @param message
+     */
+    @Override
+    public void showTimetableFailView(String message) {
+        JOptionPane.showMessageDialog(frame, "Timetable could not be found.");
+    }
+
+    /**
      * @param session Updates the screen's session view model.
      */
     public void updateSession(SessionViewModel session) {
@@ -384,6 +397,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     }
 
     public void updateTimetable(){
-        displayTimetableController.updateTimetable();
+        displayTimetableController.displayTimetable();
     }
 }

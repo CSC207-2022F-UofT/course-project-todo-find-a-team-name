@@ -1,8 +1,8 @@
 package edit_timetable_use_case.application_business;
 
 import entities.Timetable;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.concurrent.Flow;
 

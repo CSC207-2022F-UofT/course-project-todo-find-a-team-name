@@ -3,7 +3,7 @@ package edit_timetable_use_case.application_business;
 import entities.InvalidSectionsException;
 import entities.Session;
 import entities.Timetable;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 
 /**
  * The input boundary used in the add course use case.
