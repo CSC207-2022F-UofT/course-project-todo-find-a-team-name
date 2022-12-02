@@ -46,4 +46,15 @@ class SectionModelTest {
         SectionModel other = new SectionModel("CSC108", "prof!!", otherBlocks);
         assertNotEquals(other, section);
     }
+
+    /**
+     * Tests that the Block and its equivalent BlockModel are considered has the same hash code.
+     */
+    @Test
+    void testHashCode(){
+        ArrayList<BlockModel> blocks = new ArrayList<>();
+        blocks.add(new BlockModel(0, 1, 2, ""));
+        SectionModel other = new SectionModel("CSC108", "prof!!", blocks);
+        assertEquals(other.hashCode(), section.hashCode());
+    }
 }

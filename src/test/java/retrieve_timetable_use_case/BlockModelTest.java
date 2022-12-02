@@ -28,4 +28,10 @@ class BlockModelTest {
     void testNotEquals() {
         assertNotEquals(new BlockModel(2, 14, 16, "OT104"), block);
     }
+
+    @Test
+    void testHashCode(){
+        assertEquals(new BlockModel(2, 14, 16, "AB106").hashCode(), block.hashCode());
+    }
+
 }
