@@ -2,12 +2,13 @@ package retrieve_timetable_use_case;
 
 import entities.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A suite of tests for the RetrieveTimetableInteractor.
@@ -83,7 +84,7 @@ class RetrieveTimetableInteractorTest {
     void retrieveTimetableCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
                 "", "EGG100", "");
-        assertEquals(courseModel, interactor.retrieveTimetableCourse(request));
+        Assertions.assertEquals(courseModel, interactor.retrieveTimetableCourse(request));
     }
 
     /**
@@ -93,7 +94,7 @@ class RetrieveTimetableInteractorTest {
     void retrieveCalendarCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
                 "", "EGG100", "");
-        assertEquals(courseModel, interactor.retrieveCalendarCourse(request));
+        Assertions.assertEquals(courseModel, interactor.retrieveCalendarCourse(request));
     }
 
     /**
@@ -101,7 +102,7 @@ class RetrieveTimetableInteractorTest {
      */
     @Test
     void retrieveSession() {
-        assertEquals(sessionModel, interactor.retrieveSession());
+        Assertions.assertEquals(sessionModel, interactor.retrieveSession());
     }
 
     /**
@@ -109,6 +110,6 @@ class RetrieveTimetableInteractorTest {
      */
     @Test
     void retrieveTimetable() {
-        assertEquals(timetableModel, interactor.retrieveTimetable());
+        Assertions.assertEquals(timetableModel, interactor.retrieveTimetable());
     }
 }

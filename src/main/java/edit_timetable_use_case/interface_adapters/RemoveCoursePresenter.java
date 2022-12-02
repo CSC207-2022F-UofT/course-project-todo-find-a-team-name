@@ -1,5 +1,10 @@
 package edit_timetable_use_case.interface_adapters;
 
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import edit_timetable_use_case.RemoveCourseOutputBoundary;
+import edit_timetable_use_case.EditTimetableResponseModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import edit_timetable_use_case.application_business.EditTimetableResponseModel;
 import edit_timetable_use_case.application_business.RemoveCourseOutputBoundary;
 import retrieve_timetable_use_case.TimetableModel;

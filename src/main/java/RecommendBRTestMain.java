@@ -1,11 +1,26 @@
 import entities.*;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import edit_timetable_use_case.AddCourseInteractor;
+import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.RemoveCourseInteractor;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import org.json.simple.parser.ParseException;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
+import screens.*;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 // This method for testing purposes only during development
 // TODO: remove this class
 public class RecommendBRTestMain {
+    public static void main(String[] args) throws IOException, ParseException {
     /*public static void main(String[] args) {
         JFrame frame = new JFrame();
 
@@ -33,9 +48,11 @@ public class RecommendBRTestMain {
         removeCourseInteractor.setTimetable(timetable);
         recommendBRInteractor.setTimetable(timetable);
 
-        Session fSession = generateSession();
+        SessionGateway sessionGateway = new SessionGateway();
+        Session fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+
         addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFSession(fSession);
+        recommendBRInteractor.setFallSession(fSession);
 
         frame.add(editTimetableScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,5 +82,6 @@ public class RecommendBRTestMain {
                     "1"));
         }
         return session;
+    }
     }
 }

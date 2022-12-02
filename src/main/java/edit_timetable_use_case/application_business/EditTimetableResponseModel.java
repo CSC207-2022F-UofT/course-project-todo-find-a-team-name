@@ -1,6 +1,6 @@
 package edit_timetable_use_case.application_business;
 
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 /**
  * A response model that contains the relevant information needed by the presenter's view.

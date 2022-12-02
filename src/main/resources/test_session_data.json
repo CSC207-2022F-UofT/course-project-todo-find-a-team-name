@@ -1,0 +1,867 @@
+{
+    "CSC207H1-F-20229": {
+        "code": "CSC207H1",
+        "title": "Software Design",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "TU-347771": {
+                        "day": "TU",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "BR 200"
+                    },
+                    "TH-347772": {
+                        "day": "TH",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "BR 200"
+                    }
+                },
+                "prof": "P Gries"
+            },
+            "LEC-0201": {
+                "section": "LEC-0201",
+                "blocks": {
+                    "TU-347773": {
+                        "day": "TU",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "BR 200"
+                    },
+                    "TH-347774": {
+                        "day": "TH",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "BR 200"
+                    }
+                },
+                "prof": "P Gries"
+            },
+            "LEC-0301": {
+                "section": "LEC-0301",
+                "blocks": {
+                    "TU-347775": {
+                        "day": "TU",
+                        "startTime": "15:00",
+                        "endTime": "16:00",
+                        "room": "BR 200"
+                    },
+                    "TH-347776": {
+                        "day": "TH",
+                        "startTime": "15:00",
+                        "endTime": "16:00",
+                        "room": "BR 200"
+                    }
+                },
+                "prof": "J Calver"
+            },
+            "LEC-0401": {
+                "section": "LEC-0401",
+                "blocks": {
+                    "TU-347777": {
+                        "day": "TU",
+                        "startTime": "16:00",
+                        "endTime": "17:00",
+                        "room": "BR 200"
+                    },
+                    "TH-347778": {
+                        "day": "TH",
+                        "startTime": "16:00",
+                        "endTime": "17:00",
+                        "room": "BR 200"
+                    }
+                },
+                "prof": "J Calver"
+            },
+            "LEC-5101": {
+                "section": "LEC-5101",
+                "blocks": {
+                    "TU-334820": {
+                        "day": "TU",
+                        "startTime": "18:00",
+                        "endTime": "20:00",
+                        "room": "BA 1160"
+                    }
+                },
+                "prof": "L Shorser"
+            },
+            "LEC-5201": {
+                "section": "LEC-5201",
+                "blocks": {
+                    "TH-347779": {
+                        "day": "TH",
+                        "startTime": "18:00",
+                        "endTime": "20:00",
+                        "room": "KP 108"
+                    }
+                },
+                "prof": "L Shorser"
+            },
+            "TUT-0101": {
+                "section": "TUT-0101",
+                "blocks": {
+                    "MO-345529": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0201": {
+                "section": "TUT-0201",
+                "blocks": {
+                    "MO-345530": {
+                        "day": "MO",
+                        "startTime": "12:00",
+                        "endTime": "14:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0301": {
+                "section": "TUT-0301",
+                "blocks": {
+                    "MO-348385": {
+                        "day": "MO",
+                        "startTime": "14:00",
+                        "endTime": "16:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0401": {
+                "section": "TUT-0401",
+                "blocks": {
+                    "MO-345532": {
+                        "day": "MO",
+                        "startTime": "16:00",
+                        "endTime": "18:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0501": {
+                "section": "TUT-0501",
+                "blocks": {
+                    "TH-348091": {
+                        "day": "TH",
+                        "startTime": "09:00",
+                        "endTime": "11:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-5101": {
+                "section": "TUT-5101",
+                "blocks": {
+                    "MO-345534": {
+                        "day": "MO",
+                        "startTime": "18:00",
+                        "endTime": "20:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "5"
+    },
+    "CSC236H1-F-20229": {
+        "code": "CSC236H1",
+        "title": "Introduction to the Theory of Computation",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "MO-347780": {
+                        "day": "MO",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "MP 203"
+                    },
+                    "FR-347781": {
+                        "day": "FR",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "MP 103"
+                    }
+                },
+                "prof": "F Pitt"
+            },
+            "LEC-0201": {
+                "section": "LEC-0201",
+                "blocks": {
+                    "MO-347782": {
+                        "day": "MO",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "MP 103"
+                    },
+                    "FR-347783": {
+                        "day": "FR",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "MP 103"
+                    }
+                },
+                "prof": "F Pitt"
+            },
+            "LEC-0301": {
+                "section": "LEC-0301",
+                "blocks": {
+                    "MO-347784": {
+                        "day": "MO",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "WB 116"
+                    },
+                    "FR-347785": {
+                        "day": "FR",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "WB 116"
+                    }
+                },
+                "prof": "H Sha"
+            },
+            "LEC-0401": {
+                "section": "LEC-0401",
+                "blocks": {
+                    "MO-347786": {
+                        "day": "MO",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "LM 162"
+                    },
+                    "FR-347787": {
+                        "day": "FR",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "LM 162"
+                    }
+                },
+                "prof": "F Pitt"
+            },
+            "LEC-5101": {
+                "section": "LEC-5101",
+                "blocks": {
+                    "WE-347788": {
+                        "day": "WE",
+                        "startTime": "18:00",
+                        "endTime": "20:00",
+                        "room": "LM 161"
+                    }
+                },
+                "prof": "S Danisa"
+            },
+            "TUT-0101": {
+                "section": "TUT-0101",
+                "blocks": {
+                    "WE-334852": {
+                        "day": "WE",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "KP 113"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0102": {
+                "section": "TUT-0102",
+                "blocks": {
+                    "WE-338564": {
+                        "day": "WE",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "WB 119"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0103": {
+                "section": "TUT-0103",
+                "blocks": {
+                    "WE-338565": {
+                        "day": "WE",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "BA 1230"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0104": {
+                "section": "TUT-0104",
+                "blocks": {
+                    "WE-338566": {
+                        "day": "WE",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "BA 1240"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0201": {
+                "section": "TUT-0201",
+                "blocks": {
+                    "WE-348241": {
+                        "day": "WE",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "BF 323"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0202": {
+                "section": "TUT-0202",
+                "blocks": {
+                    "WE-348283": {
+                        "day": "WE",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "SS 1086"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0203": {
+                "section": "TUT-0203",
+                "blocks": {
+                    "WE-348243": {
+                        "day": "WE",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "AB 107"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0204": {
+                "section": "TUT-0204",
+                "blocks": {
+                    "WE-338569": {
+                        "day": "WE",
+                        "startTime": "12:00",
+                        "endTime": "13:00",
+                        "room": "BA 1230"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0301": {
+                "section": "TUT-0301",
+                "blocks": {
+                    "WE-334854": {
+                        "day": "WE",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "BA 2165"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0302": {
+                "section": "TUT-0302",
+                "blocks": {
+                    "WE-338570": {
+                        "day": "WE",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "ES 4000"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0303": {
+                "section": "TUT-0303",
+                "blocks": {
+                    "WE-338571": {
+                        "day": "WE",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "BF 323"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0304": {
+                "section": "TUT-0304",
+                "blocks": {
+                    "WE-338572": {
+                        "day": "WE",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "AB 107"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0401": {
+                "section": "TUT-0401",
+                "blocks": {
+                    "WE-334857": {
+                        "day": "WE",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "BF 323"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0402": {
+                "section": "TUT-0402",
+                "blocks": {
+                    "WE-345316": {
+                        "day": "WE",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "BA 2145"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0403": {
+                "section": "TUT-0403",
+                "blocks": {
+                    "WE-338574": {
+                        "day": "WE",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "BA B024"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0404": {
+                "section": "TUT-0404",
+                "blocks": {
+                    "WE-338575": {
+                        "day": "WE",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "UC 244"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-5101": {
+                "section": "TUT-5101",
+                "blocks": {
+                    "WE-338743": {
+                        "day": "WE",
+                        "startTime": "20:00",
+                        "endTime": "21:00",
+                        "room": "BA 2185"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-5102": {
+                "section": "TUT-5102",
+                "blocks": {
+                    "WE-338742": {
+                        "day": "WE",
+                        "startTime": "20:00",
+                        "endTime": "21:00",
+                        "room": "BA 2175"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-5103": {
+                "section": "TUT-5103",
+                "blocks": {
+                    "WE-338741": {
+                        "day": "WE",
+                        "startTime": "20:00",
+                        "endTime": "21:00",
+                        "room": "BA 2165"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-5104": {
+                "section": "TUT-5104",
+                "blocks": {
+                    "WE-338740": {
+                        "day": "WE",
+                        "startTime": "20:00",
+                        "endTime": "21:00",
+                        "room": "BA 2159"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "5"
+    },"STA247H1-F-20229": {
+        "code": "STA247H1",
+        "title": "Probability with Computer Applications",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "TU-340381": {
+                        "day": "TU",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "MC 102"
+                    },
+                    "TH-340382": {
+                        "day": "TH",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": "MC 102"
+                    }
+                },
+                "prof": "K Huynh Wong"
+            },
+            "LEC-0201": {
+                "section": "LEC-0201",
+                "blocks": {
+                    "TU-340383": {
+                        "day": "TU",
+                        "startTime": "15:00",
+                        "endTime": "16:00",
+                        "room": "MC 102"
+                    },
+                    "TH-340384": {
+                        "day": "TH",
+                        "startTime": "14:00",
+                        "endTime": "16:00",
+                        "room": "MC 102"
+                    }
+                },
+                "prof": "K Huynh Wong"
+            },
+            "TUT-0101": {
+                "section": "TUT-0101",
+                "blocks": {
+                    "TU-338190": {
+                        "day": "TU",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "GB 244"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0102": {
+                "section": "TUT-0102",
+                "blocks": {
+                    "TU-338191": {
+                        "day": "TU",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "HS 106"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0103": {
+                "section": "TUT-0103",
+                "blocks": {
+                    "TU-338192": {
+                        "day": "TU",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "WB 219"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0104": {
+                "section": "TUT-0104",
+                "blocks": {
+                    "TU-338193": {
+                        "day": "TU",
+                        "startTime": "11:00",
+                        "endTime": "12:00",
+                        "room": "GB 303"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0201": {
+                "section": "TUT-0201",
+                "blocks": {
+                    "TU-338183": {
+                        "day": "TU",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "GB 244"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0202": {
+                "section": "TUT-0202",
+                "blocks": {
+                    "TU-348483": {
+                        "day": "TU",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": ""
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0203": {
+                "section": "TUT-0203",
+                "blocks": {
+                    "TU-338187": {
+                        "day": "TU",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "WB 219"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0204": {
+                "section": "TUT-0204",
+                "blocks": {
+                    "TU-338189": {
+                        "day": "TU",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "AB 107"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "5"
+    },
+    "SLA106H1-F-20229": {
+        "code": "SLA106H1",
+        "title": "Polish for Beginners I",
+        "session": "F",
+        "sections": {
+            "LEC-5101": {
+                "section": "LEC-5101",
+                "blocks": {
+                    "TU-329127": {
+                        "day": "TU",
+                        "startTime": "17:00",
+                        "endTime": "19:00",
+                        "room": "AH 103"
+                    },
+                    "TH-329128": {
+                        "day": "TH",
+                        "startTime": "17:00",
+                        "endTime": "19:00",
+                        "room": "AH 103"
+                    }
+                },
+                "prof": "M Cabaj"
+            }
+        },
+        "breadth": "1"
+    },
+    "FIN110H1-S-20229": {
+        "code": "FIN110H1",
+        "title": "Elementary Finnish II",
+        "session": "S",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "MO-328928": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": null
+                    },
+                    "WE-328929": {
+                        "day": "WE",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": null
+                    }
+                },
+                "prof": "A Muhonen"
+            }
+        },
+        "breadth": "1"
+    },
+    "ENG220H1-F-20229": {
+        "code": "ENG220H1",
+        "title": "Introduction to Shakespeare",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "TU-339000": {
+                        "day": "TU",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": "SS 1069"
+                    },
+                    "TH-339001": {
+                        "day": "TH",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "SS 1069"
+                    }
+                },
+                "prof": "P Sheppard"
+            }
+        },
+        "breadth": "1"
+    },
+    "ARH205H1-F-20229": {
+        "code": "ARH205H1",
+        "title": "Archaeological Inference",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "MO-321624": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "12:00",
+                        "room": "MP 137"
+                    }
+                },
+                "prof": "E Banning"
+            },
+            "TUT-0101": {
+                "section": "TUT-0101",
+                "blocks": {
+                    "MO-321626": {
+                        "day": "MO",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "UC 175"
+                    }
+                },
+                "prof": ""
+            },
+            "TUT-0201": {
+                "section": "TUT-0201",
+                "blocks": {
+                    "MO-321627": {
+                        "day": "MO",
+                        "startTime": "14:00",
+                        "endTime": "15:00",
+                        "room": "UC 175"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "3"
+    },
+    "ESS205H1-F-20229": {
+        "code": "ESS205H1",
+        "title": "Confronting Global Change",
+        "session": "F",
+        "sections": {
+            "LEC-5101": {
+                "section": "LEC-5101",
+                "blocks": {
+                    "TH-344850": {
+                        "day": "TH",
+                        "startTime": "18:00",
+                        "endTime": "20:00",
+                        "room": "MY 150"
+                    }
+                },
+                "prof": "L Tutty"
+            }
+        },
+        "breadth": "4"
+    },
+    "BIO255H1-F-20229": {
+        "code": "BIO255H1",
+        "title": "From Genes to Organisms with Advanced Laboratory",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "TU-347455": {
+                        "day": "TU",
+                        "startTime": "12:00",
+                        "endTime": "14:00",
+                        "room": "CH ---"
+                    },
+                    "TH-347456": {
+                        "day": "TH",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": "CH ---"
+                    }
+                },
+                "prof": "H McFarlane"
+            },
+            "LEC-5101": {
+                "section": "LEC-5101",
+                "blocks": {
+                    "TU-339078": {
+                        "day": "TU",
+                        "startTime": "18:00",
+                        "endTime": "21:00",
+                        "room": "MS 2158"
+                    }
+                },
+                "prof": "K Yip"
+            },
+            "PRA-0101": {
+                "section": "PRA-0101",
+                "blocks": {
+                    "MO-345398": {
+                        "day": "MO",
+                        "startTime": "11:00",
+                        "endTime": "14:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "4"
+    },
+    "NMC255H1-S-20229": {
+        "code": "NMC255H1",
+        "title": "Love, Battle, and Wit: Classics of Premodern Arabic Literature",
+        "session": "S",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "TU-332405": {
+                        "day": "TU",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": null
+                    },
+                    "TH-332406": {
+                        "day": "TH",
+                        "startTime": "13:00",
+                        "endTime": "14:00",
+                        "room": null
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "1"
+    }
+}

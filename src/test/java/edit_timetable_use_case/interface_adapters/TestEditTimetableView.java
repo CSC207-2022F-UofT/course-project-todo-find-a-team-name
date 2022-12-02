@@ -1,6 +1,8 @@
 package edit_timetable_use_case.interface_adapters;
 
 import screens.TimetableViewModel;
+import screens.EditTimetableView;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 
 /**
  * A test view that mocks up EditTimetableView.

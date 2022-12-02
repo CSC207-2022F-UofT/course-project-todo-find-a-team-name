@@ -2,10 +2,12 @@ package retrieve_timetable_use_case;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.*;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * A test suite for the SectionModel class, primarily to confirm the correctness of its equal method.
@@ -43,5 +45,16 @@ class SectionModelTest {
         otherBlocks.add(new BlockModel(2, 14, 16, "AB105"));
         SectionModel other = new SectionModel("CSC108", "prof!!", otherBlocks);
         assertNotEquals(other, section);
+    }
+
+    /**
+     * Tests that the Block and its equivalent BlockModel are considered has the same hash code.
+     */
+    @Test
+    void testHashCode(){
+        ArrayList<BlockModel> blocks = new ArrayList<>();
+        blocks.add(new BlockModel(0, 1, 2, ""));
+        SectionModel other = new SectionModel("CSC108", "prof!!", blocks);
+        assertEquals(other.hashCode(), section.hashCode());
     }
 }
