@@ -65,7 +65,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter BRpresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter, courseComparatorFactory);
         RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
