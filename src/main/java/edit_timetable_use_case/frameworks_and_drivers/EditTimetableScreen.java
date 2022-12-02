@@ -43,10 +43,12 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private JPanel previousPanel;
 
 
-    public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel) {
+    public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
+                               UpdateTimetable) {
         this.frame = frame;
         this.controller = controller;
         this.previousPanel = previousPanel;
+        this.updateTimetableController = updateTimetableController;
 
         this.ttView = null;
         this.courseMenu = null;
