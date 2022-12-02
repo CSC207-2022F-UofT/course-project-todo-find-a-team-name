@@ -1,4 +1,4 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
 
 /**
  * A request model containing all requirements of a given retrieve timetable request.
@@ -25,8 +25,5 @@ public class RetrieveTimetableRequestModel {
     public String getTimetable() {
         return timetable;
     }
-
-    public String getSectionCode() {
-        return sectionCode;
-    }
+    
 }

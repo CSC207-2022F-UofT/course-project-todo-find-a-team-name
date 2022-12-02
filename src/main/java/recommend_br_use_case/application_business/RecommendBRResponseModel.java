@@ -1,6 +1,6 @@
 package recommend_br_use_case.application_business;
 
-import retrieve_timetable_use_case.CourseModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
 
 import java.util.List;
 

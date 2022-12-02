@@ -1,4 +1,6 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
+
+import java.util.Objects;
 
 /**
  * A data carrier class that doubles as a request and resposne model containing all information
@@ -45,4 +47,10 @@ public class BlockModel {
         BlockModel that = (BlockModel) o;
         return getDay() == that.getDay() && Double.compare(that.getStartTime(), getStartTime()) == 0 && Double.compare(that.getEndTime(), getEndTime()) == 0 && getRoom().equals(that.getRoom());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, startTime, endTime, room);
+    }
+
 }

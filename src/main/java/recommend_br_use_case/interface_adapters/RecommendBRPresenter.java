@@ -1,5 +1,9 @@
 package recommend_br_use_case.interface_adapters;
 
+import recommend_br_use_case.*;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
 import recommend_br_use_case.application_business.RecommendBROutputBoundary;
 import recommend_br_use_case.application_business.RecommendBRResponseModel;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
