@@ -106,8 +106,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         Session fall;
         Session winter;
         try {
-            fall = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "F");
-            winter = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "S");
+            fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+            winter = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "S");
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
