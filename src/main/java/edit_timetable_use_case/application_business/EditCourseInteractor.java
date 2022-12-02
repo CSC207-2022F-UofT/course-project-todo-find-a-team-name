@@ -6,6 +6,7 @@ import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /**
  * A concrete implementation of the EditCourseInputBoundary.
@@ -16,7 +17,7 @@ import java.util.List;
  * presenter is the presenter responsible for updating the view.
  * retrieveInteractor is a RetrieveTimetableInteractor used in the edit method.
  */
-public class EditCourseInteractor implements EditCourseInputBoundary {
+public class EditCourseInteractor implements EditCourseInputBoundary, Flow.Subscriber<Object> {
 
     private Timetable timetable;
     private Session session;
@@ -83,5 +84,48 @@ public class EditCourseInteractor implements EditCourseInputBoundary {
     @Override
     public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
         this.retrieveInteractor = retrieveInteractor;
+    }
+
+
+    /**
+     * @param subscription a new subscription.
+     *                     A method called when the interactor subscribes to a new Subscription. Currently does nothing.
+     */
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+
+    }
+
+    /**
+     * @param item the item passed to the interactor by its publishers, which will be other interactors.
+     *             item can either be a Timetable or Session, in which case the interactor's corresponding
+     *             instance attribute is updated to match it.
+     */
+    @Override
+    public void onNext(Object item) {
+        if (item instanceof Timetable){
+            this.timetable = (Timetable) item;
+        }
+        else if (item instanceof Session){
+            this.session = (Session) item;
+        }
+    }
+
+    /**
+     * @param throwable the exception encountered by either the Subscriber or Publisher.
+     *                  This method is called when a throwable is thrown by the Subscriber or Publisher, and
+     *                  currently does nothing.
+     */
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    /**
+     * Method invoked when no other Subscriber method invocations will occur. Currently does nothing.
+     */
+    @Override
+    public void onComplete() {
+
     }
 }

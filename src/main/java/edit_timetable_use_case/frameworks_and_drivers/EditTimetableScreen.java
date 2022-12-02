@@ -40,11 +40,13 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private JPanel editMenu;
     private SessionViewModel session;
     private TimetableViewModel timetable;
+    private JPanel previousPanel;
 
 
-    public EditTimetableScreen(JFrame frame, EditTimetableController controller) {
+    public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel) {
         this.frame = frame;
         this.controller = controller;
+        this.previousPanel = previousPanel;
 
         this.ttView = null;
         this.courseMenu = null;
@@ -59,10 +61,14 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         JButton addCourse = new JButton("Add Course");
         addCourse.addActionListener(this);
 
+        JButton goBack = new JButton("<=");
+        goBack.addActionListener(this);
+
         JPanel buttons = new JPanel();
         buttons.add(save);
         buttons.add(recommendBR);
         buttons.add(addCourse);
+        buttons.add(goBack);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
@@ -181,7 +187,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             editInteractor.setSession(session);
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
             editInteractor.setRetrieveInteractor(retrieveInteractor);
-            EditTimetableScreen screen = new EditTimetableScreen(frame, controller);
+            JPanel prevPanel = new JPanel();
+            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel);
             RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
             BRpresenter.setView(recommendBRWindow);
             screen.setBRWindow(recommendBRWindow);
@@ -293,6 +300,10 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }
         /*else if (cmd.equals("Save")){
         }*/
+        else if(cmd.equals("<=")){
+            this.setVisible(false);
+            previousPanel.setVisible(true);
+        }
 
     }
 
@@ -354,5 +365,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     public void setBRWindow(RecommendBRWindow recommendBRWindow) {
         this.BRWindow = recommendBRWindow;
+    }
+
+    public void setPreviousPanel(JPanel previousPanel){
+        this.previousPanel = previousPanel;
     }
 }
