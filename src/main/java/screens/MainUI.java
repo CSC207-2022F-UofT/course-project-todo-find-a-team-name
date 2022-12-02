@@ -291,7 +291,7 @@ public class MainUI extends JPanel implements ActionListener {
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
-        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter(null);
+        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         displayTimetableInteractor.setTimetable(timetable);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);

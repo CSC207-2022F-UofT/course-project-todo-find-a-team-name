@@ -13,12 +13,10 @@ public class DisplayTimetablePresenter implements DisplayTimetableOutputBoundary
     private ITimetableUI view;
 
     /**
-     * Constructs the DisplayTimetablePresenter from the given view
-     *
-     * @param view view that displays the timetable
+     * Constructs the DisplayTimetablePresenter with view set to null
      */
-    public DisplayTimetablePresenter(ITimetableUI view) {
-        this.view = view;
+    public DisplayTimetablePresenter() {
+        this.view = null;
     }
 
     /**
