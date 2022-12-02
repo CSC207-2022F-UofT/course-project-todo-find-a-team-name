@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SectionFilterInteractor implements SectionFilterInputBoundary {
     final SectionFilterOutputBoundary presenter;
-    private Session fallSession; // only for testing, delete when the team finishes the gateway.
+    private Session fallSession;
     private Session winterSession;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
         this.presenter = presenter;
