@@ -26,7 +26,7 @@ import java.util.List;
  * courseButtons refer to buttons used to remove a given course.
  * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
-public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView {
+public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView,  {
 
     private final JFrame frame;
     private final EditTimetableController controller;
@@ -41,14 +41,15 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private SessionViewModel session;
     private TimetableViewModel timetable;
     private JPanel previousPanel;
+    private DisplayTimetableController displayTimetableController;
 
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
-                               UpdateTimetable) {
+                               DisplayTimetableController displayTimetableController) {
         this.frame = frame;
         this.controller = controller;
         this.previousPanel = previousPanel;
-        this.updateTimetableController = updateTimetableController;
+        this.displayTimetableController = displayTimetableController;
 
         this.ttView = null;
         this.courseMenu = null;
@@ -74,6 +75,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
+
+        displayTimetableController.displayTimetable();
     }
 
 
@@ -190,7 +193,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
             editInteractor.setRetrieveInteractor(retrieveInteractor);
             JPanel prevPanel = new JPanel();
-            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel);
+            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
             RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
             BRpresenter.setView(recommendBRWindow);
             screen.setBRWindow(recommendBRWindow);
@@ -371,5 +374,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
     public void setPreviousPanel(JPanel previousPanel){
         this.previousPanel = previousPanel;
+    }
+
+    public void updateTimetable(){
+        displayTimetableController.updateTimetable();
     }
 }
