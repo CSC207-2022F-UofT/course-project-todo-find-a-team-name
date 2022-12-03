@@ -1,11 +1,21 @@
 package fileio_use_case.application_business.session_specific_classes;
 
+import entities.Block;
+import entities.CalendarCourse;
+import entities.Section;
 import entities.Session;
 import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import retrieve_timetable_use_case.BlockModel;
+import retrieve_timetable_use_case.CourseModel;
+import retrieve_timetable_use_case.SectionModel;
+import retrieve_timetable_use_case.SessionModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /** Interactor for SessionGateway **/
 public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
@@ -15,24 +25,32 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
-     * given a session type, return a Session with specified session type
+     * given a session type, return a SessionModel with specified session type
      * from the JSON file where the key is the course code and value is course information.
      * @param jsonData FileImportRequestModel, Session Type
-     * @return Session
+     * @return SessionModel
      */
-    public Session readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException {
+    public SessionModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException {
         String filePath = jsonData.getFilePath();
-        return this.sessionGateway.readFromFile(filePath, sessionType);
+        Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
+        HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
+        HashMap<String, CourseModel> returnAllSessionCoursesModel = new HashMap<>();
+        for (CalendarCourse course : allSessionCourses.values()) {
+            List<SectionModel> sectionList = new ArrayList<>();
+            for (Section section : course.getSections()) {
+                List<BlockModel> blockList = new ArrayList<>();
+                for (Block block : section.getBlocks()) {
+                    BlockModel aNewBlock = new BlockModel(block.getDay(), block.getStartTime(),
+                            block.getEndTime(), block.getRoom());
+                    blockList.add(aNewBlock);
+                }
+                SectionModel aNewSection = new SectionModel(section.getCode(), section.getInstructorName(), blockList);
+                sectionList.add(aNewSection);
+            }
+            CourseModel aNewCourse = new CourseModel(course.getTitle(), sectionList,
+                    course.getCourseSession(), course.getCourseCode(), course.getBreadth());
+            returnAllSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
+        }
+        return new SessionModel(returnAllSessionCoursesModel, sessionType);
     }
-//    /**
-//     * Returns a HashMap<String, Session> class of all sessions (Fall and Winter) based on given HashMap of String
-//     * to CalendarCourse.
-//     * Note: Use .getAllSessions() method in SessionStorer to get
-//     * all Sessions represented as HashMap<String, Session> where the key is the sessionType.
-//     *
-//     * @param allCourses HashMap<String, CalendarCourse>
-//     * @return HashMap<String, Session>
-//     */
-//    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses)
-//        return this.sessionGateway.creatingSessionsFromFile(allCourses);
 }
