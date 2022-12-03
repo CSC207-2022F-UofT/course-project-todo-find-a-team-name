@@ -1,7 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -16,31 +15,9 @@ public class Section {
     private final String instructorName;
     private final List<Block> blocks;
 
-
-    // Rep invariant:
-    //      blocks is sorted based on start time of each block
-
-    private static class BlockComparator implements Comparator<Block> {
-
-        /**
-         * Returns a negative integer, zero, or positive integer
-         * as the b1 is less than, equal to, or greater than b2
-         *
-         * @param b1 the first object to be compared.
-         * @param b2 the second object to be compared.
-         * @return a negative integer, zero, or positive integer
-         *         as the b1 is less than, equal to, or greater than b2
-         */
-        @Override
-        public int compare(Block b1, Block b2) {
-            return Double.compare(b1.getDay() * 24 + b1.getStartTime(), b2.getDay() * 24 + b2.getStartTime());
-        }
-    }
-
     /**
      * Creates Section entity with given blocks, section code, and
      * instructor name.
-     * Blocks given is copied to initialize blocks attribute of this entity
      *
      * @param code section code (e.g. LEC0101)
      * @param instructorName instructor name
@@ -49,8 +26,7 @@ public class Section {
     public Section(String code, String instructorName, List<Block> blocks){
         this.code = code;
         this.instructorName = instructorName;
-        this.blocks = new ArrayList<>(blocks);
-        this.blocks.sort(new BlockComparator());
+        this.blocks = blocks;
     }
 
     /**
@@ -62,45 +38,15 @@ public class Section {
      * @return whether there is time conflict between this and other
      */
     public boolean isConflicted(Section other){
-        List<Block> merged = mergeBlocks(blocks, other.blocks);
-        for (int i = 0; i < merged.size() - 1; i++){
-            if (merged.get(i).getDay() == merged.get(i + 1).getDay() &&
-                    merged.get(i).getEndTime() > merged.get(i + 1).getStartTime())
-                return true;
+        for (Block block1 : this.getBlocks()){
+            for (Block block2 : other.getBlocks()){
+                if (block1.getDay() == block2.getDay() && block1.getStartTime() < block2.getEndTime()
+                    && block1.getEndTime() > block2.getStartTime()) {
+                    return true;
+                }
+            }
         }
         return false;
-
-    }
-
-    /**
-     * Returns sorted List containing elements of blocks1 and blocks2
-     *
-     * @param blocks1 sorted list of Block entities
-     * @param blocks2 sorted list of Block entities
-     * @return sorted List containing elements of blocks1 and blocks2
-     */
-    private static List<Block> mergeBlocks(List<Block> blocks1, List<Block> blocks2) {
-        int i = 0, j = 0;
-        Comparator<Block> comparator = new BlockComparator();
-        List<Block> merged = new ArrayList<>();
-        while (i < blocks1.size() && j < blocks2.size()){
-            if (comparator.compare(blocks1.get(i), blocks2.get(j)) < 0){
-                merged.add(blocks1.get(i));
-                i++;
-            }
-            else {
-                merged.add(blocks2.get(j));
-                j++;
-            }
-        }
-
-        if (i == blocks1.size()){
-            merged.addAll(blocks2.subList(j, blocks2.size() - 1));
-        }
-        else {
-            merged.addAll(blocks1.subList(i, blocks1.size() - 1));
-        }
-        return merged;
     }
 
     /**
@@ -123,12 +69,11 @@ public class Section {
 
     /**
      * returns List of Block contained in this section
-     * list of Block entities returned is the copy of this.blocks
      *
      * @return List of Block contained in this section
      */
     public List<Block> getBlocks() {
-        return new ArrayList<>(blocks);
+        return blocks;
     }
 
     /**
@@ -158,7 +103,8 @@ public class Section {
 
         Section other = (Section) obj;
 
-        return code.equals(other.code) && instructorName.equals(other.instructorName) && blocks.equals(other.blocks);
+        return code.equals(other.code) && instructorName.equals(other.instructorName)
+                && new HashSet<>(blocks).equals(new HashSet<>(other.blocks));
     }
 
     /**
