@@ -22,7 +22,6 @@ public class TestCalculateSectionHoursInteractor {
         assert actual.compareTo(expected) == 0;
     }
 
-
     /** Test that calculateHoursOfSection works for a zero case. **/
     @Test
     public void test_calculateHoursOfSection_zero(){
@@ -32,6 +31,7 @@ public class TestCalculateSectionHoursInteractor {
         Double expected = 0.0;
         assert actual.compareTo(expected) == 0;
     }
+
     /** Test that calculateHoursOfSection correctly throws an exception if it somehow produces an output
      * that is over 24 hours.
      */
