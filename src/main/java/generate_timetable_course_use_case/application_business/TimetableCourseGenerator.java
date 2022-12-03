@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class TimetableCourseGenerator {
 
-    private CalendarCourse calenderCourse;
+    private final CalendarCourse calenderCourse;
 
     /**
      * Constructs a TimetableCourseGenerator given calendar course, which is used
@@ -119,23 +119,5 @@ public class TimetableCourseGenerator {
             course.setSection(newSection);
             generateAllTimetableCourses(sections, result, depth + 1, course);
         }
-    }
-
-    /**
-     * Returns calenderCourse of this generator
-     *
-     * @return calenderCourse of this generator
-     */
-    public CalendarCourse getCalenderCourse() {
-        return calenderCourse;
-    }
-
-    /**
-     * Sets calendarCourse to the given calendar course
-     *
-     * @param calenderCourse new calendar course of this generator
-     */
-    public void setCalenderCourse(CalendarCourse calenderCourse) {
-        this.calenderCourse = calenderCourse;
     }
 }
