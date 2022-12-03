@@ -58,7 +58,6 @@ public class TimetableModelUnpacker {
 
     }
 
-
     public static Section unpackSectionModel(SectionModel section){
         ArrayList<Block> blocks = new ArrayList<>();
         for(BlockModel blockModel : section.getBlocks()){

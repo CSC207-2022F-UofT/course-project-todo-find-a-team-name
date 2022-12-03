@@ -50,7 +50,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
         for (Course course : timetable.getCourseList()){
             courses.add(EntityConverter.generateCourseResponse(course));
         }
-        return new TimetableModel(courses);
+        return new TimetableModel(courses, timetable.getSessionType());
     }
 
 
