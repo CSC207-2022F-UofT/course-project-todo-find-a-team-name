@@ -63,4 +63,16 @@ public abstract class Course {
         }
         return sectionCodes;
     }
+
+    /** A Course == another course, if all the attributes are the same. **/
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Course otherCourse) {
+            return this.title.equals(otherCourse.title) && this.courseSession.equals(otherCourse.courseSession)
+                    && this.courseCode.equals(otherCourse.courseCode) && this.breadth.equals(otherCourse.breadth)
+                    && this.sections.equals(otherCourse.sections);
+        } else{
+            return false;
+        }
+    }
 }

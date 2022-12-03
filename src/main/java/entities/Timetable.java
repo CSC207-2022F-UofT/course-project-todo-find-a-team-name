@@ -61,6 +61,15 @@ public class Timetable {
     public ArrayList<TimetableCourse> getCourseList() {
         return courseList;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Timetable other){
+            return this.courseList.equals(other.courseList) && this.sessionType.equals(other.sessionType);
+        } else {
+            return false;
+        }
+    }
 }
 
 

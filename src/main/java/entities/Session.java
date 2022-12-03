@@ -141,5 +141,15 @@ public class Session {
     public String toString() {
         return "Session: " + this.sessionType + " { " + allSessionCourses + " }";
     }
-    
+
+
+    @Override
+    /** Sessions are the same if they have the same courses and same session.*/
+    public boolean equals(Object obj) {
+        if (obj instanceof Session other){
+            return this.sessionType.equals(other.sessionType) && this.allSessionCourses.equals(other.allSessionCourses);
+        } else {
+            return false;
+        }
+    }
 }

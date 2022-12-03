@@ -130,6 +130,8 @@ public class TimetableCourse extends Course{
     public Section getPractical(){
         return this.practical;
     }
+
+
 }
 
 
