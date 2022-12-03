@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/** A class responsible for converting between generic Model classes and their ViewModel versions. **/
+
 public class TimetableModelConverter {
 
     public static SessionViewModel sessionToView(SessionModel session){

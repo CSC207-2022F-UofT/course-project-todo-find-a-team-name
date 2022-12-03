@@ -8,6 +8,7 @@ import entities.Session;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class EntityConverter {
 
     public static SessionModel generateSessionResponse(Session session){
