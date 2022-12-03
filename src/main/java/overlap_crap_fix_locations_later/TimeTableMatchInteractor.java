@@ -14,26 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/** A helper interactor responsible for calculating the # of hours in a section.
- * FIXME: Not sure if this deserves its own interactor, but I feel like if we ever changed how Section time is
- *  calculated (idk, maybe we start incorporating UofT time into the formal start), that might be a reason below... that is not
- *  the same as how we find the overlapping timeTable in principle. */
-class TimeTableMatchCalculateSectionHoursInteractor {
-
-    public Double calculateHoursOfSection(Section section){
-        double hoursAccumulator = 0.0;
-        for (BlockModel block : section.getBlocks()){
-            hoursAccumulator += block.getEndTime() - block.getStartTime();
-        }
-        if (hoursAccumulator >= 24.0 || hoursAccumulator < 0.0){
-            throw new IllegalArgumentException("The program attempted to calculate the hours of a section that seems" +
-                    "to have negative or greater than 24 hour length. Something may be wrong with the data.");
-        }
-        return hoursAccumulator;
-    }
-}
-
-public class TimeTableMatchInteractor {
+public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
     /** A use case interactor responsible for finding the best overlapping TimeTable for one 'main' TimeTable, from
      * a list of them.
      * We seek to maximize 'overlap'. Overlap is defined in terms of:
@@ -74,8 +55,11 @@ public class TimeTableMatchInteractor {
                         if (mainSection == candidateSection){
                             // If they're in the same section in the same course, the two people can go together :).
                             // Hey, what if we used a companion object to not have to make a new one each time? Or just made this into an object.
+
+                            ArrayList<BlockModel> blockModels = new ArrayList<>();
                             Double thisOverlapWeightedHrs =
-                                    new TimeTableMatchCalculateSectionHoursInteractor().calculateHoursOfSection(candidateSection);
+                                    sectionHoursCalculator.calculateHoursOfSection(candidateSection);
+
                             totalOverlapWeightedHrs += thisOverlapWeightedHrs;
 
                             // TODO: Add in functionality for allowing 'soft constraint' overlap.

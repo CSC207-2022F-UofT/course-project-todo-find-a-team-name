@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Flow;
@@ -34,9 +33,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private ArrayList<Constraint> selectedConstraints;
 
     private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
-
-    // TODO: What I want to be able to do is to have a button be pressed and then return a value to the presenter.
-    // TODO: Change String to TimeTable in the types here once we have that option and we're not just testing.
 
     private final ArrayList<Timetable> timeTableOptions;
 
