@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.InputBoundaries;
 
 import retrieve_timetable_use_case.SectionModel;
 

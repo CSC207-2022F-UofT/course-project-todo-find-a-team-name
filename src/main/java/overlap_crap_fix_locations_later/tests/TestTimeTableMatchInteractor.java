@@ -1,7 +1,9 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.tests;
 
 import entities.Constraint;
 import org.junit.Test;
+import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
+import overlap_crap_fix_locations_later.TimeTableMatchInteractor;
 import retrieve_timetable_use_case.BlockModel;
 import retrieve_timetable_use_case.CourseModel;
 import retrieve_timetable_use_case.SectionModel;

@@ -3,6 +3,8 @@ package overlap_crap_fix_locations_later;
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
 import entities.*;
+import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
+import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.BlockModel;
 import retrieve_timetable_use_case.CourseModel;
 import retrieve_timetable_use_case.SectionModel;
