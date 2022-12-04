@@ -11,19 +11,19 @@ import java.util.List;
 
 public class TestTimetableModelUnpacker {
 
-    private BlockModel basicBlockModel = new BlockModel(1, 18.00, 20.00, "Castle Badr");
-    private Block basicBlock = new Block("TU", "18:00", "20:00", "Castle Badr");
+    private final BlockModel basicBlockModel = new BlockModel(1, 18.00, 20.00, "Castle Badr");
+    private final Block basicBlock = new Block("TU", "18:00", "20:00", "Castle Badr");
 
-    private SectionModel basicSectionModel = new SectionModel("TES101", "Mario-chan", List.of(basicBlockModel));
-    private Section basicSection = new Section("TES101", "Mario-chan", List.of(basicBlock));
+    private final SectionModel basicSectionModel = new SectionModel("TES101", "Mario-chan", List.of(basicBlockModel));
+    private final Section basicSection = new Section("TES101", "Mario-chan", List.of(basicBlock));
 
-    private CourseModel basicCourseModel = new CourseModel("TES101", List.of(basicSectionModel), "S",
+    private final CourseModel basicCourseModel = new CourseModel("TES101", List.of(basicSectionModel), "S",
             "TES101", "1");
 
-    private CalendarCourse basicCalendarCourse = new CalendarCourse("TES101", List.of(basicSection), "S",
+    private final CalendarCourse basicCalendarCourse = new CalendarCourse("TES101", List.of(basicSection), "S",
             "TES101", "1");
 
-    private TimetableCourse basicTimetableCourse = new TimetableCourse("TES101", List.of(basicSection), "S",
+    private final TimetableCourse basicTimetableCourse = new TimetableCourse("TES101", List.of(basicSection), "S",
             "TES101", "1");
 
     public TestTimetableModelUnpacker() throws InvalidSectionsException {
@@ -32,62 +32,50 @@ public class TestTimetableModelUnpacker {
 
     /** Test unpackBlockModel with a basic case. **/
     @Test
-    public void test_unpack_block_model_basic(){
-        BlockModel testModel = basicBlockModel;
-        Block expectedBlock = basicBlock;
-        assert expectedBlock.equals(TimetableModelUnpacker.unpackBlockModel(testModel));
+    public void testUnpackBlockModelBasic(){
+        assert basicBlock.equals(TimetableModelUnpacker.unpackBlockModel(basicBlockModel));
     }
 
-    /** Test that unpackBlockModel will correctly throw an exception if we feed it a section an invalid wrong day.. **/
+    /** Test that unpackBlockModel will correctly throw an exception if we feed it a section an invalid wrong day. **/
     @Test
-    public void test_unpack_block_model_bad_section(){
+    public void testUnpackBlockModelInvalidDay(){
         BlockModel testModel = new BlockModel(99, 18.00, 20.00, "Castle Badr");
-        Block expectedBlock = new Block("!?", "18:00", "20:00", "Castle Badr");
-        Assert.assertThrows(IllegalArgumentException.class, () -> {TimetableModelUnpacker.unpackBlockModel(testModel);});
+        Assert.assertThrows(IllegalArgumentException.class, () -> TimetableModelUnpacker.unpackBlockModel(testModel));
     }
 
     /** Test unpackSectionModel with a basic case. **/
     @Test
-    public void test_unpack_sectionModel_basic(){
+    public void testUnpackSectionModelBasic(){
 
-        SectionModel testSectionModel = basicSectionModel;
-        Section testSection = basicSection;
-
-        assert testSection.equals(TimetableModelUnpacker.unpackSectionModel(testSectionModel));
+        assert basicSection.equals(TimetableModelUnpacker.unpackSectionModel(basicSectionModel));
     }
 
     /** Test unpackCourseModelAsCalendarCourse with a basic case. **/
     @Test
-    public void test_unpack_course_model_as_calendar_course_basic(){
-        CourseModel testCourseModel = basicCourseModel;
+    public void testUnpackCourseModelAsCalendarCourseBasic(){
 
-        CalendarCourse expectedCourse = basicCalendarCourse;
-
-        assert expectedCourse.equals(TimetableModelUnpacker.unpackCourseModelAsCalendarCourse(testCourseModel));
+        assert basicCalendarCourse.equals(TimetableModelUnpacker.unpackCourseModelAsCalendarCourse(basicCourseModel));
     }
 
     /** Test unpackCourseModelAsTimetableCourse with a basic case. **/
     @Test
-    public void test_unpack_course_model_as_timetable_course_basic() throws InvalidSectionsException {
-        CourseModel testCourseModel = basicCourseModel;
+    public void testUnpackCourseModelBasic() {
 
-        TimetableCourse expectedCourse = basicTimetableCourse;
-
-        assert expectedCourse.equals(TimetableModelUnpacker.unpackCourseModelasTimetableCourse(testCourseModel));
+        assert basicTimetableCourse.equals(TimetableModelUnpacker.unpackCourseModelasTimetableCourse(basicCourseModel));
     }
 
     /** Test unpackTimetable with a basic case. **/
     @Test
-    public void test_unpack_timetable_basic(){
+    public void testUnpackTimetableBasic(){
         TimetableModel testTimetableModel = new TimetableModel(List.of(basicCourseModel), "S");
         Timetable expectedTimetable = new Timetable(new ArrayList<>(List.of(basicTimetableCourse)), "S");
 
-        assert expectedTimetable.equals(TimetableModelUnpacker.unpackTimeTable(testTimetableModel));
+        assert expectedTimetable.equals(TimetableModelUnpacker.unpackTimetable(testTimetableModel));
     }
 
     /** Test unpackSession with a very basic case. **/
     @Test
-    public void test_unpack_session_basic(){
+    public void testUnpackSessionBasic(){
         HashMap<String, CourseModel> courseModelMap = new HashMap<>();
         courseModelMap.put("TES101", basicCourseModel);
 
