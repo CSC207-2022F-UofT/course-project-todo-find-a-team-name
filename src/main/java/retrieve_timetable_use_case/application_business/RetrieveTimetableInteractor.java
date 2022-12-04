@@ -21,10 +21,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
     private Timetable timetable;
     private Session session;
 
-    public RetrieveTimetableInteractor(Timetable timetable, Session session){
-        this.timetable = timetable;
-        this.session = session;
-    }
+    public RetrieveTimetableInteractor(){}
 
 
     /**
