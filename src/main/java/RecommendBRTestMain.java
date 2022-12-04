@@ -1,21 +1,12 @@
-import entities.*;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.EditTimetableController;
-import edit_timetable_use_case.RemoveCourseInteractor;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import entities.Block;
+import entities.CalendarCourse;
+import entities.Section;
+import entities.Session;
 import org.json.simple.parser.ParseException;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
-import screens.*;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 // This method for testing purposes only during development
 // TODO: remove this class
@@ -57,8 +48,8 @@ public class RecommendBRTestMain {
         frame.add(editTimetableScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);
-    }*/
+        frame.setVisible(true);*/
+    }
 
     private static Session generateSession(){
         Session session = new Session("F");
@@ -82,6 +73,5 @@ public class RecommendBRTestMain {
                     "1"));
         }
         return session;
-    }
     }
 }

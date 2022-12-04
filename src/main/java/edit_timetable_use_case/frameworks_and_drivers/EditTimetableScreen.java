@@ -84,7 +84,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
+    }
 
+    public void initializeTimetable(){
         displayTimetableController.displayTimetable();
     }
 
@@ -213,6 +215,8 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             addPresenter.setView(screen);
             editPresenter.setView(screen);
             displayPresenter.setView(screen);
+            /* The line below must run after displayPresenter's view has been set to screen.*/
+            screen.initializeTimetable();
             frame.add(screen);
             screen.setVisible(true);
 

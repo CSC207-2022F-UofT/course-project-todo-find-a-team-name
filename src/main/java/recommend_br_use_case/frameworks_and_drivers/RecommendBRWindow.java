@@ -1,7 +1,6 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
-import edit_timetable_use_case.EditTimetableController;
 import recommend_br_use_case.interface_adapters.IRecommendBRView;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 
