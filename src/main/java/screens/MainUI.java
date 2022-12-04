@@ -1,5 +1,6 @@
 package screens;
 
+import entities.InvalidSectionsException;
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
@@ -112,7 +113,7 @@ public class MainUI extends JPanel implements ActionListener {
                     // Add SessionFileController
                     try {
                         sessionController.createSessionFile(importedSessionFilePath);
-                    } catch (IOException | ParseException ex) {
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
                     }
                 }

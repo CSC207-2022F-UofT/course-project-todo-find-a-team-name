@@ -1,5 +1,6 @@
 package feature_6;
 
+import entities.InvalidSectionsException;
 import fileio_use_case.application_business.FileImportRequestModel;
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
@@ -12,7 +13,7 @@ import java.io.IOException;
 class SessionGatewayInteractorTest {
     /** Tests if sessions can be created given a JSON file */
     @Test
-    void testingCreatingAllSessions() throws ParseException, IOException {
+    void testingCreatingAllSessions() throws ParseException, IOException, java.text.ParseException, InvalidSectionsException {
         FileImportRequestModel filePath = new FileImportRequestModel("src/main/resources/courses_cleaned.json");
         SessionGateway gateway = new SessionGateway();
         SessionGatewayInteractor convertFile = new SessionGatewayInteractor(gateway);

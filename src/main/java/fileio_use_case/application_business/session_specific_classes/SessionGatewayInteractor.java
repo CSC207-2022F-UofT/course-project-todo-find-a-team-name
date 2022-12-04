@@ -1,12 +1,8 @@
 package fileio_use_case.application_business.session_specific_classes;
 
-import entities.Block;
-import entities.CalendarCourse;
-import entities.Section;
-import entities.Session;
+import entities.*;
 import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import retrieve_timetable_use_case.BlockModel;
 import retrieve_timetable_use_case.CourseModel;
 import retrieve_timetable_use_case.SectionModel;
@@ -19,8 +15,8 @@ import java.util.List;
 
 /** Interactor for SessionGateway **/
 public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
-    private final SessionGateway sessionGateway;
-    public SessionGatewayInteractor(SessionGateway sessionGateway) {
+    private final SessionGatewayInterface sessionGateway;
+    public SessionGatewayInteractor(SessionGatewayInterface sessionGateway) {
         this.sessionGateway = sessionGateway;
     }
     /**
@@ -30,7 +26,7 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
      * @param jsonData FileImportRequestModel, Session Type
      * @return SessionModel
      */
-    public SessionModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException {
+    public SessionModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         String filePath = jsonData.getFilePath();
         Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
         HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
