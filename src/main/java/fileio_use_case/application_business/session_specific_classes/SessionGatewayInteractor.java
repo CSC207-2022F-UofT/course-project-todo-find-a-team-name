@@ -34,7 +34,11 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
         String filePath = jsonData.getFilePath();
         Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
         HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
-        HashMap<String, CourseModel> returnAllSessionCoursesModel = new HashMap<>();
+        return createSessionModel(allSessionCourses, sessionType);
+    }
+    /** HELPER METHOD to create SessionModel **/
+    private SessionModel createSessionModel(HashMap<String, CalendarCourse> allSessionCourses, String sessionType) {
+        HashMap<String, CourseModel> allSessionCoursesModel = new HashMap<>();
         for (CalendarCourse course : allSessionCourses.values()) {
             List<SectionModel> sectionList = new ArrayList<>();
             for (Section section : course.getSections()) {
@@ -49,8 +53,8 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
             }
             CourseModel aNewCourse = new CourseModel(course.getTitle(), sectionList,
                     course.getCourseSession(), course.getCourseCode(), course.getBreadth());
-            returnAllSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
+            allSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
         }
-        return new SessionModel(returnAllSessionCoursesModel, sessionType);
+        return new SessionModel(allSessionCoursesModel, sessionType);
     }
 }

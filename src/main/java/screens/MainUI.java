@@ -1,19 +1,27 @@
 package screens;
 
+import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.interface_adapters.SessionFileController;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainUI extends JPanel implements ActionListener {
 
     private final JLabel filePathSession;
     private final JLabel filePathTimetable;
 
-    public MainUI(){
+    public SessionFileController sessionController;
+
+    public MainUI(SessionFileController sessionController){
         super();
+        this.sessionController = sessionController;
         setLayout(new BorderLayout());
 
 
@@ -98,7 +106,14 @@ public class MainUI extends JPanel implements ActionListener {
             case "Import session": {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
-                    filePathSession.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                    String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    filePathSession.setText(importedSessionFilePath);
+                    // Add SessionFileController
+                    try {
+                        sessionController.createSessionFile(importedSessionFilePath);
+                    } catch (IOException | ParseException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 break;
             }
@@ -112,7 +127,11 @@ public class MainUI extends JPanel implements ActionListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        MainUI mainUI = new MainUI();
+        SessionGatewayInteractor hi = new SessionGatewayInteractor();
+
+        SessionFileController controller = new SessionFileController(hi);
+
+        MainUI mainUI = new MainUI(controller);
         mainUI.setPreferredSize(new Dimension(500, 400));
         frame.add(mainUI);
 
