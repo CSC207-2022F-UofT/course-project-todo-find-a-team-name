@@ -82,15 +82,19 @@ public class TimetableModelUnpacker {
     public static Block unpackBlockModel(BlockModel block){
         String blockDay;
 
-        switch (block.getDay()) {
-            case 0 -> blockDay = "MO";
-            case 1 -> blockDay = "TU";
-            case 2 -> blockDay = "WE";
-            case 3 -> blockDay = "TH";
-            case 4 -> blockDay = "FR";
-            default ->
-                    throw new IllegalArgumentException("We received a Section that seems to take place on a weekend or"
-                            + " otherwise invalid day.");
+        if (block.getDay() == 0) {
+            blockDay = "MO";
+        } else if (block.getDay() == 1) {
+            blockDay = "TU";
+        } else if (block.getDay() == 2) {
+            blockDay = "WE";
+        } else if (block.getDay() == 3) {
+            blockDay = "TH";
+        } else if (block.getDay() == 4) {
+            blockDay = "FR";
+        } else {
+            throw new IllegalArgumentException("We received a Section that seems to take place on a weekend or"
+                    + " otherwise invalid day.");
         }
 
         return new Block(blockDay, reformatModelTime(block.getStartTime())
