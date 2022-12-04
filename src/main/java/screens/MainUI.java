@@ -1,6 +1,7 @@
 package screens;
 
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
 import org.json.simple.parser.ParseException;
 
@@ -127,7 +128,9 @@ public class MainUI extends JPanel implements ActionListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        SessionGatewayInteractor hi = new SessionGatewayInteractor();
+        SessionGateway gateway = new SessionGateway();
+
+        SessionGatewayInteractor hi = new SessionGatewayInteractor(gateway);
 
         SessionFileController controller = new SessionFileController(hi);
 

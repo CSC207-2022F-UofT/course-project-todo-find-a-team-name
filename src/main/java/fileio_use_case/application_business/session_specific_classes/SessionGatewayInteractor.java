@@ -20,8 +20,8 @@ import java.util.List;
 /** Interactor for SessionGateway **/
 public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
     private final SessionGateway sessionGateway;
-    public SessionGatewayInteractor() {
-        this.sessionGateway = new SessionGateway();
+    public SessionGatewayInteractor(SessionGateway sessionGateway) {
+        this.sessionGateway = sessionGateway;
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
