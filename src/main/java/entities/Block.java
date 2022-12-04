@@ -24,12 +24,12 @@ public class Block {
         String[] start = startTime.split(":");
         double startHour = Integer.parseInt(start[0]);
         double startMin = Integer.parseInt(start[1]);
-        this.startTime = startHour + startMin / 100;
+        this.startTime = startHour + startMin / 60;
 
         String[] end = endTime.split(":");
         double endHour = Integer.parseInt(end[0]);
         double endMin = Integer.parseInt(end[1]);
-        this.endTime = endHour + endMin / 100;
+        this.endTime = endHour + endMin / 60;
 
         this.room = room;
     }
