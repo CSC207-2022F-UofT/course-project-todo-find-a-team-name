@@ -14,7 +14,7 @@ public class Timetable {
         this.sessionType = sessionType;
     }
     // Adds course
-    public void AddToCourseList(TimetableCourse course){
+    public void addToCourseList(TimetableCourse course){
         this.courseList.add(course);
     }
     // returns true if there is a conflict

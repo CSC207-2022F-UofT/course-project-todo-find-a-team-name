@@ -36,7 +36,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary{
         }
         TimetableCourse course = new TimetableCourse(calCourse.getTitle(), sections, calCourse.getCourseSession(),
                 calCourse.getCourseCode(), calCourse.getBreadth());
-        timetable.AddToCourseList(course);
+        timetable.addToCourseList(course);
         RetrieveTimetableInteractor RTInteractor = new RetrieveTimetableInteractor(timetable, session);
         TimetableModel updatedTimetable = RTInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =
