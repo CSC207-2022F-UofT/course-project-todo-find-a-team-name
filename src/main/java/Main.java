@@ -38,7 +38,7 @@ public class Main {
          have it already).
          */
 
-        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(timetable, session);
+        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
 
         RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
         RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
