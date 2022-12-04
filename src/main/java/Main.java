@@ -32,9 +32,10 @@ public class Main {
          * Yahya and anyone that opens the timetable editor (Emily?): make sure that the displayTimetableInteractor is
          updated with the appropriate timetable and session before pulling up the edit timetable screen, and
          make sure to call editTimetableScreen.updateTimetable(ttViewModel),
-         editTimetableScreen.updateSession(sessionViewModel), editTimetableScreen.initializeTimetable()
-          before setting it to visible. You may need to use the retrieveTimetable use case to do this if you don't
-          already have the view models (although you probably should have it already).
+         editTimetableScreen.updateSession(sessionViewModel), editTimetableScreen.initializeTimetable(), and
+         editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
+         retrieveTimetable use case to do this if you don't already have the view models (although you probably should
+         have it already).
          */
 
         RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(timetable, session);
