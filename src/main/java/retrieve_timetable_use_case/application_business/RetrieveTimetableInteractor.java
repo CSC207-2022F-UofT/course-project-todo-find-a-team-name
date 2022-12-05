@@ -50,12 +50,10 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
         return EntityConverter.generateSessionResponse(session);
     }
 
-    @Override
     public void setSession(Session session) {
         this.session = session;
     }
 
-    @Override
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
     }
