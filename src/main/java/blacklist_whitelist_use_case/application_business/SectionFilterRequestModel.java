@@ -6,7 +6,6 @@ import java.util.List;
  * Class representing the input data from the user for Blacklist/Whitelist use case.
  */
 public class SectionFilterRequestModel {
-    private final String sessionType;
     private final String isInstructorBlackList;
     private final String isRoomBlackList;
     private final String isDayBlackList;
@@ -22,7 +21,6 @@ public class SectionFilterRequestModel {
      * Constructs SectionFilterRequestModel with the sessionType, courseCodes, Blacklist/Whitelist List Type for each
      * Constraints, and the corresponding Constraints domain
      *
-     * @param sessionType a String representation of session by "S" or "F"
      * @param courseCodes a String of coourseCodes seperated by comma from the user input.
      * @param isInstructorBlackList a String representing whether or not it's a blacklistConstraint.
      * @param isRoomBlackList a String representing whether or not it's a blacklistConstraint.
@@ -34,8 +32,7 @@ public class SectionFilterRequestModel {
      * @param startTime a string representing the startTime limit of Time Constraints. eg. "11:30"
      * @param endTime a string representing the endTime limit of Time Constraints. eg. "22:30"
      */
-    public SectionFilterRequestModel(String sessionType,
-                                     String courseCodes,
+    public SectionFilterRequestModel(String courseCodes,
                                      String isInstructorBlackList,
                                      String isRoomBlackList,
                                      String isDayBlackList,
@@ -45,7 +42,6 @@ public class SectionFilterRequestModel {
                                      List<Integer> dayConstraints,
                                      String startTime,
                                      String endTime) {
-        this.sessionType = sessionType;
         this.isInstructorBlackList = isInstructorBlackList;
         this.isRoomBlackList = isRoomBlackList;
         this.isDayBlackList = isDayBlackList;
@@ -56,10 +52,6 @@ public class SectionFilterRequestModel {
         this.dayConstraints = dayConstraints;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public String getSessionType() {
-        return sessionType;
     }
 
     public String getIsInstructorBlackList() {
@@ -107,7 +99,7 @@ public class SectionFilterRequestModel {
         if (this == o) return true;
         if (!(o instanceof SectionFilterRequestModel)) return false;
         SectionFilterRequestModel that = (SectionFilterRequestModel) o;
-        return sessionType.equals(that.sessionType) && isInstructorBlackList.equals(that.isInstructorBlackList) && isRoomBlackList.equals(that.isRoomBlackList) && isDayBlackList.equals(that.isDayBlackList) && isTimeBlackList.equals(that.isTimeBlackList) && courseCodes.equals(that.courseCodes) && instructorConstraints.equals(that.instructorConstraints) && roomConstraints.equals(that.roomConstraints) && dayConstraints.equals(that.dayConstraints) && startTime.equals(that.startTime) && endTime.equals(that.endTime);
+        return isInstructorBlackList.equals(that.isInstructorBlackList) && isRoomBlackList.equals(that.isRoomBlackList) && isDayBlackList.equals(that.isDayBlackList) && isTimeBlackList.equals(that.isTimeBlackList) && courseCodes.equals(that.courseCodes) && instructorConstraints.equals(that.instructorConstraints) && roomConstraints.equals(that.roomConstraints) && dayConstraints.equals(that.dayConstraints) && startTime.equals(that.startTime) && endTime.equals(that.endTime);
     }
 
 

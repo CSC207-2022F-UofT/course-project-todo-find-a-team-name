@@ -27,7 +27,7 @@ public class FilteredSectionsOutputScreen extends JDialog {
         this.setSize(500, 500);
         setLayout(new BorderLayout());
 
-        JLabel title = new JLabel(viewModel.getSessionType() + "-session Courses Filter COMPLETE!" );
+        JLabel title = new JLabel( "Course Sections Filter COMPLETE!" );
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setFont(title.getFont().deriveFont(18F));
 

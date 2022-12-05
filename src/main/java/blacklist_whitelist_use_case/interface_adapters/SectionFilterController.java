@@ -25,7 +25,6 @@ public class SectionFilterController {
     /**
      * Filter out the unwanted sections of a calendar course after applying constraints and display to the user.
      *
-     *@param sessionType a String representation of session by "S" or "F"
      * @param courseCodes a String of coourseCodes seperated by comma from the user input.
      * @param isInstructorBlackList a String representing whether or not it's a blacklistConstraint.
      * @param isRoomBlackList a String representing whether or not it's a blacklistConstraint.
@@ -37,7 +36,7 @@ public class SectionFilterController {
      * @param startTime a string representing the startTime limit of Time Constraints. eg. "11:30"
      * @param endTime a string representing the endTime limit of Time Constraints. eg. "22:30"
      */
-    public void filter(String sessionType,
+    public void filter(
                        String courseCodes,
                        String isInstructorBlackList,
                        String isRoomBlackList,
@@ -48,7 +47,7 @@ public class SectionFilterController {
                        List<Integer> dayConstraints,
                        String startTime,
                        String endTime){
-        SectionFilterRequestModel requestModel = new SectionFilterRequestModel(sessionType,
+        SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
                 courseCodes, isInstructorBlackList, isRoomBlackList, isDayBlackList, isTimeBlackList,
                 instructorConstraints, roomConstraints, dayConstraints, startTime, endTime);
         sectionFilterInteractor.filter(requestModel);
