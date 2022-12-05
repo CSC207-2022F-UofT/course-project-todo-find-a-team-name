@@ -2,7 +2,7 @@ package overlap_crap_fix_locations_later;
 
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

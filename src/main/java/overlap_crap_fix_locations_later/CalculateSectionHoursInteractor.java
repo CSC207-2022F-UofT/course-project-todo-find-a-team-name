@@ -1,8 +1,9 @@
 package overlap_crap_fix_locations_later;
 
 import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.SectionModel;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
+
 
 /**
  * A helper interactor responsible for calculating the # of hours in a section.

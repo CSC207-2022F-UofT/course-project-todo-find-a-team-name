@@ -1,6 +1,7 @@
 package overlap_crap_fix_locations_later.InputBoundaries;
 
-import retrieve_timetable_use_case.TimetableModel;
+
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.HashMap;
 import java.util.List;

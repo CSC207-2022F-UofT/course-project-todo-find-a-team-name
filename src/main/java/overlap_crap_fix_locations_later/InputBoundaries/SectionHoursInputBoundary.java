@@ -1,6 +1,7 @@
 package overlap_crap_fix_locations_later.InputBoundaries;
 
-import retrieve_timetable_use_case.SectionModel;
+
+import retrieve_timetable_use_case.application_business.SectionModel;
 
 /** An input boundary that's used for getting the number of hours in a section. **/
 public interface SectionHoursInputBoundary {

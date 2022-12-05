@@ -4,10 +4,10 @@ package overlap_crap_fix_locations_later;
 
 import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
