@@ -77,8 +77,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
         SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.getSessionType());
 
         presenter.prepareSuccessView(responseModel);
-
-
     }
     private CalendarCourse copyCalendarCourse(CalendarCourse course){
         return new CalendarCourse(course.getCourseCode(),
