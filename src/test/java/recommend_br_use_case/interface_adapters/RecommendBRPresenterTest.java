@@ -63,7 +63,8 @@ class RecommendBRPresenterTest {
                 fail("showFailView(" + message + ") should not be called.");
             }
         };
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(dummyView);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+        recommendBRPresenter.setView(dummyView);
 
         List<CourseModel> courseModels = new ArrayList<>();
 
@@ -98,7 +99,8 @@ class RecommendBRPresenterTest {
                 assertEquals("Hello!", message);
             }
         };
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(dummyView);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+        recommendBRPresenter.setView(dummyView);
         recommendBRPresenter.prepareFailView("Hello!");
 
     }

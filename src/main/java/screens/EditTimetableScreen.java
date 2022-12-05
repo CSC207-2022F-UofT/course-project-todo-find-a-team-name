@@ -65,7 +65,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter BRpresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter, courseComparatorFactory);
         RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
@@ -230,15 +230,16 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        if (ttView != null){
-            ttView.setVisible(false);
+        if (ttView == null){
+            ttView = new TimetableView(1280, 720, timetable);
+            this.add(ttView);
         }
         if (courseButtons != null){
             courseButtons.setVisible(false);
         }
 
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
+        ttView.setVisible(false);
+        ttView.updateViewModel(timetable);
 
         courseButtons = new JPanel();
         for (TimetableViewCourseModel course : timetable.getCourseData()) {

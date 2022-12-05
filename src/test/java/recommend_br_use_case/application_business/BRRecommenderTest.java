@@ -29,7 +29,7 @@ class BRRecommenderTest {
         Session session;
         try {
             session = sessionGateway.readFromFile("src/main/resources/test_session_data.json", "F");
-        } catch (ParseException | IOException e) {
+        } catch (ParseException | IOException | InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
 

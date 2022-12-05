@@ -17,12 +17,10 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
     IRecommendBRView view;
 
     /**
-     * Constructs RecommendBRPresenter given IRecommendBRView (view for recommend BR use case)
-     *
-     * @param view class used to display information
+     * Constructs RecommendBRPresenter with view set to null
      */
-    public RecommendBRPresenter(IRecommendBRView view){
-        this.view = view;
+    public RecommendBRPresenter(){
+        this.view = null;
     }
 
     /**

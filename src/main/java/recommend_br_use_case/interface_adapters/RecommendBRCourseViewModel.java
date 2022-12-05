@@ -9,10 +9,10 @@ import java.util.Objects;
 public class RecommendBRCourseViewModel {
     private String code;
     private String title;
-    private String brCategory;
-    private String lectureCode;
-    private String tutorialCode;
-    private String practicalCode;
+    private final String brCategory;
+    private final String lectureCode;
+    private final String tutorialCode;
+    private final String practicalCode;
     private final List<String> lectureBlockInfos;
     private final List<String> tutorialBlockInfos;
     private final List<String> practicalBlockInfos;
@@ -147,42 +147,6 @@ public class RecommendBRCourseViewModel {
      */
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    /**
-     * Sets the breadth category of the course to the given argument
-     *
-     * @param brCategory new breadth category of the course
-     */
-    public void setBrCategory(String brCategory) {
-        this.brCategory = brCategory;
-    }
-
-    /**
-     * Sets the lecture code of the course to the given argument
-     *
-     * @param lectureCode new lecture code of the course
-     */
-    public void setLectureCode(String lectureCode) {
-        this.lectureCode = lectureCode;
-    }
-
-    /**
-     * Sets the tutorial code of the course to the given argument
-     *
-     * @param tutorialCode new tutorial code of the course
-     */
-    public void setTutorialCode(String tutorialCode) {
-        this.tutorialCode = tutorialCode;
-    }
-
-    /**
-     * Sets the practical code of the course to the given argument
-     *
-     * @param practicalCode new practical code of the course
-     */
-    public void setPracticalCode(String practicalCode) {
-        this.practicalCode = practicalCode;
     }
 
     @Override
