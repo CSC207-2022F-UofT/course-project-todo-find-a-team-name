@@ -1,9 +1,6 @@
 package edit_timetable_use_case.application_business;
 
 import entities.InvalidSectionsException;
-import entities.Session;
-import entities.Timetable;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 
 /**
  * The input boundary used in the add course use case.
@@ -17,16 +14,4 @@ public interface AddCourseInputBoundary {
      * user.
      */
     void add(EditTimetableRequestModel request) throws InvalidSectionsException;
-
-    /**
-     * @param timetable Updates the timetable used by the interactor.
-     */
-    void setTimetable(Timetable timetable);
-
-    /**
-     * @param session Updates the session used by the interactor.
-     */
-    void setSession(Session session);
-
-    void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor);
 }

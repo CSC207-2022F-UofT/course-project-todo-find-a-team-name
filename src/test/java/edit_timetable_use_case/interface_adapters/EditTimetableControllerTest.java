@@ -5,8 +5,7 @@ import entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class EditTimetableControllerTest {
 
-    RemoveCourseInputBoundary RCInteractor;
+    RemoveCourseInteractor RCInteractor;
     EditTimetableController controller;
 
-    AddCourseInputBoundary ACInteractor;
+    AddCourseInteractor ACInteractor;
 
-    EditCourseInputBoundary ECInteractor;
+    EditCourseInteractor ECInteractor;
     TestEditTimetableView view;
 
     /**
@@ -52,11 +51,13 @@ class EditTimetableControllerTest {
                     "CSC108", "1");
 
             view = new TestEditTimetableView();
-            RemoveCourseOutputBoundary RCPresenter = new RemoveCoursePresenter();
+            RemoveCoursePresenter RCPresenter = new RemoveCoursePresenter();
             RCPresenter.setView(view);
             RCInteractor = new RemoveCourseInteractor(RCPresenter);
             RCInteractor.setTimetable(t);
-            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, session);
+            RetrieveTimetableInteractor retrieveInteractor = new RetrieveTimetableInteractor();
+            retrieveInteractor.setTimetable(t);
+            retrieveInteractor.setSession(session);
             RCInteractor.setRetrieveInteractor(retrieveInteractor);
             AddCoursePresenter ACPresenter = new AddCoursePresenter();
             ACPresenter.setView(view);

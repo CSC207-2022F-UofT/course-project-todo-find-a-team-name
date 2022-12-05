@@ -19,16 +19,10 @@ public class EditTimetableRequestModel {
         this.sectionCodes = sectionCodes;
     }
 
-    /**
-     * @return the course code stored in the request.
-     */
     String getCourseCode(){
         return this.courseCode;
     }
 
-    /**
-     * @return the section codes stored in the request.
-     */
     List<String> getSectionCodes(){
         return this.sectionCodes;
     }

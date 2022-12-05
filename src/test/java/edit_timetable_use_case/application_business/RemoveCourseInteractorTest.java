@@ -7,9 +7,8 @@ import entities.Timetable;
 import entities.TimetableCourse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +34,13 @@ class RemoveCourseInteractorTest {
                     "", "EGX101", "");
             ArrayList<TimetableCourse> courses = new ArrayList<>(List.of(c));
             t = new Timetable(courses, "F");
-            RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
+            RemoveCoursePresenter presenter = new RemoveCoursePresenter();
             interactor = new RemoveCourseInteractor(presenter);
             presenter.setView(new TestEditTimetableView());
             interactor.setTimetable(t);
-            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, new Session(""));
+            RetrieveTimetableInteractor retrieveInteractor = new RetrieveTimetableInteractor();
+            retrieveInteractor.setTimetable(t);
+            retrieveInteractor.setSession(new Session(""));
             interactor.setRetrieveInteractor(retrieveInteractor);
         }
         catch (InvalidSectionsException e) {

@@ -22,10 +22,6 @@ public class AddCoursePresenter implements AddCourseOutputBoundary {
         view.displayResponse(responseModel.getCourseCode() + " was successfully added.");
     }
 
-    /**
-     * @param view the EditTimetableView that the presenter updates.
-     */
-    @Override
     public void setView(EditTimetableView view){
         this.view = view;
     }

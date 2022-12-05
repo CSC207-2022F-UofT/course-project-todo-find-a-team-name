@@ -53,26 +53,14 @@ public class AddCourseInteractor implements AddCourseInputBoundary, Flow.Subscri
         presenter.prepareView(editTimetableResponseModel);
     }
 
-    /**
-     * @param timetable Updates the timetable used by the interactor.
-     */
-    @Override
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
     }
 
-    /**
-     * @param session Updates the session used by the interactor.
-     */
-    @Override
     public void setSession(Session session) {
         this.session = session;
     }
 
-    /**
-     * @param retrieveInteractor the RetrieveTimetableInputBoundary used to create a view model of
-     *                           the updated timetable.
-     */
     public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
         this.retrieveInteractor = retrieveInteractor;
     }
@@ -107,15 +95,11 @@ public class AddCourseInteractor implements AddCourseInputBoundary, Flow.Subscri
      *                  currently does nothing.
      */
     @Override
-    public void onError(Throwable throwable) {
-
-    }
+    public void onError(Throwable throwable) {}
 
     /**
      * Method invoked when no other Subscriber method invocations will occur. Currently does nothing.
      */
     @Override
-    public void onComplete() {
-
-    }
+    public void onComplete() {}
 }

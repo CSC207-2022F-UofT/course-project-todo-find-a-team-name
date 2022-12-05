@@ -31,10 +31,6 @@ public class EditCoursePresenter implements EditCourseOutputBoundary {
 
     }
 
-    /**
-     * @param view the EditTimetableView that the presenter updates.
-     */
-    @Override
     public void setView(EditTimetableView view){
         this.view = view;
     }

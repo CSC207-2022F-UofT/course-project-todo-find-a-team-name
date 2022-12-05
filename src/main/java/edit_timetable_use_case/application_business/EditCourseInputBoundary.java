@@ -1,9 +1,6 @@
 package edit_timetable_use_case.application_business;
 
 import entities.InvalidSectionsException;
-import entities.Session;
-import entities.Timetable;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 
 /**
  * The input boundary for the edit course use case.
@@ -17,17 +14,4 @@ public interface EditCourseInputBoundary {
      * given type (LEC, TUT or PRA).
      */
     void edit(EditTimetableRequestModel request) throws InvalidSectionsException, NotInTimetableException;
-
-    /**
-     * @param session The session corresponding to the timetable being edited. Any sections and courses added
-     *                should be present in the session.
-     */
-    void setSession(Session session);
-
-    /**
-     * @param timetable The timetable being edited. Any course being edited should already be present in the session.
-     */
-    void setTimetable(Timetable timetable);
-
-    void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor);
 }

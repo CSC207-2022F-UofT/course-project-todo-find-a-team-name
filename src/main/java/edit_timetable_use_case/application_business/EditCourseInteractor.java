@@ -71,17 +71,14 @@ public class EditCourseInteractor implements EditCourseInputBoundary, Flow.Subsc
         presenter.prepareView(response);
     }
 
-    @Override
     public void setSession(Session session) {
         this.session = session;
     }
 
-    @Override
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
     }
 
-    @Override
     public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor){
         this.retrieveInteractor = retrieveInteractor;
     }

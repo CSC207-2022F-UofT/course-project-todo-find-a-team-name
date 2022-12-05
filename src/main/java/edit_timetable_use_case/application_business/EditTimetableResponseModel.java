@@ -24,7 +24,6 @@ public class EditTimetableResponseModel {
         return courseCode;
     }
 
-
     public TimetableModel getUpdatedTimetable() {
         return updatedTimetable;
     }

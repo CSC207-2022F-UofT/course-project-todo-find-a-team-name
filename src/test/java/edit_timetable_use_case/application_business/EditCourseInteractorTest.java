@@ -7,8 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
  */
 class EditCourseInteractorTest {
     private Timetable t;
-    private EditCourseInputBoundary interactor;
+    private EditCourseInteractor interactor;
     private Section s1;
     private Section s2;
     private Section s3;
@@ -46,12 +45,14 @@ class EditCourseInteractorTest {
             Session s = new Session("F");
             s.addCourse(new CalendarCourse("", calendarSections, "F", "CSC207", "1"));
 
-            EditCourseOutputBoundary presenter = new EditCoursePresenter();
+            EditCoursePresenter presenter = new EditCoursePresenter();
             presenter.setView(new TestEditTimetableView());
             interactor = new EditCourseInteractor(presenter);
             interactor.setTimetable(t);
             interactor.setSession(s);
-            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(t, s);
+            RetrieveTimetableInteractor retrieveInteractor = new RetrieveTimetableInteractor();
+            retrieveInteractor.setSession(s);
+            retrieveInteractor.setTimetable(t);
             interactor.setRetrieveInteractor(retrieveInteractor);
         }
         catch (InvalidSectionsException ignored){}

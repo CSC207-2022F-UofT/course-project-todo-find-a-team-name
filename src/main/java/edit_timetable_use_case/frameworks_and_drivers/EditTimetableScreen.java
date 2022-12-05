@@ -14,7 +14,6 @@ import recommend_br_use_case.application_business.TargetTimeCourseComparatorFact
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import screens.SessionViewModel;
 
@@ -185,19 +184,21 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             session.addCourse(cc1);
             session.addCourse(cc2);
 
-            RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor(timetable, session);
+            RetrieveTimetableInteractor retrieveInteractor = new RetrieveTimetableInteractor();
+            retrieveInteractor.setTimetable(timetable);
+            retrieveInteractor.setSession(session);
 
             RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-            RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
+            RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
             removeInteractor.setTimetable(timetable);
             removeInteractor.setRetrieveInteractor(retrieveInteractor);
-            AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
-            AddCourseInputBoundary addInteractor = new AddCourseInteractor(addPresenter);
+            AddCoursePresenter addPresenter = new AddCoursePresenter();
+            AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
             addInteractor.setTimetable(timetable);
             addInteractor.setSession(session);
             addInteractor.setRetrieveInteractor(retrieveInteractor);
-            EditCourseOutputBoundary editPresenter = new EditCoursePresenter();
-            EditCourseInputBoundary editInteractor = new EditCourseInteractor(editPresenter);
+            EditCoursePresenter editPresenter = new EditCoursePresenter();
+            EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
             editInteractor.setTimetable(timetable);
             editInteractor.setSession(session);
             EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
@@ -388,9 +389,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         JOptionPane.showMessageDialog(frame, successMessage);
     }
 
-    /**
-     * @param recommendBRWindow sets the RecommendBRWindow that is used when the "Recommend BR" button is pressed.
-     */
     public void setBRWindow(RecommendBRWindow recommendBRWindow) {
         this.BRWindow = recommendBRWindow;
     }

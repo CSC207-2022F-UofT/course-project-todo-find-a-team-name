@@ -41,13 +41,13 @@ public class Main {
         RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
 
         RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-        RemoveCourseInputBoundary removeInteractor = new RemoveCourseInteractor(removePresenter);
+        RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
         removeInteractor.setRetrieveInteractor(retrieveInteractor);
-        AddCourseOutputBoundary addPresenter = new AddCoursePresenter();
-        AddCourseInputBoundary addInteractor = new AddCourseInteractor(addPresenter);
+        AddCoursePresenter addPresenter = new AddCoursePresenter();
+        AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
         addInteractor.setRetrieveInteractor(retrieveInteractor);
-        EditCourseOutputBoundary editPresenter = new EditCoursePresenter();
-        EditCourseInputBoundary editInteractor = new EditCourseInteractor(editPresenter);
+        EditCoursePresenter editPresenter = new EditCoursePresenter();
+        EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
         EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
         editInteractor.setRetrieveInteractor(retrieveInteractor);
         JPanel prevPanel = new JPanel();

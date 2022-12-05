@@ -4,7 +4,7 @@ import edit_timetable_use_case.application_business.EditTimetableResponseModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 
