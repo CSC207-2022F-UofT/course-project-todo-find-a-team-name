@@ -2,6 +2,7 @@ package entities;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * An entity representing a Section (e.g. LEC-0101, TUT-0201, PRA-0101) of a course.
@@ -105,6 +106,17 @@ public class Section {
 
         return code.equals(other.code) && instructorName.equals(other.instructorName)
                 && new HashSet<>(blocks).equals(new HashSet<>(other.blocks));
+    }
+
+    /**
+     * Returns a hash code value for this section.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this section.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, instructorName) + blocks.size();
     }
 
     /**
