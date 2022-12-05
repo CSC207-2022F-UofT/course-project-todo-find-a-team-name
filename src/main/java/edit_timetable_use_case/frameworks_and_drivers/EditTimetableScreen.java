@@ -1,27 +1,21 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
-import display_timetable_use_case.interface_adapters.*;
-import edit_timetable_use_case.application_business.*;
-import edit_timetable_use_case.interface_adapters.*;
-import entities.*;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import display_timetable_use_case.interface_adapters.TimetableView;
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import edit_timetable_use_case.application_business.NotInTimetableException;
+import edit_timetable_use_case.application_business.RemoveCourseFailedException;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.EditTimetableView;
+import entities.InvalidSectionsException;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import screens.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -83,152 +77,6 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(buttons);
-    }
-
-    public void initializeTimetable(){
-        displayTimetableController.displayTimetable();
-    }
-
-
-    /** A temporary method used to demonstrate RemoveCourse with minimal integration.
-     */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
-        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
-        RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter, courseComparatorFactory);
-        RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
-
-        java.util.List<TimetableViewCourseModel> courseData = new ArrayList<>();
-        java.util.List<TimetableViewSectionModel> sectionModels1 = new ArrayList<>();
-
-        java.util.List<TimetableViewBlockModel> blockModels1 = new ArrayList<>();
-        blockModels1.add(new TimetableViewBlockModel(0, 11, 12));
-        blockModels1.add(new TimetableViewBlockModel(4, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("LEC0101", blockModels1));
-
-        java.util.List<TimetableViewBlockModel> blockModels2 = new ArrayList<>();
-        blockModels2.add(new TimetableViewBlockModel(2, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("TUT0101", blockModels2));
-
-        courseData.add(new TimetableViewCourseModel("CSC236H1", sectionModels1));
-
-
-        java.util.List<TimetableViewSectionModel> sectionModels2 = new ArrayList<>();
-
-        java.util.List<TimetableViewBlockModel> blockModels3 = new ArrayList<>();
-        blockModels3.add(new TimetableViewBlockModel(1, 16, 17));
-        blockModels3.add(new TimetableViewBlockModel(4, 16, 17));
-        sectionModels2.add(new TimetableViewSectionModel("LEC0401", blockModels3));
-
-        List<TimetableViewBlockModel> blockModels4 = new ArrayList<>();
-        blockModels4.add(new TimetableViewBlockModel(0, 14, 16));
-        sectionModels2.add(new TimetableViewSectionModel("TUT0301", blockModels4));
-
-        //courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
-
-        TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
-        HashMap<String, TimetableViewCourseModel> calCourses = new HashMap<>();
-        calCourses.put("CSC207H1", new TimetableViewCourseModel("CSC207H1", sectionModels2));
-        calCourses.put("CSC236H1", new TimetableViewCourseModel("CSC236H1", sectionModels1));
-        SessionViewModel sessionViewModel = new SessionViewModel(calCourses, "");
-
-
-        Block block1 = new Block("MO", "11:00", "12:00", "");
-        Block block2 = new Block("FR", "11:00", "12:00", "");
-        List<Block> blocks1 = new ArrayList<>();
-        blocks1.add(block1);
-        blocks1.add(block2);
-
-        Block block3 = new Block("WE", "11:00", "12:00", "");
-        List<Block> blocks2 = new ArrayList<>();
-        blocks2.add(block3);
-
-        Block block4 = new Block("TU", "16:00", "17:00", "");
-        Block block5 = new Block("FR", "16:00", "17:00", "");
-        List<Block> blocks3 = new ArrayList<>();
-        blocks3.add(block4);
-        blocks3.add(block5);
-
-        Block block6 = new Block("MO", "14:00", "16:00", "");
-        List<Block> blocks4 = new ArrayList<>();
-        blocks4.add(block6);
-
-        Section s1 = new Section("LEC0101", "", blocks1);
-        Section s2 = new Section("TUT0101", "", blocks2);
-
-        Section s3 = new Section("LEC0401", "", blocks3);
-        Section s4 = new Section("TUT0301", "", blocks4);
-
-        List<Section> sections1 = new ArrayList<>();
-        sections1.add(s1);
-        sections1.add(s2);
-        List<Section> sections2 = new ArrayList<>();
-        sections2.add(s3);
-        sections2.add(s4);
-
-        try {
-            TimetableCourse c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
-            TimetableCourse c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
-
-            ArrayList<TimetableCourse> courses = new ArrayList<>();
-            courses.add(c1);
-            //courses.add(c2);
-            Timetable timetable = new Timetable(courses, "F");
-
-            CalendarCourse cc1 = new CalendarCourse("some title", sections1, "F", "CSC236H1", "");
-            CalendarCourse cc2 = new CalendarCourse("some other title", sections2, "F", "CSC207H1", "");
-
-            Session session = new Session("F");
-            session.addCourse(cc1);
-            session.addCourse(cc2);
-
-            RetrieveTimetableInteractor retrieveInteractor = new RetrieveTimetableInteractor();
-            retrieveInteractor.setTimetable(timetable);
-            retrieveInteractor.setSession(session);
-
-            RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-            RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
-            removeInteractor.setTimetable(timetable);
-            removeInteractor.setRetrieveInteractor(retrieveInteractor);
-            AddCoursePresenter addPresenter = new AddCoursePresenter();
-            AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
-            addInteractor.setTimetable(timetable);
-            addInteractor.setSession(session);
-            addInteractor.setRetrieveInteractor(retrieveInteractor);
-            EditCoursePresenter editPresenter = new EditCoursePresenter();
-            EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
-            editInteractor.setTimetable(timetable);
-            editInteractor.setSession(session);
-            EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
-            editInteractor.setRetrieveInteractor(retrieveInteractor);
-            JPanel prevPanel = new JPanel();
-            DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
-            DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-            EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
-            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, BRcontroller, controller);
-            BRpresenter.setView(recommendBRWindow);
-            screen.setBRWindow(recommendBRWindow);
-            screen.updateTimetable(timetableViewModel);
-            screen.updateSession(sessionViewModel);
-            removePresenter.setView(screen);
-            addPresenter.setView(screen);
-            editPresenter.setView(screen);
-            displayPresenter.setView(screen);
-            /* The line below must run after displayPresenter's view has been set to screen.*/
-            screen.initializeTimetable();
-            frame.add(screen);
-            screen.setVisible(true);
-
-
-        } catch (InvalidSectionsException e) {
-            System.out.println("InvalidSectionsException thrown.");
-        }
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
     /** This method removes a course as indicated by the user pressing the "Remove [Course]" button, or displays

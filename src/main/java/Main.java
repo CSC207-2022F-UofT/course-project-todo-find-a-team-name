@@ -61,7 +61,7 @@ public class Main {
         editPresenter.setView(screen);
         displayPresenter.setView(screen);
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        screen.initializeTimetable();
+        screen.updateTimetable();
         frame.add(screen);
     }
 
