@@ -12,9 +12,8 @@ import retrieve_timetable_use_case.TimetableModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Flow;
 
-public class TimeTableMatchInteractor implements TimetableMatchInputBoundary, Flow.Subscriber<HashMap<OverlapInputDialogDataKeys, Object>> {
+public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
     /**
      * A use case interactor responsible for finding the best overlapping TimeTable for one 'main' TimeTable, from
      * a list of them.
@@ -24,22 +23,18 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary, Fl
      * - Possibly trying to prioritize ones where more hours maximize more constraints. LATER ON.
      * (Weight can simply be determined by time * (proportion of satisfied constraints).
      */
-    private ArrayList<TimetableModel> timetables;
-    private TimetableModel mainTable;
 
     private final SectionHoursInputBoundary sectionHoursCalculator;
 
-    TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator) {
+    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator) {
         // Initialise what we know at compile-time. Timetables and the mainTable must be passed in later.
-        this.timetables = null;
-        this.mainTable = null;
         this.sectionHoursCalculator = sectionHoursCalculator;
     }
 
     /**
      * Return the overlap value of a timeTable with the main one.
      */
-    private Double calculateTimetableOverlap(TimetableModel candidate) {
+    private Double calculateTimetableOverlap(TimetableModel mainTable, TimetableModel candidate) {
         List<CourseModel> mainCourses = mainTable.getCourses();
         List<CourseModel> candidateCourses = candidate.getCourses();
 
@@ -47,9 +42,9 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary, Fl
         // Although this is terribly inefficient, note that we have at most, like... 10 courses. Of 10 sections each.
         // Section's don't store a reference to their parent course, so this is actually necessary D:
         // Compare every section of 2 courses...
-        for (CourseModel mainCourse  : mainCourses){
-            for (CourseModel candidateCourse : candidateCourses){
-                for (SectionModel mainSection: mainCourse.getSections()){
+        for (CourseModel mainCourse : mainCourses) {
+            for (CourseModel candidateCourse : candidateCourses) {
+                for (SectionModel mainSection : mainCourse.getSections()) {
                     for (SectionModel candidateSection: candidateCourse.getSections()){
                         if (mainSection == candidateSection){
                             // If they're in the same section in the same course, the two people can go together :).
@@ -72,56 +67,34 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary, Fl
         return totalOverlapWeightedHrs;
     }
 
-    /** Return a new HashMap connecting Timetables to their Overlap value.
+    /**
+     * Return a new HashMap connecting Timetables to their Overlap value.
      */
-    public HashMap<TimetableModel, Double> calculateTimetableOverlaps(){
+    public HashMap<TimetableModel, Double> calculateTimetableOverlaps(TimetableModel mainTimetable,
+                                                                      List<TimetableModel> timetables) {
         HashMap<TimetableModel, Double> timetableOverlapMap = new HashMap<>();
-        for (TimetableModel timetable : timetables){
-            timetableOverlapMap.put(timetable, calculateTimetableOverlap(timetable));
+        for (TimetableModel timetable : timetables) {
+            timetableOverlapMap.put(timetable, calculateTimetableOverlap(mainTimetable, timetable));
         }
         return timetableOverlapMap;
     }
 
-    /** Return ONLY the best overlapping timetable with the main one. Order is arbitrary if there is a tie. For multiple
-     * outputs, use calculateTimetableOverlaps and just take the first few. **/
-    public TimetableModel determineBestMatchingTimetable(){
+    /**
+     * Return ONLY the best overlapping timetable with the main one. Order is arbitrary if there is a tie. For multiple
+     * outputs, use calculateTimetableOverlaps and just take the first few.
+     **/
+    public TimetableModel determineBestMatchingTimetable(TimetableModel mainTimetable,
+                                                         List<TimetableModel> timetables) {
         TimetableModel bestTimetable = null;
         Double bestScore = -1.0;
         for (TimetableModel timetable : timetables) {
-            Double calculatedOverlap = calculateTimetableOverlap(timetable);
+            Double calculatedOverlap = calculateTimetableOverlap(mainTimetable, timetable);
             if (calculatedOverlap > bestScore) {
                 bestTimetable = timetable;
-                bestScore = calculateTimetableOverlap(timetable);
+                bestScore = calculateTimetableOverlap(mainTimetable, timetable);
             }
         }
         return bestTimetable;
     }
-
-
-    /**
-     * Set up to receive data from a subscription. Note that we expect 1 data bundle per InputDialog.
-     **/
-    @Override
-    public void onSubscribe(Flow.Subscription subscription) {
-        subscription.request(1);
-
-    }
-
-    @Override
-    public void onNext(HashMap<OverlapInputDialogDataKeys, Object> items) {
-        this.mainTable = (TimetableModel) items.get(OverlapInputDialogDataKeys.mainTable);
-        this.timetables = (ArrayList<TimetableModel>) items.get(OverlapInputDialogDataKeys.candidateTimetables);
-    }
-
-    @Override
-    public void onError(Throwable throwable) {
-        System.out.println("Hey, we got an error from the OverlapMaximization's associated publisher. Check it out.");
-    }
-
-    @Override
-    public void onComplete() {
-        System.out.println("Completion called!");
-    }
-
 
 }

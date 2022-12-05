@@ -1,6 +1,5 @@
 package overlap_crap_fix_locations_later.tests;
 
-import entities.Constraint;
 import org.junit.Test;
 import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
 import overlap_crap_fix_locations_later.TimeTableMatchInteractor;
@@ -9,7 +8,6 @@ import retrieve_timetable_use_case.CourseModel;
 import retrieve_timetable_use_case.SectionModel;
 import retrieve_timetable_use_case.TimetableModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,80 +35,60 @@ public class TestTimeTableMatchInteractor {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse, testCourse2));
 
-        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
-                new ArrayList<TimetableModel>(List.of(testTimetable2)),
-                // Note the main timetable:
-                testTimetable,
-                false,
-                new ArrayList<Constraint>(),
-                new CalculateSectionHoursInteractor());
+        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(new CalculateSectionHoursInteractor());
 
         HashMap<TimetableModel, Double> expected = new HashMap<TimetableModel, Double>(1);
         expected.put(testTimetable2, 4.00);
 
-        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps();
+        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps(testTimetable,
+                List.of(testTimetable2));
         assert actual.equals(expected);
     }
 
     /** Test calculateTimetableOverlaps with a basic (if small) case. **/
     @Test
-    public void test_calculate_timetable_overlap_basic(){
+    public void test_calculate_timetable_overlap_basic() {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse2, testCourse3));
 
-        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
-                new ArrayList<TimetableModel>(List.of(testTimetable2)),
-                // Note the main timetable:
-                testTimetable,
-                false,
-                new ArrayList<Constraint>(),
-                new CalculateSectionHoursInteractor());
+        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(new CalculateSectionHoursInteractor());
 
         HashMap<TimetableModel, Double> expected = new HashMap<TimetableModel, Double>(1);
         expected.put(testTimetable2, 2.00);
 
-        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps();
+        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps(testTimetable,
+                List.of(testTimetable2));
         assert actual.equals(expected);
     }
 
     /** Test the interactor's calculateOverlaps functionality with 0 case -- two entirely different timetables. **/
     @Test
-    public void test_calculate_timetable_overlap_zero(){
+    public void test_calculate_timetable_overlap_zero() {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse3));
 
-        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
-                new ArrayList<TimetableModel>(List.of(testTimetable2)),
-                // Note the main timetable:
-                testTimetable,
-                false,
-                new ArrayList<Constraint>(),
-                new CalculateSectionHoursInteractor());
+        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(new CalculateSectionHoursInteractor());
 
         HashMap<TimetableModel, Double> expected = new HashMap<TimetableModel, Double>(1);
         expected.put(testTimetable2, 0.00);
 
-        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps();
+        HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps(testTimetable,
+                List.of(testTimetable2));
         assert actual.equals(expected);
     }
 
     /** Test determineBestMatchingTimetable with an identical timetable -- it should give that one... **/
     @Test
-    public void test_bestMatchingTimetable_identical(){
+    public void test_bestMatchingTimetable_identical() {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable3 = new TimetableModel(List.of(testCourse2, testCourse3));
 
-        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
-                new ArrayList<TimetableModel>(List.of(testTimetable2, testTimetable3)),
-                // Note the main timetable:
-                testTimetable,
-                false,
-                new ArrayList<Constraint>(),
-                new CalculateSectionHoursInteractor());
+        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(new CalculateSectionHoursInteractor());
 
         TimetableModel expected = testTimetable2;
-        TimetableModel actual = testInteractor.determineBestMatchingTimetable();
+        TimetableModel actual = testInteractor.determineBestMatchingTimetable(testTimetable,
+                List.of(testTimetable2, testTimetable3));
         assert actual.equals(expected);
     }
 
@@ -119,21 +97,16 @@ public class TestTimeTableMatchInteractor {
      * Note that if timetables tie, the order isn't specified, so
      * refer to the above calculateTimetableOverlaps() test for that one.**/
     @Test
-    public void test_bestMatchingTimetable_marginal(){
+    public void test_bestMatchingTimetable_marginal() {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse2, testCourse3));
         TimetableModel testTimetable3 = new TimetableModel(List.of(testCourse3));
 
-        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
-                new ArrayList<TimetableModel>(List.of(testTimetable2, testTimetable3)),
-                // Note the main timetable:
-                testTimetable,
-                false,
-                new ArrayList<Constraint>(),
-                new CalculateSectionHoursInteractor());
+        TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(new CalculateSectionHoursInteractor());
 
         TimetableModel expected = testTimetable2;
-        TimetableModel actual = testInteractor.determineBestMatchingTimetable();
+        TimetableModel actual = testInteractor.determineBestMatchingTimetable(testTimetable,
+                List.of(testTimetable2, testTimetable3));
         assert actual.equals(expected);
     }
 }

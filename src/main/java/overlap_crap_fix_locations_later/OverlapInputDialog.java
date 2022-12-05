@@ -21,10 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Flow;
 
-enum OverlapInputDialogDataKeys {
-    mainTable, candidateTimetables, overlappingTimetable
-}
-
 public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -47,9 +43,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      * Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
      * and interactor and such.
      */
-    public OverlapInputDialog(ArrayList<Timetable> timeTableOptions, SectionFilterController sectionFilterController,
-                              OverlapMaxInputBoundary overlapMaxController) {
-        this.overlapMaxController = overlapMaxController;
+    public OverlapInputDialog(ArrayList<Timetable> timeTableOptions, SectionFilterController sectionFilterController) {
+        // This will be initialized later, when the controller subscribes to this InputDialog.
+        this.overlapMaxController = null;
         this.sectionFilterController = sectionFilterController;
         this.timeTableOptions = timeTableOptions;
         for (int i = 0; i < timeTableOptions.size(); i++) {
@@ -67,7 +63,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      * Method through which the Dialog stores the entered main timeTable and begins receiving a set of constraints.
      **/
     private void finishDataEntry() {
-
 
         callInHans();
 
@@ -88,6 +83,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         dataBundle.put(OverlapInputDialogDataKeys.mainTable, this.selectedMainTimetable);
         dataBundle.put(OverlapInputDialogDataKeys.candidateTimetables, candidateTimetables);
 
+        // Pass our makeshift bundles to the subscribers.
         for (Flow.Subscriber subscriber : dataReceivers) {
             subscriber.onNext(dataBundle);
             // This Dialog should only create data one time. So destroy the thing after.
@@ -147,10 +143,12 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
 
             SectionHoursInputBoundary sectionHoursCalculator = new CalculateSectionHoursInteractor();
             TimetableMatchInputBoundary timeTableMatcher = new TimeTableMatchInteractor(sectionHoursCalculator);
-            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timeTableMatcher);
 
-            OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList, sectionFilterController1,
-                    overlapMaxController);
+            OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList, sectionFilterController1);
+
+            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timeTableMatcher,
+                    dialog);
+
             dialog.pack();
             dialog.setVisible(true);
 
