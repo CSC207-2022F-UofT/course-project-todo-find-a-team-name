@@ -1,8 +1,8 @@
 package timetables_sort_use_case.application_business;
 
 import entities.Timetable;
-import retrieve_timetable_use_case.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.concurrent.Flow;
 
@@ -24,12 +24,13 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
 
     @Override
     public void sort(TimetablesSortRequestModel request) {
-        System.out.println("interactor");
         TimetableModel[] timetablesModel = new TimetableModel[timetables.length];
         for(int i = 0; i < timetables.length; i++) {
+            retrieveInteractor.setTimetable(timetables[i]);
             timetablesModel[i] = retrieveInteractor.retrieveTimetable();
         }
          TimetablesSortResponseModel response = new TimetablesSortResponseModel(timetablesModel);
+        presenter.prepareView(response);
     }
 
     /**

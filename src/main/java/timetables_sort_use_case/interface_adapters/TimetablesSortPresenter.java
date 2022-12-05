@@ -1,7 +1,7 @@
 package timetables_sort_use_case.interface_adapters;
 
-import retrieve_timetable_use_case.TimetableModel;
-import retrieve_timetable_use_case.TimetableModelConverter;
+import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import screens.TimetableViewModel;
 import timetables_sort_use_case.application_business.TimetablesSortOutputBoundary;
 import timetables_sort_use_case.application_business.TimetablesSortResponseModel;
@@ -32,17 +32,14 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
             timetablesViewModel[i] = timetableViewModel;
         }
         view.updateTimetables(timetablesViewModel);
-        System.out.println("prepare");
     }
 
     /**
      *
-     * @param view the presenter's new view.
-     *             Changes the view modified by prepareView
+     * @param view the AllTimetablesView that the presenter updates
      */
     @Override
     public void setView(AllTimetablesView view) {
         this.view = view;
-        System.out.println("set");
     }
 }

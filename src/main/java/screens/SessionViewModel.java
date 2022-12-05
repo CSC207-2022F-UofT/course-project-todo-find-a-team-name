@@ -1,7 +1,5 @@
 package screens;
 
-import entities.CalendarCourse;
-
 import java.util.HashMap;
 
 public class SessionViewModel {

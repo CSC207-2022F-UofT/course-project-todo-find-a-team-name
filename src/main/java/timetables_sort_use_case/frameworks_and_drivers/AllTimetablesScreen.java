@@ -1,7 +1,12 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
+import entities.*;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import screens.*;
+import timetables_sort_use_case.application_business.TimetablesSortInteractor;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
+import timetables_sort_use_case.interface_adapters.TimetablesSortController;
+import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +19,11 @@ import java.util.List;
 public class AllTimetablesScreen extends JPanel implements ActionListener, AllTimetablesView {
 
     private JFrame frame;
-    private TimetableViewModel[] timetables;
+    private TimetableViewModel[] timetableViewModels;
     private TimetableView[] ttViews;
-    public AllTimetablesScreen(JFrame frame, TimetableViewModel[] timetables) {
+    public AllTimetablesScreen(JFrame frame, TimetableViewModel[] timetableViewModels) {
         this.frame = frame;
-        this.timetables = timetables;
+        this.timetableViewModels = timetableViewModels;
         this.ttViews = null;
         this.setLayout(new BorderLayout());
         JPanel top = new JPanel();
@@ -33,8 +38,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         panel.setLayout(new GridLayout(0, 2, 10, 10));
         panel.setSize(500, 500);
 
-        for (int i = 0; i < timetables.length; i++) {
-            TimetableView timetable = new TimetableView(600, 350, timetables[i]);
+        for (int i = 0; i < timetableViewModels.length; i++) {
+            TimetableView timetable = new TimetableView(600, 350, timetableViewModels[i]);
             JButton btn = new JButton("Timetable " + i);
             btn.addActionListener(this);
             JPanel cont = new JPanel();
@@ -58,18 +63,19 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         System.out.println("Clicked " + e.getActionCommand());
 
         if (e.getActionCommand().equals("sort")) {
+            this.setVisible(false);
 
         } else if (e.getActionCommand().equals("mainMenu")) {
 
         } else {
             int i = e.getActionCommand().length() - 1;
-            TimetableViewModel timetable = this.timetables[i];
+            TimetableViewModel timetable = this.timetableViewModels[i];
 
         }
     }
 
-    public void updateTimetables(TimetableViewModel[] timetables) {
-        this.timetables = timetables;
+    public void updateTimetables(TimetableViewModel[] timetableViewModels) {
+        this.timetableViewModels = timetableViewModels;
     }
     /**
      * THIS IS FOR TESTING PURPOSES ONLY
@@ -104,17 +110,81 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
 
         TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
-        TimetableViewModel[] timetables = new TimetableViewModel[10];
+        TimetableViewModel[] timetableViewModels = new TimetableViewModel[10];
 
         for (int i = 0; i < 10; i++) {
-            timetables[i] = timetableViewModel;
+            timetableViewModels[i] = timetableViewModel;
         }
 
+        Block block1 = new Block("MO", "11:00", "12:00", "");
+        Block block2 = new Block("FR", "11:00", "12:00", "");
+        List<Block> blocks1 = new ArrayList<>();
+        blocks1.add(block1);
+        blocks1.add(block2);
 
+        Block block3 = new Block("WE", "11:00", "12:00", "");
+        List<Block> blocks2 = new ArrayList<>();
+        blocks2.add(block3);
+
+        Block block4 = new Block("TU", "16:00", "17:00", "");
+        Block block5 = new Block("FR", "16:00", "17:00", "");
+        List<Block> blocks3 = new ArrayList<>();
+        blocks3.add(block4);
+        blocks3.add(block5);
+
+        Block block6 = new Block("MO", "14:00", "16:00", "");
+        List<Block> blocks4 = new ArrayList<>();
+        blocks4.add(block6);
+
+        Section s1 = new Section("LEC0101", "", blocks1);
+        Section s2 = new Section("TUT0101", "", blocks2);
+
+        Section s3 = new Section("LEC0401", "", blocks3);
+        Section s4 = new Section("TUT0301", "", blocks4);
+
+        List<Section> sections1 = new ArrayList<>();
+        sections1.add(s1);
+        sections1.add(s2);
+        List<Section> sections2 = new ArrayList<>();
+        sections2.add(s3);
+        sections2.add(s4);
+
+        TimetableCourse c1 = null;
+        try {
+            c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+        TimetableCourse c2 = null;
+        try {
+            c2 = new TimetableCourse("some other title", sections2, "", "CSC209H1", "");
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+
+        ArrayList<TimetableCourse> courses = new ArrayList<>();
+        courses.add(c1);
+        courses.add(c2);
+        Timetable timetable = new Timetable(courses, "F");
+
+        Timetable[] timetables = new Timetable[10];
+
+        for (int i = 0; i < 10; i++) {
+            timetables[i] = timetable;
+        }
 
         JFrame frame = new JFrame();
-        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, timetables);
-        frame.add(allTimetablesScreen);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        TimetablesSortPresenter presenter = new TimetablesSortPresenter();
+        TimetablesSortInteractor interactor = new TimetablesSortInteractor(presenter);
+        TimetablesSortController controller = new TimetablesSortController(interactor);
+        interactor.setTimetables(timetables);
+        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+        interactor.setRetrieveInteractor(retrieveTimetableInteractor);
+        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, timetableViewModels);
+        TimetablesSortMenu screen = new TimetablesSortMenu(frame, controller, timetablesScreen);
+        presenter.setView(timetablesScreen);
+        frame.add(screen);
         frame.pack();
         frame.setVisible(true);
     }
