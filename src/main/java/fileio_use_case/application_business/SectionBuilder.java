@@ -1,4 +1,4 @@
-package fileio_use_case;
+package fileio_use_case.application_business;
 
 import entities.Block;
 import entities.Section;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 /** Builds Section **/
 public class SectionBuilder {
-
     private final String code;
     private final String instructorName;
     private final List<Block> blocks;

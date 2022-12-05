@@ -1,12 +1,12 @@
-package fileio_use_case;
+package fileio_use_case.application_business.session_specific_classes;
 
 import entities.CalendarCourse;
 import entities.Session;
 
 import java.util.HashMap;
 /** Builds Session **/
-public class SessionBuilderInteractor {
-    public SessionBuilderInteractor() {}
+public class SessionBuilder {
+    public SessionBuilder() {}
     /**
      * Returns a session if given the HashMap representation of all courses and sessionType
      * @param allCourses - contains all sessions, String - session type (Fall (F), Winter (S))
