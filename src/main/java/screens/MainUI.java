@@ -34,16 +34,16 @@ import java.util.ArrayList;
  * Class used to display the main menu of this program that allow user to import files and navigates user to
  * other screens.
  * Instance Attributes:
- *      - filePathSession: JLabel representing the filepath of the session data that user imports.
+ *      - fallSessionFilePath: JLabel representing the filepath of the session data that user imports.
  *      If user have not selected the filepath, it's text becomes "Choose the file..."
  *      - filePathTimetable: filepath of the timetable data user imports
  *      If user have not selected the filepath, it's text becomes "Choose the file..."
  */
 public class MainUI extends JPanel implements ActionListener {
 
-    private JLabel filePathSession;
-    private JLabel filePathTimetable;
-    private JLabel filePathSession2;
+    private JLabel fallSessionFilePath;
+    private JLabel timetableFilePath;
+    private JLabel winterSessionFilePath;
     public SessionFileController sessionController;
 
     private final ConstraintsInputScreen constraintsInputScreen;
@@ -109,9 +109,9 @@ public class MainUI extends JPanel implements ActionListener {
         JPanel importTimetablePanel = new JPanel();
         JButton importTimetable = new JButton("Import timetable");
         importTimetable.addActionListener(this);
-        filePathTimetable = new JLabel("Choose the file...");
+        timetableFilePath = new JLabel("Choose the file...");
         importTimetablePanel.add(importTimetable);
-        importTimetablePanel.add(filePathTimetable);
+        importTimetablePanel.add(timetableFilePath);
 
         timetablePanel.add(importTimetablePanel);
 
@@ -129,7 +129,7 @@ public class MainUI extends JPanel implements ActionListener {
 
     /**
      * Create and returns panel that allow user to import session.
-     * filePathSession instance attribute is also updated to the JLabel representing the current
+     * fallSessionFilePath instance attribute is also updated to the JLabel representing the current
      * file path imported for session.
      *
      * @return panel that allow user to import session
@@ -149,16 +149,16 @@ public class MainUI extends JPanel implements ActionListener {
         // Import fall session button
         JButton importFallSession = new JButton("Import fall session");
         importFallSession.addActionListener(this);
-        filePathSession = new JLabel("Choose the file... ");
+        fallSessionFilePath = new JLabel("Choose the file... ");
         importFallSessionPanel.add(importFallSession);
-        importFallSessionPanel.add(filePathSession);
+        importFallSessionPanel.add(fallSessionFilePath);
 
         // Import winter session button
         JButton importWinterSession = new JButton("Import winter session");
         importWinterSession.addActionListener(this);
-        filePathSession2 = new JLabel("Choose the file... ");
+        winterSessionFilePath = new JLabel("Choose the file... ");
         importWinterSessionPanel.add(importWinterSession);
-        importWinterSessionPanel.add(filePathSession2);
+        importWinterSessionPanel.add(winterSessionFilePath);
 
         importSessionPanel.add(importFallSessionPanel);
         importSessionPanel.add(importWinterSessionPanel);
@@ -193,7 +193,7 @@ public class MainUI extends JPanel implements ActionListener {
             case "Import timetable": {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
-                    filePathTimetable.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                    timetableFilePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
                 break;
             }
@@ -201,7 +201,7 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    filePathSession.setText(importedSessionFilePath);
+                    fallSessionFilePath.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
                         sessionController.createSessionFile(importedSessionFilePath, "F");
@@ -215,11 +215,12 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    filePathSession2.setText(importedSessionFilePath);
+                    winterSessionFilePath.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
                         sessionController.createSessionFile(importedSessionFilePath, "S");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        System.out.println("hello");
                         throw new RuntimeException(ex);
                     }
                 }
