@@ -36,7 +36,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     JButton help = new JButton("help");
 
 
-    ConstraintsInputScreen(SectionFilterController controller) {
+    public ConstraintsInputScreen(SectionFilterController controller) {
         JRadioButton radioButton = new JRadioButton("MO");
         JRadioButton radioButton1 = new JRadioButton("TU");
         JRadioButton radioButton2 = new JRadioButton("WE");
