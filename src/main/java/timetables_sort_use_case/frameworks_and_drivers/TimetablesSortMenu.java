@@ -109,7 +109,8 @@ public class TimetablesSortMenu extends JPanel implements ActionListener {
                         allTimetablesScreen.sort(timeButton.getText(), breakButton.getText());
                         this.setVisible(false);
                         allTimetablesScreen.setVisible(true);
-                        this.frame.pack();
+//                        frame.pack();
+                        this.frame.setSize(1229, 788);
                     }
                 }
             }

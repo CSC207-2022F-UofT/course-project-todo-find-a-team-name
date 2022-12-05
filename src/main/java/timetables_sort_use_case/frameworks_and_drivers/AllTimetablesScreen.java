@@ -99,9 +99,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             }
         }
         for (int i = 0; i < ttViews.length; i++) {
-            ttViews[i].setVisible(false);
             ttViews[i].updateViewModel(timetableViewModels[i]);
-            ttViews[i].setVisible(true);
         }
     }
 
@@ -218,6 +216,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         presenter.setView(timetablesScreen);
         frame.add(timetablesScreen);
         frame.pack();
+        System.out.println(frame.getSize());
         frame.setVisible(true);
     }
 }
