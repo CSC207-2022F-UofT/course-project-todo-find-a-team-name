@@ -1,4 +1,4 @@
-package fileio_use_case;
+package fileio_use_case.application_business.session_specific_classes;
 
 import entities.CalendarCourse;
 import entities.Section;
@@ -6,13 +6,13 @@ import entities.Section;
 import java.util.ArrayList;
 import java.util.List;
 /** Builds CalendarCourse **/
-public class CalendarCourseBuilderInteractor {
+public class CalendarCourseBuilder {
     protected String title;
     protected List<Section> sections;
     protected String courseSession;
     protected String courseCode;
     protected String breadth;
-    public CalendarCourseBuilderInteractor(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
+    public CalendarCourseBuilder(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
         this.title = title;
         this.sections = sections;
         this.courseSession = courseSession;
