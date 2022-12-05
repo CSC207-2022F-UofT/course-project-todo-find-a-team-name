@@ -82,11 +82,11 @@ public class MainUI extends JPanel implements ActionListener {
 
         // Importing Sessions
         JPanel importSessionPanel = new JPanel();
+        importSessionPanel.setLayout(new BoxLayout(importSessionPanel, BoxLayout.PAGE_AXIS));
         JPanel importFallSessionPanel = new JPanel();
         JPanel importWinterSessionPanel = new JPanel();
         // Creates border for each session panel
         TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
-        sessionBorder.setTitleJustification(TitledBorder.CENTER);
         importFallSessionPanel.setBorder(sessionBorder);
         importWinterSessionPanel.setBorder(sessionBorder);
         // Import fall session button
