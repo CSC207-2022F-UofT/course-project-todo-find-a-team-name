@@ -1,7 +1,6 @@
 package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
-import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
 import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
@@ -147,8 +146,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
                     dayArrayList.add(i);
                 }
             }
-            SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
-                    ((String)sessionBtn.getSelectedItem()),
+            sectionFilterController.filter(((String)sessionBtn.getSelectedItem()),
                     courseCodesTextField.getText(),
                     ((String) instructorBtn.getSelectedItem()),
                     ((String) roomBtn.getSelectedItem()),
@@ -160,8 +158,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
                     ((String) startTime.getSelectedItem()),
                     ((String) endTime.getSelectedItem())
             );
-            System.out.println("Enter: " + requestModel);
-            sectionFilterController.filter(requestModel);
         }
         if (e.getSource() == help){
             JDialog helpDialogue = new HelpInstructionScreen();

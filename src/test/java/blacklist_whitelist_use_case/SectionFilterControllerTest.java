@@ -2,7 +2,6 @@ package blacklist_whitelist_use_case;
 
 import blacklist_whitelist_use_case.application_business.SectionFilterInputBoundary;
 
-import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
@@ -53,8 +52,8 @@ class SectionFilterControllerTest {
             Assertions.assertEquals(expectedEndTime, requestModel.getEndTime());
             Assertions.assertEquals(expectedDays, requestModel.getDayConstraints());
         };
-        SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
-                "S",
+        sectionFilterController = new SectionFilterController(interactor);
+        sectionFilterController.filter("S",
                 "CSC207H1, CSC258H1, CSC236H1, MAT235H1",
                 "BLACKLIST",
                 "BLACKLIST",
@@ -64,9 +63,6 @@ class SectionFilterControllerTest {
                 "SS 990",
                 new ArrayList<>(Arrays.asList(0,1,2,3)),
                 "7:30",
-                "8:30"
-        );
-        sectionFilterController = new SectionFilterController(interactor);
-        sectionFilterController.filter(requestModel);
+                "8:30");
     }
 }
