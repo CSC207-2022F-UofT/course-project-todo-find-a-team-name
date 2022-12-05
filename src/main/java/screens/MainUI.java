@@ -196,7 +196,7 @@ public class MainUI extends JPanel implements ActionListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
                 courseComparatorFactory);
