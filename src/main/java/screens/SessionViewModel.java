@@ -1,5 +1,7 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+
 import java.util.HashMap;
 
 public class SessionViewModel {

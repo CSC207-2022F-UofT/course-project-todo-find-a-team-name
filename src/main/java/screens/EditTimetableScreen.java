@@ -1,9 +1,14 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.*;
 import edit_timetable_use_case.*;
 import entities.*;
-import recommend_br_use_case.IDummyTimetableGateway;
-import recommend_br_use_case.RecommendBRInteractor;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -61,10 +66,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
-
         RecommendBRPresenter BRpresenter = new RecommendBRPresenter(null);
-        RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter);
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor BRinteractor = new RecommendBRInteractor(BRpresenter, courseComparatorFactory);
         RecommendBRController BRcontroller = new RecommendBRController(BRinteractor);
 
         java.util.List<TimetableViewCourseModel> courseData = new ArrayList<>();
@@ -227,15 +231,16 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
      */
     @Override
     public void updateTimetable(TimetableViewModel timetable) {
-        if (ttView != null){
-            ttView.setVisible(false);
+        if (ttView == null){
+            ttView = new TimetableView(1280, 720, timetable);
+            this.add(ttView);
         }
         if (courseButtons != null){
             courseButtons.setVisible(false);
         }
 
-        ttView = new TimetableView(1280, 720, timetable);
-        this.add(ttView);
+        ttView.setVisible(false);
+        ttView.updateViewModel(timetable);
 
         courseButtons = new JPanel();
         for (TimetableViewCourseModel course : timetable.getCourseData()) {
