@@ -863,5 +863,199 @@
             }
         },
         "breadth": "1"
+    },
+    "BIO120H1-F-20229": {
+        "code": "BIO120H1",
+        "title": "Adaptation and Biodiversity",
+        "session": "F",
+        "sections": {
+            "LEC-0101": {
+                "section": "LEC-0101",
+                "blocks": {
+                    "MO-342897": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    },
+                    "WE-342898": {
+                        "day": "WE",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    }
+                },
+                "prof": "A Cutter"
+            },
+            "LEC-0201": {
+                "section": "LEC-0201",
+                "blocks": {
+                    "-": {
+                        "day": null,
+                        "startTime": null,
+                        "endTime": null,
+                        "room": null
+                    }
+                },
+                "prof": "A Cutter"
+            },
+            "LEC-2000": {
+                "section": "LEC-2000",
+                "blocks": {
+                    "MO-319359": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    },
+                    "WE-319360": {
+                        "day": "WE",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    }
+                },
+                "prof": "A Cutter"
+            },
+            "LEC-2002": {
+                "section": "LEC-2002",
+                "blocks": {
+                    "MO-348231": {
+                        "day": "MO",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    },
+                    "WE-348232": {
+                        "day": "WE",
+                        "startTime": "10:00",
+                        "endTime": "11:00",
+                        "room": "CH ---"
+                    }
+                },
+                "prof": "A Cutter"
+            },
+            "PRA-0101": {
+                "section": "PRA-0101",
+                "blocks": {
+                    "TU-346396": {
+                        "day": "TU",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0102": {
+                "section": "PRA-0102",
+                "blocks": {
+                    "TU-346397": {
+                        "day": "TU",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0201": {
+                "section": "PRA-0201",
+                "blocks": {
+                    "WE-346398": {
+                        "day": "WE",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0202": {
+                "section": "PRA-0202",
+                "blocks": {
+                    "WE-346399": {
+                        "day": "WE",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0301": {
+                "section": "PRA-0301",
+                "blocks": {
+                    "TH-346400": {
+                        "day": "TH",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0302": {
+                "section": "PRA-0302",
+                "blocks": {
+                    "TH-346401": {
+                        "day": "TH",
+                        "startTime": "13:30",
+                        "endTime": "16:30",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0401": {
+                "section": "PRA-0401",
+                "blocks": {
+                    "FR-346402": {
+                        "day": "FR",
+                        "startTime": "11:00",
+                        "endTime": "14:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-0402": {
+                "section": "PRA-0402",
+                "blocks": {
+                    "FR-346403": {
+                        "day": "FR",
+                        "startTime": "11:00",
+                        "endTime": "14:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-5101": {
+                "section": "PRA-5101",
+                "blocks": {
+                    "TH-346404": {
+                        "day": "TH",
+                        "startTime": "18:00",
+                        "endTime": "21:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            },
+            "PRA-5102": {
+                "section": "PRA-5102",
+                "blocks": {
+                    "TH-346405": {
+                        "day": "TH",
+                        "startTime": "18:00",
+                        "endTime": "21:00",
+                        "room": "Contact DEPT"
+                    }
+                },
+                "prof": ""
+            }
+        },
+        "breadth": "4"
     }
 }

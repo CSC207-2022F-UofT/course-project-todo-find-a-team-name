@@ -1,7 +1,6 @@
 package edit_timetable_use_case;
 
 import entities.InvalidSectionsException;
-import entities.Section;
 import entities.Timetable;
 import entities.TimetableCourse;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +21,9 @@ class RemoveCourseInteractorTest {
     @BeforeEach
     public void setUp(){
         try{
-            c = new TimetableCourse("", new ArrayList<Section>(),
+            c = new TimetableCourse("", new ArrayList<>(),
                     "", "EGX101", "");
-            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
+            ArrayList<TimetableCourse> courses = new ArrayList<>(List.of(c));
             t = new Timetable(courses, "F");
             RemoveCourseOutputBoundary presenter = new RemoveCoursePresenter();
             interactor = new RemoveCourseInteractor(presenter);
@@ -59,7 +58,7 @@ class RemoveCourseInteractorTest {
 
     @Test
     void removeFails(){
-        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<String>());
+        EditTimetableRequestModel request = new EditTimetableRequestModel("NAC300", new ArrayList<>());
         try{
             interactor.remove(request);
             fail("Interactor should have thrown RemoveCourseFailed exception.");
