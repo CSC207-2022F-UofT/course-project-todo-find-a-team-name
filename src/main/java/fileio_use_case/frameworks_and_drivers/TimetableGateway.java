@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -42,7 +41,7 @@ public class TimetableGateway implements TimetableGatewayInterface {
                     Map<String, Object> blocks = new HashMap<>();
                     Map<String, Object> blockInfo = new HashMap<>();
                     for (Block theBlockModel : theSectionModel.getBlocks()) {
-                        blocks.put("day", theBlockModel.getDay());
+                        blocks.put("day", String.valueOf(theBlockModel.getDay()));
                         blocks.put("startTime", String.valueOf(theBlockModel.getStartTime()));
                         blocks.put("endTime", String.valueOf(theBlockModel.getEndTime()));
                         blocks.put("room", theBlockModel.getRoom());
@@ -81,7 +80,7 @@ public class TimetableGateway implements TimetableGatewayInterface {
      * @param sessionType - a session type (Fall (F), Winter (S))
      * @return Timetable
      */
-    public Timetable readFromFile(String filePath, String sessionType) throws IOException, ParseException, org.json.simple.parser.ParseException, InvalidSectionsException {
+    public Timetable readFromFile(String filePath, String sessionType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException {
         ProgramFileReader aFileReader = new ProgramFileReader();
         aFileReader.parseString(Files.readString(Path.of(filePath)), "Timetable");
         HashMap<String, TimetableCourse> timetableCourseHashMap = aFileReader.returnTimetableCourseHashMap();

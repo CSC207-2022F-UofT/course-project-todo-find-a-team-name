@@ -4,6 +4,7 @@ import entities.InvalidSectionsException;
 import fileio_use_case.application_business.FileImportRequestModel;
 import fileio_use_case.application_business.session_specific_classes.SessionFileImportInputBoundary;
 import org.json.simple.parser.ParseException;
+import retrieve_timetable_use_case.SessionModel;
 
 import java.io.IOException;
 
@@ -23,11 +24,11 @@ public class SessionFileController {
      * to create fall and winter session files.
      * REPRESENTATION INVARIANT: file contains both fall and winter courses
      * @param filePath - File path to JSON file for session
+     * @return SessionModel
      */
-    public void createSessionFile(String filePath) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
+    public SessionModel createSessionFile(String filePath, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         FileImportRequestModel requestModel = new FileImportRequestModel(filePath);
-        this.interactor.readFromFile(requestModel, "F");
-        this.interactor.readFromFile(requestModel, "S");
+        return this.interactor.readFromFile(requestModel, sessionType);
     }
 
 }

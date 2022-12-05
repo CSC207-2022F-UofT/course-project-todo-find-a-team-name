@@ -17,8 +17,8 @@ import java.io.IOException;
 public class MainUI extends JPanel implements ActionListener {
 
     private final JLabel filePathSession;
+    private final JLabel filePathSession2;
     private final JLabel filePathTimetable;
-
     public SessionFileController sessionController;
 
     public MainUI(SessionFileController sessionController){
@@ -70,7 +70,6 @@ public class MainUI extends JPanel implements ActionListener {
         JButton generateTimetable = new JButton("Generate timetable");
         generateTimetable.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
-
         panel.add(Box.createVerticalStrut(50));
 
         panel.add(timetablePanel);
@@ -81,14 +80,30 @@ public class MainUI extends JPanel implements ActionListener {
 
         centerPanel.add(panel);
 
-
+        // Importing Sessions
         JPanel importSessionPanel = new JPanel();
-        JButton importSession = new JButton("Import session");
-        importSession.addActionListener(this);
+        JPanel importFallSessionPanel = new JPanel();
+        JPanel importWinterSessionPanel = new JPanel();
+        // Creates border for each session panel
+        TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
+        sessionBorder.setTitleJustification(TitledBorder.CENTER);
+        importFallSessionPanel.setBorder(sessionBorder);
+        importWinterSessionPanel.setBorder(sessionBorder);
+        // Import fall session button
+        JButton importFallSession = new JButton("Import fall session");
+        importFallSession.addActionListener(this);
+        filePathSession = new JLabel("Choose the file... ");
+        importFallSessionPanel.add(importFallSession);
+        importFallSessionPanel.add(filePathSession);
+        // Import winter session button
+        JButton importWinterSession = new JButton("Import winter session");
+        importWinterSession.addActionListener(this);
+        filePathSession2 = new JLabel("Choose the file... ");
+        importWinterSessionPanel.add(importWinterSession);
+        importWinterSessionPanel.add(filePathSession2);
 
-        filePathSession = new JLabel("Choose the file...");
-        importSessionPanel.add(importSession);
-        importSessionPanel.add(filePathSession);
+        importSessionPanel.add(importFallSessionPanel);
+        importSessionPanel.add(importWinterSessionPanel);
 
         add(centerPanel, BorderLayout.CENTER);
         add(importSessionPanel, BorderLayout.PAGE_END);
@@ -105,14 +120,28 @@ public class MainUI extends JPanel implements ActionListener {
                 }
                 break;
             }
-            case "Import session": {
+            case "Import fall session": {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     filePathSession.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
-                        sessionController.createSessionFile(importedSessionFilePath);
+                        sessionController.createSessionFile(importedSessionFilePath, "F");
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                break;
+            }
+            case "Import winter session": {
+                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
+                    String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    filePathSession2.setText(importedSessionFilePath);
+                    // Add SessionFileController
+                    try {
+                        sessionController.createSessionFile(importedSessionFilePath, "S");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
                     }
