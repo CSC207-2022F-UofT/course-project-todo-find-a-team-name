@@ -3,19 +3,17 @@ package feature_6;
 import entities.*;
 import entities.InvalidSectionsException;
 import fileio_use_case.frameworks_and_drivers.TimetableGateway;
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TimetableGatewayTest {
     /**
-     *
+     * Tests if timetableToFile writes a JSON file.
      */
     @Test
-    void testTimetableToFile() throws InvalidSectionsException, IOException, ParseException {
+    void testTimetableToFile() throws InvalidSectionsException {
         ArrayList<TimetableCourse> ashTimetableCourses = new ArrayList<>();
         // Timetable Course 1
         Block basicBlock = new Block("TU", "18:00", "20:00", "Castle Badr");
