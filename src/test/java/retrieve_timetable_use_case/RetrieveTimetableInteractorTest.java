@@ -2,19 +2,27 @@ package retrieve_timetable_use_case;
 
 import entities.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import retrieve_timetable_use_case.application_business.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * A suite of tests for the RetrieveTimetableInteractor.
+ */
 class RetrieveTimetableInteractorTest {
     private RetrieveTimetableInteractor interactor;
     private CourseModel courseModel;
     private SessionModel sessionModel;
     private TimetableModel timetableModel;
 
+    /**
+     * Creates a mock-up session and timetable with non-empty courses, sections and blocks, as well as
+     * equivalent Models.
+     */
     @BeforeEach
     void setUp() {
         BlockModel blockModel = new BlockModel(2, 14, 16, "AB106");
@@ -69,27 +77,39 @@ class RetrieveTimetableInteractorTest {
     void tearDown() {
     }
 
+    /**
+     * Asserts that the CourseModel object returned by the interactor is equivalent to the input TimetableCourse.
+     */
     @Test
     void retrieveTimetableCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
                 "", "EGG100", "");
-        assertEquals(courseModel, interactor.retrieveTimetableCourse(request));
+        Assertions.assertEquals(courseModel, interactor.retrieveTimetableCourse(request));
     }
 
+    /**
+     * Asserts that the CourseModel object returned by the interactor is equivalent to the input CalendarCourse.
+     */
     @Test
     void retrieveCalendarCourse() {
         RetrieveTimetableRequestModel request = new RetrieveTimetableRequestModel(
                 "", "EGG100", "");
-        assertEquals(courseModel, interactor.retrieveCalendarCourse(request));
+        Assertions.assertEquals(courseModel, interactor.retrieveCalendarCourse(request));
     }
 
+    /**
+     * Asserts that the SessionModel object returned by the interactor is equivalent to the input Session.
+     */
     @Test
     void retrieveSession() {
-        assertEquals(sessionModel, interactor.retrieveSession());
+        Assertions.assertEquals(sessionModel, interactor.retrieveSession());
     }
 
+    /**
+     * Asserts that the TimetableModel object returned by the interactor is equivalent to the input Timetable.
+     */
     @Test
     void retrieveTimetable() {
-        assertEquals(timetableModel, interactor.retrieveTimetable());
+        Assertions.assertEquals(timetableModel, interactor.retrieveTimetable());
     }
 }

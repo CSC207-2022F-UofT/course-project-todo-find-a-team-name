@@ -1,11 +1,11 @@
 package recommend_br_use_case.interface_adapters;
 
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
 import recommend_br_use_case.application_business.RecommendBROutputBoundary;
 import recommend_br_use_case.application_business.RecommendBRResponseModel;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRViewModel;
 
 import java.util.ArrayList;
@@ -19,12 +19,10 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
     IRecommendBRView view;
 
     /**
-     * Constructs RecommendBRPresenter given IRecommendBRView (view for recommend BR use case)
-     *
-     * @param view class used to display information
+     * Constructs RecommendBRPresenter with view set to null
      */
-    public RecommendBRPresenter(IRecommendBRView view){
-        this.view = view;
+    public RecommendBRPresenter(){
+        this.view = null;
     }
 
     /**

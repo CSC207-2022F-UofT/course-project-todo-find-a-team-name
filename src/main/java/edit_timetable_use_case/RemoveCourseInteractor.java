@@ -2,8 +2,8 @@ package edit_timetable_use_case;
 
 import entities.Session;
 import entities.Timetable;
-import retrieve_timetable_use_case.RetrieveTimetableInteractor;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 

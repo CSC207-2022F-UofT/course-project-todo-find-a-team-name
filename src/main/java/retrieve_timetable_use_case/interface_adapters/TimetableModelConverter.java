@@ -1,5 +1,6 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.interface_adapters;
 
+import retrieve_timetable_use_case.application_business.*;
 import screens.*;
 
 import java.util.ArrayList;

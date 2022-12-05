@@ -1,6 +1,8 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A data carrier class that doubles as a request and response model containing all information
@@ -39,6 +41,12 @@ public class SectionModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SectionModel that = (SectionModel) o;
-        return getCode().equals(that.getCode()) && getInstructor().equals(that.getInstructor()) && getBlocks().equals(that.getBlocks());
+        return getCode().equals(that.getCode()) && getInstructor().equals(that.getInstructor()) &&
+                new HashSet<>(getBlocks()).equals(new HashSet<>(that.getBlocks()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, instructor) + blocks.size();
     }
 }

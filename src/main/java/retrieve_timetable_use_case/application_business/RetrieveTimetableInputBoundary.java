@@ -1,4 +1,7 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
+
+import entities.Session;
+import entities.Timetable;
 
 /**
  * The input boundary used in the RetrieveTimetable use case.
@@ -12,5 +15,10 @@ public interface RetrieveTimetableInputBoundary {
     CourseModel retrieveCalendarCourse(RetrieveTimetableRequestModel requestModel);
 
     TimetableModel retrieveTimetable();
+
     SessionModel retrieveSession();
+
+    void setSession(Session session);
+
+    void setTimetable(Timetable timetable);
 }
