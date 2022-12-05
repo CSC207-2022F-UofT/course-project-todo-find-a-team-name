@@ -1,8 +1,8 @@
 package timetables_sort_use_case.interface_adapters;
 
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
-import screens.TimetableViewModel;
 import timetables_sort_use_case.application_business.TimetablesSortOutputBoundary;
 import timetables_sort_use_case.application_business.TimetablesSortResponseModel;
 

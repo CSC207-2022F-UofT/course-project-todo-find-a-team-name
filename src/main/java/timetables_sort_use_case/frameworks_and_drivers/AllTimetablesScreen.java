@@ -1,13 +1,13 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.interface_adapters.*;
+
 import entities.*;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
-import screens.*;
 import timetables_sort_use_case.application_business.TimetablesSortInteractor;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
 import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,12 +21,18 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     private JFrame frame;
     private TimetableViewModel[] timetableViewModels;
     private TimetableView[] ttViews;
-    private JPanel timetablesPanel;
-    public AllTimetablesScreen(JFrame frame, TimetableViewModel[] timetableViewModels) {
+    private final JPanel timetablesPanel;
+    private TimetablesSortMenu timetablesSortMenu;
+    private TimetablesSortController controller;
+    public AllTimetablesScreen(JFrame frame, TimetablesSortController controller) {
         this.frame = frame;
-        this.timetableViewModels = timetableViewModels;
+        this.controller = controller;
         this.ttViews = null;
         this.setLayout(new BorderLayout());
+        JPanel timetablesPanel = new JPanel();
+        this.timetablesPanel = timetablesPanel;
+        this.timetablesSortMenu = null;
+
         JPanel top = new JPanel();
         top.setSize(100, 100);
         JButton sort = new JButton("Sort");
@@ -35,23 +41,13 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         top.add(mainMenu);
         sort.addActionListener(this);
         mainMenu.addActionListener(this);
-        JPanel timetablesPanel = new JPanel();
+
         timetablesPanel.setLayout(new GridLayout(0, 2, 10, 10));
         timetablesPanel.setSize(500, 500);
-
-        for (int i = 0; i < timetableViewModels.length; i++) {
-            TimetableView timetable = new TimetableView(600, 350, timetableViewModels[i]);
-            JButton btn = new JButton("Timetable " + i);
-            btn.addActionListener(this);
-            JPanel container = new JPanel();
-            container.setLayout(new BorderLayout());
-            container.setSize(600, 400);
-            container.add(timetable, BorderLayout.CENTER);
-            container.add(btn, BorderLayout.NORTH);
-            timetablesPanel.add(container);
-        }
         JScrollPane scrollPane = new JScrollPane(timetablesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+
+
         this.add(top, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
     }
@@ -63,9 +59,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     public void actionPerformed(ActionEvent e) {
         System.out.println("Clicked " + e.getActionCommand());
 
-        if (e.getActionCommand().equals("sort")) {
-            this.setVisible(false);
-
+        if (e.getActionCommand().equals("Sort")) {
+            openTimetablesSortMenu();
         } else if (e.getActionCommand().equals("mainMenu")) {
 
         } else {
@@ -73,6 +68,18 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             TimetableViewModel timetable = this.timetableViewModels[i];
 
         }
+    }
+
+    public void openTimetablesSortMenu() {
+        if (timetablesSortMenu != null) {
+            timetablesSortMenu.setVisible(false);
+            frame.remove(timetablesSortMenu);
+        }
+        timetablesSortMenu = new TimetablesSortMenu(this.frame, this);
+        frame.add(timetablesSortMenu);
+        this.setVisible(false);
+        timetablesSortMenu.setVisible(true);
+        this.frame.pack();
     }
 
     public void updateTimetables(TimetableViewModel[] timetableViewModels) {
@@ -93,9 +100,15 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         }
         for (int i = 0; i < ttViews.length; i++) {
             ttViews[i].setVisible(false);
-            ttViews[i].updateView
+            ttViews[i].updateViewModel(timetableViewModels[i]);
+            ttViews[i].setVisible(true);
         }
     }
+
+    public void sort(String timebutton, String breakButton) {
+        controller.sort(timebutton, breakButton);
+    }
+
     /**
      * THIS IS FOR TESTING PURPOSES ONLY
      */
@@ -200,10 +213,10 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         interactor.setTimetables(timetables);
         RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
         interactor.setRetrieveInteractor(retrieveTimetableInteractor);
-        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, timetableViewModels);
-        TimetablesSortMenu screen = new TimetablesSortMenu(frame, controller, timetablesScreen);
+        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, controller);
+        timetablesScreen.updateTimetables(timetableViewModels);
         presenter.setView(timetablesScreen);
-        frame.add(screen);
+        frame.add(timetablesScreen);
         frame.pack();
         frame.setVisible(true);
     }
