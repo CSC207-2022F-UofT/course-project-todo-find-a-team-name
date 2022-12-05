@@ -149,42 +149,6 @@ public class RecommendBRCourseViewModel {
         this.title = title;
     }
 
-    /**
-     * Sets the breadth category of the course to the given argument
-     *
-     * @param brCategory new breadth category of the course
-     */
-    public void setBrCategory(String brCategory) {
-        this.brCategory = brCategory;
-    }
-
-    /**
-     * Sets the lecture code of the course to the given argument
-     *
-     * @param lectureCode new lecture code of the course
-     */
-    public void setLectureCode(String lectureCode) {
-        this.lectureCode = lectureCode;
-    }
-
-    /**
-     * Sets the tutorial code of the course to the given argument
-     *
-     * @param tutorialCode new tutorial code of the course
-     */
-    public void setTutorialCode(String tutorialCode) {
-        this.tutorialCode = tutorialCode;
-    }
-
-    /**
-     * Sets the practical code of the course to the given argument
-     *
-     * @param practicalCode new practical code of the course
-     */
-    public void setPracticalCode(String practicalCode) {
-        this.practicalCode = practicalCode;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof RecommendBRCourseViewModel)){
