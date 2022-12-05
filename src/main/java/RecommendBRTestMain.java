@@ -2,7 +2,6 @@ import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.EditTimetableController;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
-import recommend_br_use_case.IDummyTimetableGateway;
 import recommend_br_use_case.RecommendBRInteractor;
 import screens.*;
 
@@ -10,16 +9,14 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// This for testing purposes only during development
+// TODO: remove this class
 public class RecommendBRTestMain {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-
-        IDummyTimetableGateway timetableGateway = timetableId -> new Timetable(new ArrayList<>(), "F");
-
         RecommendBRPresenter presenter = new RecommendBRPresenter(null);
         RecommendBRInteractor interactor = new RecommendBRInteractor(presenter);
         RecommendBRController controller = new RecommendBRController(interactor);
-
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
@@ -33,19 +30,15 @@ public class RecommendBRTestMain {
         EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, controller, editTimetableController);
         presenter.setView(recommendBRWindow);
-
         EditTimetableScreen timetableView = new EditTimetableScreen(frame, editTimetableController);
         timetableView.setBRWindow(recommendBRWindow);
         removeCoursePresenter.setView(timetableView);
         addCoursePresenter.setView(timetableView);
-
-        JButton button = new JButton("Recommend BR");
-        button.addActionListener(e -> recommendBRWindow.showInputView());
+        addCourseInteractor.setSession(generateSession());
 
         frame.add(timetableView);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.add(button);
         frame.pack();
         frame.setVisible(true);
     }

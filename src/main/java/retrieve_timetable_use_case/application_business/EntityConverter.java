@@ -1,4 +1,4 @@
-package retrieve_timetable_use_case;
+package retrieve_timetable_use_case.application_business;
 
 import entities.Block;
 import entities.Course;
@@ -8,10 +8,14 @@ import entities.Session;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A class of static methods to be freely used by different interactors to convert from timetable
+ * and session entities to their corresponding model.
+ */
 public class EntityConverter {
 
     public static SessionModel generateSessionResponse(Session session){
-        HashMap<String, CourseModel> courses = new HashMap<String, CourseModel>();
+        HashMap<String, CourseModel> courses = new HashMap<>();
         for (String courseCode : session.getAllSessionCourses().keySet()){
             courses.put(courseCode, generateCourseResponse(session.getAllSessionCourses().get(courseCode)));
         }
@@ -19,7 +23,7 @@ public class EntityConverter {
     }
 
     public static CourseModel generateCourseResponse(Course course){
-        ArrayList<SectionModel> sections = new ArrayList<SectionModel>();
+        ArrayList<SectionModel> sections = new ArrayList<>();
 
         for (Section section : course.getSections()){
             sections.add(generateSectionResponse(section));
@@ -30,7 +34,7 @@ public class EntityConverter {
     }
 
     public static SectionModel generateSectionResponse(Section section){
-        ArrayList<BlockModel> blocks = new ArrayList<BlockModel>();
+        ArrayList<BlockModel> blocks = new ArrayList<>();
 
         for (Block block : section.getBlocks()){
             blocks.add(generateBlockResponse(block));
@@ -42,5 +46,4 @@ public class EntityConverter {
     public static BlockModel generateBlockResponse(Block block){
         return new BlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
-
 }
