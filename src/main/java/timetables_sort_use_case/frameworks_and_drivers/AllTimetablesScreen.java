@@ -21,6 +21,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     private JFrame frame;
     private TimetableViewModel[] timetableViewModels;
     private TimetableView[] ttViews;
+    private JPanel timetablesPanel;
     public AllTimetablesScreen(JFrame frame, TimetableViewModel[] timetableViewModels) {
         this.frame = frame;
         this.timetableViewModels = timetableViewModels;
@@ -34,22 +35,22 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         top.add(mainMenu);
         sort.addActionListener(this);
         mainMenu.addActionListener(this);
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 2, 10, 10));
-        panel.setSize(500, 500);
+        JPanel timetablesPanel = new JPanel();
+        timetablesPanel.setLayout(new GridLayout(0, 2, 10, 10));
+        timetablesPanel.setSize(500, 500);
 
         for (int i = 0; i < timetableViewModels.length; i++) {
             TimetableView timetable = new TimetableView(600, 350, timetableViewModels[i]);
             JButton btn = new JButton("Timetable " + i);
             btn.addActionListener(this);
-            JPanel cont = new JPanel();
-            cont.setLayout(new BorderLayout());
-            cont.setSize(600, 400);
-            cont.add(timetable, BorderLayout.CENTER);
-            cont.add(btn, BorderLayout.NORTH);
-            panel.add(cont);
+            JPanel container = new JPanel();
+            container.setLayout(new BorderLayout());
+            container.setSize(600, 400);
+            container.add(timetable, BorderLayout.CENTER);
+            container.add(btn, BorderLayout.NORTH);
+            timetablesPanel.add(container);
         }
-        JScrollPane scrollPane = new JScrollPane(panel);
+        JScrollPane scrollPane = new JScrollPane(timetablesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         this.add(top, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
@@ -76,6 +77,24 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
 
     public void updateTimetables(TimetableViewModel[] timetableViewModels) {
         this.timetableViewModels = timetableViewModels;
+        if (ttViews == null) {
+            ttViews = new TimetableView[timetableViewModels.length];
+            for (int i = 0; i < timetableViewModels.length; i++) {
+                ttViews[i] = new TimetableView(600, 350, timetableViewModels[i]);
+                JButton btn = new JButton("Timetable " + i);
+                btn.addActionListener(this);
+                JPanel container = new JPanel();
+                container.setLayout(new BorderLayout());
+                container.setSize(600, 400);
+                container.add(ttViews[i], BorderLayout.CENTER);
+                container.add(btn, BorderLayout.NORTH);
+                timetablesPanel.add(container);
+            }
+        }
+        for (int i = 0; i < ttViews.length; i++) {
+            ttViews[i].setVisible(false);
+            ttViews[i].updateView
+        }
     }
     /**
      * THIS IS FOR TESTING PURPOSES ONLY
