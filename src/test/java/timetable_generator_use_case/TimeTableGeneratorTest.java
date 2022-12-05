@@ -1,11 +1,11 @@
 package timetable_generator_use_case;
 import entities.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.application_business.TimetableGeneratorRequestModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TimeTableGeneratorTest {
     @Test
     void noPossibleTimetable() throws InvalidSectionsException {
-        List<Block> blocks1 = new ArrayList<>();
+        List<BlockModel> blocks1 = new ArrayList<>();
         blocks1.add(new Block("MO", "8:30", "10:00", "room3"));
         // Create Timetable
-        Section section1a = new Section("LEC-0101", "Bob", blocks1);
+        SectionModel section1a = new Section("LEC-0101", "Bob", blocks1);
         TimetableCourse ta = new TimetableCourse("Test Course",
                 new ArrayList<>(List.of(section1a)), "S", "MP101", "BR4");
         ArrayList<TimetableCourse> courseListOne = new ArrayList<>();
