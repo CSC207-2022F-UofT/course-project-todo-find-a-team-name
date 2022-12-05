@@ -1,30 +1,41 @@
 package overlap_crap_fix_locations_later;
 
-import entities.Constraint;
-import entities.Timetable;
+import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
+import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.TimetableModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Flow;
 
-public class OverlapMaximizationController implements Flow.Subscriber {
+public class OverlapMaximizationController implements OverlapMaxInputBoundary {
 
-    private final SectionHoursInputBoundary sectionHourCalculator;
     private final TimetableMatchInputBoundary timetableMatcher;
+    private TimetableModel mainTable;
+    private List<TimetableModel> timetables;
 
-    OverlapMaximizationController(SectionHoursInputBoundary sectionHourCalculator, TimetableMatchInputBoundary timeTableMatcher){
-        this.sectionHourCalculator = sectionHourCalculator;
+    private Flow.Publisher publisher;
+
+    OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher, Flow.Publisher publisher) {
         this.timetableMatcher = timeTableMatcher;
+        this.publisher = publisher;
+        this.mainTable = null;
+        this.timetables = null;
+
+        publisher.subscribe(this);
     }
 
-    public TimetableModel getBestMatchingTimetable(ArrayList<Timetable> Timetables, Timetable mainTable, Boolean lightConstraints,
-                                              ArrayList<Constraint> constraints){
-        TimetableModel bestMatch = timetableMatcher.determineBestMatchingTimetable();
-        return bestMatch;
+    public TimetableModel getBestMatchingTimetable() {
+        return timetableMatcher.determineBestMatchingTimetable(mainTable, timetables);
     }
 
     // TODO: For the moment, this is a string for testing. Change it later.
     public String selectedTimetable;
+
+    /**
+     * Set up to receive data from a subscription. Note that we expect 1 data bundle per InputDialog.
+     **/
     @Override
     public void onSubscribe(Flow.Subscription subscription) {
         subscription.request(1);
@@ -32,8 +43,9 @@ public class OverlapMaximizationController implements Flow.Subscriber {
     }
 
     @Override
-    public void onNext(Object item) {
-        selectedTimetable = (String) item;
+    public void onNext(HashMap<OverlapInputDialogDataKeys, Object> items) {
+        this.mainTable = (TimetableModel) items.get(OverlapInputDialogDataKeys.mainTable);
+        this.timetables = (ArrayList<TimetableModel>) items.get(OverlapInputDialogDataKeys.candidateTimetables);
     }
 
     @Override
@@ -42,11 +54,8 @@ public class OverlapMaximizationController implements Flow.Subscriber {
     }
 
     @Override
-    /** Runs the rest of the use case once we actually have the data. This will end up being called from the
-     * ScheduleSelectInterface interface that we're calling from.
-     */
     public void onComplete() {
-        System.out.println(selectedTimetable);
-        // Do nothing. I mean, we only needed one event.
+        System.out.println("Completion called!");
     }
+
 }

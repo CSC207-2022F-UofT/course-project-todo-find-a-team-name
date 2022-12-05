@@ -2,6 +2,10 @@ package overlap_crap_fix_locations_later;
 
 import blacklist_whitelist_use_case.SectionFilterInteractor;
 import entities.*;
+import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
+import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
+import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
+import retrieve_timetable_use_case.TimetableModel;
 import screens.ConstraintsInputScreen;
 import screens.SectionFilterController;
 import screens.SectionFilterPresenter;
@@ -13,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Flow;
@@ -33,10 +36,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private ArrayList<Constraint> selectedConstraints;
 
     private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
-
-    // TODO: What I want to be able to do is to have a button be pressed and then return a value to the presenter.
-    // TODO: Change String to TimeTable in the types here once we have that option and we're not just testing.
-
+    private final OverlapMaxInputBoundary overlapMaxController;
     private final ArrayList<Timetable> timeTableOptions;
 
     /**
@@ -44,6 +44,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      * and interactor and such.
      */
     public OverlapInputDialog(ArrayList<Timetable> timeTableOptions, SectionFilterController sectionFilterController) {
+        // This will be initialized later, when the controller subscribes to this InputDialog.
+        this.overlapMaxController = null;
         this.sectionFilterController = sectionFilterController;
         this.timeTableOptions = timeTableOptions;
         for (int i = 0; i < timeTableOptions.size(); i++) {
@@ -61,14 +63,40 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      * Method through which the Dialog stores the entered main timeTable and begins receiving a set of constraints.
      **/
     private void finishDataEntry() {
+
+        callInHans();
+
+        // Get the extras from JD:
+
+        // Bundle the selected main timetable, and the candidate timetables, to send to the subscribers
+        // Notably, the TimeTableMatchInteractor
         System.out.println(timeTableComboBox.getSelectedItem());
         String selectedItemName = (String) timeTableComboBox.getSelectedItem();
 
+        // TODO: Make this actually get data once I can integrate...
+        ArrayList<TimetableModel> candidateTimetables = new ArrayList<>();
+
+        // Use a makeshift bundle via a map. (It's a pity Android.Bundle isn't native to Java).
+        HashMap<OverlapInputDialogDataKeys, Object> dataBundle = new HashMap<>();
         this.selectedMainTimetable = timeTableRepresentations.get(selectedItemName);
+
+        dataBundle.put(OverlapInputDialogDataKeys.mainTable, this.selectedMainTimetable);
+        dataBundle.put(OverlapInputDialogDataKeys.candidateTimetables, candidateTimetables);
+
+        // Pass our makeshift bundles to the subscribers.
         for (Flow.Subscriber subscriber : dataReceivers) {
-            subscriber.onNext(this.selectedMainTimetable);
+            subscriber.onNext(dataBundle);
+            // This Dialog should only create data one time. So destroy the thing after.
+            subscriber.onComplete();
         }
 
+        // Do something with this!
+        overlapMaxController.getBestMatchingTimetable();
+
+        // TODO: Display a TimetableUI of this. Or possibly pass it to other people.
+    }
+
+    private void callInHans() {
         /* This is mostly taken from Hans' use case to get his to start. **/
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
@@ -84,15 +112,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         screens.add(c, "hi");
         jFrame.add(screens);
         jFrame.setVisible(true);
-
-
-        // Then, call Hans' Dialog to open it up.
-        // Receive its completed constraints, store them in this Dialog as well.
-
-        // Call JD's stuff to get the timetables.
-        // Pass them to the controller.
-
-
     }
 
     private void onCancel() {
@@ -122,8 +141,14 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
             SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
             SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
 
+            SectionHoursInputBoundary sectionHoursCalculator = new CalculateSectionHoursInteractor();
+            TimetableMatchInputBoundary timeTableMatcher = new TimeTableMatchInteractor(sectionHoursCalculator);
 
             OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList, sectionFilterController1);
+
+            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timeTableMatcher,
+                    dialog);
+
             dialog.pack();
             dialog.setVisible(true);
 
