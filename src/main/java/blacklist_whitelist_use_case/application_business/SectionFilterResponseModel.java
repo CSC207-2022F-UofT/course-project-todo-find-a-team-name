@@ -1,4 +1,4 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 import java.util.HashMap;
 import java.util.List;

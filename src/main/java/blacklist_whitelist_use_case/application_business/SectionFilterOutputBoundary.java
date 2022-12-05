@@ -1,6 +1,7 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
+
 /**
- * Interface used to perform dependence inversion for SectionFilterPresentor class.
+ * Interface used to perform dependence inversion for SectionFilterPresenter class.
  */
 public interface SectionFilterOutputBoundary {
     /**

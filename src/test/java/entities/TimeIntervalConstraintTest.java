@@ -189,6 +189,19 @@ class TimeIntervalConstraintTest {
         CalendarCourse courseUnchanged = new CalendarCourse("Course1",sections1, "", "","");
         assertFalse(timeIntervalConstraint.filter(course1));
     }
+
+    @Test
+    void testGetStartTime(){
+        TimeIntervalConstraint timeIntervalConstraint1 = new TimeIntervalConstraint(11.5,12, true);
+        assertEquals(11.5, timeIntervalConstraint1.getStartTime());
+    }
+
+    @Test
+    void testGetEndTime(){
+        TimeIntervalConstraint timeIntervalConstraint1 = new TimeIntervalConstraint(11.5,12, true);
+        assertEquals(12, timeIntervalConstraint1.getEndTime());
+    }
+
     @Test
     void testToString() {
         TimeIntervalConstraint timeIntervalConstraint1 = new TimeIntervalConstraint(11.5,12, true);

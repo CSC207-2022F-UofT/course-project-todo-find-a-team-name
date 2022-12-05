@@ -1,7 +1,7 @@
-package screens;
+package blacklist_whitelist_use_case.interface_adapters;
 
-import blacklist_whitelist_use_case.SectionFilterOutputBoundary;
-import blacklist_whitelist_use_case.SectionFilterResponseModel;
+import blacklist_whitelist_use_case.application_business.SectionFilterOutputBoundary;
+import blacklist_whitelist_use_case.application_business.SectionFilterResponseModel;
 
 import java.util.Collections;
 

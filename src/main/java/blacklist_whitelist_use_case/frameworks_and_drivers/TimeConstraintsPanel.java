@@ -1,4 +1,4 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import javax.swing.*;
 

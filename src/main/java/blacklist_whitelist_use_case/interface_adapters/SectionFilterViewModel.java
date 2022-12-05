@@ -1,4 +1,4 @@
-package screens;
+package blacklist_whitelist_use_case.interface_adapters;
 
 import java.util.HashMap;
 import java.util.List;

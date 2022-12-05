@@ -1,4 +1,4 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 import java.util.List;
 
@@ -6,17 +6,17 @@ import java.util.List;
  * Class representing the input data from the user for Blacklist/Whitelist use case.
  */
 public class SectionFilterRequestModel {
-    private String sessionType;
-    private String isInstructorBlackList;
-    private String isRoomBlackList;
-    private String isDayBlackList;
-    private String isTimeBlackList;
-    private String courseCodes;
-    private String instructorConstraints;
-    private String roomConstraints;
-    private List<Integer> dayConstraints;
-    private String startTime;
-    private String endTime;
+    private final String sessionType;
+    private final String isInstructorBlackList;
+    private final String isRoomBlackList;
+    private final String isDayBlackList;
+    private final String isTimeBlackList;
+    private final String courseCodes;
+    private final String instructorConstraints;
+    private final String roomConstraints;
+    private final List<Integer> dayConstraints;
+    private final String startTime;
+    private final String endTime;
 
     /**
      * Constructs SectionFilterRequestModel with the sessionType, courseCodes, Blacklist/Whitelist List Type for each
@@ -58,93 +58,58 @@ public class SectionFilterRequestModel {
         this.endTime = endTime;
     }
 
-    public String sessionType() {
+    public String getSessionType() {
         return sessionType;
-    }
-
-    public void setSessionType(String sessionType) {
-        this.sessionType = sessionType;
     }
 
     public String getIsInstructorBlackList() {
         return isInstructorBlackList;
     }
 
-    public void setInstructorBlackList(String instructorBlackList) {
-        isInstructorBlackList = instructorBlackList;
-    }
-
     public String getIsRoomBlackList() {
         return isRoomBlackList;
-    }
-
-    public void setRoomBlackList(String roomBlackList) {
-        isRoomBlackList = roomBlackList;
     }
 
     public String getIsDayBlackList() {
         return isDayBlackList;
     }
 
-    public void setDayBlackList(String dayBlackList) {
-        isDayBlackList = dayBlackList;
-    }
-
     public String getIsTimeBlackList() {
         return isTimeBlackList;
-    }
-
-    public void setTimeBlackList(String timeBlackList) {
-        isTimeBlackList = timeBlackList;
     }
 
     public String getCourseCodes() {
         return courseCodes;
     }
 
-    public void setCourseCodes(String courseCodes) {
-        this.courseCodes = courseCodes;
-    }
-
     public String getInstructorConstraints() {
         return instructorConstraints;
-    }
-
-    public void setInstructorConstraints(String instructorConstraints) {
-        this.instructorConstraints = instructorConstraints;
     }
 
     public String getRoomConstraints() {
         return roomConstraints;
     }
 
-    public void setRoomConstraints(String roomConstraints) {
-        this.roomConstraints = roomConstraints;
-    }
-
     public List<Integer> getDayConstraints() {
         return dayConstraints;
-    }
-
-    public void setDayConstraints(List<Integer> dayConstraints) {
-        this.dayConstraints = dayConstraints;
     }
 
     public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
     public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SectionFilterRequestModel)) return false;
+        SectionFilterRequestModel that = (SectionFilterRequestModel) o;
+        return sessionType.equals(that.sessionType) && isInstructorBlackList.equals(that.isInstructorBlackList) && isRoomBlackList.equals(that.isRoomBlackList) && isDayBlackList.equals(that.isDayBlackList) && isTimeBlackList.equals(that.isTimeBlackList) && courseCodes.equals(that.courseCodes) && instructorConstraints.equals(that.instructorConstraints) && roomConstraints.equals(that.roomConstraints) && dayConstraints.equals(that.dayConstraints) && startTime.equals(that.startTime) && endTime.equals(that.endTime);
     }
+
 
     /**
      * Used for testing purpose initially.

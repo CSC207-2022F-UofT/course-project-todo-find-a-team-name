@@ -1,4 +1,6 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
+
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,8 +9,9 @@ import java.awt.*;
  * JPanel used to display output of Filtered Sections.
  */
 public class FilteredSectionsOutputScreen extends JDialog {
-    private SectionFilterViewModel viewModel;
-    private JFrame frame;
+    private final JPanel generateTimeTableScreen;
+    private final SectionFilterViewModel viewModel;
+    private final JFrame frame;
 
     /**
      * Constructs the FilteredSectionsOutputScreen from the given ViewModel.
@@ -16,8 +19,9 @@ public class FilteredSectionsOutputScreen extends JDialog {
      * @param viewModel data structure storing data needed for displaying courseCodes and the filtered section codes
      *                  for BlackList/Whitelist use case.
      */
-    public FilteredSectionsOutputScreen(JFrame frame, SectionFilterViewModel viewModel){
+    public FilteredSectionsOutputScreen(JPanel generateTimeTableScreen, JFrame frame, SectionFilterViewModel viewModel){
         super(frame, true);
+        this.generateTimeTableScreen = generateTimeTableScreen;
         this.frame = frame;
         this.viewModel = viewModel;
         this.setSize(500, 500);
@@ -25,7 +29,7 @@ public class FilteredSectionsOutputScreen extends JDialog {
 
         JLabel title = new JLabel(viewModel.getSessionType() + "-session Courses Filter COMPLETE!" );
         title.setHorizontalAlignment(JLabel.CENTER);
-        title.setFont(title.getFont().deriveFont(18F));;
+        title.setFont(title.getFont().deriveFont(18F));
 
         this.add(title, BorderLayout.PAGE_START);
 
@@ -42,10 +46,13 @@ public class FilteredSectionsOutputScreen extends JDialog {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
 
-        JButton button = new JButton("Generate Timetable");
+        JButton button = new JButton("Prepare to Generate");
 
         button.addActionListener(e -> {
             frame.getContentPane().removeAll();
+            frame.add(generateTimeTableScreen);
+//            generateTimeTableScreen.setSessionType(viewModel.getSessionType());
+//            generateTimeTableScreen.setModifiedCourses(viewModel.getModifiedCourses());
             this.dispose();
             frame.repaint();
             frame.revalidate();
@@ -53,5 +60,4 @@ public class FilteredSectionsOutputScreen extends JDialog {
         this.add(button, BorderLayout.PAGE_END);
         this.add(scrollPane, BorderLayout.CENTER);
     }
-
 }

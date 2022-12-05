@@ -1,7 +1,7 @@
-package screens;
+package blacklist_whitelist_use_case.interface_adapters;
 
-import blacklist_whitelist_use_case.SectionFilterInputBoundary;
-import blacklist_whitelist_use_case.SectionFilterRequestModel;
+import blacklist_whitelist_use_case.application_business.SectionFilterInputBoundary;
+import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
 
 /**
  * Controller for BlackListWhiteListUseCase responsible for requesting the interactor to apply those constraints
