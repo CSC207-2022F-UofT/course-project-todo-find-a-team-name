@@ -1,4 +1,7 @@
-package screens;
+package timetables_sort_use_case.frameworks_and_drivers;
+
+import screens.*;
+import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AllTimetablesScreen extends JPanel implements ActionListener {
+public class AllTimetablesScreen extends JPanel implements ActionListener, AllTimetablesView {
 
     private JFrame frame;
-    private final AllTimetablesController AllTimetablesController;
     private TimetableViewModel[] timetables;
-    private EditTimetableScreen editTimetableScreen;
-    public AllTimetablesScreen(JFrame frame, AllTimetablesController controller, TimetableViewModel[] timetables) {
-        this.AllTimetablesController = controller;
+    private TimetableView[] ttViews;
+    public AllTimetablesScreen(JFrame frame, TimetableViewModel[] timetables) {
+        this.frame = frame;
         this.timetables = timetables;
+        this.ttViews = null;
         this.setLayout(new BorderLayout());
         JPanel top = new JPanel();
         top.setSize(100, 100);
@@ -48,7 +51,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
     }
 
     /**
-     * Returns User to Main Menu if mainMenu is clicked, sends User to sorter screen if sort is clicked,
+     * Returns User to MainMenuUI if mainMenu is clicked, sends User to sorter screen if sort is clicked,
      * opens TimeTableUI of the given timetable if a timetable button is clicked.
      */
     public void actionPerformed(ActionEvent e) {
@@ -63,6 +66,10 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
             TimetableViewModel timetable = this.timetables[i];
 
         }
+    }
+
+    public void updateTimetables(TimetableViewModel[] timetables) {
+        this.timetables = timetables;
     }
     /**
      * THIS IS FOR TESTING PURPOSES ONLY
@@ -106,8 +113,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
 
 
         JFrame frame = new JFrame();
-        AllTimetablesController allTimetablesController = new AllTimetablesController();
-        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, allTimetablesController, timetables);
+        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, timetables);
         frame.add(allTimetablesScreen);
         frame.pack();
         frame.setVisible(true);

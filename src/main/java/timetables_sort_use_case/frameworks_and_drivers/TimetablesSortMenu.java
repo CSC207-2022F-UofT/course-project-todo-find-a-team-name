@@ -1,6 +1,9 @@
-package screens;
+package timetables_sort_use_case.frameworks_and_drivers;
 
-import timetablesSorter_use_case.SorterInteractor;
+import screens.*;
+import timetables_sort_use_case.interface_adapters.TimetablesSortController;
+import timetables_sort_use_case.application_business.TimetablesSortInteractor;
+import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,16 +12,24 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SorterScreen extends JPanel implements ActionListener {
+/**
+ * A menu used to display the display preferences for the user to pick from.
+ * controller refers to the TimetableSortController the processes user inputs
+ *
+ */
+public class TimetablesSortMenu extends JPanel implements ActionListener {
 
-    private final SorterController controller;
-    private JFrame frame;
-    private TimetableViewModel[] timetables;
+    private final AllTimetablesScreen allTimetablesScreen;
+    private final TimetablesSortController controller;
+    private final JFrame frame;
     private final JRadioButton[] timeButtons;
     private final JRadioButton[] breakButtons;
-    public SorterScreen(JFrame frame, SorterController controller, TimetableViewModel[] timetables) {
+    public TimetablesSortMenu(JFrame frame, TimetablesSortController controller,
+                              AllTimetablesScreen allTimetablesScreen) {
+
+        this.frame = frame;
         this.controller = controller;
-        this.timetables = timetables;
+        this.allTimetablesScreen = allTimetablesScreen;
 
         this.setLayout(new GridLayout(0, 1));
 
@@ -90,24 +101,28 @@ public class SorterScreen extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * Find which buttons were pressed and pass them onto controller.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean bool = false;
+        boolean bool = true;
         for (JRadioButton timeButton : timeButtons) {
             if (timeButton.isSelected()) {
                 for (JRadioButton breakButton : breakButtons) {
                     if (breakButton.isSelected()) {
-                        bool = true;
-                        this.controller.preferenceSort(timeButton.getText(), breakButton.getText());
+                        bool = false;
+                        this.controller.sort(timeButton.getText(), breakButton.getText());
+                        this.setVisible(false);
+                        allTimetablesScreen.setVisible(true);
                     }
                 }
             }
         }
-        /**
-         * TODO: prompt User to choose preferences if they submit without choosing
-         */
-        if (!bool){
-            System.out.println("choose preferences");
+
+        if(bool){
+            JOptionPane.showMessageDialog(frame, "Please choose your preferences");
         }
 
     }
@@ -153,10 +168,12 @@ public class SorterScreen extends JPanel implements ActionListener {
         }
 
         JFrame frame = new JFrame();
-        SorterPresenter presenter = new SorterPresenter();
-        SorterInteractor interactor = new SorterInteractor(timetables, presenter);
-        SorterController controller = new SorterController(interactor);
-        SorterScreen screen = new SorterScreen(frame, controller, timetables);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        TimetablesSortPresenter presenter = new TimetablesSortPresenter();
+        TimetablesSortInteractor interactor = new TimetablesSortInteractor(presenter);
+        TimetablesSortController controller = new TimetablesSortController(interactor);
+        AllTimetablesScreen allTimetablesScreen1 = new AllTimetablesScreen(frame, timetables);
+        TimetablesSortMenu screen = new TimetablesSortMenu(frame, controller, allTimetablesScreen1);
         frame.add(screen);
         frame.pack();
         frame.setVisible(true);

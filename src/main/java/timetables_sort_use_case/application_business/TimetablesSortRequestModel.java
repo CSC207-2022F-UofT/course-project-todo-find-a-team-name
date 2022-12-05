@@ -1,11 +1,10 @@
-package timetablesSorter_use_case;
-
-import screens.TimetableViewModel;
+package timetables_sort_use_case.application_business;
 
 /**
- *The request model used to request timetables sorting
+ * The request model used to request timetables sorting
+ * Instance Attributes
  */
-public class SorterRequestModel {
+public class TimetablesSortRequestModel {
     private final String timeButton;
     private final String breakButton;
 
@@ -13,7 +12,7 @@ public class SorterRequestModel {
      * @param timeButton the time period that the user prefers.
      * @param breakButton the format of breaks that the user prefers.
      */
-    public SorterRequestModel(String timeButton, String breakButton) {
+    public TimetablesSortRequestModel(String timeButton, String breakButton) {
         this.timeButton = timeButton;
         this.breakButton = breakButton;
     }
