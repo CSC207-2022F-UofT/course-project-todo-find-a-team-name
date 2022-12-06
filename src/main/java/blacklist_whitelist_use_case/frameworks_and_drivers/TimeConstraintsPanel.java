@@ -1,9 +1,9 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import javax.swing.*;
 
 /**
- * Screen Component of Constraints Input Screen that extends Jpanel.
+ * Screen Component of Constraints Input Screen that extends JPanel.
  * A panel for time constraints startTime and endTime input.
  */
 
