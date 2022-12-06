@@ -33,11 +33,10 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary,
         String filePath = jsonData.getFilePath();
         Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
         HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
-        SessionModel aSessionModel = createSessionModel(allSessionCourses, sessionType);
         for (Flow.Subscriber<Object> subscriber : receivers){
-            subscriber.onNext(aSessionModel); // Things you want to pass
+            subscriber.onNext(aSession); // Things you want to pass
         }
-        return aSessionModel;
+        return createSessionModel(allSessionCourses, sessionType);
     }
     /** HELPER METHOD to create SessionModel **/
     private SessionModel createSessionModel(HashMap<String, CalendarCourse> allSessionCourses, String sessionType) {
