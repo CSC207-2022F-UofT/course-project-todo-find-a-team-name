@@ -161,7 +161,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (cmd.equals("Recommend BR Courses")){
             BRWindow.showInputView();
         }
-        else if (e.getActionCommand().equals("Add Course")){
+        else if (cmd.equals("Add Course")){
             openCourseMenu();
         }
         else if (cmd.startsWith("Edit ")){
@@ -171,6 +171,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         }*/
         else if(cmd.equals("<=")){
             this.setVisible(false);
+            frame.add(previousPanel);
             previousPanel.setVisible(true);
         }
 
