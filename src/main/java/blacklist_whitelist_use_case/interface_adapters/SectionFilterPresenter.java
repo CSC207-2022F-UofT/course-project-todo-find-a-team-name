@@ -27,7 +27,7 @@ public class SectionFilterPresenter implements SectionFilterOutputBoundary {
         for (String course: responseModel.getModifiedCourses().keySet()){
             Collections.sort(responseModel.getModifiedCourses().get(course));
         }
-        SectionFilterViewModel viewModel = new SectionFilterViewModel(responseModel.getModifiedCourses(), responseModel.getSessionType());
+        SectionFilterViewModel viewModel = new SectionFilterViewModel(responseModel.getModifiedCourses());
         view.showSuccessView(viewModel);
     }
 

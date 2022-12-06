@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class SectionFilterInteractor implements SectionFilterInputBoundary {
     final SectionFilterOutputBoundary presenter;
-    private Session fallSession;
-    private Session winterSession;
+    private Session session;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
         this.presenter = presenter;
     }
@@ -39,27 +38,16 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
             presenter.prepareFailView("StartTime Must be BEFORE EndTime");
             return;
         }
-        if (requestModel.getSessionType().equals("F")){
-            for (String code: courseCodes) {
-                if (fallSession.checkCourseCode(code)){
-                    calendarCourses.add(fallSession.getCalendarCourse(code));
-                } else {
-                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
-                    return;
-                }
-            }
-        } else{
-            for (String code: courseCodes) {
-                if (winterSession.checkCourseCode(code)){
-                    calendarCourses.add(winterSession.getCalendarCourse(code));
-                } else {
-                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
-                    return;
-                }
-            }
-        }
-        ArrayList<CalendarCourse> calendarCoursesCopy = (ArrayList<CalendarCourse>) copyCalendarCourseList(calendarCourses);
 
+            for (String code: courseCodes) {
+                if (session.checkCourseCode(code)){
+                    calendarCourses.add(session.getCalendarCourse(code));
+                } else {
+                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
+                    return;
+                }
+            }
+        ArrayList<CalendarCourse> calendarCoursesCopy = (ArrayList<CalendarCourse>) copyCalendarCourseList(calendarCourses);
         ArrayList<Constraint> constraints = (ArrayList<Constraint>) this.buildConstraints(requestModel);
         for (CalendarCourse course: calendarCoursesCopy) {
             for (Constraint constraint: constraints) {
@@ -74,7 +62,7 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
         for (CalendarCourse course: calendarCoursesCopy) {
             courseSectionsData.put(course.getCourseCode(), course.getSectionCodes());
         }
-        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.getSessionType());
+        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData);
 
         presenter.prepareSuccessView(responseModel);
     }
@@ -159,12 +147,8 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
 
     }
 
-    public void setFallSession(Session session) {
-        this.fallSession = session;
-    }
-
-    public void setWinterSession(Session session) {
-        this.winterSession = session;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     /**

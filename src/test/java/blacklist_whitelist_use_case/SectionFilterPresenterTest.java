@@ -33,7 +33,6 @@ class SectionFilterPresenterTest {
                 HashMap<String, List<String>> expected = new HashMap<>();
                 expected.put("CSC207H1", new ArrayList<>(Arrays.asList("LEC890", "LEC898", "PRA110", "TUT777")));
                 expected.put("CSC258H1", new ArrayList<>(Arrays.asList("LEC890", "LEC898", "PRA110", "TUT777", "TUT999")));
-                assertEquals("S", viewModel.getSessionType());
                 assertEquals(expected, viewModel.getModifiedCourses());
             }
             @Override
@@ -53,7 +52,7 @@ class SectionFilterPresenterTest {
         HashMap<String, List<String>> modifiedCourses = new HashMap<>();
         modifiedCourses.put("CSC207H1", new ArrayList<>(Arrays.asList("PRA110", "LEC898", "TUT777", "LEC890")));
         modifiedCourses.put("CSC258H1", new ArrayList<>(Arrays.asList("PRA110", "LEC898", "TUT999", "TUT777", "LEC890")));
-        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(modifiedCourses, "S");
+        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(modifiedCourses);
         presenter.prepareSuccessView(responseModel);
     }
 
