@@ -1,7 +1,6 @@
 package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
-import blacklist_whitelist_use_case.application_business.SectionFilterRequestModel;
 import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
@@ -27,10 +26,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final String[] CONSTRAINT_LIST_TYPE = {"/", "BLACKLIST", "WHITELIST"};
     private final String[] TIME = {"8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
             "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"};
-    private final String[] SESSION = {"F", "S"};
     private final ArrayList<JRadioButton> radioButtonList = new ArrayList<>();
-
-    private final JComboBox<String> sessionBtn = new JComboBox<>(SESSION);
     private final JComboBox<String> instructorBtn = new JComboBox<>(CONSTRAINT_LIST_TYPE);
     private final JComboBox<String> roomBtn = new JComboBox<>(CONSTRAINT_LIST_TYPE);
     private final JComboBox<String> timeBtn = new JComboBox<>(CONSTRAINT_LIST_TYPE);
@@ -45,7 +41,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final JButton help = new JButton("help");
 
 
-    ConstraintsInputScreen(JPanel generateTimeTableScreen, SectionFilterController controller) {
+    public ConstraintsInputScreen(JPanel generateTimeTableScreen, SectionFilterController controller) {
         this.generateTimeTableScreen = generateTimeTableScreen;
         JRadioButton radioButton = new JRadioButton("MO");
         JRadioButton radioButton1 = new JRadioButton("TU");
@@ -83,7 +79,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         DayConstraintsPanel dayInput = new DayConstraintsPanel(dayLabel, dayBtn, radioButtonList);
         JLabel timeLabel = new JLabel("Time Constraint");
         TimeConstraintsPanel timeInput = new TimeConstraintsPanel(timeLabel, timeBtn, startTime, endTime);
-        CourseCodePanel courseInput = new CourseCodePanel(sessionBtn , courseCodesTextField);
+        CourseCodePanel courseInput = new CourseCodePanel(courseCodesTextField);
 
         JPanel buttons = new JPanel();
         buttons.add(submit);
@@ -106,10 +102,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     public static void main(String[] args) throws IOException, ParseException {
         SessionGateway sessionGateway = new SessionGateway();
         Session fall;
-        Session winter;
         try {
             fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-            winter = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "S");
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -123,8 +117,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.setFallSession(fall); //delete
-        sectionFilterInterator.setWinterSession(winter); //delete
+        sectionFilterInterator.setSession(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
         sectionFilterPresenter.setView(c);
@@ -147,8 +140,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
                     dayArrayList.add(i);
                 }
             }
-            SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
-                    ((String)sessionBtn.getSelectedItem()),
+            sectionFilterController.filter(
                     courseCodesTextField.getText(),
                     ((String) instructorBtn.getSelectedItem()),
                     ((String) roomBtn.getSelectedItem()),
@@ -160,8 +152,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
                     ((String) startTime.getSelectedItem()),
                     ((String) endTime.getSelectedItem())
             );
-            System.out.println("Enter: " + requestModel);
-            sectionFilterController.filter(requestModel);
         }
         if (e.getSource() == help){
             JDialog helpDialogue = new HelpInstructionScreen();
@@ -178,7 +168,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
 
     @Override
     public void showFailView(String message) {
-        sessionBtn.setSelectedIndex(0);
         roomBtn.setSelectedIndex(0);
         timeBtn.setSelectedIndex(0);
         dayBtn.setSelectedIndex(0);
