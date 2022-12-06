@@ -19,7 +19,7 @@ import java.util.concurrent.Flow.Subscriber;
 public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscriber<Object>{
 
     private Session session;
-    private Timetable timetable = null;
+    private Timetable timetable;
     private final RecommendBROutputBoundary presenter;
     private final CourseComparatorFactory courseComparatorFactory;
 
@@ -28,7 +28,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscrib
      * RecommendBROutputBoundary (presenter)
      *
      * @param presenter presenter used to prepare appropriate view
-     * @param courseComparatorFactory c
+     * @param courseComparatorFactory factory that creates Comparator for sorting courses based on preferred time
      */
     public RecommendBRInteractor(RecommendBROutputBoundary presenter, CourseComparatorFactory courseComparatorFactory){
         this.presenter = presenter;
@@ -56,7 +56,7 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscrib
             return;
         } else if (!session.getSessionType().equals(timetable.getSessionType())){
             presenter.prepareFailView("Timetable session is different! Timetable is "
-                    + timetable.getSessionType() + " while Session is " + session.getSessionType());
+                    + timetable.getSessionType() + " while Session is " + session.getSessionType() + ".");
             return;
         }
 
@@ -100,6 +100,9 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscrib
     }
 
     /**
+     * Unimplemented method invoked prior to invoking any other Subscriber
+     * methods for the given Subscription
+     *
      * @param subscription a new subscription
      */
     @Override
@@ -119,6 +122,8 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscrib
     }
 
     /**
+     * Unimplemented method invoked upon an unrecoverable error encountered by
+     * a Publisher or Subscription.
      *
      * @param throwable the exception
      */
@@ -126,7 +131,8 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscrib
     public void onError(Throwable throwable) {}
 
     /**
-     *
+     * Unimplemented method invoked when it is known that no additional
+     * Subscriber method invocation will occur.
      */
     @Override
     public void onComplete() {
