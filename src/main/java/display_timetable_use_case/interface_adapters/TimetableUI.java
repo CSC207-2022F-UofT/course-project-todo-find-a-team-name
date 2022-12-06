@@ -159,6 +159,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
         displayTimetableController.displayTimetable();
     }
 
+
     @Override
     public void updateTimetable(TimetableViewModel viewModel) {
         setVisible(false);
