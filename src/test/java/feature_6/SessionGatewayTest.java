@@ -16,7 +16,7 @@ class SessionGatewayTest {
     void checkExtractSession() throws IOException, ParseException, InvalidSectionsException {
         SessionGateway convertingFile3 = new SessionGateway();
         Session fallSession = convertingFile3.readFromFile("src/main/resources/test_session_data.json", "F");
-        assertEquals(fallSession.getAllSessionCourses().size(), 8);
+        assertEquals(fallSession.getAllSessionCourses().size(), 9);
     }
 
     /** Checks if SessionGateway can correctly parse the text in JSON file
