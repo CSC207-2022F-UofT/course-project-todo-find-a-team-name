@@ -117,7 +117,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.setSession(fall); //delete
+        sectionFilterInterator.onNext(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
         sectionFilterPresenter.setView(c);
