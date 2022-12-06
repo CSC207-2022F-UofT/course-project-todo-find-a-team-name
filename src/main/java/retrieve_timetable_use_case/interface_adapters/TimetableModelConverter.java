@@ -72,6 +72,6 @@ public class TimetableModelConverter {
      * @return A BlockViewModel containing equivalent data.
      */
     public static TimetableViewBlockModel blockToView(BlockModel block){
-        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime());
+        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
 }

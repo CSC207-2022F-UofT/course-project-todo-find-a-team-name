@@ -8,6 +8,7 @@ import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+
 import display_timetable_use_case.interface_adapters.TimetableUI;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.AddCourseInteractor;
@@ -26,6 +27,7 @@ import recommend_br_use_case.application_business.TargetTimeCourseComparatorFact
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
 
