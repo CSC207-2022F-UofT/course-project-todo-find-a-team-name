@@ -8,7 +8,7 @@ public class Timetable {
     private ArrayList<TimetableCourse> courseList;
     private String sessionType;
     
-    public Timetable(ArrayList<TimetableCourse> timetableCourses, String sessionType){
+    public Timetable(List<TimetableCourse> timetableCourses, String sessionType){
         this.courseList = new ArrayList<TimetableCourse>();
         this.courseList.addAll(timetableCourses);
         this.sessionType = sessionType;

@@ -1,6 +1,6 @@
 package timetablesSorter_use_case;
 
-import screens.TimetableViewModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 
 /**
  * The interactor used to sort timetables by User preferences.
