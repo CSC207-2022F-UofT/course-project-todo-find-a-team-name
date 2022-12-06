@@ -69,6 +69,12 @@ public class MainUI extends JPanel implements ActionListener {
 
     /**
      * Constructs MainUI with title, import timetable/session buttons, and display/edit/generate timetable buttons.
+     *
+     * @param frame window that this screen belongs to
+     * @param constraintsInputScreen input screen for generate timetable button
+     * @param editTimetableScreen screen for editing timetable
+     * @param timetableUI screen for displaying timetable
+     * @param sessionController controller used for importing sessions
      */
     public MainUI(JFrame frame, ConstraintsInputScreen constraintsInputScreen, EditTimetableScreen editTimetableScreen,
                   TimetableUI timetableUI, SessionFileController sessionController){
