@@ -51,7 +51,7 @@ public class FilteredSectionsOutputScreen extends JDialog {
         button.addActionListener(e -> {
             frame.getContentPane().removeAll();
             frame.add(generateTimeTableScreen);
-//            generateTimeTableScreen.setSessionType(viewModel.getSessionType());
+//Todo:       this should be uncommented later, so that it works with JD's use Case.
 //            generateTimeTableScreen.setModifiedCourses(viewModel.getModifiedCourses());
             this.dispose();
             frame.repaint();
