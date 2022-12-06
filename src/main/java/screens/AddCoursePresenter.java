@@ -1,20 +1,13 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.AddCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
-import edit_timetable_use_case.RemoveCourseFailedException;
-import retrieve_timetable_use_case.TimetableModel;
-import retrieve_timetable_use_case.TimetableModelConverter;
-import retrieve_timetable_use_case.TimetableModelConverter;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
 public class AddCoursePresenter implements AddCourseOutputBoundary {
     private EditTimetableView view;
-
-    /**
-     * @param
-     * @return
-     */
 
     public AddCoursePresenter(){}
     public AddCoursePresenter(EditTimetableView view){

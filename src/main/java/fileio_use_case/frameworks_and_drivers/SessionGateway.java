@@ -1,7 +1,9 @@
 package fileio_use_case.frameworks_and_drivers;
 
 import entities.*;
-import fileio_use_case.*;
+import fileio_use_case.application_business.*;
+import fileio_use_case.application_business.session_specific_classes.CalendarCourseBuilder;
+import fileio_use_case.application_business.session_specific_classes.SessionBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -96,7 +98,7 @@ public class SessionGateway implements GatewayInterface {
      * HELPER METHOD
      */
     private Session extractSession(HashMap<String, CalendarCourse> allCourses, String sessionType) {
-        return new SessionBuilderInteractor().aSessionBuilder(allCourses, sessionType);
+        return new SessionBuilder().aSessionBuilder(allCourses, sessionType);
     }
 //    /**
 //     * Returns HashMap<String, Session> of all sessions (Fall and Winter) based on given HashMap of String
@@ -108,5 +110,5 @@ public class SessionGateway implements GatewayInterface {
 //     * @return HashMap<String, Session>
 //     */
 //    public HashMap<String, Session> creatingSessionsFromFile(HashMap<String, CalendarCourse> allCourses)
-//        return new SessionBuilderInteractor().allSessionBuilder(allCourses);
+//        return new SessionBuilder().allSessionBuilder(allCourses);
 }

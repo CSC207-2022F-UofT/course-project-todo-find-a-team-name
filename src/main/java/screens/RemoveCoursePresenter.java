@@ -1,16 +1,14 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
-import edit_timetable_use_case.RemoveCourseFailedException;
-import retrieve_timetable_use_case.TimetableModel;
-import retrieve_timetable_use_case.TimetableModelConverter;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
 /**
  * The presenter used in the RemoveCourse use case.
  * This presenter must have a EditTimetableView set to it before being used (see SetView).
- *
  * View is the view that the presenter updates.
  */
 public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
