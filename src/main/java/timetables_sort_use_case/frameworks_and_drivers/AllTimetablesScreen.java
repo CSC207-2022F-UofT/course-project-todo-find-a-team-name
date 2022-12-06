@@ -4,6 +4,7 @@ import display_timetable_use_case.interface_adapters.*;
 
 import entities.*;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+
 import timetables_sort_use_case.application_business.TimetablesSortInteractor;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
@@ -18,12 +19,12 @@ import java.util.List;
 
 public class AllTimetablesScreen extends JPanel implements ActionListener, AllTimetablesView {
 
-    private JFrame frame;
+    private final JFrame frame;
     private TimetableViewModel[] timetableViewModels;
     private TimetableView[] ttViews;
     private final JPanel timetablesPanel;
     private TimetablesSortMenu timetablesSortMenu;
-    private TimetablesSortController controller;
+    private final TimetablesSortController controller;
     public AllTimetablesScreen(JFrame frame, TimetablesSortController controller) {
         this.frame = frame;
         this.controller = controller;
@@ -101,10 +102,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         for (int i = 0; i < ttViews.length; i++) {
             ttViews[i].updateViewModel(timetableViewModels[i]);
         }
+        this.setVisible(true);
     }
 
-    public void sort(String timebutton, String breakButton) {
-        controller.sort(timebutton, breakButton);
+    public void timetablesSort(String timeButton, String breakButton) {
+        controller.timetablesSort(timeButton, breakButton);
     }
 
     /**
@@ -205,18 +207,18 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        TimetablesSortPresenter presenter = new TimetablesSortPresenter();
-        TimetablesSortInteractor interactor = new TimetablesSortInteractor(presenter);
-        TimetablesSortController controller = new TimetablesSortController(interactor);
-        interactor.setTimetables(timetables);
+
+        TimetablesSortPresenter timetablesSortInteractor = new TimetablesSortPresenter();
+        TimetablesSortInteractor timetablesSortController = new TimetablesSortInteractor(timetablesSortInteractor);
+        TimetablesSortController allTimetablesScreen = new TimetablesSortController(timetablesSortController);
+        timetablesSortController.setTimetables(timetables);
         RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
-        interactor.setRetrieveInteractor(retrieveTimetableInteractor);
-        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, controller);
+        timetablesSortController.setRetrieveInteractor(retrieveTimetableInteractor);
+        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, allTimetablesScreen);
         timetablesScreen.updateTimetables(timetableViewModels);
-        presenter.setView(timetablesScreen);
+        timetablesSortInteractor.setView(timetablesScreen);
         frame.add(timetablesScreen);
-        frame.pack();
-        System.out.println(frame.getSize());
+        frame.setSize(1280, 720);
         frame.setVisible(true);
     }
 }

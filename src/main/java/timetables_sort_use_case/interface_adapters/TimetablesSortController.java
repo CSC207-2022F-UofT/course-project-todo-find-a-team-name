@@ -20,8 +20,8 @@ public class TimetablesSortController {
      * @param timeButton the text in the chosen timeButton
      * @param breakButton the text in the chosen breakButton
      */
-    public void sort(String timeButton, String breakButton) {
+    public void timetablesSort(String timeButton, String breakButton) {
         TimetablesSortRequestModel timetablesSortRequestModel = new TimetablesSortRequestModel(timeButton, breakButton);
-        interactor.sort(timetablesSortRequestModel);
+        interactor.timetablesSort(timetablesSortRequestModel);
     }
 }
