@@ -60,7 +60,7 @@ public class EditCourseInteractor implements EditCourseInputBoundary, Flow.Subsc
             }
         }
 
-        timetable.AddToCourseList(new TimetableCourse(calCourse.getTitle(), newSections,
+        timetable.addToCourseList(new TimetableCourse(calCourse.getTitle(), newSections,
                 calCourse.getCourseSession(), calCourse.getCourseCode(), calCourse.getBreadth()));
 
         retrieveInteractor.setTimetable(timetable);

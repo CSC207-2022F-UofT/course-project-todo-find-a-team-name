@@ -44,7 +44,7 @@ public class AddCourseInteractor implements AddCourseInputBoundary, Flow.Subscri
         }
         TimetableCourse course = new TimetableCourse(calCourse.getTitle(), sections, calCourse.getCourseSession(),
                 calCourse.getCourseCode(), calCourse.getBreadth());
-        timetable.AddToCourseList(course);
+        timetable.addToCourseList(course);
         retrieveInteractor.setTimetable(timetable);
         retrieveInteractor.setSession(session);
         TimetableModel updatedTimetable = retrieveInteractor.retrieveTimetable();

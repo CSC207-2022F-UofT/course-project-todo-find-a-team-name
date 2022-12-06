@@ -5,7 +5,7 @@ import fileio_use_case.application_business.session_specific_classes.SessionGate
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.SessionModel;
+import retrieve_timetable_use_case.application_business.SessionModel;
 
 import java.io.IOException;
 class SessionGatewayInteractorTest {

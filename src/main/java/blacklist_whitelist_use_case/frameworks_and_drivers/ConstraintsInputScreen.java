@@ -5,10 +5,16 @@ import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +29,7 @@ import java.util.ArrayList;
 public class ConstraintsInputScreen extends JPanel implements ActionListener, ISectionFilterView {
     private JPanel prevPanel = null;
     private final JButton prev = new JButton("<-");
-    private final JPanel generateTimeTableScreen;
+    private final GenerateTimetableScreen generateTimeTableScreen;
     private final SectionFilterController sectionFilterController;
     private final String[] CONSTRAINT_LIST_TYPE = {"/", "BLACKLIST", "WHITELIST"};
     private final String[] TIME = {"8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
@@ -43,7 +49,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final JButton help = new JButton("help");
 
 
-    public ConstraintsInputScreen(JPanel generateTimeTableScreen, SectionFilterController controller) {
+    public ConstraintsInputScreen(GenerateTimetableScreen generateTimeTableScreen, SectionFilterController controller) {
         this.generateTimeTableScreen = generateTimeTableScreen;
         JRadioButton radioButton = new JRadioButton("MO");
         JRadioButton radioButton1 = new JRadioButton("TU");
@@ -110,7 +116,23 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
-        JPanel fakeJDScreen= new JPanel();
+
+        TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
+        TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
+        TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
+        generatorInteractor.onNext(fall);
+        GenerateTimetableScreen fakeJDScreen = new GenerateTimetableScreen(generatorController);
+
+        generatorPresenter.setView(timetables -> {
+            System.out.println("Timetable Size: " + timetables.length);
+            for (TimetableViewModel timetableModel : timetables){
+                System.out.println("------");
+                for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()){
+                    System.out.println(courseModel.getCode());
+                }
+            }
+        });
+
         fakeJDScreen.add(new JButton("HELLO"));
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);

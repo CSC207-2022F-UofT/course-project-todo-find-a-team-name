@@ -7,10 +7,11 @@ import entities.Session;
 import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
-import retrieve_timetable_use_case.SessionModel;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
+import retrieve_timetable_use_case.application_business.SessionModel;
+
 
 import java.io.IOException;
 import java.util.ArrayList;

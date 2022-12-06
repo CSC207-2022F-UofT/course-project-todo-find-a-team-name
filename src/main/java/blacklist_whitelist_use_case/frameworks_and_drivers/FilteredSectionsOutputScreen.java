@@ -1,6 +1,7 @@
 package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +10,6 @@ import java.awt.*;
  * JPanel used to display output of Filtered Sections.
  */
 public class FilteredSectionsOutputScreen extends JDialog {
-    private final JPanel generateTimeTableScreen;
-    private final SectionFilterViewModel viewModel;
-    private final JFrame frame;
 
     /**
      * Constructs the FilteredSectionsOutputScreen from the given ViewModel.
@@ -19,11 +17,8 @@ public class FilteredSectionsOutputScreen extends JDialog {
      * @param viewModel data structure storing data needed for displaying courseCodes and the filtered section codes
      *                  for BlackList/Whitelist use case.
      */
-    public FilteredSectionsOutputScreen(JPanel generateTimeTableScreen, JFrame frame, SectionFilterViewModel viewModel){
+    public FilteredSectionsOutputScreen(GenerateTimetableScreen generateTimeTableScreen, JFrame frame, SectionFilterViewModel viewModel){
         super(frame, true);
-        this.generateTimeTableScreen = generateTimeTableScreen;
-        this.frame = frame;
-        this.viewModel = viewModel;
         this.setSize(500, 500);
         setLayout(new BorderLayout());
 
@@ -51,8 +46,7 @@ public class FilteredSectionsOutputScreen extends JDialog {
         button.addActionListener(e -> {
             frame.getContentPane().removeAll();
             frame.add(generateTimeTableScreen);
-//Todo:       this should be uncommented later, so that it works with JD's use Case.
-//            generateTimeTableScreen.setModifiedCourses(viewModel.getModifiedCourses());
+            generateTimeTableScreen.setModifiedCourses(viewModel.getModifiedCourses());
             this.dispose();
             frame.repaint();
             frame.revalidate();
