@@ -5,6 +5,7 @@ import entities.Session;
 import entities.Timetable;
 
 import java.util.ArrayList;
+import java.util.concurrent.Flow;
 
 /**
  * The main interactor used in the retrieve timetable use case. It uses EntityConverter's methods
@@ -15,15 +16,12 @@ import java.util.ArrayList;
  * session similarly refers to the Session currently into the interavtor, and retrieveCalendarCourse
  * calls will search through session.
  */
-public class RetrieveTimetableInteractor implements RetrieveTimetableInputBoundary {
+public class RetrieveTimetableInteractor implements RetrieveTimetableInputBoundary, Flow.Subscriber<Object> {
 
     private Timetable timetable;
     private Session session;
 
-    public RetrieveTimetableInteractor(Timetable timetable, Session session){
-        this.timetable = timetable;
-        this.session = session;
-    }
+    public RetrieveTimetableInteractor(){}
 
 
     /**
@@ -67,12 +65,50 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public TimetableModel retrieveTimetable(){
-        ArrayList<CourseModel> courses = new ArrayList<>();
-        for (Course course : timetable.getCourseList()){
-            courses.add(EntityConverter.generateCourseResponse(course));
-        }
-        return new TimetableModel(courses);
+        return EntityConverter.generateTimetableResponse(timetable);
     }
 
+
+    /**
+     * @param subscription a new subscription.
+     *                     A method called when the interactor subscribes to a new Subscription. Currently does nothing.
+     */
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+
+    }
+
+    /**
+     * @param item the item passed to the interactor by its publishers, which will be other interactors.
+     *             item can either be a Timetable or Session, in which case the interactor's corresponding
+     *             instance attribute is updated to match it.
+     */
+    @Override
+    public void onNext(Object item) {
+        if (item instanceof Timetable){
+            this.timetable = (Timetable) item;
+        }
+        else if (item instanceof Session){
+            this.session = (Session) item;
+        }
+    }
+
+    /**
+     * @param throwable the exception encountered by either the Subscriber or Publisher.
+     *                  This method is called when a throwable is thrown by the Subscriber or Publisher, and
+     *                  currently does nothing.
+     */
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    /**
+     * Method invoked when no other Subscriber method invocations will occur. Currently does nothing.
+     */
+    @Override
+    public void onComplete() {
+
+    }
 
 }

@@ -1,5 +1,6 @@
 package screens;
 
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.EditTimetableResponseModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;

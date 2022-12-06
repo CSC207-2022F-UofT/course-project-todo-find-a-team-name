@@ -41,7 +41,9 @@ public class RemoveCourseInteractor implements RemoveCourseInputBoundary {
         }
 
         RetrieveTimetableInteractor
-                RTInteractor = new RetrieveTimetableInteractor(timetable, new Session(""));
+                RTInteractor = new RetrieveTimetableInteractor();
+        RTInteractor.setTimetable(timetable);
+        RTInteractor.setSession(new Session(""));
 
         TimetableModel updatedTimetable = RTInteractor.retrieveTimetable();
         EditTimetableResponseModel editTimetableResponseModel =

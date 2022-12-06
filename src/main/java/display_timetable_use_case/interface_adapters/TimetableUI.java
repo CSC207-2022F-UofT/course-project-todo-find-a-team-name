@@ -1,7 +1,14 @@
-package screens;
+package display_timetable_use_case.interface_adapters;
+
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
+import screens.EditTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Class used to display timetable, as well as buttons used to navigate to other screens.
@@ -10,21 +17,27 @@ import java.awt.*;
  *      - timetableView: JPanel that displays the timetable
  *      - prevPanel: previous panel displayed before this panel (null if it doesn't exist)
  */
-public class TimetableUI extends JPanel {
+public class TimetableUI extends JPanel implements ActionListener, ITimetableUI {
 
+    private final DisplayTimetableController displayTimetableController;
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
+    private final EditTimetableScreen editTimetableScreen;
     private JPanel prevPanel = null;
+
 
     /**
      * Constructs TimetableUI from the given TimetableViewModel, containing
      * all information to be displayed in this JPanel
      *
-     * @param timetableViewModel timetable data displayed in this component
+     * @param displayTimetableController controller used for displaying timetable
      */
-    public TimetableUI(TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
-        this.timetableViewModel = timetableViewModel;
+    public TimetableUI(DisplayTimetableController displayTimetableController,
+                       EditTimetableScreen editTimetableScreen){
+        this.displayTimetableController = displayTimetableController;
+        this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
+        this.editTimetableScreen = editTimetableScreen;
 
         setLayout(new BorderLayout());
 
@@ -37,22 +50,10 @@ public class TimetableUI extends JPanel {
         JButton save = new JButton("save");
         JButton edit = new JButton("edit");
         JButton goBack = new JButton("<=");
-
-        match.addActionListener(e -> {
-            // TODO: add match screen
-        });
-
-        save.addActionListener(e -> {
-            // TODO: add save screen
-        });
-
-        edit.addActionListener(e -> changeScreen(editTimetableScreen));
-
-        goBack.addActionListener(e -> {
-            if (prevPanel != null) {
-                changeScreen(prevPanel);
-            }
-        });
+        match.addActionListener(this);
+        save.addActionListener(this);
+        edit.addActionListener(this);
+        goBack.addActionListener(this);
 
         JPanel buttons = new JPanel();
         BoxLayout boxLayout = new BoxLayout(buttons, BoxLayout.LINE_AXIS);
@@ -70,6 +71,7 @@ public class TimetableUI extends JPanel {
         add(pageStart, BorderLayout.PAGE_START);
 
         add(timetableView, BorderLayout.CENTER);
+
     }
 
     /**
@@ -77,12 +79,12 @@ public class TimetableUI extends JPanel {
      * all information to be displayed in this JPanel, with preferred size set to given
      * width and height
      *
-     * @param width width of the preferred size of this component
-     * @param height height of the preferred size of this component
-     * @param timetableViewModel timetable data displayed in this component
+     * @param width                      width of the preferred size of this component
+     * @param height                     height of the preferred size of this component
+     * @param displayTimetableController controller used for displaying timetable
      */
-    public TimetableUI(int width, int height, TimetableViewModel timetableViewModel, EditTimetableScreen editTimetableScreen){
-        this(timetableViewModel, editTimetableScreen);
+    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen, DisplayTimetableController displayTimetableController){
+        this(displayTimetableController, editTimetableScreen);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -126,5 +128,47 @@ public class TimetableUI extends JPanel {
         frame.add(panel);
         frame.revalidate();
         this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        switch (command) {
+            case "match":
+                // TODO: implement match
+                break;
+            case "save":
+                // TODO: implement save
+                break;
+            case "edit":
+                changeScreen(editTimetableScreen);
+                break;
+            case "<=":
+                if (prevPanel != null) {
+                    changeScreen(prevPanel);
+                }
+                break;
+        }
+    }
+
+    /**
+     *
+     */
+    public void updateTimetable(){
+        displayTimetableController.displayTimetable();
+    }
+
+    @Override
+    public void updateTimetable(TimetableViewModel viewModel) {
+        setVisible(false);
+        timetableView.updateViewModel(viewModel);
+        setVisible(true);
+    }
+
+    @Override
+    public void showTimetableFailView(String message) {
+        changeScreen(prevPanel);
+        JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), message);
     }
 }
