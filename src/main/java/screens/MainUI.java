@@ -11,12 +11,16 @@ import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresent
 
 import display_timetable_use_case.interface_adapters.TimetableUI;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.RemoveCourseInteractor;
+import edit_timetable_use_case.application_business.AddCourseInteractor;
+import edit_timetable_use_case.application_business.EditCourseInteractor;
+import edit_timetable_use_case.application_business.RemoveCourseInteractor;
+import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
+import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import entities.*;
 
 
-import edit_timetable_use_case.EditTimetableController;
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
@@ -30,6 +34,7 @@ import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -243,6 +248,7 @@ public class MainUI extends JPanel implements ActionListener {
             }
             case "Edit":
                 changeScreen(editTimetableScreen);
+                editTimetableScreen.updateTimetable();
                 break;
             case "Display": {
                 changeScreen(timetableUI);
@@ -265,12 +271,27 @@ public class MainUI extends JPanel implements ActionListener {
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
+        EditCoursePresenter editCoursePresenter = new EditCoursePresenter();
+        EditCourseInteractor editCourseInteractor = new EditCourseInteractor(editCoursePresenter);
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
         RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
+        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor, editCourseInteractor);
+
+        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+        addCourseInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+
+        DisplayTimetablePresenter displayTimetablePresenter1 = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor displayTimetableInteractor1 = new DisplayTimetableInteractor(displayTimetablePresenter1);
+        DisplayTimetableController displayTimetableController1 = new DisplayTimetableController(displayTimetableInteractor1);
 
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
-        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
+        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController, null, displayTimetableController1);
+        displayTimetablePresenter1.setView(editTimetableScreen);
+        addCoursePresenter.setView(editTimetableScreen);
+        editCoursePresenter.setView(editTimetableScreen);
+        addCoursePresenter.setView(editTimetableScreen);
+        removeCoursePresenter.setView(editTimetableScreen);
+
         editTimetableScreen.setBRWindow(recommendBRWindow);
         editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
 
@@ -323,10 +344,6 @@ public class MainUI extends JPanel implements ActionListener {
         Timetable timetable = new Timetable(courses, "F");
 
         recommendBRPresenter.setView(recommendBRWindow);
-        addCoursePresenter.setView(editTimetableScreen);
-        removeCoursePresenter.setView(editTimetableScreen);
-        addCourseInteractor.setTimetable(timetable);
-        removeCourseInteractor.setTimetable(timetable);
         recommendBRInteractor.setTimetable(timetable);
 
         SessionGateway sessionGateway = new SessionGateway();
@@ -337,6 +354,10 @@ public class MainUI extends JPanel implements ActionListener {
             throw new RuntimeException(e);
         }
         addCourseInteractor.setSession(fSession);
+        addCourseInteractor.setTimetable(timetable);
+        removeCourseInteractor.setTimetable(timetable);
+        editCourseInteractor.setSession(fSession);
+        editCourseInteractor.setTimetable(timetable);
         recommendBRInteractor.onNext(fSession);
 
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
@@ -346,13 +367,15 @@ public class MainUI extends JPanel implements ActionListener {
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
-        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-        displayTimetableInteractor.setTimetable(timetable);
-        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen);
-        displayTimetablePresenter.setView(timetableUI);
+        DisplayTimetablePresenter displayTimetablePresenter2 = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
+        DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
 
+        displayTimetableInteractor2.setTimetable(timetable);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen);
+        displayTimetablePresenter2.setView(timetableUI);
+
+        displayTimetableInteractor1.setTimetable(timetable);
 
         SessionGateway gateway = new SessionGateway();
         SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(gateway);
@@ -360,6 +383,9 @@ public class MainUI extends JPanel implements ActionListener {
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController);
         timetableUI.setPrevPanel(mainUI);
+        editTimetableScreen.setPreviousPanel(mainUI);
+
+
         mainUI.setPreferredSize(new Dimension(1280, 720));
 
         frame.add(mainUI);
