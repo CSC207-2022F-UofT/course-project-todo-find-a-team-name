@@ -1,13 +1,11 @@
 package screens;
 
-import edit_timetable_use_case.EditTimetableRequestModel;
 import edit_timetable_use_case.EditTimetableResponseModel;
-import edit_timetable_use_case.RemoveCourseOutputBoundary;
 import edit_timetable_use_case.TestEditTimetableView;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import retrieve_timetable_use_case.TimetableModel;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 

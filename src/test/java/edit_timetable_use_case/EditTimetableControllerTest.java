@@ -24,11 +24,10 @@ class EditTimetableControllerTest {
     @BeforeEach
     void setUp() {
         try{
-            TimetableCourse c = new TimetableCourse("", new ArrayList<Section>(),
+            TimetableCourse c = new TimetableCourse("", new ArrayList<>(),
                 "", "EGX101", "");
-            ArrayList<TimetableCourse> courses = new ArrayList<TimetableCourse>(List.of(c));
+            ArrayList<TimetableCourse> courses = new ArrayList<>(List.of(c));
             Timetable t = new Timetable(courses, "F");
-            Session s = new Session("F");
             view = new TestEditTimetableView();
             RemoveCourseOutputBoundary RCPresenter = new RemoveCoursePresenter();
             RCPresenter.setView(view);
@@ -53,7 +52,6 @@ class EditTimetableControllerTest {
     void removeSucceeds() {
         try {
             controller.remove("EGX101");
-            assertTrue(true);
         }
         catch (RemoveCourseFailedException e){
             fail("This call should not have resulted in a RemoveCourseFailedException.");
