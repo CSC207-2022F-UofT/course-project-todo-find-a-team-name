@@ -39,11 +39,11 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
     @Override
     public void timetablesSort(TimetablesSortRequestModel request) {
         List<Timetable> timetableArrayList = new ArrayList<>();
-        for (int i = 0; i < timetables.length; i++) {
-            double score = getTimeScore(timetables[i], request.getTimeButton());
-            score += getBreakScore(timetables[i], request.getBreakButton());
-            timetables[i].setScore(score);
-            timetableArrayList.add(timetables[i]);
+        for (Timetable timetable : timetables) {
+            double score = getTimeScore(timetable, request.getTimeButton());
+            score += getBreakScore(timetable, request.getBreakButton());
+            timetable.setScore(score);
+            timetableArrayList.add(timetable);
         }
 
         Collections.sort(timetableArrayList);
@@ -91,12 +91,12 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
         double score = 0;
         int count = 0;
         List<TimetableCourse> courses = timetable.getCourseList();
-        for (int i = 0; i < courses.size(); i++) {
-            List<Section> sections = courses.get(i).getSections();
-            for (int j = 0; j < sections.size(); j++) {
-                List<Block> blocks = sections.get(j).getBlocks();
-                for (int k = 0; k < blocks.size(); k++) {
-                    score += blocks.get(k).getStartTime();
+        for (TimetableCourse course : courses) {
+            List<Section> sections = course.getSections();
+            for (Section section : sections) {
+                List<Block> blocks = section.getBlocks();
+                for (Block block : blocks) {
+                    score += block.getStartTime();
                     count++;
                 }
             }
@@ -134,15 +134,13 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
         }
 //      sorry this one is so bad, I can't brain anymore
         List<TimetableCourse> courses = timetable.getCourseList();
-        for (int i = 0; i < courses.size(); i++) {
-            List<Section> sections = courses.get(i).getSections();
-            for (int j = 0; j < sections.size(); j++) {
-                List<Block> blocks = sections.get(j).getBlocks();
-                for (int k = 0; k < blocks.size(); k++) {
-                    Block block = blocks.get(k);
+        for (TimetableCourse course : courses) {
+            List<Section> sections = course.getSections();
+            for (Section section : sections) {
+                List<Block> blocks = section.getBlocks();
+                for (Block block : blocks) {
                     List<Double> tableDay = table[block.getDay()];
-                    for (int l = 0; l < tableDay.size(); l++) {
-                        double start = tableDay.get(l);
+                    for (double start : tableDay) {
                         double end = block.getEndTime();
                         if ((start + 0.1 > end) && (end + 0.1 > start)) {
                             count++;
@@ -167,8 +165,8 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
             List<Section> sections = courses.get(i).getSections();
             for (int j = 0; j < sections.size(); j++) {
                 List<Block> blocks = sections.get(i).getBlocks();
-                for (int k = 0; k < blocks.size(); k++) {
-                    days[blocks.get(k).getDay()] = 0;
+                for (Block block : blocks) {
+                    days[block.getDay()] = 0;
                 }
             }
         }
