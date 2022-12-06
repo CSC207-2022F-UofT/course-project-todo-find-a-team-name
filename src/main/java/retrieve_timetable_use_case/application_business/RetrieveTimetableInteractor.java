@@ -1,10 +1,8 @@
 package retrieve_timetable_use_case.application_business;
 
-import entities.Course;
 import entities.Session;
 import entities.Timetable;
 
-import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
 /**
@@ -63,13 +61,8 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public TimetableModel retrieveTimetable(){
-        ArrayList<CourseModel> courses = new ArrayList<>();
-        for (Course course : timetable.getCourseList()){
-            courses.add(EntityConverter.generateCourseResponse(course));
-        }
-        return new TimetableModel(courses);
+        return EntityConverter.generateTimetableResponse(timetable);
     }
-
 
     /**
      * @param subscription a new subscription.
