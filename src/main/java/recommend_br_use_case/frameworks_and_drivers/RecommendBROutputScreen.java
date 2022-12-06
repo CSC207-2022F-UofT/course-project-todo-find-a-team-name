@@ -1,6 +1,6 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
-import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import entities.InvalidSectionsException;
 
 import javax.swing.*;

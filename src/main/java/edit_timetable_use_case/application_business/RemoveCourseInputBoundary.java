@@ -1,6 +1,4 @@
-package edit_timetable_use_case;
-
-import entities.Timetable;
+package edit_timetable_use_case.application_business;
 
 /**
  * The input boundary used in the RemoveCourse use case.
@@ -13,9 +11,4 @@ public interface RemoveCourseInputBoundary {
      * timetable contains no such course that has the input course code.
      */
     void remove(EditTimetableRequestModel requestModel) throws RemoveCourseFailedException;
-
-    /**
-     * @param timetable the Timetable from which the course is to be removed. Must be set before using the interactor.
-     */
-    void setTimetable(Timetable timetable);
 }

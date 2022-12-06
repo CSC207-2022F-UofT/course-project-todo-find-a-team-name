@@ -1,6 +1,7 @@
 package screens;
 
 // TODO: Remove these imports (It's used for main)
+
 import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
@@ -9,21 +10,7 @@ import display_timetable_use_case.application_business.DisplayTimetableInteracto
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.RemoveCourseInteractor;
-import entities.*;
-
-
-import edit_timetable_use_case.EditTimetableController;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import org.json.simple.parser.ParseException;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -31,9 +18,6 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -204,6 +188,7 @@ public class MainUI extends JPanel implements ActionListener {
 
     // TODO: Remove this
     public static void main(String[] args) {
+        /*
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
@@ -309,5 +294,7 @@ public class MainUI extends JPanel implements ActionListener {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+         */
     }
 }

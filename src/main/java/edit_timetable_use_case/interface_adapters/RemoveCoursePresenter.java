@@ -1,8 +1,8 @@
-package screens;
+package edit_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.RemoveCourseOutputBoundary;
-import edit_timetable_use_case.EditTimetableResponseModel;
+import edit_timetable_use_case.application_business.EditTimetableResponseModel;
+import edit_timetable_use_case.application_business.RemoveCourseOutputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
@@ -16,10 +16,6 @@ public class RemoveCoursePresenter implements RemoveCourseOutputBoundary {
     private EditTimetableView view;
 
     public RemoveCoursePresenter(){}
-    public RemoveCoursePresenter(EditTimetableView view){
-        this.view = view;
-    }
-
     /**
      * @param responseModel The response model passed by the interactor.
      *                      This method updates the view with a timetable view model representing the new

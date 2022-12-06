@@ -1,4 +1,4 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 import java.util.List;
 
@@ -13,21 +13,16 @@ public class EditTimetableRequestModel {
     private final String courseCode;
     private final List<String> sectionCodes;
 
-    EditTimetableRequestModel(String courseCode,List<String> sectionCodes){
+
+    public EditTimetableRequestModel(String courseCode, List<String> sectionCodes){
         this.courseCode = courseCode;
         this.sectionCodes = sectionCodes;
     }
 
-    /**
-     * @return the course code stored in the request.
-     */
     String getCourseCode(){
         return this.courseCode;
     }
 
-    /**
-     * @return the section codes stored in the request.
-     */
     List<String> getSectionCodes(){
         return this.sectionCodes;
     }

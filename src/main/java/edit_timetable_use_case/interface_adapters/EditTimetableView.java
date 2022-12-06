@@ -1,4 +1,4 @@
-package screens;
+package edit_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 

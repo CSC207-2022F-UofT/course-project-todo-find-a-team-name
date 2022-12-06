@@ -1,6 +1,4 @@
-package edit_timetable_use_case;
-
-import screens.EditTimetableView;
+package edit_timetable_use_case.application_business;
 
 /**
  * The output boundary of the RemoveCourse use case.
@@ -12,6 +10,4 @@ public interface RemoveCourseOutputBoundary {
      * @throws RemoveCourseFailedException when the course code does not match any of the Timetable's courses.
      */
     void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException;
-
-    void setView(EditTimetableView view);
 }

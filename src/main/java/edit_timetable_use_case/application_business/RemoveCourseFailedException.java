@@ -1,4 +1,4 @@
-package edit_timetable_use_case;
+package edit_timetable_use_case.application_business;
 
 /**
  * An exception that is raised when the user attempts to remove a course from a timetable, but fails.

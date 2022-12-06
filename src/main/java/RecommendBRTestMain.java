@@ -1,38 +1,32 @@
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.EditTimetableController;
-import edit_timetable_use_case.RemoveCourseInteractor;
-import entities.*;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import entities.Block;
+import entities.CalendarCourse;
+import entities.Section;
+import entities.Session;
 import org.json.simple.parser.ParseException;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
-import screens.*;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 // This method for testing purposes only during development
 // TODO: remove this class
 public class RecommendBRTestMain {
     public static void main(String[] args) throws IOException, ParseException {
+    /*public static void main(String[] args) {
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter);
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
 
         AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
         AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
         RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
         RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
+        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor, editCourseInteractor);
 
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
         EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
