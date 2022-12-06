@@ -66,6 +66,7 @@ public class MainUI extends JPanel implements ActionListener {
     private final EditTimetableScreen editTimetableScreen;
     private final TimetableUI timetableUI;
     private final JFrame frame;
+    private final JPanel timetablePanel;
 
     /**
      * Constructs MainUI with title, import timetable/session buttons, and display/edit/generate timetable buttons.
@@ -94,7 +95,7 @@ public class MainUI extends JPanel implements ActionListener {
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
 
-        JPanel timetablePanel = createTimetablePanel();
+        timetablePanel = createTimetablePanel();
 
         JButton generateTimetable = new JButton("Generate timetable");
         generateTimetable.addActionListener(this);
@@ -115,7 +116,7 @@ public class MainUI extends JPanel implements ActionListener {
     }
 
     /**
-     * Create and return panel that allow user to import, edit and display existing timetable.
+     * Create and return panel that allow user to import existing timetable.
      * filePathTimetable instance attribute is also updated to the JLabel representing the current
      * file path imported for timetable
      *
@@ -125,7 +126,7 @@ public class MainUI extends JPanel implements ActionListener {
         JPanel timetablePanel = new JPanel();
         timetablePanel.setLayout(new BoxLayout(timetablePanel, BoxLayout.PAGE_AXIS));
 
-        TitledBorder timetableBorder = BorderFactory.createTitledBorder("Existing Timetable Operations");
+        TitledBorder timetableBorder = BorderFactory.createTitledBorder("");
         timetableBorder.setTitleJustification(TitledBorder.CENTER);
         timetablePanel.setBorder(timetableBorder);
         JPanel importTimetablePanel = new JPanel();
@@ -136,7 +137,13 @@ public class MainUI extends JPanel implements ActionListener {
         importTimetablePanel.add(timetableFilePath);
 
         timetablePanel.add(importTimetablePanel);
+        return timetablePanel;
+    }
 
+    /**
+     * Add edit and display button to timetablePanel located at the top-center of the screen
+     */
+    private void addTimetableButtons(){
         JPanel timetableButtons = new JPanel();
         JButton editButton = new JButton("Edit");
         editButton.addActionListener(this);
@@ -146,7 +153,6 @@ public class MainUI extends JPanel implements ActionListener {
         timetableButtons.add(editButton);
         timetableButtons.add(displayButton);
         timetablePanel.add(timetableButtons);
-        return timetablePanel;
     }
 
     /**
@@ -162,11 +168,6 @@ public class MainUI extends JPanel implements ActionListener {
         importSessionPanel.setLayout(new BoxLayout(importSessionPanel, BoxLayout.PAGE_AXIS));
         JPanel importFallSessionPanel = new JPanel();
         JPanel importWinterSessionPanel = new JPanel();
-
-//        // Creates border for each session panel
-//        TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
-//        importFallSessionPanel.setBorder(sessionBorder);
-//        importWinterSessionPanel.setBorder(sessionBorder);
 
         // Import fall session button
         JButton importFallSession = new JButton("Import fall session");
@@ -216,6 +217,7 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     timetableFilePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                    addTimetableButtons();
                 }
                 break;
             }
