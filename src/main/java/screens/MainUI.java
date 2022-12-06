@@ -15,6 +15,9 @@ import entities.*;
 import edit_timetable_use_case.EditTimetableController;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
+import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
+import overlap_crap_fix_locations_later.OverlapMaximizationController;
+import overlap_crap_fix_locations_later.TimeTableMatchInteractor;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
@@ -31,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -295,7 +299,39 @@ public class MainUI extends JPanel implements ActionListener {
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         displayTimetableInteractor.setTimetable(timetable);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen);
+
+        CalculateSectionHoursInteractor calculateSectionHoursInteractor = new CalculateSectionHoursInteractor();
+        TimeTableMatchInteractor timeTableMatchInteractor = new TimeTableMatchInteractor(calculateSectionHoursInteractor);
+
+        OverlapMaximizationController overlapMaximizationController
+                = new OverlapMaximizationController(timeTableMatchInteractor, new Flow.Processor() {
+            @Override
+            public void subscribe(Flow.Subscriber subscriber) {
+
+            }
+
+            @Override
+            public void onSubscribe(Flow.Subscription subscription) {
+
+            }
+
+            @Override
+            public void onNext(Object item) {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen, overlapMaximizationController);
         displayTimetablePresenter.setView(timetableUI);
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);

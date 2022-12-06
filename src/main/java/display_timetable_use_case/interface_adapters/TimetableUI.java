@@ -2,6 +2,7 @@ package display_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
+import overlap_crap_fix_locations_later.OverlapMaximizationController;
 import screens.EditTimetableScreen;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
     private final EditTimetableScreen editTimetableScreen;
+    private final OverlapMaximizationController overlapMaximizationController;
     private JPanel prevPanel = null;
 
 
@@ -33,11 +35,13 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * @param displayTimetableController controller used for displaying timetable
      */
     public TimetableUI(DisplayTimetableController displayTimetableController,
-                       EditTimetableScreen editTimetableScreen){
+                       EditTimetableScreen editTimetableScreen,
+                       OverlapMaximizationController overlapMaximizationController){
         this.displayTimetableController = displayTimetableController;
         this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
         this.editTimetableScreen = editTimetableScreen;
+        this.overlapMaximizationController = overlapMaximizationController;
 
         setLayout(new BorderLayout());
 
@@ -83,8 +87,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * @param height                     height of the preferred size of this component
      * @param displayTimetableController controller used for displaying timetable
      */
-    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen, DisplayTimetableController displayTimetableController){
-        this(displayTimetableController, editTimetableScreen);
+    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen,
+                       DisplayTimetableController displayTimetableController,
+                       OverlapMaximizationController overlapMaximizationController){
+        this(displayTimetableController, editTimetableScreen, overlapMaximizationController);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -136,7 +142,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
 
         switch (command) {
             case "match":
-                // TODO: implement match
+                overlapMaximizationController.getBestMatchingTimetable();
                 break;
             case "save":
                 // TODO: implement save
@@ -153,13 +159,17 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     }
 
     /**
-     *
+     * Update the timetable for this view to the imported timetable
      */
     public void updateTimetable(){
         displayTimetableController.displayTimetable();
     }
 
-
+    /**
+     * Update the timetable for this view to the given timetable view model
+     *
+     * @param viewModel object storing all information needed for displaying timetable
+     */
     @Override
     public void updateTimetable(TimetableViewModel viewModel) {
         setVisible(false);
@@ -167,6 +177,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
         setVisible(true);
     }
 
+    /**
+     * Show message to the user
+     * @param message error message
+     */
     @Override
     public void showTimetableFailView(String message) {
         changeScreen(prevPanel);
