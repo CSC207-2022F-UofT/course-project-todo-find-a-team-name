@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RecommendBRPresenter implements RecommendBROutputBoundary {
 
-    IRecommendBRView view;
+    private IRecommendBRView view;
 
     /**
      * Constructs RecommendBRPresenter with view set to null
