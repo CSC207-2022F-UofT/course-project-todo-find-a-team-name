@@ -5,6 +5,7 @@ import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
+import entities.InvalidSectionsException;
 import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
@@ -104,7 +105,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         Session fall;
         try {
             fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (ParseException | IOException e) {
+        } catch (ParseException | IOException | InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
         JPanel fakeJDScreen= new JPanel();

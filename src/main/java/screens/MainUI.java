@@ -1,7 +1,10 @@
 package screens;
 
 // TODO: Remove these imports (It's used for main)
-import blacklist_whitelist_use_case.SectionFilterInteractor;
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
@@ -285,7 +288,8 @@ public class MainUI extends JPanel implements ActionListener {
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInteractor);
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(sectionFilterController1);
+
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController1);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
         TimetableUI timetableUI = new TimetableUI(new TimetableViewModel(new ArrayList<>()), editTimetableScreen);
