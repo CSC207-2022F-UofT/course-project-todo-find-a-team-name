@@ -20,8 +20,8 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
     }
 
     /**
-     *
-     * @param responseModel: a response model that contains the timetables that the User wants to sort
+     * converts into a TimeTableViewModel array to prepare it for the screen then updates view
+     * @param responseModel: a response model that contains the updated TimeTableModels
      */
     @Override
     public void prepareView(TimetablesSortResponseModel responseModel) {
@@ -34,10 +34,6 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
         view.updateTimetables(timetablesViewModel);
     }
 
-    /**
-     *
-     * @param view the AllTimetablesView that the presenter updates
-     */
     @Override
     public void setView(AllTimetablesView view) {
         this.view = view;

@@ -16,7 +16,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *  An implementation of AllTimetablesView in JSwing.
+ *  ttViews are the timetable views that the user browses through
+ *  timetablesPanel contains all the ttViews
+ */
 public class AllTimetablesScreen extends JPanel implements ActionListener, AllTimetablesView {
 
     private final JFrame frame;
@@ -71,6 +75,9 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         }
     }
 
+    /**
+     * prepare a TimeTablesSortMenu and display it instead of this
+     */
     public void openTimetablesSortMenu() {
         if (timetablesSortMenu != null) {
             timetablesSortMenu.setVisible(false);
@@ -83,6 +90,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         this.frame.pack();
     }
 
+    /**
+     * Takes in an array of TimetableViewModels and updates previous ttViews with these timetables
+     * gets set to visible at the end to show the change
+     * @param timetableViewModels the updated timetables that we want to present
+     */
     public void updateTimetables(TimetableViewModel[] timetableViewModels) {
         this.timetableViewModels = timetableViewModels;
         if (ttViews == null) {
