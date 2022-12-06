@@ -23,7 +23,7 @@ public class RecommendBRTestMain {
     public static void main(String[] args) throws IOException, ParseException {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
