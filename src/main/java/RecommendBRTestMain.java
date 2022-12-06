@@ -23,7 +23,7 @@ public class RecommendBRTestMain {
     public static void main(String[] args) throws IOException, ParseException {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
@@ -49,10 +49,15 @@ public class RecommendBRTestMain {
         recommendBRInteractor.setTimetable(timetable);
 
         SessionGateway sessionGateway = new SessionGateway();
-        Session fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+        Session fSession;
+        try {
+            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
 
         addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFallSession(fSession);
+        recommendBRInteractor.onNext(fSession);
 
         frame.add(editTimetableScreen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
