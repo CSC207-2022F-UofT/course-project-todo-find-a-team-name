@@ -11,7 +11,7 @@ public interface TimetablesSortInputBoundary {
      * sorts timetables by the User's preferences
      * @param request a SorterRequestModel that contains the stringified version of preferences selected
      */
-    void sort(TimetablesSortRequestModel request);
+    void timetablesSort(TimetablesSortRequestModel request);
 
     void setTimetables(Timetable[] timetables);
     void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor);

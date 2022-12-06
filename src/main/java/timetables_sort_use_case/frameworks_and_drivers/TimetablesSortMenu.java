@@ -1,7 +1,5 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
-import timetables_sort_use_case.interface_adapters.TimetablesSortController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -106,10 +104,9 @@ public class TimetablesSortMenu extends JPanel implements ActionListener {
                 for (JRadioButton breakButton : breakButtons) {
                     if (breakButton.isSelected()) {
                         bool = false;
-                        allTimetablesScreen.sort(timeButton.getText(), breakButton.getText());
                         this.setVisible(false);
-                        allTimetablesScreen.setVisible(true);
-                        this.frame.pack();
+                        allTimetablesScreen.timetablesSort(timeButton.getText(), breakButton.getText());
+                        this.frame.setSize(1280, 720);
                     }
                 }
             }

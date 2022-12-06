@@ -1,18 +1,24 @@
 package timetables_sort_use_case.application_business;
 
+import entities.Block;
+import entities.Section;
 import entities.Timetable;
+import entities.TimetableCourse;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
-import java.util.concurrent.Flow;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static java.lang.Math.abs;
 
 /**
  * A concrete implementation of the SorterInputBoundary, used in the timetables sort use case.
  * timetables are the timetables being reordered.
  * presenter is the SorterOutputBoundary that updates in response to the user's input
- * TODO: the actual thing and flow stuff
  */
-public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Flow.Subscriber<Object> {
+public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
 
     private Timetable[] timetables;
     private final TimetablesSortOutputBoundary presenter;
@@ -23,14 +29,62 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     }
 
     @Override
-    public void sort(TimetablesSortRequestModel request) {
+    public void timetablesSort(TimetablesSortRequestModel request) {
+        List<Timetable> timetableArrayList = new ArrayList<>();
+        for (int i = 0; i < timetables.length; i++) {
+            double score = getTimeScore(timetables[i], request.getTimeButton());
+            score += getBreakScore(timetables[i], request.getBreakButton());
+            timetables[i].setScore(score);
+            timetableArrayList.add(timetables[i]);
+        }
+
+        Collections.sort(timetableArrayList);
+        for (int i = 0; i < timetables.length; i++) {
+            timetables[i] = timetableArrayList.get(i);
+        }
+
         TimetableModel[] timetablesModel = new TimetableModel[timetables.length];
         for(int i = 0; i < timetables.length; i++) {
             retrieveInteractor.setTimetable(timetables[i]);
             timetablesModel[i] = retrieveInteractor.retrieveTimetable();
         }
-         TimetablesSortResponseModel response = new TimetablesSortResponseModel(timetablesModel);
+
+        TimetablesSortResponseModel response = new TimetablesSortResponseModel(timetablesModel);
         presenter.prepareView(response);
+    }
+
+    private double getTimeScore(Timetable timetable, String timeButton) {
+        double score = getRawTimeScore(timetable);
+        if (timeButton.contains("morning")) {
+            return (-score);
+        } else if (timeButton.contains("afternoon")) {
+            return -abs((score - 2));
+        } else if (timeButton.contains("evening")) {
+            return score;
+        } else {
+            return 0;
+        }
+    }
+
+    private double getRawTimeScore(Timetable timetable) {
+        double score = 0;
+        int count = 0;
+        List<TimetableCourse> courses = timetable.getCourseList();
+        for (int i = 0; i < courses.size(); i++) {
+            List<Section> sections = courses.get(i).getSections();
+            for (int j = 0; j < sections.size(); j++) {
+                List<Block> blocks = sections.get(i).getBlocks();
+                for (int k = 0; k < blocks.size(); k++) {
+                    score += blocks.get(i).getStartTime();
+                    count++;
+                }
+            }
+        }
+        return score / count;
+    }
+
+    private double getBreakScore(Timetable timetable, String breakButton) {
+        return 0;
     }
 
     /**
@@ -49,48 +103,5 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     @Override
     public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor) {
         this.retrieveInteractor = retrieveInteractor;
-    }
-
-    /**
-     *
-     * @param retrieveInteractor the RetrieveTimetableInputBoundary used to create view models of the updated timetables
-     */
-    public void setRetrieveInputBoundary(RetrieveTimetableInputBoundary retrieveInteractor) {
-        this.retrieveInteractor = retrieveInteractor;
-    }
-
-    /**
-     * @param subscription a new subscription.
-     *                     A method called when the interactor subscribes to a new Subscription, currently does nothing.
-     */
-    @Override
-    public void onSubscribe(Flow.Subscription subscription) {
-
-    }
-
-    /**
-     *
-     * @param item
-     */
-    @Override
-    public void onNext(Object item) {
-
-    }
-    /**
-     * @param throwable the exception encountered by either the Subscriber or Publisher.
-     *                  This method is called when a throwable is thrown by the Subscriber or Publisher, and
-     *                  currently does nothing.
-     */
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
-    /**
-     * Method invoked when no other Subscriber method invocations will occur. Does nothing currently.
-     */
-    @Override
-    public void onComplete() {
-
     }
 }

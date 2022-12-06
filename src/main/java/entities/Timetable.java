@@ -4,14 +4,16 @@ import java.util.*;
 /** An implementation of the timetable which stores all of the timetablecourses
  * each timetable block either is empty or corresponds to a Timetable course.
  */
-public class Timetable {
+public class Timetable implements Comparable<Timetable> {
     private ArrayList<TimetableCourse> courseList;
     private String sessionType;
+    private double score;
     
     public Timetable(ArrayList<TimetableCourse> timetableCourses, String sessionType){
         this.courseList = new ArrayList<TimetableCourse>();
         this.courseList.addAll(timetableCourses);
         this.sessionType = sessionType;
+        this.score = 0;
     }
     // Adds course
     public void AddToCourseList(TimetableCourse course){
@@ -60,6 +62,15 @@ public class Timetable {
     }
     public ArrayList<TimetableCourse> getCourseList() {
         return courseList;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    @Override
+    public int compareTo(Timetable o) {
+        return Double.compare(score, o.score);
     }
 }
 
