@@ -96,8 +96,8 @@ class RecommendBRInteractorTest {
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "early");
-        recommendBRInteractor.setFallSession(session);
-        recommendBRInteractor.setTimetable(timetable);
+        recommendBRInteractor.onNext(session);
+        recommendBRInteractor.onNext(timetable);
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -130,7 +130,6 @@ class RecommendBRInteractorTest {
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "balanced");
         recommendBRInteractor.setTimetable(timetable);
-        recommendBRInteractor.setWinterSession(new Session("S"));
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -161,8 +160,7 @@ class RecommendBRInteractorTest {
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "balanced");
-        recommendBRInteractor.setFallSession(new Session("F"));
-        recommendBRInteractor.setWinterSession(new Session("S"));
+        recommendBRInteractor.onNext(new Session("F"));
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -199,8 +197,7 @@ class RecommendBRInteractorTest {
         fallSession.addCourse(new CalendarCourse("testCourse", new ArrayList<>(), "F", "TEST1", "1"));
         fallSession.addCourse(new CalendarCourse("testCourse2", new ArrayList<>(), "F", "TEST2", "4"));
         fallSession.addCourse(new CalendarCourse("testCourse3", new ArrayList<>(), "F", "TEST3", "1"));
-        recommendBRInteractor.setFallSession(fallSession);
-        recommendBRInteractor.setWinterSession(new Session("S"));
+        recommendBRInteractor.onNext(fallSession);
         recommendBRInteractor.setTimetable(new Timetable(new ArrayList<>(), "F"));
         recommendBRInteractor.recommendBr(requestModel);
     }
