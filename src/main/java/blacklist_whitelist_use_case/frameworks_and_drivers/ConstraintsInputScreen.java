@@ -21,6 +21,8 @@ import java.util.ArrayList;
  * Main Screen for BlackListWhiteList use case, where user enters course codes and constraints they want to apply.
  */
 public class ConstraintsInputScreen extends JPanel implements ActionListener, ISectionFilterView {
+    private JPanel prevPanel = null;
+    private final JButton prev = new JButton("<-");
     private final JPanel generateTimeTableScreen;
     private final SectionFilterController sectionFilterController;
     private final String[] CONSTRAINT_LIST_TYPE = {"/", "BLACKLIST", "WHITELIST"};
@@ -63,7 +65,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JLabel title = new JLabel("ConstraintsInput Screen");
         title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         title.setHorizontalAlignment(JLabel.CENTER);
-        this.setSize(400, 800);
 
 
         submit.addActionListener(this);
@@ -84,6 +85,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel buttons = new JPanel();
         buttons.add(submit);
         buttons.add(help);
+        buttons.add(prev);
+        prev.addActionListener(this);
         help.addActionListener(this);
         this.add(title, BorderLayout.PAGE_START);
         panel.add(courseInput);
@@ -113,18 +116,40 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        CardLayout cardLayout = new CardLayout();
-        JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
         sectionFilterInterator.onNext(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
+        c.setPrevPanel(fakeJDScreen);
         sectionFilterPresenter.setView(c);
-        screens.add(c, "hi");
-        jFrame.add(screens);
+        jFrame.add(c);
         jFrame.setVisible(true);
     }
+
+    /**
+     * Set previous panel of this panel to the given panel
+     *
+     * @param prevPanel new panel set to previous panel
+     */
+    public void setPrevPanel(JPanel prevPanel) {
+        this.prevPanel = prevPanel;
+    }
+
+    /**
+     * Change the screen of the frame to the given panel
+     *
+     * @param panel new screen
+     */
+    private void changeScreen(JPanel panel){
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        this.setVisible(false);
+        frame.getContentPane().removeAll();
+        frame.add(panel);
+        frame.revalidate();
+        this.setVisible(true);
+    }
+
 
     /**
      * Invoked when an action occurs.
@@ -157,6 +182,10 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             JDialog helpDialogue = new HelpInstructionScreen();
             helpDialogue.setVisible(true);
         }
+        if (e.getSource() == prev){
+            changeScreen(prevPanel);
+        }
+
     }
 
     @Override
