@@ -7,8 +7,8 @@ import java.util.HashSet;
  */
 public class RecommendBRRequestModel {
 
-    private HashSet<String> brCategoriesSelected;
-    private String preferredTime;
+    private final HashSet<String> brCategoriesSelected;
+    private final String preferredTime;
 
     /**
      * Constructs RecommendBRRequestModel with the given timetableID, set of breadth categories selected,
@@ -38,23 +38,5 @@ public class RecommendBRRequestModel {
      */
     public String getPreferredTime() {
         return preferredTime;
-    }
-
-    /**
-     * Set breadth categories of this request model to the given set of breadth categories
-     *
-     * @param brCategoriesSelected new set of breadth categories represented by "1", "2", "3", "4", or "5"
-     */
-    public void setBrCategoriesSelected(HashSet<String> brCategoriesSelected) {
-        this.brCategoriesSelected = brCategoriesSelected;
-    }
-
-    /**
-     * Set preferred time of this request model to the given preferred time
-     *
-     * @param preferredTime new preferred time represented by "early", "balanced", "late", or "don't care"
-     */
-    public void setPreferredTime(String preferredTime) {
-        this.preferredTime = preferredTime;
     }
 }

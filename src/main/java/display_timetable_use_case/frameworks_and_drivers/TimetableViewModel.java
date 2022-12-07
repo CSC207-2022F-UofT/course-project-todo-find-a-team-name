@@ -59,6 +59,15 @@ public class TimetableViewModel {
     public int hashCode() {
         return Objects.hash(new HashSet<>(timetableCourseData));
     }
+
+    public TimetableViewCourseModel getCourse(String courseCode){
+        for (TimetableViewCourseModel course : timetableCourseData){
+            if (course.getCode().equals(courseCode)){
+                return course;
+            }
+        }
+        return null;
+    }
 }
 
 
