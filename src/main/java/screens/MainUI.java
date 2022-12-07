@@ -6,11 +6,7 @@ import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScree
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 
-import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.application_business.AddCourseInteractor;
 import edit_timetable_use_case.application_business.EditCourseInteractor;
 import edit_timetable_use_case.application_business.RemoveCourseInteractor;
@@ -22,8 +18,6 @@ import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
 
 
@@ -264,6 +258,7 @@ public class MainUI extends JPanel implements ActionListener {
             case "Edit":
                 changeScreen(editTimetableScreen);
                 editTimetableScreen.updateTimetable();
+                editTimetableScreen.setPreviousPanel(this);
                 break;
             case "Display": {
                 changeScreen(timetableUI);
@@ -382,21 +377,14 @@ public class MainUI extends JPanel implements ActionListener {
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
-        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-        displayTimetableInteractor.setTimetable(timetable);
-        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-
         OverlapInputDialog overlapInputDialog = new OverlapInputDialog(new ArrayList<>(), sectionFilterController);
 
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen, overlapInputDialog);
-        displayTimetablePresenter.setView(timetableUI);
         DisplayTimetablePresenter displayTimetablePresenter2 = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
 
         displayTimetableInteractor2.setTimetable(timetable);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog);
         displayTimetablePresenter2.setView(timetableUI);
 
         displayTimetableInteractor1.setTimetable(timetable);

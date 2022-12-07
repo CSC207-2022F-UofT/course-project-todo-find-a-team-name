@@ -3,9 +3,6 @@ package display_timetable_use_case.frameworks_and_drivers;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.ITimetableUI;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
-import screens.EditTimetableScreen;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
@@ -135,10 +132,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private void changeScreen(JPanel panel){
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         this.setVisible(false);
-        frame.getContentPane().removeAll();
+        frame.getContentPane().remove(this);
         frame.add(panel);
         frame.revalidate();
-        this.setVisible(true);
+        panel.setVisible(true);
     }
 
     /**
@@ -158,6 +155,8 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
+                editTimetableScreen.updateTimetable();
+                editTimetableScreen.setPreviousPanel(this);
                 break;
             case "<=":
                 if (prevPanel != null) {
