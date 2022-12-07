@@ -1,15 +1,23 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.application_business.DisplayTimetableInputBoundary;
+import display_timetable_use_case.application_business.DisplayTimetableInteractor;
+import display_timetable_use_case.application_business.DisplayTimetableOutputBoundary;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 import display_timetable_use_case.interface_adapters.*;
 
 import entities.*;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
-
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import timetables_sort_use_case.application_business.*;
+import timetables_sort_use_case.interface_adapters.AllTimetablesController;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
 import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +38,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     private final JPanel timetablesPanel;
     private TimetablesSortMenu timetablesSortMenu;
     private final TimetablesSortController controller;
-    public AllTimetablesScreen(JFrame frame, TimetablesSortController controller) {
+    private final DisplayTimetableController displayTimetableController;
+    private final AllTimetablesController allTimetablesController;
+    public AllTimetablesScreen(JFrame frame, TimetablesSortController controller,
+                               DisplayTimetableController displayTimetableController,
+                               AllTimetablesController allTimetablesController) {
         this.frame = frame;
         this.controller = controller;
         this.ttViews = null;
@@ -38,6 +50,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         JPanel timetablesPanel = new JPanel();
         this.timetablesPanel = timetablesPanel;
         this.timetablesSortMenu = null;
+        this.displayTimetableController = displayTimetableController;
+        this.allTimetablesController = allTimetablesController;
 
         JPanel top = new JPanel();
         top.setSize(100, 100);
@@ -72,7 +86,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         } else {
             int i = e.getActionCommand().length() - 1;
             TimetableViewModel timetable = this.timetableViewModels[i];
-
+            openTimetableUI(timetable);
         }
     }
 
@@ -90,6 +104,12 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         timetablesSortMenu.setVisible(true);
         this.frame.pack();
     }
+    public void openTimetableUI(TimetableViewModel timetable) {
+        allTimetablesController.setTTUI(timetable);
+        // TODO make a controller that updates his interactor's timetable and flow to everyone
+        displayTimetableController.displayTimetable();
+    }
+
 
     /**
      * Takes in an array of TimetableViewModels and updates previous ttViews with these timetables
@@ -221,23 +241,29 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        /*
-        use case 1's initialization:
 
-         */
+
         TimetablesSortOutputBoundary timetablesSortPresenter = new TimetablesSortPresenter();
         TimetablesSortInputBoundary timetablesSortInteractor = new TimetablesSortInteractor(timetablesSortPresenter);
-        timetablesSortInteractor.setTimetables(timetables);
         AllTimetablesInputBoundary allTimetablesPublisher = new AllTimetablesPublisher();
         TimetablesSortController timetablesSortController =
                 new TimetablesSortController(timetablesSortInteractor, allTimetablesPublisher);
+        timetablesSortInteractor.setTimetables(timetables);
         RetrieveTimetableInputBoundary retrieveTimetableInteractor = new RetrieveTimetableInteractor();
         timetablesSortInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, timetablesSortController);
+        DisplayTimetableOutputBoundary displayTimetablePresenter = new DisplayTimetablePresenter();
+        DisplayTimetableInputBoundary displayTimetableInteractor =
+                new DisplayTimetableInteractor(displayTimetablePresenter);
+        DisplayTimetableController displayTimetableController =
+                new DisplayTimetableController(displayTimetableInteractor);
+        AllTimetablesController allTimetablesController =
+                new AllTimetablesController(displayTimetableInteractor, allTimetablesPublisher);
+        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, timetablesSortController,
+                displayTimetableController, allTimetablesController);
         allTimetablesScreen.updateTimetables(timetableViewModels);
         timetablesSortPresenter.setView(allTimetablesScreen);
-
         frame.add(allTimetablesScreen);
+
         frame.setSize(1280, 720);
         frame.setVisible(true);
     }

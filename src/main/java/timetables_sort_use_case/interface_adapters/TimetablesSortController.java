@@ -14,6 +14,7 @@ public class TimetablesSortController {
 
     public TimetablesSortController(TimetablesSortInputBoundary interactor, AllTimetablesInputBoundary publisher){
         this.interactor = interactor;
+        this.publisher = publisher;
     }
 
     /**
