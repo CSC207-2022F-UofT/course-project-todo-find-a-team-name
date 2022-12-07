@@ -15,10 +15,12 @@ import java.util.concurrent.Flow.Subscriber;
  * Generates all possible Timetables
  */
 
-public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoundary, Subscriber<Object>{
+public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoundary, Subscriber<Object>,
+        Flow.Publisher<Object> {
 
     private Session session;
     private final TimetableGeneratorOutputBoundary presenter;
+    private final ArrayList<Flow.Subscriber<Object>> subscribers = new ArrayList<>();
 
     public TimetableGeneratorInteractor(TimetableGeneratorOutputBoundary presenter) {
         this.presenter = presenter;
@@ -34,7 +36,9 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
         for (Timetable timetable : generatedTimetables){
             generatedTimetableModels.add(EntityConverter.generateTimetableResponse(timetable));
         }
-
+        for (Subscriber<Object> subscriber : subscribers) {
+            subscriber.onNext(generatedTimetables);
+        }
         presenter.prepareSuccessView(new TimetableGeneratorResponseModel(generatedTimetableModels));
     }
 
@@ -117,5 +121,8 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
     @Override
     public void onComplete() {
 
+    }
+    public void subscribe(Subscriber<Object> subscriber) {
+        this.subscribers.add(subscriber);
     }
 }

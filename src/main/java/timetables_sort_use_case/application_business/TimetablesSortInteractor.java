@@ -10,6 +10,7 @@ import retrieve_timetable_use_case.application_business.TimetableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 import static java.lang.Math.abs;
 
@@ -18,7 +19,7 @@ import static java.lang.Math.abs;
  * timetables are the timetables being reordered.
  * presenter is the SorterOutputBoundary that updates in response to the user's input
  */
-public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
+public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Flow.Subscriber<List<Timetable>> {
 
     private Timetable[] timetables;
     private final TimetablesSortOutputBoundary presenter;
@@ -181,5 +182,29 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
     @Override
     public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor) {
         this.retrieveInteractor = retrieveInteractor;
+    }
+
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+
+    }
+
+    @Override
+    public void onNext(List<Timetable> timetables) {
+        Timetable[] array = new Timetable[timetables.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = timetables.get(i);
+        }
+        this.timetables = array;
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
     }
 }

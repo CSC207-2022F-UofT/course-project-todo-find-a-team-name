@@ -27,8 +27,8 @@ public class AllTimetablesController {
         this.publisher = publisher;
     }
 
-    public void setTTUI(TimetableViewModel timetableViewModel) {
-
+    public void setTTUI(int i) {
+        publisher.updateTimetable(i);
     }
 
 }

@@ -5,5 +5,5 @@ import retrieve_timetable_use_case.application_business.TimetableModel;
 
 public interface AllTimetablesInputBoundary {
 
-    void updateTimetable(TimetableModel timetable);
+    void updateTimetable(int i);
 }
