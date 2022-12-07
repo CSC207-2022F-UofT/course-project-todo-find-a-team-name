@@ -7,9 +7,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,10 +18,10 @@ public class ProgramFileReader {
         this.allCalendarCourses = new HashMap<>();
         this.allTimetableCourses = new HashMap<>();
     }
-    public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException, IOException {
+    public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException {
         // Parse String
         JSONParser parser = new JSONParser();
-        JSONObject jsonObj = (JSONObject) parser.parse(new InputStreamReader(new FileInputStream(jsonData)));
+        JSONObject jsonObj = (JSONObject) parser.parse(jsonData);
         // Iterate through jsonObj
         for (Object key : jsonObj.keySet()) {
             JSONObject courseInfo = (JSONObject) jsonObj.get(key);

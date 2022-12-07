@@ -59,8 +59,8 @@ public class TimetableGateway implements TimetableGatewayInterface {
                     Map<String, Object> blockInfo = new HashMap<>();
                     for (Block theBlockModel : theSectionModel.getBlocks()) {
                         blocks.put("day", String.valueOf(theBlockModel.getDay()));
-                        blocks.put("startTime", String.valueOf(theBlockModel.getStartTime()));
-                        blocks.put("endTime", String.valueOf(theBlockModel.getEndTime()));
+                        blocks.put("startTime", (String.valueOf(theBlockModel.getStartTime())).replace(".", ":"));
+                        blocks.put("endTime", (String.valueOf(theBlockModel.getEndTime())).replace(".", ":"));
                         blocks.put("room", theBlockModel.getRoom());
 
                         blockInfo.put(theBlockModel.getDay() + "Block", blocks);

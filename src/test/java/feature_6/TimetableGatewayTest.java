@@ -2,9 +2,13 @@ package feature_6;
 
 import entities.*;
 import entities.InvalidSectionsException;
+import fileio_use_case.application_business.FileImportRequestModel;
 import fileio_use_case.frameworks_and_drivers.TimetableGateway;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,5 +49,35 @@ public class TimetableGatewayTest {
         // Timetable Gateway
         TimetableGateway gateway = new TimetableGateway();
         gateway.timetableToFile(ashTimetable);
+    }
+    /** Tests if Timetable is properly made */
+    @Test
+    void testingCreatingTimetable() throws ParseException, IOException, InvalidSectionsException {
+        FileImportRequestModel filePath = new FileImportRequestModel("src/main/resources/test_timetable.json");
+        TimetableGateway gateway = new TimetableGateway();
+        Timetable result = gateway.readFromFile(filePath.getFilePath(), "S");
+        assertEquals("S", result.getSessionType());
+    }
+
+    /** Checks if TimetableGateway can correctly parse the text in JSON file
+     * into a TimetableCourse with the right format and values.
+     */
+    @Test
+    void checkingFormatAndValuesEquals() throws IOException, ParseException, InvalidSectionsException {
+        TimetableGateway convertingFile1 = new TimetableGateway();
+        // Course from testing.json
+        Timetable winter = convertingFile1.readFromFile("src/main/resources/testing.json", "S");
+        TimetableCourse wantedCourse = winter.getCourse("IFP040H1");
+
+        // Building Course Manually
+        ArrayList<Block> allBlocks = new ArrayList<>();
+        allBlocks.add(new Block("MO", "17:00", "20:00", ""));
+        Section section = new Section("LEC-5101", "", allBlocks);
+        TimetableCourse c1 = new TimetableCourse("Applied Concepts in Economics", new ArrayList<>(List.of(section)),
+                "S", "IFP040H1", "5");
+
+        System.out.println(c1);
+        System.out.println(wantedCourse);
+        assertEquals(c1, wantedCourse);
     }
 }

@@ -8,8 +8,8 @@
       "LEC-0201" : {
         "blocks" : {
           "0Block" : {
-            "startTime" : "9.0",
-            "endTime" : "10.0",
+            "startTime" : "9:0",
+            "endTime" : "10:0",
             "day" : "0",
             "room" : "Golden Deer"
           }
@@ -28,8 +28,8 @@
       "LEC-0401" : {
         "blocks" : {
           "1Block" : {
-            "startTime" : "1.0",
-            "endTime" : "2.0",
+            "startTime" : "1:0",
+            "endTime" : "2:0",
             "day" : "1",
             "room" : "Pokemon"
           }
@@ -48,8 +48,8 @@
       "LEC-0301" : {
         "blocks" : {
           "1Block" : {
-            "startTime" : "11.0",
-            "endTime" : "12.0",
+            "startTime" : "11:0",
+            "endTime" : "12:0",
             "day" : "1",
             "room" : "Ketchup"
           }
@@ -68,8 +68,8 @@
       "LEC-0101" : {
         "blocks" : {
           "1Block" : {
-            "startTime" : "18.0",
-            "endTime" : "20.0",
+            "startTime" : "18:0",
+            "endTime" : "20:0",
             "day" : "1",
             "room" : "Castle Badr"
           }
