@@ -1,6 +1,8 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class representing all information needed for the course in displaying the timetable
@@ -41,5 +43,32 @@ public class TimetableViewCourseModel {
      */
     public List<TimetableViewSectionModel> getSectionModels() {
         return sectionModels;
+    }
+
+    /**
+     * Return whether this object is equal to obj
+     * @param obj object compared
+     * @return whether this object is equal to obj
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimetableViewCourseModel)){
+            return false;
+        }
+
+        TimetableViewCourseModel other = (TimetableViewCourseModel) obj;
+
+        return code.equals(other.code) && (new HashSet<>(sectionModels)).equals(new HashSet<>(other.sectionModels));
+    }
+
+    /**
+     * Returns a hash code value for this object.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, new HashSet<>(sectionModels));
     }
 }

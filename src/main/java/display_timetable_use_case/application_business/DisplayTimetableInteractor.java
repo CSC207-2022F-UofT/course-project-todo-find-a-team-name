@@ -34,7 +34,7 @@ public class DisplayTimetableInteractor implements DisplayTimetableInputBoundary
             TimetableModel responseModel = EntityConverter.generateTimetableResponse(timetable);
             presenter.prepareTimetable(responseModel);
         } else {
-           presenter.prepareFailView("Timetable not loaded yet!");
+            presenter.prepareFailView("Timetable not loaded yet!");
         }
     }
 

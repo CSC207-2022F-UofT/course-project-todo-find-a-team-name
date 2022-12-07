@@ -29,6 +29,7 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
      * that displays list of courses recommended on the left and selected course information on the right
      *
      * @param viewModel object containing all the information shown to the user in this screen
+     * @param editTimetableController controller for adding selected course in the timetable
      */
     public RecommendBROutputScreen(RecommendBRViewModel viewModel, EditTimetableController editTimetableController){
         super();

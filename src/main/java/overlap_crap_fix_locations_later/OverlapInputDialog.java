@@ -108,6 +108,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(new JPanel(), sectionFilterController1);
+
+        ConstraintsInputScreen c = new ConstraintsInputScreen(null, sectionFilterController1);
         sectionFilterPresenter.setView(c);
         screens.add(c, "hi");
         jFrame.add(screens);

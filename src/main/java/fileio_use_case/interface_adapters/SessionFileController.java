@@ -20,7 +20,7 @@ public class SessionFileController{
 
     /**
      * Takes in file path of Session, creates request model, and pass request model to the interactor
-     * to create fall or winter session files.
+     * to create fall or winter sessions.
      * REPRESENTATION INVARIANT: file contains fall and/or winter courses
      * @param filePath - File path to JSON file for session
      */

@@ -2,7 +2,7 @@ package entities;
 import java.util.*;
 
 /** An implementation of the timetable which stores all of the timetablecourses
- * each timetable block either is empty or corresponds to a Timetable course.
+ *  related to a timetable
  */
 public class Timetable implements Comparable<Timetable> {
     private ArrayList<TimetableCourse> courseList;
@@ -16,7 +16,7 @@ public class Timetable implements Comparable<Timetable> {
         this.score = 0;
     }
     // Adds course
-    public void AddToCourseList(TimetableCourse course){
+    public void addToCourseList(TimetableCourse course){
         this.courseList.add(course);
     }
     // returns true if there is a conflict
@@ -60,6 +60,19 @@ public class Timetable implements Comparable<Timetable> {
             }
         }
     }
+    public boolean hasCourseOverlap(TimetableCourse course) {
+        for (Section section : course.getSections()) {
+            for(TimetableCourse currentCourse : this.courseList){
+                for(Section courseListSection: currentCourse.getSections()){
+                    if(section.isConflicted(courseListSection))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public ArrayList<TimetableCourse> getCourseList() {
         return courseList;
     }

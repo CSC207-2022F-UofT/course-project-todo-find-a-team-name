@@ -1,9 +1,7 @@
 package screens;
 
-import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
-
-import display_timetable_use_case.interface_adapters.*;
 import display_timetable_use_case.frameworks_and_drivers.*;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;

@@ -5,11 +5,12 @@ import entities.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /**
  * Blacklist, Whitelist use case Interactor.
  */
-public class SectionFilterInteractor implements SectionFilterInputBoundary {
+public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow.Subscriber<Object> {
     final SectionFilterOutputBoundary presenter;
     private Session session;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
@@ -66,6 +67,12 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
 
         presenter.prepareSuccessView(responseModel);
     }
+
+    /**
+     * A helper method that makes a copy of the CalendarCourse Object
+     * @param course a CalendarCourse Object
+     * @return a copy of the CalendarCourse passed into the function.
+     */
     private CalendarCourse copyCalendarCourse(CalendarCourse course){
         return new CalendarCourse(course.getCourseCode(),
                 new ArrayList<>(course.getSections()),
@@ -74,6 +81,11 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
                 course.getBreadth());
     }
 
+    /**
+     * A helper method that makes a copy of a List of CalendarCourse Object.
+     * @param calendarCourses a List of CalendarCourse Object
+     * @return a copy of a List of CalendarCourse Object
+     */
     private List<CalendarCourse> copyCalendarCourseList(List<CalendarCourse> calendarCourses){
         ArrayList<CalendarCourse> copy = new ArrayList<>();
         for (CalendarCourse course: calendarCourses) {
@@ -147,10 +159,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
 
     }
 
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
     /**
      * A helper method that format the string time input from the request model to double type to
      * create the TimeInterval Constraints entities.
@@ -164,6 +172,62 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary {
         return hour + min / 60;
     }
 
+    /**
+     * Method invoked prior to invoking any other Subscriber
+     * methods for the given Subscription. If this method throws
+     * an exception, resulting behavior is not guaranteed, but may
+     * cause the Subscription not to be established or to be cancelled.
+     *
+     * <p>Typically, implementations of this method invoke {@code
+     * subscription.request} to enable receiving items.
+     *
+     * @param subscription a new subscription
+     */
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+
+    }
+
+    /**
+     * Method invoked with a Subscription's next item.  If this
+     * method throws an exception, resulting behavior is not
+     * guaranteed, but may cause the Subscription to be cancelled.
+     *
+     * @param item the item
+     */
+    @Override
+    public void onNext(Object item) {
+        if (item instanceof Session){
+            this.session = (Session) item;
+        }
+    }
+
+    /**
+     * Method invoked upon an unrecoverable error encountered by a
+     * Publisher or Subscription, after which no other Subscriber
+     * methods are invoked by the Subscription.  If this method
+     * itself throws an exception, resulting behavior is
+     * undefined.
+     *
+     * @param throwable the exception
+     */
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    /**
+     * Method invoked when it is known that no additional
+     * Subscriber method invocations will occur for a Subscription
+     * that is not already terminated by error, after which no
+     * other Subscriber methods are invoked by the Subscription.
+     * If this method throws an exception, resulting behavior is
+     * undefined.
+     */
+    @Override
+    public void onComplete() {
+
+    }
 }
 
 

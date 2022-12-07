@@ -1,7 +1,11 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.ITimetableUI;
+import entities.InvalidSectionsException;
+import fileio_use_case.interface_adapters.TimetableFileController;
+import org.json.simple.parser.ParseException;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
@@ -9,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -25,6 +31,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private final TimetableView timetableView;
     private final EditTimetableScreen editTimetableScreen;
     private final OverlapInputDialog overlapInputDialog;
+    private final TimetableFileController timetableFileController;
     private JPanel prevPanel = null;
 
 
@@ -33,12 +40,14 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * all information to be displayed in this JPanel
      *
      * @param displayTimetableController controller used for displaying timetable
-     * @param editTimetableScreen screen for editing timetable
-     * @param overlapInputDialog dialog for input screen for overlap maximization use case
+     * @param editTimetableScreen        screen for editing timetable
+     * @param overlapInputDialog         dialog for input screen for overlap maximization use case
+     * @param timetableFileController    controller used to save timetable
      */
     public TimetableUI(DisplayTimetableController displayTimetableController,
-                       EditTimetableScreen editTimetableScreen, OverlapInputDialog overlapInputDialog){
+                       EditTimetableScreen editTimetableScreen, OverlapInputDialog overlapInputDialog, TimetableFileController timetableFileController){
         this.displayTimetableController = displayTimetableController;
+        this.timetableFileController = timetableFileController;
         this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
         this.editTimetableScreen = editTimetableScreen;
@@ -89,10 +98,11 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * @param editTimetableScreen        screen for editing timetable
      * @param displayTimetableController controller used for displaying timetable
      * @param overlapInputDialog         dialog for input screen for overlap maximization use case
+     * @param timetableFileController    controller used to save timetable
      */
     public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen,
-                       DisplayTimetableController displayTimetableController, OverlapInputDialog overlapInputDialog){
-        this(displayTimetableController, editTimetableScreen, overlapInputDialog);
+                       DisplayTimetableController displayTimetableController, OverlapInputDialog overlapInputDialog, TimetableFileController timetableFileController){
+        this(displayTimetableController, editTimetableScreen, overlapInputDialog, timetableFileController);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -152,11 +162,20 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
                 overlapInputDialog.setVisible(true);
                 break;
             case "save":
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if(fileChooser.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        timetableFileController.createTimetableFile(file.getAbsolutePath());
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        JOptionPane.showMessageDialog(window, ex.getMessage());
+                    }
+                }
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
-                editTimetableScreen.updateTimetable();
-                editTimetableScreen.setPreviousPanel(this);
                 break;
             case "<=":
                 if (prevPanel != null) {

@@ -1,5 +1,7 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
+import java.util.Objects;
+
 /**
  * Class representing all information needed for the block in displaying the timetable
  * Instance Attributes:
@@ -63,5 +65,32 @@ public class TimetableViewBlockModel{
 
     public String getRoom() {
         return room;
+    }
+
+    /**
+     * Return whether this object is equal to obj
+     * @param obj object compared
+     * @return whether this object is equal to obj
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimetableViewBlockModel)){
+            return false;
+        }
+
+        TimetableViewBlockModel other = (TimetableViewBlockModel) obj;
+
+        return day == other.day && startTime == other.startTime && endTime == other.endTime;
+    }
+
+    /**
+     * Returns a hash code value for this object.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, startTime, endTime);
     }
 }

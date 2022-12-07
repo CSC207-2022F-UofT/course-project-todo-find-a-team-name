@@ -85,25 +85,24 @@ public class OverlapInputDialogTest {
                 "S", "CSC200", "1");
     }
 
-    @Test
-    /** Test that the Use case correctly returns the sole given timetable if we look for the best overlap
-     * with a timetable and itself.
-     */
-    public void testMatchVacuous(){
-
-        ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
-        Timetable soleTimetable = new Timetable(new ArrayList<>(Arrays.asList(marioCourse)));
-        testTimetableList.add(soleTimetable);
-
-        // Make the input dialog.
-        OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList);
-        dialog.subscribe(testListener);
-        dialog.pack();
-        dialog.setVisible(true);
-        assert testListener.result == soleTimetable;
-
-        System.exit(0);
-
-
-    }
+//    @Test
+//    /** Test that the Use case correctly returns the sole given timetable if we look for the best overlap
+//     * with a timetable and itself.
+//     */
+//    public void testMatchVacuous(){
+//
+//        ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
+//        Timetable soleTimetable = new Timetable(new ArrayList<>(Arrays.asList(marioCourse)));
+//        testTimetableList.add(soleTimetable);
+//
+//        // Make the input dialog.
+//        OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList);
+//        dialog.subscribe(testListener);
+//        dialog.pack();
+//        dialog.setVisible(true);
+//        assert testListener.result == soleTimetable;
+//
+//        System.exit(0);
+//
+//    }
 }
