@@ -1,7 +1,10 @@
 package screens;
 
 // TODO: Remove these imports (It's used for main)
-import blacklist_whitelist_use_case.SectionFilterInteractor;
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
@@ -207,7 +210,7 @@ public class MainUI extends JPanel implements ActionListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter(null);
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
                 courseComparatorFactory);
@@ -292,7 +295,7 @@ public class MainUI extends JPanel implements ActionListener {
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(sectionFilterController);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();

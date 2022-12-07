@@ -85,11 +85,11 @@ public class WeekdayConstraint extends Constraint{
         return false;
     }
 
-
-    public List<Integer> getWeekdays() {
-        return days;
-    }
-
+    /**
+     * A helper method for formatting the Weekday input
+     * @param dayList a list of integer representing Monday, Tuesday.... using int 0, 1, 2 ...
+     * @return a List of String representing the weekdays
+     */
     private List<String> formatDay(List<Integer> dayList) {
         ArrayList<String> formattedDayList = new ArrayList<>();
         for (int i: dayList) {
