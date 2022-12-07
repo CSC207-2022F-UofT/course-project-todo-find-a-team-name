@@ -6,8 +6,6 @@ import display_timetable_use_case.interface_adapters.TimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
-import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
 import org.json.simple.parser.ParseException;
 
@@ -30,14 +28,10 @@ import java.io.IOException;
  */
 public class MainUI extends JPanel implements ActionListener {
 
-    private final JLabel filePathSession;
-    private final JLabel filePathSession2;
-    private final JLabel filePathTimetable;
-    public SessionFileController sessionController;
-    private JLabel filePathSession;
+    private JLabel filePathSession1;
+    private JLabel filePathSession2;
     private JLabel filePathTimetable;
-
-    public MainUI(SessionFileController sessionController){
+    public SessionFileController sessionController;
     private final ConstraintsInputScreen constraintsInputScreen;
     private final EditTimetableScreen editTimetableScreen;
     private final TimetableUI timetableUI;
@@ -47,7 +41,7 @@ public class MainUI extends JPanel implements ActionListener {
      * Constructs MainUI with title, import timetable/session buttons, and display/edit/generate timetable buttons.
      */
     public MainUI(JFrame frame, ConstraintsInputScreen constraintsInputScreen, EditTimetableScreen editTimetableScreen,
-                  TimetableUI timetableUI){
+                  TimetableUI timetableUI, SessionFileController sessionController){
         super();
         this.sessionController = sessionController;
         this.constraintsInputScreen = constraintsInputScreen;
@@ -116,19 +110,6 @@ public class MainUI extends JPanel implements ActionListener {
         timetableButtons.add(editButton);
         timetableButtons.add(displayButton);
         timetablePanel.add(timetableButtons);
-
-        JButton generateTimetable = new JButton("Generate timetable");
-        generateTimetable.setAlignmentX(JButton.CENTER_ALIGNMENT);
-
-        panel.add(Box.createVerticalStrut(50));
-
-        panel.add(timetablePanel);
-
-        panel.add(Box.createVerticalStrut(50));
-
-        panel.add(generateTimetable);
-
-        centerPanel.add(panel);
         return timetablePanel;
     }
 
@@ -152,9 +133,9 @@ public class MainUI extends JPanel implements ActionListener {
         // Import fall session button
         JButton importFallSession = new JButton("Import fall session");
         importFallSession.addActionListener(this);
-        filePathSession = new JLabel("Choose the file... ");
+        filePathSession1 = new JLabel("Choose the file... ");
         importFallSessionPanel.add(importFallSession);
-        importFallSessionPanel.add(filePathSession);
+        importFallSessionPanel.add(filePathSession1);
         // Import winter session button
         JButton importWinterSession = new JButton("Import winter session");
         importWinterSession.addActionListener(this);
@@ -167,9 +148,9 @@ public class MainUI extends JPanel implements ActionListener {
         JButton importSession = new JButton("Import session");
         importSession.addActionListener(this);
 
-        filePathSession = new JLabel("Choose the file...");
+        filePathSession1 = new JLabel("Choose the file...");
         importSessionPanel.add(importSession);
-        importSessionPanel.add(filePathSession);
+        importSessionPanel.add(filePathSession1);
         return importSessionPanel;
     }
 
@@ -208,7 +189,7 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    filePathSession.setText(importedSessionFilePath);
+                    filePathSession1.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
                         sessionController.createSessionFile(importedSessionFilePath, "F");
