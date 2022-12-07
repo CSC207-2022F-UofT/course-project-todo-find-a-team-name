@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class Block {
 //  a block has 4 elements, day as an integer (0,1,2,3,4), start and end time as doubles, room as a string
     private final int day;
@@ -51,5 +53,16 @@ public class Block {
         Block other = (Block) obj;
 
         return day == other.day && startTime == other.startTime && endTime == other.endTime && room.equals(other.room);
+    }
+
+    /**
+     * Returns a hash code value for this block.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this block.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, startTime, endTime, room);
     }
 }

@@ -1,6 +1,7 @@
-package recommend_br_use_case.frameworks_and_drivers;
+package recommend_br_use_case.interface_adapters;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class containing data needed for displaying course information for recommend BR use case.
@@ -8,10 +9,10 @@ import java.util.List;
 public class RecommendBRCourseViewModel {
     private String code;
     private String title;
-    private String brCategory;
-    private String lectureCode;
-    private String tutorialCode;
-    private String practicalCode;
+    private final String brCategory;
+    private final String lectureCode;
+    private final String tutorialCode;
+    private final String practicalCode;
     private final List<String> lectureBlockInfos;
     private final List<String> tutorialBlockInfos;
     private final List<String> practicalBlockInfos;
@@ -148,39 +149,19 @@ public class RecommendBRCourseViewModel {
         this.title = title;
     }
 
-    /**
-     * Sets the breadth category of the course to the given argument
-     *
-     * @param brCategory new breadth category of the course
-     */
-    public void setBrCategory(String brCategory) {
-        this.brCategory = brCategory;
-    }
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RecommendBRCourseViewModel)){
+            return false;
+        }
 
-    /**
-     * Sets the lecture code of the course to the given argument
-     *
-     * @param lectureCode new lecture code of the course
-     */
-    public void setLectureCode(String lectureCode) {
-        this.lectureCode = lectureCode;
-    }
+        RecommendBRCourseViewModel other = (RecommendBRCourseViewModel) obj;
 
-    /**
-     * Sets the tutorial code of the course to the given argument
-     *
-     * @param tutorialCode new tutorial code of the course
-     */
-    public void setTutorialCode(String tutorialCode) {
-        this.tutorialCode = tutorialCode;
-    }
-
-    /**
-     * Sets the practical code of the course to the given argument
-     *
-     * @param practicalCode new practical code of the course
-     */
-    public void setPracticalCode(String practicalCode) {
-        this.practicalCode = practicalCode;
+        return code.equals(other.code) && title.equals(other.title) &&
+                brCategory.equals(other.brCategory) && Objects.equals(lectureCode, other.lectureCode) &&
+                Objects.equals(tutorialCode, other.tutorialCode) && Objects.equals(practicalCode, other.practicalCode) &&
+                lectureBlockInfos.equals(other.lectureBlockInfos) &&
+                tutorialBlockInfos.equals(other.tutorialBlockInfos) &&
+                practicalBlockInfos.equals(other.practicalBlockInfos);
     }
 }

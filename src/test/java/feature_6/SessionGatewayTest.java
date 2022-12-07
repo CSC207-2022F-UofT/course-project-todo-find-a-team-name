@@ -1,9 +1,6 @@
 package feature_6;
 
-import entities.Block;
-import entities.CalendarCourse;
-import entities.Section;
-import entities.Session;
+import entities.*;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
@@ -16,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SessionGatewayTest {
     /** Checks extract Session Method with empty and non-empty hashmap **/
     @Test
-    void checkExtractSession() throws IOException, ParseException {
+    void checkExtractSession() throws IOException, ParseException, InvalidSectionsException {
         SessionGateway convertingFile3 = new SessionGateway();
         Session fallSession = convertingFile3.readFromFile("src/main/resources/test_session_data.json", "F");
         assertEquals(fallSession.getAllSessionCourses().size(), 8);
@@ -26,7 +23,7 @@ class SessionGatewayTest {
      * into a Calendar Course with the right format and values.
      */
     @Test
-    void checkingFormatAndValuesEquals() throws IOException, ParseException {
+    void checkingFormatAndValuesEquals() throws IOException, ParseException, InvalidSectionsException {
         SessionGateway convertingFile1 = new SessionGateway();
         // Course from testing.json
         Session winter = convertingFile1.readFromFile("src/main/resources/testing.json", "S");
