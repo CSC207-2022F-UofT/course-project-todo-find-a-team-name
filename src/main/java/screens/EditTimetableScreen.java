@@ -1,6 +1,6 @@
 package screens;
 
-import display_timetable_use_case.interface_adapters.*;
+import display_timetable_use_case.frameworks_and_drivers.*;
 import edit_timetable_use_case.*;
 import entities.*;
 import recommend_br_use_case.application_business.CourseComparatorFactory;

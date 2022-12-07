@@ -3,10 +3,10 @@ package screens;
 // TODO: Remove these imports (It's used for main)
 import blacklist_whitelist_use_case.SectionFilterInteractor;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import edit_timetable_use_case.AddCourseInteractor;
 import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;

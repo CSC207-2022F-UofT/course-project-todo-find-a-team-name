@@ -1,7 +1,7 @@
 package display_timetable_use_case.interface_adapters;
 
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableView;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
 import screens.EditTimetableScreen;
 
