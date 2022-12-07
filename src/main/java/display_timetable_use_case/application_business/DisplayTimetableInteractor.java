@@ -47,11 +47,19 @@ public class DisplayTimetableInteractor implements DisplayTimetableInputBoundary
         this.timetable = timetable;
     }
 
+    /**
+     * Unimplemented method invoked prior to invoking any other Subscriber
+     * methods for the given Subscription
+     *
+     * @param subscription a new subscription
+     */
     @Override
-    public void onSubscribe(Subscription subscription) {
+    public void onSubscribe(Subscription subscription) {}
 
-    }
-
+    /**
+     * Update timetable if the given item is Session or Timetable.
+     * @param item the item
+     */
     @Override
     public void onNext(Object item) {
         if (item instanceof Timetable){
@@ -59,11 +67,19 @@ public class DisplayTimetableInteractor implements DisplayTimetableInputBoundary
         }
     }
 
+    /**
+     * Unimplemented method invoked upon an unrecoverable error encountered by
+     * a Publisher or Subscription.
+     *
+     * @param throwable the exception
+     */
     @Override
-    public void onError(Throwable throwable) {
+    public void onError(Throwable throwable) {}
 
-    }
-
+    /**
+     * Unimplemented method invoked when it is known that no additional
+     * Subscriber method invocation will occur.
+     */
     @Override
     public void onComplete() {
 
