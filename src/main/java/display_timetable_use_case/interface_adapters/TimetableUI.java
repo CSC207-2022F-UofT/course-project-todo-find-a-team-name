@@ -2,7 +2,7 @@ package display_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
-import overlap_crap_fix_locations_later.OverlapMaximizationController;
+import overlap_crap_fix_locations_later.OverlapInputDialog;
 import screens.EditTimetableScreen;
 
 import javax.swing.*;
@@ -24,7 +24,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
     private final EditTimetableScreen editTimetableScreen;
-    private final OverlapMaximizationController overlapMaximizationController;
+    private final OverlapInputDialog overlapInputDialog;
     private JPanel prevPanel = null;
 
 
@@ -33,15 +33,16 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * all information to be displayed in this JPanel
      *
      * @param displayTimetableController controller used for displaying timetable
+     * @param editTimetableScreen screen for editing timetable
+     * @param overlapInputDialog dialog for input screen for overlap maximization use case
      */
     public TimetableUI(DisplayTimetableController displayTimetableController,
-                       EditTimetableScreen editTimetableScreen,
-                       OverlapMaximizationController overlapMaximizationController){
+                       EditTimetableScreen editTimetableScreen, OverlapInputDialog overlapInputDialog){
         this.displayTimetableController = displayTimetableController;
         this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
         this.editTimetableScreen = editTimetableScreen;
-        this.overlapMaximizationController = overlapMaximizationController;
+        this.overlapInputDialog = overlapInputDialog;
 
         setLayout(new BorderLayout());
 
@@ -85,12 +86,13 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      *
      * @param width                      width of the preferred size of this component
      * @param height                     height of the preferred size of this component
+     * @param editTimetableScreen        screen for editing timetable
      * @param displayTimetableController controller used for displaying timetable
+     * @param overlapInputDialog         dialog for input screen for overlap maximization use case
      */
     public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen,
-                       DisplayTimetableController displayTimetableController,
-                       OverlapMaximizationController overlapMaximizationController){
-        this(displayTimetableController, editTimetableScreen, overlapMaximizationController);
+                       DisplayTimetableController displayTimetableController, OverlapInputDialog overlapInputDialog){
+        this(displayTimetableController, editTimetableScreen, overlapInputDialog);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -142,10 +144,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
 
         switch (command) {
             case "match":
-                overlapMaximizationController.getBestMatchingTimetable();
                 break;
             case "save":
-                // TODO: implement save
+                overlapInputDialog.pack();
+                overlapInputDialog.setVisible(true);
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
