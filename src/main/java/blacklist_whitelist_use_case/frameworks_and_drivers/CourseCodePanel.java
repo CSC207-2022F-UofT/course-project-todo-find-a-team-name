@@ -1,4 +1,4 @@
-package screens;
+package blacklist_whitelist_use_case.frameworks_and_drivers;
 
 import javax.swing.*;
 
@@ -7,16 +7,10 @@ import javax.swing.*;
  */
 
 public class CourseCodePanel extends JPanel{
-
-    JLabel sessionLabel = new JLabel("Session");
-    JComboBox<String> comboBox;
     JLabel courseLabel = new JLabel("Course Codes");
     JTextField textField;
 
-    public CourseCodePanel(JComboBox<String> comboBox, JTextField textField) {
-        this.add(sessionLabel);
-        this.comboBox = comboBox;
-        this.add(comboBox);
+    public CourseCodePanel(JTextField textField) {
         this.add(courseLabel);
         this.textField = textField;
         this.add(textField);

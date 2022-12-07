@@ -117,4 +117,3 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
 }
-

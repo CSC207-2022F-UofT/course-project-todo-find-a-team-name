@@ -1,7 +1,7 @@
-package screens;
+package blacklist_whitelist_use_case.interface_adapters;
 
-import blacklist_whitelist_use_case.SectionFilterOutputBoundary;
-import blacklist_whitelist_use_case.SectionFilterResponseModel;
+import blacklist_whitelist_use_case.application_business.SectionFilterOutputBoundary;
+import blacklist_whitelist_use_case.application_business.SectionFilterResponseModel;
 
 import java.util.Collections;
 
@@ -27,7 +27,7 @@ public class SectionFilterPresenter implements SectionFilterOutputBoundary {
         for (String course: responseModel.getModifiedCourses().keySet()){
             Collections.sort(responseModel.getModifiedCourses().get(course));
         }
-        SectionFilterViewModel viewModel = new SectionFilterViewModel(responseModel.getModifiedCourses(), responseModel.getSessionType());
+        SectionFilterViewModel viewModel = new SectionFilterViewModel(responseModel.getModifiedCourses());
         view.showSuccessView(viewModel);
     }
 

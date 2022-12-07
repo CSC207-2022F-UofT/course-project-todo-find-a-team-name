@@ -1,17 +1,18 @@
-package blacklist_whitelist_use_case;
+package blacklist_whitelist_use_case.application_business;
 
 import entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /**
  * Blacklist, Whitelist use case Interactor.
  */
-public class SectionFilterInteractor implements SectionFilterInputBoundary{
+public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow.Subscriber<Object> {
     final SectionFilterOutputBoundary presenter;
-    Session session; // only for testing, delete when the team finishe the gateway.
+    private Session session;
     public SectionFilterInteractor(SectionFilterOutputBoundary presenter) {
         this.presenter = presenter;
     }
@@ -20,91 +21,16 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
      * filter() what filter does is it first creates a list of Calendar course entities with a list of courseCodes
      * provided in the requestModel, and then build a list of Constraints from the requestModel data, eventually
      * applying all the constraint to a list of CalendarCourse Domain to modify the sections of each course based on
-     * the given constraints. And it make sure that if the original course has tutorial, lecture, practical sections,
+     * the given constraints. And it makes sure that if the original course has tutorial, lecture, practical sections,
      * the modified courses will have at least one of each section type as well.
      *
      * @param requestModel SectionFilterRequestModel that includes the courseCodes, and corresponding Constraints
-     * @return SectionFilterResponseModel that provides an error message if the courseCode does not exists, or
-     * if it is missing mandatory tutorial, lecture or practical section components.
+     *
      */
     @Override
     public void filter(SectionFilterRequestModel requestModel) {
-        // delete when the gateway is done.
-        List<Block> blocks1 = new ArrayList<>();
-        blocks1.add(new Block("MO", "14:30", "15:00", "room3"));
-        blocks1.add(new Block("TU", "12:30", "14:00", "room1"));
-        blocks1.add(new Block("TH", "14:00", "15:30", "room2"));
-
-        List<Block> blocks2 = new ArrayList<>();
-        blocks2.add(new Block("MO", "14:30", "15:00", "room3"));
-        blocks2.add(new Block("FR", "20:00", "21:00", "room1"));
-
-        List<Block> blocks3 = new ArrayList<>();
-        blocks3.add(new Block("MO", "14:30", "15:30", "room3"));
-
-        List<Block> blocks4 = new ArrayList<>();
-        blocks4.add(new Block("MO", "14:30", "15:30", "room3"));
-        blocks4.add(new Block("TU", "12:30", "14:30", "room4"));
-        blocks4.add(new Block("TH", "14:00", "15:30", "room5"));
-
-        List<Block> blocks5 = new ArrayList<>();
-        blocks5.add(new Block("MO", "14:30", "15:30", "room3"));
-        blocks5.add(new Block("WE", "16:30", "18:00", "room3"));
-
-        List<Block> blocks6 = new ArrayList<>();
-        blocks6.add(new Block("FR", "11:30", "12:30", "room3"));
-        blocks6.add(new Block("FR", "11:30", "12:30", "room4"));
-
-        Section section1 = new Section("LEC-0101", "inst1", blocks1);
-        Section section2 = new Section("TUT-0401", "inst2", blocks2);
-        Section section3 = new Section("PRA-0301", "inst3", blocks3);
-        Section section4 = new Section("LEC-0201", "inst4", blocks4);
-        Section section5 = new Section("TUT-0402", "inst5", blocks5);
-        Section section6 = new Section("LEC-0509", "inst6", blocks6);
-
-        List<Section> sections1 = new ArrayList<>();
-        sections1.add(section1);
-        sections1.add(section2);
-
-        List<Section> sections2 = new ArrayList<>();
-        sections2.add(section1);
-        sections2.add(section2);
-        sections2.add(section3);
-        sections2.add(section4);
-        sections2.add(section5);
-        sections2.add(section6);
-
-
-        List<Section> sections3 = new ArrayList<>();
-        sections3.add(section1);
-        sections3.add(section2);
-        sections3.add(section3);
-        sections3.add(section4);
-        sections3.add(section5);
-        sections3.add(section6);
-
-        List<Section> sections4 = new ArrayList<>();
-        sections4.add(section1);
-        sections4.add(section2);
-        sections4.add(section3);
-        sections4.add(section4);
-        sections4.add(section5);
-        sections4.add(section6);
-
-        List<Section> sections5 = new ArrayList<>();
-        sections5.add(section1);
-        sections5.add(section4);
-
-        session = new Session(requestModel.sessionType());
-        session.addCourse(new CalendarCourse("CSC207", sections1, "S", "CSC207H1", "5"));
-        session.addCourse(new CalendarCourse("CSC258", sections2, "S", "CSC258H1", "5"));
-        session.addCourse(new CalendarCourse("MAT235", sections3, "S", "MAT235H1", "5"));
-        session.addCourse(new CalendarCourse("CSC236", sections4, "S", "CSC236H1", "5"));
-        session.addCourse(new CalendarCourse("STA247", sections5, "S", "STA247H1", "5"));
-        // delete
         ArrayList<String> courseCodes = (ArrayList<String>) this.formatInputString(requestModel.getCourseCodes());
-        ArrayList<CalendarCourse> calendarCourses = new ArrayList<CalendarCourse>();
-
+        ArrayList<CalendarCourse> calendarCourses = new ArrayList<>();
         if (requestModel.getCourseCodes().isEmpty()){
             presenter.prepareFailView("No course code has been entered.");
             return;
@@ -113,16 +39,18 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
             presenter.prepareFailView("StartTime Must be BEFORE EndTime");
             return;
         }
-        for (String code: courseCodes) {
-            if (session.checkCourseCode(code)){
-                calendarCourses.add(session.getCalendarCourse(code));
-            } else {
-                presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
-                return;
+
+            for (String code: courseCodes) {
+                if (session.checkCourseCode(code)){
+                    calendarCourses.add(session.getCalendarCourse(code));
+                } else {
+                    presenter.prepareFailView("Course Code Input: "+code + " does not exist!");
+                    return;
+                }
             }
-        }
+        ArrayList<CalendarCourse> calendarCoursesCopy = (ArrayList<CalendarCourse>) copyCalendarCourseList(calendarCourses);
         ArrayList<Constraint> constraints = (ArrayList<Constraint>) this.buildConstraints(requestModel);
-        for (CalendarCourse course: calendarCourses) {
+        for (CalendarCourse course: calendarCoursesCopy) {
             for (Constraint constraint: constraints) {
                 if (! constraint.filter(course)){
                     presenter.prepareFailView("Filtering Condition Failed: " + course.getCourseCode()
@@ -132,15 +60,38 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
             }
         }
         HashMap<String, List<String>> courseSectionsData = new HashMap<>();
-        for (CalendarCourse course: calendarCourses) {
+        for (CalendarCourse course: calendarCoursesCopy) {
             courseSectionsData.put(course.getCourseCode(), course.getSectionCodes());
         }
-        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData, requestModel.sessionType());
+        SectionFilterResponseModel responseModel = new SectionFilterResponseModel(courseSectionsData);
 
         presenter.prepareSuccessView(responseModel);
+    }
 
+    /**
+     * A helper method that makes a copy of the CalendarCourse Object
+     * @param course a CalendarCourse Object
+     * @return a copy of the CalendarCourse passed into the function.
+     */
+    private CalendarCourse copyCalendarCourse(CalendarCourse course){
+        return new CalendarCourse(course.getCourseCode(),
+                new ArrayList<>(course.getSections()),
+                course.getCourseSession(),
+                course.getCourseCode(),
+                course.getBreadth());
+    }
 
-//  SectionFilterResponseModel sectionFilterResponseModel = new SectionFilterResponseModel();
+    /**
+     * A helper method that makes a copy of a List of CalendarCourse Object.
+     * @param calendarCourses a List of CalendarCourse Object
+     * @return a copy of a List of CalendarCourse Object
+     */
+    private List<CalendarCourse> copyCalendarCourseList(List<CalendarCourse> calendarCourses){
+        ArrayList<CalendarCourse> copy = new ArrayList<>();
+        for (CalendarCourse course: calendarCourses) {
+            copy.add(copyCalendarCourse(course));
+        }
+        return copy;
     }
 
     /**
@@ -221,6 +172,62 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary{
         return hour + min / 60;
     }
 
+    /**
+     * Method invoked prior to invoking any other Subscriber
+     * methods for the given Subscription. If this method throws
+     * an exception, resulting behavior is not guaranteed, but may
+     * cause the Subscription not to be established or to be cancelled.
+     *
+     * <p>Typically, implementations of this method invoke {@code
+     * subscription.request} to enable receiving items.
+     *
+     * @param subscription a new subscription
+     */
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+
+    }
+
+    /**
+     * Method invoked with a Subscription's next item.  If this
+     * method throws an exception, resulting behavior is not
+     * guaranteed, but may cause the Subscription to be cancelled.
+     *
+     * @param item the item
+     */
+    @Override
+    public void onNext(Object item) {
+        if (item instanceof Session){
+            this.session = (Session) item;
+        }
+    }
+
+    /**
+     * Method invoked upon an unrecoverable error encountered by a
+     * Publisher or Subscription, after which no other Subscriber
+     * methods are invoked by the Subscription.  If this method
+     * itself throws an exception, resulting behavior is
+     * undefined.
+     *
+     * @param throwable the exception
+     */
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    /**
+     * Method invoked when it is known that no additional
+     * Subscriber method invocations will occur for a Subscription
+     * that is not already terminated by error, after which no
+     * other Subscriber methods are invoked by the Subscription.
+     * If this method throws an exception, resulting behavior is
+     * undefined.
+     */
+    @Override
+    public void onComplete() {
+
+    }
 }
 
 

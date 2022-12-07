@@ -1,4 +1,4 @@
-package screens;
+package blacklist_whitelist_use_case.interface_adapters;
 
 /**
  * Interface created for dependency inversion.
