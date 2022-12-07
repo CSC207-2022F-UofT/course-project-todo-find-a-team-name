@@ -22,8 +22,11 @@ import entities.*;
 
 
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.application_business.timetable_specific_classes.TimetableGatewayInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.TimetableGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
+import fileio_use_case.interface_adapters.TimetableFileController;
 import org.json.simple.parser.ParseException;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
@@ -374,7 +377,7 @@ public class MainUI extends JPanel implements ActionListener {
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
 
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(null, sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
         OverlapInputDialog overlapInputDialog = new OverlapInputDialog(new ArrayList<>(), sectionFilterController);
@@ -384,7 +387,12 @@ public class MainUI extends JPanel implements ActionListener {
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
 
         displayTimetableInteractor2.setTimetable(timetable);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog);
+
+        TimetableGateway timetableGateway = new TimetableGateway();
+        TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
+        TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog,
+                timetableFileController);
         displayTimetablePresenter2.setView(timetableUI);
 
         displayTimetableInteractor1.setTimetable(timetable);
