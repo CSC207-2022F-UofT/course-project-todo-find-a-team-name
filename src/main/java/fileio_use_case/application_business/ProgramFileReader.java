@@ -50,13 +50,13 @@ public class ProgramFileReader {
                 CalendarCourse calCourse = new CalendarCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
+                allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
             }
             else {
                 TimetableCourse timetableCourse = new TimetableCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
+                allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
             }
         }
     }

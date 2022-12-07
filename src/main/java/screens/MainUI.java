@@ -12,6 +12,9 @@ import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
 import fileio_use_case.interface_adapters.SessionFileController;
+import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import fileio_use_case.interface_adapters.SessionFileController;
 import org.json.simple.parser.ParseException;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
@@ -21,6 +24,8 @@ import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 
+import entities.InvalidSectionsException;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
@@ -28,6 +33,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -44,6 +50,7 @@ public class MainUI extends JPanel implements ActionListener {
     private JLabel filePathSession2;
     private JLabel filePathTimetable;
     public SessionFileController sessionController;
+
     private final ConstraintsInputScreen constraintsInputScreen;
     private final EditTimetableScreen editTimetableScreen;
     private final TimetableUI timetableUI;
@@ -135,19 +142,23 @@ public class MainUI extends JPanel implements ActionListener {
      */
     private JPanel createImportSessionPanel(){
         JPanel importSessionPanel = new JPanel();
+
         importSessionPanel.setLayout(new BoxLayout(importSessionPanel, BoxLayout.PAGE_AXIS));
         JPanel importFallSessionPanel = new JPanel();
         JPanel importWinterSessionPanel = new JPanel();
-        // Creates border for each session panel
-        TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
-        importFallSessionPanel.setBorder(sessionBorder);
-        importWinterSessionPanel.setBorder(sessionBorder);
+
+//        // Creates border for each session panel
+//        TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
+//        importFallSessionPanel.setBorder(sessionBorder);
+//        importWinterSessionPanel.setBorder(sessionBorder);
+
         // Import fall session button
         JButton importFallSession = new JButton("Import fall session");
         importFallSession.addActionListener(this);
         filePathSession1 = new JLabel("Choose the file... ");
         importFallSessionPanel.add(importFallSession);
         importFallSessionPanel.add(filePathSession1);
+
         // Import winter session button
         JButton importWinterSession = new JButton("Import winter session");
         importWinterSession.addActionListener(this);
@@ -323,7 +334,7 @@ public class MainUI extends JPanel implements ActionListener {
         Session fSession;
         try {
             fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (IOException | ParseException e) {
+        } catch (IOException | ParseException | InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
         addCourseInteractor.setSession(fSession);
@@ -345,7 +356,12 @@ public class MainUI extends JPanel implements ActionListener {
         TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen, overlapInputDialog);
         displayTimetablePresenter.setView(timetableUI);
 
-        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
+
+        SessionGateway gateway = new SessionGateway();
+        SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(gateway);
+        SessionFileController sessionFileController = new SessionFileController(sessionGatewayInteractor);
+
+        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController);
         timetableUI.setPrevPanel(mainUI);
         mainUI.setPreferredSize(new Dimension(1280, 720));
         SessionGateway gateway = new SessionGateway();
