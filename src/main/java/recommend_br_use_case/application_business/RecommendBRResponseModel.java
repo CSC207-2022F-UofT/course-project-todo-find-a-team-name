@@ -1,6 +1,6 @@
 package recommend_br_use_case.application_business;
 
-import retrieve_timetable_use_case.CourseModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
 
 import java.util.List;
 
@@ -26,5 +26,23 @@ public class RecommendBRResponseModel {
      */
     public List<CourseModel> getCourses() {
         return courses;
+    }
+
+    /**
+     * returns whether this response model is equal to obj, based on the value of
+     * instance attributes
+     *
+     * @param obj object compared with this response model
+     * @return whether this response model is equal to obj
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RecommendBRResponseModel)){
+            return false;
+        }
+
+        RecommendBRResponseModel other = (RecommendBRResponseModel) obj;
+
+        return this.courses.equals(other.courses);
     }
 }

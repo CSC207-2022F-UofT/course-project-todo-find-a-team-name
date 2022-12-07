@@ -64,6 +64,12 @@ public class BRRecommender {
                             practicals.add(section);
                     }
                 }
+
+                if (course.hasLecture() && lectures.isEmpty() ||
+                        course.hasTutorial() && tutorials.isEmpty() ||
+                        course.hasPractical() && practicals.isEmpty())
+                    continue;
+
                 result.addAll(new TimetableCourseGenerator(course).generateAllTimetableCourses(lectures, tutorials,
                         practicals));
 

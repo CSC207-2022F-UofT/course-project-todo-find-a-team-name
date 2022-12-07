@@ -1,12 +1,10 @@
 package recommend_br_use_case.interface_adapters;
 
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
 import recommend_br_use_case.application_business.RecommendBROutputBoundary;
 import recommend_br_use_case.application_business.RecommendBRResponseModel;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRCourseViewModel;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +14,13 @@ import java.util.List;
  */
 public class RecommendBRPresenter implements RecommendBROutputBoundary {
 
-    IRecommendBRView view;
+    private IRecommendBRView view;
 
     /**
-     * Constructs RecommendBRPresenter given IRecommendBRView (view for recommend BR use case)
-     *
-     * @param view class used to display information
+     * Constructs RecommendBRPresenter with view set to null
      */
-    public RecommendBRPresenter(IRecommendBRView view){
-        this.view = view;
+    public RecommendBRPresenter(){
+        this.view = null;
     }
 
     /**
@@ -35,6 +31,26 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      */
     @Override
     public void prepareSuccessView(RecommendBRResponseModel responseModel) {
+        view.showSuccessView(responseToViewModel(responseModel));
+    }
+
+    /**
+     * Display message to the user
+     *
+     * @param message text presented to the view
+     */
+    @Override
+    public void prepareFailView(String message) {
+        view.showFailView(message);
+    }
+
+    /**
+     * Perform formatting to convert given RecommendBRResponseModel to RecommendBRViewModel
+     *
+     * @param responseModel response model containing all information outputted for Recommend BR use case
+     * @return view model corresponding to the given response model, formatted in a way that is suitable for displaying
+     */
+    private static RecommendBRViewModel responseToViewModel(RecommendBRResponseModel responseModel){
         List<RecommendBRCourseViewModel> courseViewModels = new ArrayList<>();
         for (CourseModel courseModel : responseModel.getCourses()){
 
@@ -64,19 +80,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
                     createBlockInfos(tutorialModel),
                     createBlockInfos(practicalModel)));
         }
-        RecommendBRViewModel viewModel = new RecommendBRViewModel(courseViewModels);
-        view.showSuccessView(viewModel);
-
-    }
-
-    /**
-     * Display message to the user
-     *
-     * @param message text presented to the view
-     */
-    @Override
-    public void prepareFailView(String message) {
-        view.showFailView(message);
+        return new RecommendBRViewModel(courseViewModels);
     }
 
     /**
@@ -145,7 +149,7 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      */
     private static String doubleToStringTime(double doubleTime){
         int hour = (int) doubleTime;
-        String min = String.valueOf((int) ((doubleTime - hour) * 100));
+        String min = String.valueOf((int) ((doubleTime - hour) * 60));
         return hour + ":" + (min.length() == 1 ? "0":"") + min;
     }
 

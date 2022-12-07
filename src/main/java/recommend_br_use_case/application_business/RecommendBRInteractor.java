@@ -1,34 +1,38 @@
 package recommend_br_use_case.application_business;
 
 import entities.*;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.EntityConverter;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.EntityConverter;
 
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscriber;
 
 /**
  * Class that interacts with other classes to recommend breadth courses,
  * based on the given the request model and output the result to presenter
  * to prepare appropriate view.
  */
-public class RecommendBRInteractor implements RecommendBRInputBoundary {
+public class RecommendBRInteractor implements RecommendBRInputBoundary, Subscriber<Object>{
 
-    private Session fSession = null;
-    private Session sSession = null;
-    private Timetable timetable = null;
+    private Session session;
+    private Timetable timetable;
     private final RecommendBROutputBoundary presenter;
+    private final CourseComparatorFactory courseComparatorFactory;
 
     /**
      * Constructs RecommendBRInteractor based on the given SessionGateway, TimetableGateway, and
      * RecommendBROutputBoundary (presenter)
      *
      * @param presenter presenter used to prepare appropriate view
+     * @param courseComparatorFactory factory that creates Comparator for sorting courses based on preferred time
      */
-    public RecommendBRInteractor(RecommendBROutputBoundary presenter){
+    public RecommendBRInteractor(RecommendBROutputBoundary presenter, CourseComparatorFactory courseComparatorFactory){
         this.presenter = presenter;
+        this.courseComparatorFactory = courseComparatorFactory;
     }
 
     /**
@@ -47,33 +51,16 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
             return;
         }
 
-        Session session = null;
-        if (timetable.getSessionType().equals("F")){
-            session = fSession;
-        } else if (timetable.getSessionType().equals("S")){
-            session = sSession;
-        }
-
         if (session == null) {
             presenter.prepareFailView("Session not loaded yet!");
             return;
+        } else if (!session.getSessionType().equals(timetable.getSessionType())){
+            presenter.prepareFailView("Timetable session is different! Timetable is "
+                    + timetable.getSessionType() + " while Session is " + session.getSessionType() + ".");
+            return;
         }
 
-
-        Comparator<Course> courseComparator;
-        switch (requestModel.getPreferredTime()){
-            case "early":
-                courseComparator = new TargetTimeCourseComparator(0);
-                break;
-            case "balanced":
-                courseComparator = new TargetTimeCourseComparator(14);
-                break;
-            case "late":
-                courseComparator = new TargetTimeCourseComparator(24);
-                break;
-            default:
-                courseComparator = null;
-        }
+        Comparator<Course> courseComparator = courseComparatorFactory.createComparator(requestModel.getPreferredTime());
 
         BRRecommender brRecommender = new BRRecommender(timetable, session,
                 requestModel.getBrCategoriesSelected(), courseComparator);
@@ -86,7 +73,6 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
         }
 
         List<CourseModel> courseModels = new ArrayList<>();
-
         for (TimetableCourse course : recommendedCourses){
             courseModels.add(EntityConverter.generateCourseResponse(course));
         }
@@ -95,22 +81,14 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
     }
 
     /**
-     * Sets the fall session contained in this class to the given Session entity
+     * Sets the session contained in this class to the given Session entity
      *
-     * @param fSession new fall session
+     * @param session new session
      */
-    public void setFSession(Session fSession) {
-        this.fSession = fSession;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
-    /**
-     * Sets the winter session contained in this class to the given Session entity
-     *
-     * @param sSession new winter session
-     */
-    public void setSSession(Session sSession) {
-        this.sSession = sSession;
-    }
 
     /**
      * Sets the timetable contained in this class to the given Timetable entity
@@ -119,5 +97,45 @@ public class RecommendBRInteractor implements RecommendBRInputBoundary {
      */
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
+    }
+
+    /**
+     * Unimplemented method invoked prior to invoking any other Subscriber
+     * methods for the given Subscription
+     *
+     * @param subscription a new subscription
+     */
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {}
+
+    /**
+     * Update session or timetable if the given item is Session or Timetable.
+     * @param item the item
+     */
+    @Override
+    public void onNext(Object item) {
+        if (item instanceof Session){
+            session = (Session) item;
+        } else if (item instanceof Timetable){
+            timetable = (Timetable) item;
+        }
+    }
+
+    /**
+     * Unimplemented method invoked upon an unrecoverable error encountered by
+     * a Publisher or Subscription.
+     *
+     * @param throwable the exception
+     */
+    @Override
+    public void onError(Throwable throwable) {}
+
+    /**
+     * Unimplemented method invoked when it is known that no additional
+     * Subscriber method invocation will occur.
+     */
+    @Override
+    public void onComplete() {
+
     }
 }

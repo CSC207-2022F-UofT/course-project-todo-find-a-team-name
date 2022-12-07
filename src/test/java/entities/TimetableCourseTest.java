@@ -188,6 +188,80 @@ class TimetableCourseTest {
         catch (InvalidSectionsException e){
             fail("This should not throw an exception.");
         }
-
     }
+
+    /**
+     * Checks whether equals method returns true when two timetable courses are equal
+     */
+    @Test
+    void testEqualsTrue(){
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
+
+        Section s3 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s4 = new Section("TUT0102", "inst2", new ArrayList<>());
+
+        try{
+            TimetableCourse course1 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s1, s2)),
+                    "F", "EGX101", "BR1");
+            TimetableCourse course2 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s4, s3)),
+                    "F", "EGX101", "BR1");
+            assertEquals(course1, course2);
+        } catch (InvalidSectionsException e){
+            fail("This should not throw an exception.");
+        }
+    }
+
+    /**
+     * Checks whether equals method returns false when two timetable courses are equal
+     */
+    @Test
+    void testEqualsFalse(){
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
+
+        Section s3 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s4 = new Section("TUT0102", "inst4", new ArrayList<>());
+
+        try{
+            TimetableCourse course1 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s1, s2)),
+                    "F", "EGX101", "BR1");
+            TimetableCourse course2 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s4, s3)),
+                    "F", "EGX101", "BR1");
+            assertNotEquals(course1, course2);
+        } catch (InvalidSectionsException e){
+            fail("This should not throw an exception.");
+        }
+    }
+
+    /**
+     * Check whether hashCode returns same value if two timetable courses are equal
+     */
+    @Test
+    void testHashCode(){
+        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
+
+        Section s3 = new Section("LEC0101", "inst1", new ArrayList<>());
+        Section s4 = new Section("TUT0102", "inst2", new ArrayList<>());
+
+        try{
+            TimetableCourse course1 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s1, s2)),
+                    "F", "EGX101", "BR1");
+            TimetableCourse course2 = new TimetableCourse("Test Course",
+                    new ArrayList<>(List.of(s4, s3)),
+                    "F", "EGX101", "BR1");
+            assertEquals(course1.hashCode(), course2.hashCode());
+        } catch (InvalidSectionsException e){
+            fail("This should not throw an exception.");
+        }
+    }
+
+
+
 }
