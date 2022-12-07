@@ -31,6 +31,7 @@ import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 import screens.MainUI;
 import timetables_sort_use_case.application_business.*;
 import timetables_sort_use_case.interface_adapters.AllTimetablesController;
@@ -110,7 +111,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             mainUI.setVisible(true);
         } else {
             int i = e.getActionCommand().length() - 1;
-            openTimetableUI(i);
+            TimetableViewModel timetable = this.timetableViewModels[i];
+            openTimetableUI(timetable);
         }
     }
 
@@ -128,8 +130,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         timetablesSortMenu.setVisible(true);
         this.frame.pack();
     }
-    public void openTimetableUI(int i) {
-        allTimetablesController.setTTUI(i);
+    public void openTimetableUI(TimetableViewModel timetable) {
+        allTimetablesController.setTTUI(timetable);
         // TODO make a controller that updates his interactor's timetable and flow to everyone
         displayTimetableController.displayTimetable();
     }
@@ -141,7 +143,6 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
      * @param timetableViewModels the updated timetables that we want to present
      */
     public void updateTimetables(TimetableViewModel[] timetableViewModels) {
-        this.timetableViewModels = timetableViewModels;
         if (ttViews == null) {
             ttViews = new TimetableView[timetableViewModels.length];
             for (int i = 0; i < timetableViewModels.length; i++) {

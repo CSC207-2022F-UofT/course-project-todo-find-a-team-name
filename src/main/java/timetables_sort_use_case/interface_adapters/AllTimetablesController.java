@@ -6,9 +6,10 @@ import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import display_timetable_use_case.interface_adapters.TimetableViewSectionModel;
 import entities.Block;
+import entities.Section;
 import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
-import retrieve_timetable_use_case.application_business.TimetableModel;
 import timetables_sort_use_case.application_business.AllTimetablesInputBoundary;
 
 import java.util.ArrayList;
@@ -20,16 +21,14 @@ import java.util.List;
 public class AllTimetablesController {
     DisplayTimetableInputBoundary interactor;
     AllTimetablesInputBoundary publisher;
-    TimetableModel[] timetables;
+
     public AllTimetablesController(DisplayTimetableInputBoundary interactor, AllTimetablesInputBoundary publisher) {
         this.interactor = interactor;
         this.publisher = publisher;
-        this.timetables = null;
     }
-    public void setTTUI(int i) {
-        publisher.updateTimetable(timetables[i]);
+
+    public void setTTUI(TimetableViewModel timetableViewModel) {
+
     }
-    public void setTimetables(TimetableModel[] timetables) {
-        this.timetables = timetables;
-    }
+
 }

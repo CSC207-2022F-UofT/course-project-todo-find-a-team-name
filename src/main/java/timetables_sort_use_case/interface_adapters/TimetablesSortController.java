@@ -27,4 +27,5 @@ public class TimetablesSortController {
         TimetablesSortRequestModel timetablesSortRequestModel = new TimetablesSortRequestModel(timeButton, breakButton);
         interactor.timetablesSort(timetablesSortRequestModel);
     }
+
 }
