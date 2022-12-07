@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 public class TimetableGateway implements TimetableGatewayInterface {
@@ -83,8 +83,8 @@ public class TimetableGateway implements TimetableGatewayInterface {
             ObjectMapper mapper = new ObjectMapper();
             ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
             // convert mainMap to JSON file
-            LocalDateTime dateTime = LocalDateTime.now(); // Current date and time
-            writer.writeValue(Paths.get("src/main/saved_timetables/" + "timetable " + dateTime + ".json").toFile(), mainMap);
+            LocalDate date = LocalDate.now(); // Current date and time
+            writer.writeValue(Paths.get("src/main/saved_timetables/" + "timetable " + date + ".json").toFile(), mainMap);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
