@@ -1,6 +1,6 @@
 package timetables_sort_use_case.application_business;
 
-import entities.Timetable;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
@@ -12,7 +12,7 @@ public class AllTimetablesPublisher implements AllTimetablesInputBoundary, Flow.
         this.subscribers.add(subscriber);
     }
 
-    public void updateTimetable(Timetable timetable) {
+    public void updateTimetable(TimetableModel timetable) {
         for (Flow.Subscriber<Object> subscriber : subscribers) {
             subscriber.onNext(timetable);
         }

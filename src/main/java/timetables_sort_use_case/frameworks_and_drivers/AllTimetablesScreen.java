@@ -110,8 +110,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             mainUI.setVisible(true);
         } else {
             int i = e.getActionCommand().length() - 1;
-            TimetableViewModel timetable = this.timetableViewModels[i];
-            openTimetableUI(timetable);
+            openTimetableUI(i);
         }
     }
 
@@ -129,8 +128,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         timetablesSortMenu.setVisible(true);
         this.frame.pack();
     }
-    public void openTimetableUI(TimetableViewModel timetable) {
-        allTimetablesController.setTTUI(timetable);
+    public void openTimetableUI(int i) {
+        allTimetablesController.setTTUI(i);
         // TODO make a controller that updates his interactor's timetable and flow to everyone
         displayTimetableController.displayTimetable();
     }
