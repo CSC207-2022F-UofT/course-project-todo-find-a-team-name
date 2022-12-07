@@ -1,7 +1,7 @@
 package recommend_br_use_case.application_business;
 
 import entities.*;
-import generate_timetable_course_use_case.TimetableCourseGenerator;
+import generate_timetable_course_use_case.application_business.TimetableCourseGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,9 +1,9 @@
 package timetable_generator_use_case.application_business;
 
 import entities.*;
-import generate_timetable_course_use_case.TimetableCourseGenerator;
 //import retrieve_timetable_use_case.EntityConverter;
 //import retrieve_timetable_use_case.TimetableModel;
+import generate_timetable_course_use_case.application_business.TimetableCourseGenerator;
 import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
