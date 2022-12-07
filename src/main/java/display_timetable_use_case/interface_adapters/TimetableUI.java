@@ -138,16 +138,20 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
         this.setVisible(true);
     }
 
+    /**
+     * Method called when button is pressed which navigate to other screen
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
 
         switch (command) {
             case "match":
-                break;
-            case "save":
                 overlapInputDialog.pack();
                 overlapInputDialog.setVisible(true);
+                break;
+            case "save":
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
