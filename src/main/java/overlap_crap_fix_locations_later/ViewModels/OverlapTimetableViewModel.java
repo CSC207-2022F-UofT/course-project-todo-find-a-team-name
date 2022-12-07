@@ -20,13 +20,6 @@ public class OverlapTimetableViewModel {
         this.courses = courses;
     }
 
-    public OverlapTimetableViewModel(TimetableModel timetableModel) {
-        this.courses = new ArrayList<>();
-        for (CourseModel courseModel : timetableModel.getCourses()) {
-            this.courses.add(new OverlapTimetableCourseViewModel(courseModel));
-        }
-    }
-
     public List<OverlapTimetableCourseViewModel> getCourses() {
         return courses;
     }
@@ -64,20 +57,6 @@ class OverlapTimetableCourseViewModel {
         this.courseSession = courseSession;
         this.courseCode = courseCode;
         this.breadth = breadth;
-    }
-
-    /**
-     * Convenience constructor to quickly make this ViewModel out of a CourseModel
-     **/
-    public OverlapTimetableCourseViewModel(CourseModel courseModel) {
-        this.title = courseModel.getTitle();
-        this.sections = new ArrayList<>();
-        for (SectionModel sectionModel : courseModel.getSections()) {
-            sections.add(new OverlapTimetableSectionViewModel(sectionModel));
-        }
-        this.courseSession = courseModel.getCourseSession();
-        this.courseCode = courseModel.getCourseCode();
-        this.breadth = courseModel.getBreadth();
     }
 
     public String getTitle() {
@@ -134,21 +113,6 @@ class OverlapTimetableSectionViewModel {
         this.blocks = blocks;
     }
 
-    /**
-     * Convenience constructor for if you want to quickly make this out of a sectionModel.
-     *
-     * @param sectionModel - the original sectionModel you want to turn into a ViewModel.
-     */
-    public OverlapTimetableSectionViewModel(SectionModel sectionModel) {
-        this.code = sectionModel.getCode();
-        this.instructor = sectionModel.getInstructor();
-        this.blocks = new ArrayList<>();
-
-        for (BlockModel blockModel : sectionModel.getBlocks()) {
-            this.blocks.add(new OverlapTimetableBlockViewModel(blockModel));
-        }
-    }
-
     public String getCode() {
         return code;
     }
@@ -192,19 +156,6 @@ class OverlapTimetableBlockViewModel {
         this.room = room;
     }
 
-    /**
-     * Convenience constructor if you just want to use a blockModel.
-     * If you have an entity, just convert it using one of the converters.
-     *
-     * @param blockModel
-     */
-    public OverlapTimetableBlockViewModel(BlockModel blockModel) {
-        this.day = blockModel.getDay();
-        this.startTime = blockModel.getStartTime();
-        this.endTime = blockModel.getEndTime();
-        this.room = blockModel.getRoom();
-    }
-
     public int getDay() {
         return day;
     }
@@ -237,6 +188,57 @@ class OverlapTimetableBlockViewModel {
                 && Double.compare(that.getEndTime(), getEndTime()) == 0 && getRoom().equals(that.getRoom());
     }
 
+}
+
+class ModelToOverlapViewModelConverter {
+    /**
+     * Convenience method to turn a BlockModel into an OverlapTimetableBlockViewModel.
+     *
+     * @param blockModel
+     */
+    public static OverlapTimetableBlockViewModel convertBlockModel(BlockModel blockModel) {
+        return new OverlapTimetableBlockViewModel(blockModel.getDay(), blockModel.getStartTime(),
+                blockModel.getEndTime(), blockModel.getRoom());
+    }
+
+    /**
+     * Convenience constructor for if you want to quickly make this out of a sectionModel.
+     *
+     * @param sectionModel - the original sectionModel you want to turn into a ViewModel.
+     */
+    public static OverlapTimetableSectionViewModel convertSectionModel(SectionModel sectionModel) {
+        ArrayList<OverlapTimetableBlockViewModel> blockViewModels = new ArrayList<>();
+
+        for (BlockModel blockModel : sectionModel.getBlocks()) {
+            blockViewModels.add(ModelToOverlapViewModelConverter.convertBlockModel(blockModel));
+        }
+
+        return new OverlapTimetableSectionViewModel(sectionModel.getCode(), sectionModel.getInstructor(),
+                blockViewModels);
+    }
+
+    /**
+     * Convenience constructor to quickly make this ViewModel out of a CourseModel
+     **/
+    public static OverlapTimetableCourseViewModel convertCourseModel(CourseModel courseModel) {
+
+        ArrayList<OverlapTimetableSectionViewModel> sectionViewModels = new ArrayList<>();
+        for (SectionModel sectionModel : courseModel.getSections()) {
+            sectionViewModels.add(ModelToOverlapViewModelConverter
+                    .convertSectionModel(sectionModel));
+        }
+
+        return new OverlapTimetableCourseViewModel(courseModel.getTitle(), sectionViewModels,
+                courseModel.getCourseSession(), courseModel.getCourseCode(), courseModel.getBreadth());
+    }
+
+    public static OverlapTimetableViewModel convertTimetableModel(TimetableModel timetableModel) {
+        ArrayList<OverlapTimetableCourseViewModel> courseViewModels = new ArrayList<>();
+        for (CourseModel courseModel : timetableModel.getCourses()) {
+            courseViewModels.add(ModelToOverlapViewModelConverter.convertCourseModel(courseModel));
+        }
+        return new OverlapTimetableViewModel(courseViewModels);
+    }
 }
 
 

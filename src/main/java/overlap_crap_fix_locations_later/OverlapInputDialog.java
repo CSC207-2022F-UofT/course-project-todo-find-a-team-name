@@ -8,6 +8,7 @@ import entities.*;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
+import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import screens.ConstraintsInputScreen;
@@ -28,18 +29,16 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private JButton buttonCancel;
     private JComboBox timeTableComboBox;
     private JLabel textLabel;
-
-    private TimetableViewModel currentlySelectedTimetable = null;
-    private TimetableViewModel selectedMainTimetable;
+    private OverlapTimetableViewModel selectedMainTimetable;
 
     private SectionFilterController sectionFilterController;
 
     // TODO: May wish to find a better way of doing this. This is a placeholder.
-    private HashMap<String, TimetableViewModel> timeTableRepresentations = new HashMap<>();
+    private HashMap<String, OverlapTimetableViewModel> timeTableRepresentations = new HashMap<>();
     private ArrayList<Constraint> selectedConstraints;
     private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
     private final OverlapMaxInputBoundary overlapMaxController;
-    private ArrayList<TimetableViewModel> timeTableOptions;
+    private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
     private final TimetableUI timetableDisplay;
     private final TimetableView timetablePanel;
@@ -48,7 +47,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      * Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
      * and interactor and such.
      */
-    public OverlapInputDialog(ArrayList<TimetableModel> timeTableOptions, SectionFilterController sectionFilterController,
+    public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
+                              SectionFilterController sectionFilterController,
                               TimetableUI timetableDisplay, TimetableView timetablePanel) {
         // This will be initialized later, when the controller subscribes to this InputDialog.
         this.overlapMaxController = null;
@@ -66,7 +66,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         getRootPane().setDefaultButton(buttonOK);
         setUpCancelFunctionality();
         setUpInputPassing();
-        currentlySelectedTimetable = timeTableRepresentations.get(timeTableComboBox.getSelectedItem());
     }
 
     /**
@@ -84,7 +83,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         String selectedItemName = (String) timeTableComboBox.getSelectedItem();
 
         // TODO: Make this actually get data once I can integrate, from JD's case.
-        ArrayList<Timetable> candidateTimetables = new ArrayList<>();
+        ArrayList<OverlapTimetableViewModel> candidateTimetables = new ArrayList<>();
 
         // Use a makeshift bundle via a map. (It's a pity Android.Bundle isn't native to Java).
         HashMap<OverlapInputDialogDataKeys, Object> dataBundle = new HashMap<>();
@@ -107,7 +106,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
 
     }
 
-    public void updateTimetableOptions(ArrayList<TimetableViewModel> newTimetableOptions) {
+    public void updateTimetableOptions(ArrayList<OverlapTimetableViewModel> newTimetableOptions) {
         this.timeTableOptions = newTimetableOptions;
     }
 
@@ -159,6 +158,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
 
             SectionHoursInputBoundary sectionHoursCalculator = new CalculateSectionHoursInteractor();
             TimetableMatchInputBoundary timeTableMatcher = new TimeTableMatchInteractor(sectionHoursCalculator);
+
 
             OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList, sectionFilterController1);
 

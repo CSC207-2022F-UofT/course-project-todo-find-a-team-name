@@ -1,14 +1,9 @@
 package overlap_crap_fix_locations_later;
 
-import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import display_timetable_use_case.interface_adapters.TimetableViewSectionModel;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import retrieve_timetable_use_case.application_business.BlockModel;
-import retrieve_timetable_use_case.application_business.CourseModel;
-import retrieve_timetable_use_case.application_business.SectionModel;
+import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
+import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
@@ -33,45 +28,22 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
         publisher.subscribe(this);
     }
 
-    public static TimetableModel convertTimetableViewModelToModel(TimetableViewModel table) {
-        ArrayList<CourseModel> courseModelList = new ArrayList<>();
+    @Override
+    public TimetableModel getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
+                                                   List<OverlapTimetableViewModel> timetables) {
 
-        for (TimetableViewCourseModel course : table.getCourseData()) {
-            CourseModel courseModel = course.getSectionModels();
-            courseModelList.add(courseModel);
-        }
-        return new TimetableModel(courseModelList);
-    }
+        TimetableModel actualMainTable = OverlapTimetableViewModelToModelConverter
+                .convertOverlapTimetableViewModelToModel(mainTable);
 
-    public static CourseModel convertTimetableCourseViewModelToModel(TimetableViewCourseModel model) {
-        ArrayList<SectionModel> sectionModels = new ArrayList<>();
-
-        for (TimetableViewSectionModel sectionModel : model.getSectionModels()) {
-
-            courseModelList.add(sectionModel);
-        }
-        return new TimetableModel(courseModelList);
-
-    }
-
-    public static SectionModel convertTimetableSectionViewModelToModel(TimetableViewSectionModel sectionModel) {
-        ArrayList<BlockModel> blockModels = new ArrayList<>();
-        for (TimetableViewBlockModel blockModel : sectionModel.getBlockModels()) {
-            blockModels.add(convertTimetableBlockViewModelToModel(blockModel));
+        ArrayList<TimetableModel> actualTimetables = new ArrayList<>();
+        for (OverlapTimetableViewModel timetableViewModel : timetables) {
+            actualTimetables.add(OverlapTimetableViewModelToModelConverter.convertOverlapTimetableViewModelToModel(
+                    timetableViewModel
+            ));
         }
 
-        return new SectionModel(sectionModel.getCode(), sectionModel, )
-
+        return timetableMatcher.determineBestMatchingTimetable(actualMainTable, actualTimetables);
     }
-
-    public static BlockModel convertTimetableBlockViewModelToModel(TimetableViewBlockModel blockModel) {
-        return new BlockModel(blockModel.getDay(), blockModel.getStartTime(), blockModel.getEndTime(),
-                blockModel.getRoom());
-    }
-
-
-    // TODO: For the moment, this is a string for testing. Change it later.
-    public String selectedTimetable;
 
     /**
      * Set up to receive data from a subscription. Note that we expect 1 data bundle per InputDialog.
