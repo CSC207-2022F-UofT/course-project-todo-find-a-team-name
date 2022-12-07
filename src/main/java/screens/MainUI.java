@@ -12,12 +12,17 @@ import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresent
 import display_timetable_use_case.interface_adapters.TimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
+import entities.InvalidSectionsException;
+import fileio_use_case.interface_adapters.SessionFileController;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -30,9 +35,10 @@ import java.awt.event.ActionListener;
  */
 public class MainUI extends JPanel implements ActionListener {
 
-    private JLabel filePathSession;
+    private JLabel filePathSession1;
+    private JLabel filePathSession2;
     private JLabel filePathTimetable;
-
+    public SessionFileController sessionController;
     private final ConstraintsInputScreen constraintsInputScreen;
     private final EditTimetableScreen editTimetableScreen;
     private final TimetableUI timetableUI;
@@ -42,8 +48,9 @@ public class MainUI extends JPanel implements ActionListener {
      * Constructs MainUI with title, import timetable/session buttons, and display/edit/generate timetable buttons.
      */
     public MainUI(JFrame frame, ConstraintsInputScreen constraintsInputScreen, EditTimetableScreen editTimetableScreen,
-                  TimetableUI timetableUI){
+                  TimetableUI timetableUI, SessionFileController sessionController){
         super();
+        this.sessionController = sessionController;
         this.constraintsInputScreen = constraintsInputScreen;
         this.editTimetableScreen = editTimetableScreen;
         this.timetableUI = timetableUI;
@@ -113,6 +120,7 @@ public class MainUI extends JPanel implements ActionListener {
         return timetablePanel;
     }
 
+        // Importing Sessions
     /**
      * Create and returns panel that allow user to import session.
      * filePathSession instance attribute is also updated to the JLabel representing the current
@@ -122,12 +130,34 @@ public class MainUI extends JPanel implements ActionListener {
      */
     private JPanel createImportSessionPanel(){
         JPanel importSessionPanel = new JPanel();
+        importSessionPanel.setLayout(new BoxLayout(importSessionPanel, BoxLayout.PAGE_AXIS));
+        JPanel importFallSessionPanel = new JPanel();
+        JPanel importWinterSessionPanel = new JPanel();
+        // Creates border for each session panel
+        TitledBorder sessionBorder = BorderFactory.createTitledBorder("");
+        importFallSessionPanel.setBorder(sessionBorder);
+        importWinterSessionPanel.setBorder(sessionBorder);
+        // Import fall session button
+        JButton importFallSession = new JButton("Import fall session");
+        importFallSession.addActionListener(this);
+        filePathSession1 = new JLabel("Choose the file... ");
+        importFallSessionPanel.add(importFallSession);
+        importFallSessionPanel.add(filePathSession1);
+        // Import winter session button
+        JButton importWinterSession = new JButton("Import winter session");
+        importWinterSession.addActionListener(this);
+        filePathSession2 = new JLabel("Choose the file... ");
+        importWinterSessionPanel.add(importWinterSession);
+        importWinterSessionPanel.add(filePathSession2);
+
+        importSessionPanel.add(importFallSessionPanel);
+        importSessionPanel.add(importWinterSessionPanel);
         JButton importSession = new JButton("Import session");
         importSession.addActionListener(this);
 
-        filePathSession = new JLabel("Choose the file...");
+        filePathSession1 = new JLabel("Choose the file...");
         importSessionPanel.add(importSession);
-        importSessionPanel.add(filePathSession);
+        importSessionPanel.add(filePathSession1);
         return importSessionPanel;
     }
 
@@ -162,10 +192,31 @@ public class MainUI extends JPanel implements ActionListener {
                 }
                 break;
             }
-            case "Import session": {
+            case "Import fall session": {
                 JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
-                    filePathSession.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                    String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    filePathSession1.setText(importedSessionFilePath);
+                    // Add SessionFileController
+                    try {
+                        sessionController.createSessionFile(importedSessionFilePath, "F");
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                break;
+            }
+            case "Import winter session": {
+                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
+                    String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    filePathSession2.setText(importedSessionFilePath);
+                    // Add SessionFileController
+                    try {
+                        sessionController.createSessionFile(importedSessionFilePath, "S");
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 break;
             }
@@ -289,6 +340,14 @@ public class MainUI extends JPanel implements ActionListener {
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
         timetableUI.setPrevPanel(mainUI);
         mainUI.setPreferredSize(new Dimension(1280, 720));
+        SessionGateway gateway = new SessionGateway();
+
+        SessionGatewayInteractor hi = new SessionGatewayInteractor(gateway);
+
+        SessionFileController controller = new SessionFileController(hi);
+
+        MainUI mainUI = new MainUI(controller);
+        mainUI.setPreferredSize(new Dimension(500, 400));
         frame.add(mainUI);
 
         frame.pack();

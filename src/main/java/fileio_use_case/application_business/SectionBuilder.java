@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 /** Builds Section **/
 public class SectionBuilder {
-
     private final String code;
     private final String instructorName;
     private final List<Block> blocks;
