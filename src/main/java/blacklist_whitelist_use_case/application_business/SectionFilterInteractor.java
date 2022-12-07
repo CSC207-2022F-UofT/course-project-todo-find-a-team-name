@@ -67,6 +67,12 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow
 
         presenter.prepareSuccessView(responseModel);
     }
+
+    /**
+     * A helper method that makes a copy of the CalendarCourse Object
+     * @param course a CalendarCourse Object
+     * @return a copy of the CalendarCourse passed into the function.
+     */
     private CalendarCourse copyCalendarCourse(CalendarCourse course){
         return new CalendarCourse(course.getCourseCode(),
                 new ArrayList<>(course.getSections()),
@@ -75,6 +81,11 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow
                 course.getBreadth());
     }
 
+    /**
+     * A helper method that makes a copy of a List of CalendarCourse Object.
+     * @param calendarCourses a List of CalendarCourse Object
+     * @return a copy of a List of CalendarCourse Object
+     */
     private List<CalendarCourse> copyCalendarCourseList(List<CalendarCourse> calendarCourses){
         ArrayList<CalendarCourse> copy = new ArrayList<>();
         for (CalendarCourse course: calendarCourses) {

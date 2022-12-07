@@ -121,7 +121,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
         TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
         generatorInteractor.onNext(fall);
-        GenerateTimetableScreen fakeJDScreen = new GenerateTimetableScreen(generatorController);
+        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
 
         generatorPresenter.setView(timetables -> {
             System.out.println("Timetable Size: " + timetables.length);
@@ -133,7 +133,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             }
         });
 
-        fakeJDScreen.add(new JButton("HELLO"));
+        generateTimetableScreen.add(new JButton("HELLO"));
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
@@ -142,8 +142,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
         sectionFilterInterator.onNext(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
-        ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
-        c.setPrevPanel(fakeJDScreen);
+        ConstraintsInputScreen c = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
+        c.setPrevPanel(generateTimetableScreen);
         sectionFilterPresenter.setView(c);
         jFrame.add(c);
         jFrame.setVisible(true);
@@ -210,6 +210,10 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
 
     }
 
+    /**
+     * Display the data stored inside the viewModel to the user
+     * @param viewModel a data structure that stores the information to be displayed to the user.
+     */
     @Override
     public void showSuccessView(SectionFilterViewModel viewModel) {
         JFrame window = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -217,6 +221,10 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         dialog.setVisible(true);
     }
 
+    /**
+     * Display the error message to inform the user of a potential error in their input.
+     * @param message an error message telling the user the reason their input is not valid.
+     */
     @Override
     public void showFailView(String message) {
         roomBtn.setSelectedIndex(0);
