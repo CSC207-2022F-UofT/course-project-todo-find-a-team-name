@@ -5,17 +5,11 @@ import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import entities.InvalidSectionsException;
 import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
-import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
-import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +22,7 @@ import java.util.ArrayList;
  * Main Screen for BlackListWhiteList use case, where user enters course codes and constraints they want to apply.
  */
 public class ConstraintsInputScreen extends JPanel implements ActionListener, ISectionFilterView {
-    private JPanel prevPanel = null;
-    private final JButton prev = new JButton("<-");
-    private final GenerateTimetableScreen generateTimeTableScreen;
+    private final JPanel generateTimeTableScreen;
     private final SectionFilterController sectionFilterController;
     private final String[] CONSTRAINT_LIST_TYPE = {"/", "BLACKLIST", "WHITELIST"};
     private final String[] TIME = {"8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
@@ -50,7 +42,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final JButton help = new JButton("help");
 
 
-    public ConstraintsInputScreen(GenerateTimetableScreen generateTimeTableScreen, SectionFilterController controller) {
+    public ConstraintsInputScreen(JPanel generateTimeTableScreen, SectionFilterController controller) {
         this.generateTimeTableScreen = generateTimeTableScreen;
         JRadioButton radioButton = new JRadioButton("MO");
         JRadioButton radioButton1 = new JRadioButton("TU");
@@ -72,6 +64,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JLabel title = new JLabel("ConstraintsInput Screen");
         title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
         title.setHorizontalAlignment(JLabel.CENTER);
+        this.setSize(400, 800);
 
 
         submit.addActionListener(this);
@@ -92,8 +85,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel buttons = new JPanel();
         buttons.add(submit);
         buttons.add(help);
-        buttons.add(prev);
-        prev.addActionListener(this);
         help.addActionListener(this);
         this.add(title, BorderLayout.PAGE_START);
         panel.add(courseInput);
@@ -117,62 +108,24 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         } catch (ParseException | IOException | InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
-
-        TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
-        TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
-        TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
-        generatorInteractor.onNext(fall);
-        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
-
-        generatorPresenter.setView(timetables -> {
-            System.out.println("Timetable Size: " + timetables.length);
-            for (TimetableViewModel timetableModel : timetables){
-                System.out.println("------");
-                for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()){
-                    System.out.println(courseModel.getCode());
-                }
-            }
-        });
-
-        generateTimetableScreen.add(new JButton("HELLO"));
+        JPanel fakeJDScreen= new JPanel();
+        fakeJDScreen.add(new JButton("HELLO"));
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        CardLayout cardLayout = new CardLayout();
+        JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.onNext(fall); //delete
+        sectionFilterInterator.setSession(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
-        ConstraintsInputScreen c = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
-        c.setPrevPanel(generateTimetableScreen);
+        ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
         sectionFilterPresenter.setView(c);
-        jFrame.add(c);
+        screens.add(c, "hi");
+        jFrame.add(screens);
         jFrame.setVisible(true);
     }
-
-    /**
-     * Set previous panel of this panel to the given panel
-     *
-     * @param prevPanel new panel set to previous panel
-     */
-    public void setPrevPanel(JPanel prevPanel) {
-        this.prevPanel = prevPanel;
-    }
-
-    /**
-     * Change the screen of the frame to the given panel
-     *
-     * @param panel new screen
-     */
-    private void changeScreen(JPanel panel){
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        this.setVisible(false);
-        frame.getContentPane().removeAll();
-        frame.add(panel);
-        frame.revalidate();
-        this.setVisible(true);
-    }
-
 
     /**
      * Invoked when an action occurs.
@@ -205,16 +158,8 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             JDialog helpDialogue = new HelpInstructionScreen();
             helpDialogue.setVisible(true);
         }
-        if (e.getSource() == prev){
-            changeScreen(prevPanel);
-        }
-
     }
 
-    /**
-     * Display the data stored inside the viewModel to the user
-     * @param viewModel a data structure that stores the information to be displayed to the user.
-     */
     @Override
     public void showSuccessView(SectionFilterViewModel viewModel) {
         JFrame window = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -222,10 +167,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         dialog.setVisible(true);
     }
 
-    /**
-     * Display the error message to inform the user of a potential error in their input.
-     * @param message an error message telling the user the reason their input is not valid.
-     */
     @Override
     public void showFailView(String message) {
         roomBtn.setSelectedIndex(0);
