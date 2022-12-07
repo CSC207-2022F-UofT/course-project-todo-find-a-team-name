@@ -1,14 +1,15 @@
 package overlap_crap_fix_locations_later;
 
-import blacklist_whitelist_use_case.SectionFilterInteractor;
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import entities.*;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
-import screens.ConstraintsInputScreen;
-import screens.SectionFilterController;
-import screens.SectionFilterPresenter;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -107,7 +108,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
-        ConstraintsInputScreen c = new ConstraintsInputScreen(sectionFilterController1);
+
+        ConstraintsInputScreen c = new ConstraintsInputScreen(null, sectionFilterController1);
         sectionFilterPresenter.setView(c);
         screens.add(c, "hi");
         jFrame.add(screens);
