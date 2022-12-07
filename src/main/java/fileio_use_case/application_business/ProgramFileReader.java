@@ -7,6 +7,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,10 +21,10 @@ public class ProgramFileReader {
         this.allCalendarCourses = new HashMap<>();
         this.allTimetableCourses = new HashMap<>();
     }
-    public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException {
+    public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException, IOException {
         // Parse String
         JSONParser parser = new JSONParser();
-        JSONObject jsonObj = (JSONObject) parser.parse(jsonData);
+        JSONObject jsonObj = (JSONObject) parser.parse(new InputStreamReader(new FileInputStream(jsonData)));
         // Iterate through jsonObj
         for (Object key : jsonObj.keySet()) {
             JSONObject courseInfo = (JSONObject) jsonObj.get(key);
@@ -50,13 +53,13 @@ public class ProgramFileReader {
                 CalendarCourse calCourse = new CalendarCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
+                allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
             }
             else {
                 TimetableCourse timetableCourse = new TimetableCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
+                allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
             }
         }
     }

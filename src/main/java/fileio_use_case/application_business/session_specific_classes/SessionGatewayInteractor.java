@@ -59,6 +59,10 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary,
         }
         return new SessionModel(allSessionCoursesModel, sessionType);
     }
+    /**
+     * Add subscribers/observers to this class
+     * @param subscriber - a subscriber
+     * */
     @Override
     public void subscribe(Flow.Subscriber<? super Object> subscriber) {
         receivers.add(subscriber); // Adds subscribe to list of subscribers
