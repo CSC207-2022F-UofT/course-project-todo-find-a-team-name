@@ -14,8 +14,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class used for testing DisplayTimetableController
+ */
 class DisplayTimetablePresenterTest {
 
+    /**
+     * Test whether prepareTimetable correctly formats timetable model to view model and calls appropriate method
+     * in ITimetableUI
+     */
     @Test
     void testPrepareTimetable() {
 
@@ -45,7 +52,7 @@ class DisplayTimetablePresenterTest {
         TimetableViewCourseModel courseViewModel1 = new TimetableViewCourseModel("CSC111",
                 List.of(timetableViewSectionModel1, timetableViewSectionModel2));
 
-        TimetableViewCourseModel courseViewModel2 = new TimetableViewCourseModel("CSC111",
+        TimetableViewCourseModel courseViewModel2 = new TimetableViewCourseModel("CSC112",
                 List.of(timetableViewSectionModel3));
 
         TimetableViewModel expectedViewModel = new TimetableViewModel(List.of(courseViewModel1, courseViewModel2));
@@ -66,6 +73,9 @@ class DisplayTimetablePresenterTest {
         presenter.prepareTimetable(timetableModel);
     }
 
+    /**
+     * Test whether prepareFailView correctly calls appropriate method in ITimetableUI with correct message
+     */
     @Test
     void testPrepareFailView() {
         DisplayTimetablePresenter presenter = new DisplayTimetablePresenter();

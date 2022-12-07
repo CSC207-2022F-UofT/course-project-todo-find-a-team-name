@@ -5,8 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class used for testing DisplayTimetableController
+ */
 class DisplayTimetableControllerTest {
 
+    /**
+     * Test whether displayTimetable calls appropriate method in DisplayTimetableInputBoundary
+     */
     @Test
     void testDisplayTimetable() {
         final boolean[] methodReached = {false};

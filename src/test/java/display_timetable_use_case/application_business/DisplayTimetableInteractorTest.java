@@ -12,8 +12,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class used for testing DisplayTimetableInteractor
+ */
 class DisplayTimetableInteractorTest {
 
+    /**
+     * Test whether displayTimetable calls prepareTimetable in the DisplayTimetableOutputBoundary with correct
+     * timetable model if timetable is loaded correctly
+     */
     @Test
     void testDisplayTimetableSuccess() {
         SectionModel sectionModel1 = new SectionModel("LEC-0101", "inst1",
@@ -72,6 +79,10 @@ class DisplayTimetableInteractorTest {
         interactor.displayTimetable();
     }
 
+    /**
+     * Test whether displayTimetable calls prepareFailView in the DisplayTimetableOutputBoundary with correct
+     * message if timetable is not loaded
+     */
     @Test
     void testDisplayTimetableFail() {
         DisplayTimetableOutputBoundary dummyPresenter = new DisplayTimetableOutputBoundary() {
