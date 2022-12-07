@@ -1,5 +1,9 @@
-package display_timetable_use_case.interface_adapters;
+package display_timetable_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.ITimetableUI;
+import overlap_crap_fix_locations_later.OverlapInputDialog;
+import screens.EditTimetableScreen;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
@@ -23,6 +27,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private final TimetableViewModel timetableViewModel;
     private final TimetableView timetableView;
     private final EditTimetableScreen editTimetableScreen;
+    private final OverlapInputDialog overlapInputDialog;
     private JPanel prevPanel = null;
 
 
@@ -31,13 +36,16 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      * all information to be displayed in this JPanel
      *
      * @param displayTimetableController controller used for displaying timetable
+     * @param editTimetableScreen screen for editing timetable
+     * @param overlapInputDialog dialog for input screen for overlap maximization use case
      */
     public TimetableUI(DisplayTimetableController displayTimetableController,
-                       EditTimetableScreen editTimetableScreen){
+                       EditTimetableScreen editTimetableScreen, OverlapInputDialog overlapInputDialog){
         this.displayTimetableController = displayTimetableController;
         this.timetableViewModel = new TimetableViewModel(new ArrayList<>());
         this.timetableView = new TimetableView(timetableViewModel);
         this.editTimetableScreen = editTimetableScreen;
+        this.overlapInputDialog = overlapInputDialog;
 
         setLayout(new BorderLayout());
 
@@ -81,10 +89,13 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
      *
      * @param width                      width of the preferred size of this component
      * @param height                     height of the preferred size of this component
+     * @param editTimetableScreen        screen for editing timetable
      * @param displayTimetableController controller used for displaying timetable
+     * @param overlapInputDialog         dialog for input screen for overlap maximization use case
      */
-    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen, DisplayTimetableController displayTimetableController){
-        this(displayTimetableController, editTimetableScreen);
+    public TimetableUI(int width, int height, EditTimetableScreen editTimetableScreen,
+                       DisplayTimetableController displayTimetableController, OverlapInputDialog overlapInputDialog){
+        this(displayTimetableController, editTimetableScreen, overlapInputDialog);
         setPreferredSize(new Dimension(width, height));
     }
 
@@ -130,16 +141,20 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
         this.setVisible(true);
     }
 
+    /**
+     * Method called when button is pressed which navigate to other screen
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
 
         switch (command) {
             case "match":
-                // TODO: implement match
+                overlapInputDialog.pack();
+                overlapInputDialog.setVisible(true);
                 break;
             case "save":
-                // TODO: implement save
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
@@ -153,13 +168,17 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     }
 
     /**
-     *
+     * Update the timetable for this view to the imported timetable
      */
     public void updateTimetable(){
         displayTimetableController.displayTimetable();
     }
 
-
+    /**
+     * Update the timetable for this view to the given timetable view model
+     *
+     * @param viewModel object storing all information needed for displaying timetable
+     */
     @Override
     public void updateTimetable(TimetableViewModel viewModel) {
         setVisible(false);
@@ -167,6 +186,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
         setVisible(true);
     }
 
+    /**
+     * Show message to the user
+     * @param message error message
+     */
     @Override
     public void showTimetableFailView(String message) {
         changeScreen(prevPanel);

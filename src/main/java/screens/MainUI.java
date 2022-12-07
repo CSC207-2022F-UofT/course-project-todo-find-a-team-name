@@ -18,6 +18,12 @@ import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import edit_timetable_use_case.AddCourseInteractor;
+import edit_timetable_use_case.RemoveCourseInteractor;
 import entities.*;
 
 
@@ -25,6 +31,7 @@ import fileio_use_case.application_business.session_specific_classes.SessionGate
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.interface_adapters.SessionFileController;
 import org.json.simple.parser.ParseException;
+import overlap_crap_fix_locations_later.OverlapInputDialog;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
@@ -375,6 +382,15 @@ public class MainUI extends JPanel implements ActionListener {
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
+        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+        displayTimetableInteractor.setTimetable(timetable);
+        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+
+        OverlapInputDialog overlapInputDialog = new OverlapInputDialog(new ArrayList<>(), sectionFilterController);
+
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen, overlapInputDialog);
+        displayTimetablePresenter.setView(timetableUI);
         DisplayTimetablePresenter displayTimetablePresenter2 = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);

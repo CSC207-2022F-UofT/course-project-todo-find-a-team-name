@@ -1,5 +1,8 @@
 package edit_timetable_use_case.interface_adapters;
 
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import edit_timetable_use_case.AddCourseOutputBoundary;
+import edit_timetable_use_case.EditTimetableResponseModel;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import edit_timetable_use_case.application_business.AddCourseOutputBoundary;
 import edit_timetable_use_case.application_business.EditTimetableResponseModel;
