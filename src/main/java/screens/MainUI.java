@@ -202,112 +202,112 @@ public class MainUI extends JPanel implements ActionListener {
 
 
 
-    // TODO: Remove this
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
-        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
-        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
-                courseComparatorFactory);
-        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
-
-        AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
-        AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
-        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
-        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
-
-        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
-        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
-        editTimetableScreen.setBRWindow(recommendBRWindow);
-        editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
-
-        Block block1 = new Block("MO", "11:00", "12:00", "");
-        Block block2 = new Block("FR", "11:00", "12:00", "");
-        java.util.List<Block> blocks1 = new ArrayList<>();
-        blocks1.add(block1);
-        blocks1.add(block2);
-
-        Block block3 = new Block("WE", "11:00", "12:00", "");
-        java.util.List<Block> blocks2 = new ArrayList<>();
-        blocks2.add(block3);
-
-        Block block4 = new Block("TU", "16:00", "17:00", "");
-        Block block5 = new Block("FR", "16:00", "17:00", "");
-        java.util.List<Block> blocks3 = new ArrayList<>();
-        blocks3.add(block4);
-        blocks3.add(block5);
-
-        Block block6 = new Block("MO", "14:00", "16:00", "");
-        java.util.List<Block> blocks4 = new ArrayList<>();
-        blocks4.add(block6);
-
-        Section s1 = new Section("LEC0101", "", blocks1);
-        Section s2 = new Section("TUT0101", "", blocks2);
-
-        Section s3 = new Section("LEC0401", "", blocks3);
-        Section s4 = new Section("TUT0301", "", blocks4);
-
-        java.util.List<Section> sections1 = new ArrayList<>();
-        sections1.add(s1);
-        sections1.add(s2);
-        List<Section> sections2 = new ArrayList<>();
-        sections2.add(s3);
-        sections2.add(s4);
-
-        TimetableCourse c1;
-        TimetableCourse c2;
-
-        try {
-            c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
-            c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
-        } catch (InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-
-        ArrayList<TimetableCourse> courses = new ArrayList<>();
-        courses.add(c1);
-        courses.add(c2);
-        Timetable timetable = new Timetable(courses, "F");
-
-        recommendBRPresenter.setView(recommendBRWindow);
-        addCoursePresenter.setView(editTimetableScreen);
-        removeCoursePresenter.setView(editTimetableScreen);
-        addCourseInteractor.setTimetable(timetable);
-        removeCourseInteractor.setTimetable(timetable);
-        recommendBRInteractor.setTimetable(timetable);
-
-        SessionGateway sessionGateway = new SessionGateway();
-        Session fSession;
-        try {
-            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFallSession(fSession);
-
-        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
-        SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
-        sectionFilterPresenter.setView(constraintsInputScreen);
-
-        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-        displayTimetableInteractor.setTimetable(timetable);
-        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen);
-        displayTimetablePresenter.setView(timetableUI);
-
-        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
-        timetableUI.setPrevPanel(mainUI);
-        mainUI.setPreferredSize(new Dimension(1280, 720));
-        frame.add(mainUI);
-
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
+//    // TODO: Remove this
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame();
+//
+//        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+//        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+//        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
+//                courseComparatorFactory);
+//        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+//
+//        AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
+//        AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
+//        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
+//        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
+//        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
+//
+//        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
+//        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
+//        editTimetableScreen.setBRWindow(recommendBRWindow);
+//        editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
+//
+//        Block block1 = new Block("MO", "11:00", "12:00", "");
+//        Block block2 = new Block("FR", "11:00", "12:00", "");
+//        java.util.List<Block> blocks1 = new ArrayList<>();
+//        blocks1.add(block1);
+//        blocks1.add(block2);
+//
+//        Block block3 = new Block("WE", "11:00", "12:00", "");
+//        java.util.List<Block> blocks2 = new ArrayList<>();
+//        blocks2.add(block3);
+//
+//        Block block4 = new Block("TU", "16:00", "17:00", "");
+//        Block block5 = new Block("FR", "16:00", "17:00", "");
+//        java.util.List<Block> blocks3 = new ArrayList<>();
+//        blocks3.add(block4);
+//        blocks3.add(block5);
+//
+//        Block block6 = new Block("MO", "14:00", "16:00", "");
+//        java.util.List<Block> blocks4 = new ArrayList<>();
+//        blocks4.add(block6);
+//
+//        Section s1 = new Section("LEC0101", "", blocks1);
+//        Section s2 = new Section("TUT0101", "", blocks2);
+//
+//        Section s3 = new Section("LEC0401", "", blocks3);
+//        Section s4 = new Section("TUT0301", "", blocks4);
+//
+//        java.util.List<Section> sections1 = new ArrayList<>();
+//        sections1.add(s1);
+//        sections1.add(s2);
+//        List<Section> sections2 = new ArrayList<>();
+//        sections2.add(s3);
+//        sections2.add(s4);
+//
+//        TimetableCourse c1;
+//        TimetableCourse c2;
+//
+//        try {
+//            c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
+//            c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
+//        } catch (InvalidSectionsException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        ArrayList<TimetableCourse> courses = new ArrayList<>();
+//        courses.add(c1);
+//        courses.add(c2);
+//        Timetable timetable = new Timetable(courses, "F");
+//
+//        recommendBRPresenter.setView(recommendBRWindow);
+//        addCoursePresenter.setView(editTimetableScreen);
+//        removeCoursePresenter.setView(editTimetableScreen);
+//        addCourseInteractor.setTimetable(timetable);
+//        removeCourseInteractor.setTimetable(timetable);
+//        recommendBRInteractor.setTimetable(timetable);
+//
+//        SessionGateway sessionGateway = new SessionGateway();
+//        Session fSession;
+//        try {
+//            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+//        } catch (IOException | ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+//        addCourseInteractor.setSession(fSession);
+//        recommendBRInteractor.setFallSession(fSession);
+//
+//        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+//        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+//        SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
+//        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
+//        sectionFilterPresenter.setView(constraintsInputScreen);
+//
+//        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+//        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+//        displayTimetableInteractor.setTimetable(timetable);
+//        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+//        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen);
+//        displayTimetablePresenter.setView(timetableUI);
+//
+//        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
+//        timetableUI.setPrevPanel(mainUI);
+//        mainUI.setPreferredSize(new Dimension(1280, 720));
+//        frame.add(mainUI);
+//
+//        frame.pack();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+//    }
 }

@@ -3,9 +3,10 @@ package timetables_sort_use_case.frameworks_and_drivers;
 import display_timetable_use_case.interface_adapters.*;
 
 import entities.*;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 
-import timetables_sort_use_case.application_business.TimetablesSortInteractor;
+import timetables_sort_use_case.application_business.*;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
 import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
@@ -220,16 +221,23 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        TimetablesSortPresenter timetablesSortInteractor = new TimetablesSortPresenter();
-        TimetablesSortInteractor timetablesSortController = new TimetablesSortInteractor(timetablesSortInteractor);
-        TimetablesSortController allTimetablesScreen = new TimetablesSortController(timetablesSortController);
-        timetablesSortController.setTimetables(timetables);
-        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
-        timetablesSortController.setRetrieveInteractor(retrieveTimetableInteractor);
-        AllTimetablesScreen timetablesScreen = new AllTimetablesScreen(frame, allTimetablesScreen);
-        timetablesScreen.updateTimetables(timetableViewModels);
-        timetablesSortInteractor.setView(timetablesScreen);
-        frame.add(timetablesScreen);
+        /*
+        use case 1's initialization:
+
+         */
+        TimetablesSortOutputBoundary timetablesSortPresenter = new TimetablesSortPresenter();
+        TimetablesSortInputBoundary timetablesSortInteractor = new TimetablesSortInteractor(timetablesSortPresenter);
+        timetablesSortInteractor.setTimetables(timetables);
+        AllTimetablesInputBoundary allTimetablesPublisher = new AllTimetablesPublisher();
+        TimetablesSortController timetablesSortController =
+                new TimetablesSortController(timetablesSortInteractor, allTimetablesPublisher);
+        RetrieveTimetableInputBoundary retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+        timetablesSortInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, timetablesSortController);
+        allTimetablesScreen.updateTimetables(timetableViewModels);
+        timetablesSortPresenter.setView(allTimetablesScreen);
+
+        frame.add(allTimetablesScreen);
         frame.setSize(1280, 720);
         frame.setVisible(true);
     }
