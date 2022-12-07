@@ -38,31 +38,31 @@ public class Main {
          have it already).
          */
 
-//        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
-//
-//        RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-//        RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
-//        removeInteractor.setRetrieveInteractor(retrieveInteractor);
-//        AddCoursePresenter addPresenter = new AddCoursePresenter();
-//        AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
-//        addInteractor.setRetrieveInteractor(retrieveInteractor);
-//        EditCoursePresenter editPresenter = new EditCoursePresenter();
-//        EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
-//        EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
-//        editInteractor.setRetrieveInteractor(retrieveInteractor);
-//        JPanel prevPanel = new JPanel();
-//        DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
-//        DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-//        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
-//
-//        screen.setBRWindow(recommendBRWindow);
-//        removePresenter.setView(screen);
-//        addPresenter.setView(screen);
-//        editPresenter.setView(screen);
-//        displayPresenter.setView(screen);
-//        /* The line below must run after displayPresenter's view has been set to screen.*/
-//        screen.updateTimetable();
-//        frame.add(screen);
+        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
+
+        RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
+        RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
+        removeInteractor.setRetrieveInteractor(retrieveInteractor);
+        AddCoursePresenter addPresenter = new AddCoursePresenter();
+        AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
+        addInteractor.setRetrieveInteractor(retrieveInteractor);
+        EditCoursePresenter editPresenter = new EditCoursePresenter();
+        EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
+        EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
+        editInteractor.setRetrieveInteractor(retrieveInteractor);
+        JPanel prevPanel = new JPanel();
+        DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
+        DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
+        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
+
+        screen.setBRWindow(recommendBRWindow);
+        removePresenter.setView(screen);
+        addPresenter.setView(screen);
+        editPresenter.setView(screen);
+        displayPresenter.setView(screen);
+        /* The line below must run after displayPresenter's view has been set to screen.*/
+        screen.updateTimetable();
+        frame.add(screen);
     }
 
 }
