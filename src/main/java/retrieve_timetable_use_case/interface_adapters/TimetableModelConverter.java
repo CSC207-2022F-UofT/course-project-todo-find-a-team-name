@@ -1,5 +1,9 @@
 package retrieve_timetable_use_case.interface_adapters;
 
+import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.interface_adapters.TimetableViewSectionModel;
 import retrieve_timetable_use_case.application_business.*;
 import screens.*;
 
@@ -68,6 +72,6 @@ public class TimetableModelConverter {
      * @return A BlockViewModel containing equivalent data.
      */
     public static TimetableViewBlockModel blockToView(BlockModel block){
-        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime());
+        return new TimetableViewBlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
     }
 }

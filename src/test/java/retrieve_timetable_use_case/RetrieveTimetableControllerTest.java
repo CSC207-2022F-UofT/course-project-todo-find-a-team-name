@@ -64,7 +64,9 @@ class RetrieveTimetableControllerTest {
 
             timetableModel = new TimetableModel(timetableModelCourses);
 
-            RetrieveTimetableInteractor interactor = new RetrieveTimetableInteractor(timetable, sessionActual);
+            RetrieveTimetableInteractor interactor = new RetrieveTimetableInteractor();
+            interactor.setTimetable(timetable);
+            interactor.setSession(sessionActual);
 
             controller = new RetrieveTimetableController(interactor);
         }

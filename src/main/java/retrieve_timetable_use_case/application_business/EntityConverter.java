@@ -1,9 +1,6 @@
 package retrieve_timetable_use_case.application_business;
 
-import entities.Block;
-import entities.Course;
-import entities.Section;
-import entities.Session;
+import entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,5 +42,13 @@ public class EntityConverter {
 
     public static BlockModel generateBlockResponse(Block block){
         return new BlockModel(block.getDay(), block.getStartTime(), block.getEndTime(), block.getRoom());
+    }
+
+    public static TimetableModel generateTimetableResponse(Timetable timetable){
+        ArrayList<CourseModel> courses = new ArrayList<>();
+        for (Course course : timetable.getCourseList()){
+            courses.add(EntityConverter.generateCourseResponse(course));
+        }
+        return new TimetableModel(courses);
     }
 }

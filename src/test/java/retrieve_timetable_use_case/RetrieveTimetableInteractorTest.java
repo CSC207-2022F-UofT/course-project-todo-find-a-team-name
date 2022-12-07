@@ -67,7 +67,9 @@ class RetrieveTimetableInteractorTest {
 
             timetableModel = new TimetableModel(timetableModelCourses);
 
-            interactor = new RetrieveTimetableInteractor(timetable, sessionActual);
+            interactor = new RetrieveTimetableInteractor();
+            interactor.setTimetable(timetable);
+            interactor.setSession(sessionActual);
         }
         catch (InvalidSectionsException ignored){
         }
