@@ -1,5 +1,6 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.application_business.DisplayTimetableInputBoundary;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 
 /**
@@ -7,14 +8,14 @@ import display_timetable_use_case.application_business.DisplayTimetableInteracto
  * to perform the use case.
  */
 public class DisplayTimetableController {
-    DisplayTimetableInteractor interactor;
+    DisplayTimetableInputBoundary interactor;
 
     /**
      * Constructs the DisplayTimetableController from the given interactor
      *
      * @param interactor interactor for display timetable use case
      */
-    public DisplayTimetableController(DisplayTimetableInteractor interactor) {
+    public DisplayTimetableController(DisplayTimetableInputBoundary interactor) {
         this.interactor = interactor;
     }
 

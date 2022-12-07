@@ -10,6 +10,7 @@ import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,7 +119,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.setSession(fall); //delete
+//        sectionFilterInterator.setSession(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
         sectionFilterPresenter.setView(c);
@@ -163,7 +164,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     @Override
     public void showSuccessView(SectionFilterViewModel viewModel) {
         JFrame window = (JFrame) SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new FilteredSectionsOutputScreen(generateTimeTableScreen, window, viewModel);
+        JDialog dialog = new FilteredSectionsOutputScreen((GenerateTimetableScreen) generateTimeTableScreen, window, viewModel);
         dialog.setVisible(true);
     }
 
