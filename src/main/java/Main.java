@@ -13,6 +13,14 @@ import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
+import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.application_business.timetable_specific_classes.SaveTimetableInteractor;
+import fileio_use_case.application_business.timetable_specific_classes.TimetableGatewayInteractor;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.TimetableGateway;
+import fileio_use_case.interface_adapters.SaveTimetableController;
+import fileio_use_case.interface_adapters.SessionFileController;
+import fileio_use_case.interface_adapters.TimetableFileController;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
@@ -37,6 +45,16 @@ public class Main {
     public static void main(String[] args) {
         /*The frame that the program runs off of. Feel free to re-name or change the dimensions as necessary.*/
         JFrame frame = new JFrame();
+
+        /* I (kai) just started setting up Emily's file io TODO: THIS SHOULD BE REVISED BY EMILY*/
+        SessionGateway sessionGateway = new SessionGateway();
+        SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(sessionGateway);
+        SessionFileController sessionFileController = new SessionFileController(sessionGatewayInteractor);
+        TimetableGateway timetableGateway = new TimetableGateway();
+        SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
+        SaveTimetableController saveController = new SaveTimetableController(saveTimetableInteractor);
+        TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
+        TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
 
         /*A combined initialization of the Edit Timetable and Retrieve Timetable use cases. This block should be after
         the RecommendBRWindow is created,
@@ -140,14 +158,20 @@ public class Main {
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        // TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, timetableFileController);
-        // displayTimetablePresenter.setView(timetableUI);
-
-        // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapInputDialog, saveController);
+        displayTimetablePresenter.setView(timetableUI);
+        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
 
         /* The line below must run after displayPresenter's view has been set to screen.*/
         editScreen.updateTimetable();
         frame.add(editScreen);
+
+
+        // display frame
+        frame.add(mainUI);
+        frame.setPreferredSize(new Dimension(1280, 720));
+        frame.pack();
+        frame.setVisible(true);
 
         List<Flow.Subscriber<Object>> TimetableAndSessionObservers = new ArrayList<>();
         TimetableAndSessionObservers.add(addInteractor);
