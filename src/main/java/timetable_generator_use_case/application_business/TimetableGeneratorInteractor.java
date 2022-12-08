@@ -39,7 +39,7 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
     }
 
     private List<Timetable> generateTimetable(List<CalendarCourse> courses){
-        return generateTimetable(courses, new ArrayList<>());
+        return generateTimetable(courses, List.of(new Timetable(new ArrayList<>(), session.getSessionType())));
     }
 
     /**
