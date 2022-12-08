@@ -84,7 +84,7 @@ class TimeIntervalConstraintTest {
         // testing to check original and modified course section type consistency.
         CalendarCourse courseWithModifiedSections = new CalendarCourse("Course2", expectedSections, "", "", "");
         assertFalse(timeIntervalConstraint.filter(course2));
-        assertTrue(courseWithModifiedSections.equals(course2));
+        assertEquals(courseWithModifiedSections, course2);
     }
 
     @Test
@@ -108,13 +108,15 @@ class TimeIntervalConstraintTest {
         sections1.add(section1);
         sections1.add(section2);
 
-
         CalendarCourse course1 = new CalendarCourse("Course1",sections1, "", "","");
 
         TimeIntervalConstraint timeIntervalConstraint = new TimeIntervalConstraint(9.5, 12.5, true);
 
         // testing to check original and modified course section type consistency.
-        assertTrue(timeIntervalConstraint.filter(course1));
+
+        CalendarCourse expected = new CalendarCourse("Course1", new ArrayList<>(sections1), "", "","");
+        timeIntervalConstraint.filter(course1);
+        assertEquals(expected, course1);
     }
 
     @Test
