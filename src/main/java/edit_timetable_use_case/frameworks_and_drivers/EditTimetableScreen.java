@@ -179,6 +179,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (cmd.equals("Save")){
             saveController.saveTimetable();
             this.setVisible(false);
+            frame.add(previousPanel);
             previousPanel.setVisible(true);
         }
         else if(cmd.equals("<=")){
