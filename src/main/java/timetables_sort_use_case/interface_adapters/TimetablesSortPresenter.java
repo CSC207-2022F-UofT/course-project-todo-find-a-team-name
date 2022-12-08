@@ -25,9 +25,9 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
      */
     @Override
     public void prepareView(TimetablesSortResponseModel responseModel) {
-        TimetableModel[] updatedTimetables = responseModel.getTimetables();
+        TimetableModel[] updatedTimetables = responseModel.timetables();
         TimetableViewModel[] timetablesViewModel = new TimetableViewModel[updatedTimetables.length];
-        for (int i = 0; i < responseModel.getTimetables().length; i++) {
+        for (int i = 0; i < responseModel.timetables().length; i++) {
             TimetableViewModel timetableViewModel = TimetableModelConverter.timetableToView(updatedTimetables[i]);
             timetablesViewModel[i] = timetableViewModel;
         }

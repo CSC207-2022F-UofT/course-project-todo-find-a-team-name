@@ -12,9 +12,7 @@ public interface TimetablesSortOutputBoundary {
     void prepareView(TimetablesSortResponseModel responseModel);
 
     /**
-     *
-     * @param view the presenter's new view.
-     *             Changes the view modified by prepareView
+     * @param view the view that this presenter will be responsible for
      */
     void setView(AllTimetablesView view);
 }

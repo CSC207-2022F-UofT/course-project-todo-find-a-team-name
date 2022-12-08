@@ -358,20 +358,20 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
 
         TimetablesSortPresenter timetablesSortPresenter = new TimetablesSortPresenter();
         TimetablesSortInteractor timetablesSortInteractor = new TimetablesSortInteractor(timetablesSortPresenter);
-        AllTimetablesPublisher allTimetablesPublisher = new AllTimetablesPublisher();
+        AllTimetablesInteractor allTimetablesInteractor = new AllTimetablesInteractor();
         TimetablesSortController timetablesSortController =
-                new TimetablesSortController(timetablesSortInteractor, allTimetablesPublisher);
+                new TimetablesSortController(timetablesSortInteractor, allTimetablesInteractor);
         timetablesSortInteractor.setTimetables(timetables); // this is only for testing, it should automatically
         // update when its publisher publishes
         AllTimetablesController allTimetablesController =
-                new AllTimetablesController(displayTimetableInteractor1, allTimetablesPublisher);
+                new AllTimetablesController(displayTimetableInteractor1, allTimetablesInteractor);
         AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetableUI,
                 timetablesSortController, displayTimetableController2, allTimetablesController);
         allTimetablesScreen.updateTimetables(timetableViewModels); // this is only for testing, it should be called by
         // JD/Prime when they display my screen
         timetablesSortPresenter.setView(allTimetablesScreen);
 
-        timetableGeneratorInteractor.subscribe(allTimetablesPublisher);
+        timetableGeneratorInteractor.subscribe(allTimetablesInteractor);
         timetableGeneratorInteractor.subscribe(timetablesSortInteractor);
 
 

@@ -7,10 +7,14 @@ import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBo
  * The input boundary used in the timetables sort use case
  */
 public interface TimetablesSortInputBoundary {
+
     /**
-     * sorts timetables by the User's preferences
      * @param request a SorterRequestModel that contains the stringified version of preferences selected
      */
     void timetablesSort(TimetablesSortRequestModel request);
+
+    /**
+     * @param timetables
+     */
     void setTimetables(Timetable[] timetables);
 }

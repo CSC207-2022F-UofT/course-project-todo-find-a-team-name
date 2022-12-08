@@ -18,7 +18,8 @@ import static java.lang.Math.abs;
 /**
  * A concrete implementation of the SorterInputBoundary, used in the timetables sort use case.
  * timetables are the timetables being reordered.
- * presenter is the SorterOutputBoundary that updates in response to the user's input
+ * presenter is the TimetablesSortOutputBoundary that updates in response to the user's input
+ * we use a RetrieveTimetableInputBoundary for its converter method
  */
 public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Flow.Subscriber<Object> {
 
@@ -42,8 +43,8 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     public void timetablesSort(TimetablesSortRequestModel request) {
         List<Timetable> timetableArrayList = new ArrayList<>();
         for (Timetable timetable : timetables) {
-            double score = getTimeScore(timetable, request.getTimeButton());
-            score += getBreakScore(timetable, request.getBreakButton());
+            double score = getTimeScore(timetable, request.timeButton());
+            score += getBreakScore(timetable, request.breakButton());
             timetable.setScore(score);
             timetableArrayList.add(timetable);
         }
@@ -185,6 +186,11 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
 
     }
 
+    /**
+     * Updates this Interactor's timetables according to the publisher
+     * Note that timetables is of type List<Timetables> unless this project is expanded on in the future
+     * @param timetables the updated timetables
+     */
     @Override
     public void onNext(Object timetables) {
         if (timetables instanceof List) {
