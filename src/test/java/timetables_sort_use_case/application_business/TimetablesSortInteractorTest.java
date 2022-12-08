@@ -13,6 +13,9 @@ class TimetablesSortInteractorTest {
     private TimetablesSortInteractor interactor;
     private TestTimetablesSortPresenter presenter;
 
+    /**
+     * sets up 2 timetables in the interactor to test its functionalities
+     */
     @BeforeEach
     void setUp() {
         presenter = new TestTimetablesSortPresenter();
@@ -122,6 +125,9 @@ class TimetablesSortInteractorTest {
         interactor.onNext(timetables);
     }
 
+    /**
+     * tests that the commuter option returns the timetable with the least days first
+     */
     @Test
     void testCommuter() {
         interactor.timetablesSort(new TimetablesSortRequestModel("morning", "commuter"));
@@ -129,6 +135,9 @@ class TimetablesSortInteractorTest {
         Assertions.assertEquals("999", actual);
     }
 
+    /**
+     * tests that the break option returns the timetable with the most breaks first
+     */
     @Test
     void testBreak() {
         interactor.timetablesSort(new TimetablesSortRequestModel("morning", "break"));
@@ -136,20 +145,30 @@ class TimetablesSortInteractorTest {
         Assertions.assertEquals("some title", actual);
     }
 
+    /**
+     * tests that the morning option returns the timetable with the earliest classes first (after break
+     * preferences)
+     */
     @Test
     void testMorning() {
         interactor.timetablesSort(new TimetablesSortRequestModel("morning", ""));
         String actual = presenter.response.getTimetables()[0].getCourses().get(0).getTitle();
         Assertions.assertEquals("some title", actual);
     }
-
+    /**
+     * tests that the evening option returns the timetable with the latest classes first (after break
+     * preferences)
+     */
     @Test
     void testEvening() {
         interactor.timetablesSort(new TimetablesSortRequestModel("evening", ""));
         String actual = presenter.response.getTimetables()[0].getCourses().get(0).getTitle();
         Assertions.assertEquals("999", actual);
     }
-
+    /**
+     * tests that the morning option returns the timetable with the classes whose average is closest to 2pm
+     * first (after break preferences)
+     */
     @Test
     void testAfternoon() {
         interactor.timetablesSort(new TimetablesSortRequestModel("afternoon", ""));

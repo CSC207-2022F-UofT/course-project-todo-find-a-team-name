@@ -16,7 +16,6 @@ public class AllTimetablesInteractor implements AllTimetablesInputBoundary,
         Flow.Publisher<Object>, Flow.Subscriber<Object>{
     private final ArrayList<Flow.Subscriber<Object>> subscribers = new ArrayList<>();
     private List<Timetable> timetables = new ArrayList<>();
-
     public void subscribe(Flow.Subscriber<Object> subscriber) {
         this.subscribers.add(subscriber);
     }

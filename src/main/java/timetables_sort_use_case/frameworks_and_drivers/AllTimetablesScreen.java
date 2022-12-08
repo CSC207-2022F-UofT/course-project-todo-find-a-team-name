@@ -117,7 +117,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     }
 
     /**
-     * closes this view and opens OverlapInputDialogue
+     * opens OverlapInputDialogue
      */
     public void openOverlapUI() {
         overlapInputDialog.setVisible(true);
