@@ -1,10 +1,12 @@
 package overlap_crap_fix_locations_later.presenters;
 
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntry;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
 import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
 import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,7 @@ import java.util.List;
  */
 public class OverlapMaxPresenter implements OverlapPresenting {
 
-    private final OverlapInputEntry dialogToPassTo;
-
-    public OverlapMaxPresenter(OverlapInputEntry inputDialog) {
-        dialogToPassTo = inputDialog;
-    }
+    private OverlapInputEntryViewModel dialogToPassTo = null;
 
     /**
      * Convert a list of timetableModels to ViewModels and then pass them to the dialog.
@@ -32,5 +30,21 @@ public class OverlapMaxPresenter implements OverlapPresenting {
         }
 
         dialogToPassTo.stashTimetableViewModels(timetableViewModels);
+    }
+
+    /**
+     * Pass the bestMatchingTimetable as a TimetableViewModel to the Dialog.
+     **/
+    @Override
+    public void passBestTimetable(TimetableModel timetableModel) {
+        TimetableViewModel bestTimetableViewModel = TimetableModelConverter.timetableToView(timetableModel);
+        dialogToPassTo.stashBestMatchingTimetable(bestTimetableViewModel);
+    }
+
+    /**
+     * SET the view of this presenter! Like, the dialog to input to!!!
+     */
+    public void setDialogToPassTo(OverlapInputEntryViewModel dialog) {
+        this.dialogToPassTo = dialog;
     }
 }

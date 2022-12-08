@@ -21,10 +21,18 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
         this.timetables = null;
     }
 
+    /**
+     * Prompt the use case interactor to calculate the best matching timetable.
+     * Convert the weird viewModels we start out with to TimetableModels that the Interactor knows how to use.
+     *
+     * @param mainTable
+     * @param timetables
+     */
     @Override
-    public TimetableModel getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
-                                                   List<OverlapTimetableViewModel> timetables) {
+    public void getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
+                                         List<OverlapTimetableViewModel> timetables) {
 
+        // Convert the weird viewModels to actual TimetablModels for the UCI.
         TimetableModel actualMainTable = OverlapTimetableViewModelToModelConverter
                 .convertOverlapTimetableViewModelToModel(mainTable);
 
@@ -35,6 +43,7 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
             ));
         }
 
-        return timetableMatcher.determineBestMatchingTimetable(actualMainTable, actualTimetables);
+        // Make it work!
+        timetableMatcher.determineBestMatchingTimetable(actualMainTable, actualTimetables);
     }
 }
