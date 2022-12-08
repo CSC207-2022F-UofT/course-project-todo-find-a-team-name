@@ -18,7 +18,6 @@ import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import entities.*;
 
 
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
@@ -39,16 +38,18 @@ import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -64,7 +65,8 @@ public class MainUI extends JPanel implements ActionListener {
     private JLabel fallSessionFilePath;
     private JLabel timetableFilePath;
     private JLabel winterSessionFilePath;
-    public SessionFileController sessionController;
+    private final SessionFileController sessionController;
+    private final TimetableFileController timetableController;
 
     private final ConstraintsInputScreen constraintsInputScreen;
     private final EditTimetableScreen editTimetableScreen;
@@ -82,13 +84,14 @@ public class MainUI extends JPanel implements ActionListener {
      * @param sessionController controller used for importing sessions
      */
     public MainUI(JFrame frame, ConstraintsInputScreen constraintsInputScreen, EditTimetableScreen editTimetableScreen,
-                  TimetableUI timetableUI, SessionFileController sessionController){
+                  TimetableUI timetableUI, SessionFileController sessionController, TimetableFileController timetableFileController){
         super();
         this.constraintsInputScreen = constraintsInputScreen;
         this.editTimetableScreen = editTimetableScreen;
         this.timetableUI = timetableUI;
         this.frame = frame;
         this.sessionController = sessionController;
+        this.timetableController = timetableFileController;
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel("Main menu");
@@ -218,20 +221,26 @@ public class MainUI extends JPanel implements ActionListener {
         String command = e.getActionCommand();
         switch (command) {
             case "Import timetable": {
-                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
-                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
-                    timetableFilePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                    addTimetableButtons();
+                JFileChooser fileChooser = new JFileChooser("src/main");
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog( this)) {
+                    String importTimetableFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    try {
+                        timetableFilePath.setText(importTimetableFilePath);
+                        timetableController.createTimetableFile(importTimetableFilePath);
+                        addTimetableButtons();
+                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 break;
             }
             case "Import fall session": {
-                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                JFileChooser fileChooser = new JFileChooser("src/main");
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    fallSessionFilePath.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
+                        fallSessionFilePath.setText(importedSessionFilePath);
                         sessionController.createSessionFile(importedSessionFilePath, "F");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
@@ -240,15 +249,14 @@ public class MainUI extends JPanel implements ActionListener {
                 break;
             }
             case "Import winter session": {
-                JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
+                JFileChooser fileChooser = new JFileChooser("src/main");
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    winterSessionFilePath.setText(importedSessionFilePath);
                     // Add SessionFileController
                     try {
+                        winterSessionFilePath.setText(importedSessionFilePath);
                         sessionController.createSessionFile(importedSessionFilePath, "S");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-                        System.out.println("hello");
                         throw new RuntimeException(ex);
                     }
                 }
@@ -256,6 +264,7 @@ public class MainUI extends JPanel implements ActionListener {
             }
             case "Generate timetable": {
                 changeScreen(constraintsInputScreen);
+                constraintsInputScreen.setPrevPanel(this);
                 break;
             }
             case "Edit":
@@ -266,6 +275,7 @@ public class MainUI extends JPanel implements ActionListener {
             case "Display": {
                 changeScreen(timetableUI);
                 timetableUI.updateTimetable();
+                timetableUI.setPrevPanel(this);
                 break;
             }
         }
@@ -308,76 +318,17 @@ public class MainUI extends JPanel implements ActionListener {
         editTimetableScreen.setBRWindow(recommendBRWindow);
         editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
 
-        Block block1 = new Block("MO", "11:00", "12:00", "");
-        Block block2 = new Block("FR", "11:00", "12:00", "");
-        java.util.List<Block> blocks1 = new ArrayList<>();
-        blocks1.add(block1);
-        blocks1.add(block2);
-
-        Block block3 = new Block("WE", "11:00", "12:00", "");
-        java.util.List<Block> blocks2 = new ArrayList<>();
-        blocks2.add(block3);
-
-        Block block4 = new Block("TU", "16:00", "17:00", "");
-        Block block5 = new Block("FR", "16:00", "17:00", "");
-        java.util.List<Block> blocks3 = new ArrayList<>();
-        blocks3.add(block4);
-        blocks3.add(block5);
-
-        Block block6 = new Block("MO", "14:00", "16:00", "");
-        java.util.List<Block> blocks4 = new ArrayList<>();
-        blocks4.add(block6);
-
-        Section s1 = new Section("LEC0101", "", blocks1);
-        Section s2 = new Section("TUT0101", "", blocks2);
-
-        Section s3 = new Section("LEC0401", "", blocks3);
-        Section s4 = new Section("TUT0301", "", blocks4);
-
-        java.util.List<Section> sections1 = new ArrayList<>();
-        sections1.add(s1);
-        sections1.add(s2);
-        List<Section> sections2 = new ArrayList<>();
-        sections2.add(s3);
-        sections2.add(s4);
-
-        TimetableCourse c1;
-        TimetableCourse c2;
-
-        try {
-            c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
-            c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
-        } catch (InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-
-        ArrayList<TimetableCourse> courses = new ArrayList<>();
-        courses.add(c1);
-        courses.add(c2);
-        Timetable timetable = new Timetable(courses, "F");
-
         recommendBRPresenter.setView(recommendBRWindow);
-        recommendBRInteractor.setTimetable(timetable);
-
-        SessionGateway sessionGateway = new SessionGateway();
-        Session fSession;
-        try {
-            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (IOException | ParseException | InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-        addCourseInteractor.setSession(fSession);
-        addCourseInteractor.setTimetable(timetable);
-        removeCourseInteractor.setTimetable(timetable);
-        editCourseInteractor.setSession(fSession);
-        editCourseInteractor.setTimetable(timetable);
-        recommendBRInteractor.onNext(fSession);
 
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
 
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(null, sectionFilterController);
+        TimetableGeneratorPresenter timetableGeneratorPresenter = new TimetableGeneratorPresenter();
+        TimetableGeneratorInteractor timetableGeneratorInteractor = new TimetableGeneratorInteractor(timetableGeneratorPresenter);
+        TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
+        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
         OverlapInputDialog overlapInputDialog = new OverlapInputDialog(new ArrayList<>(), sectionFilterController);
@@ -386,8 +337,6 @@ public class MainUI extends JPanel implements ActionListener {
         DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
 
-        displayTimetableInteractor2.setTimetable(timetable);
-
         TimetableGateway timetableGateway = new TimetableGateway();
         TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
         TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
@@ -395,19 +344,29 @@ public class MainUI extends JPanel implements ActionListener {
                 timetableFileController);
         displayTimetablePresenter2.setView(timetableUI);
 
-        displayTimetableInteractor1.setTimetable(timetable);
-
-        SessionGateway gateway = new SessionGateway();
-        SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(gateway);
+        SessionGateway sessionGateway = new SessionGateway();
+        SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(sessionGateway);
         SessionFileController sessionFileController = new SessionFileController(sessionGatewayInteractor);
 
-        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController);
+        sessionGatewayInteractor.subscribe(recommendBRInteractor);
+        sessionGatewayInteractor.subscribe(addCourseInteractor);
+        sessionGatewayInteractor.subscribe(editCourseInteractor);
+        sessionGatewayInteractor.subscribe(removeCourseInteractor);
+        sessionGatewayInteractor.subscribe(displayTimetableInteractor2);
+        sessionGatewayInteractor.subscribe(displayTimetableInteractor1);
+
+        timetableGatewayInteractor.subscribe(recommendBRInteractor);
+        timetableGatewayInteractor.subscribe(addCourseInteractor);
+        timetableGatewayInteractor.subscribe(editCourseInteractor);
+        timetableGatewayInteractor.subscribe(removeCourseInteractor);
+        timetableGatewayInteractor.subscribe(displayTimetableInteractor2);
+        timetableGatewayInteractor.subscribe(displayTimetableInteractor1);
+
+        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController, timetableFileController);
         timetableUI.setPrevPanel(mainUI);
         editTimetableScreen.setPreviousPanel(mainUI);
 
-
         mainUI.setPreferredSize(new Dimension(1280, 720));
-
         frame.add(mainUI);
 
         frame.pack();
