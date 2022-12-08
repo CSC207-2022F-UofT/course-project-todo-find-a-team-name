@@ -49,7 +49,8 @@ public class BRRecommender {
     public List<TimetableCourse> recommendBr(){
         List<TimetableCourse> result = new ArrayList<>();
         for (CalendarCourse course : session.allCoursesSession()) {
-            if (brCategoriesSelected.contains(course.getBreadth())) {
+            if (brCategoriesSelected.contains(course.getBreadth())
+                    && timetable.getCourse(course.getCourseCode()) == null) {
                 List<Section> lectures = new ArrayList<>();
                 List<Section> tutorials = new ArrayList<>();
                 List<Section> practicals = new ArrayList<>();

@@ -128,6 +128,11 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
             return new ArrayList<>();
 
         List<String> blockInfos = new ArrayList<>();
+        if (sectionResponseModel.getBlocks().size() == 0){
+            blockInfos.add("No Block info available from the Data");
+            return blockInfos;
+        }
+
         for (BlockModel blockResponseModel : sectionResponseModel.getBlocks()){
 
             String day = intToStringDay(blockResponseModel.getDay());
