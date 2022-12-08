@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.interface_adapters;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,7 @@ public class OverlapTimetableCourseViewModel {
      **/
     @Override
     public boolean equals(Object o) {
-        if (o instanceof OverlapTimetableCourseViewModel) {
-            OverlapTimetableCourseViewModel other = (OverlapTimetableCourseViewModel) o;
+        if (o instanceof OverlapTimetableCourseViewModel other) {
             return this.title.equals(other.title) && this.sections.equals(other.sections)
                     && this.courseSession.equals(other.courseSession) && this.courseCode.equals(other.courseCode)
                     && this.breadth.equals(other.breadth);

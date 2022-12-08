@@ -1,7 +1,7 @@
 package overlap_maximization_use_case;
 
+import generate_overlapping_timetable_use_case.interface_adapters.*;
 import org.junit.Test;
-import overlap_crap_fix_locations_later.interface_adapters.*;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;

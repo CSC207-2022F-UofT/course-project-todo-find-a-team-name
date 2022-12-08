@@ -1,13 +1,11 @@
-package overlap_crap_fix_locations_later.application_business;
+package generate_overlapping_timetable_use_case.application_business;
 
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
-import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +31,7 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
 
     /**
      * Return the overlap value of a timeTable with the main one.
+     * TODO: Extract a method since this is very deeply nested.
      */
     private Double calculateTimetableOverlap(TimetableModel mainTable, TimetableModel candidate) {
         List<CourseModel> mainCourses = mainTable.getCourses();
@@ -50,7 +49,6 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
                             // If they're in the same section in the same course, the two people can go together :).
                             // Hey, what if we used a companion object to not have to make a new one each time? Or just made this into an object.
 
-                            ArrayList<BlockModel> blockModels = new ArrayList<>();
                             Double thisOverlapWeightedHrs =
                                     sectionHoursCalculator.calculateHoursOfSection(candidateSection);
 

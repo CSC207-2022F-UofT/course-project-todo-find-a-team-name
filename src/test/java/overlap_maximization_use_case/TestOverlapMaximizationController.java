@@ -1,10 +1,9 @@
 package overlap_maximization_use_case;
 
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import generate_overlapping_timetable_use_case.application_business.CalculateSectionHoursInteractor;
+import generate_overlapping_timetable_use_case.application_business.TimeTableMatchInteractor;
+import generate_overlapping_timetable_use_case.interface_adapters.*;
 import org.junit.Test;
-import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
-import overlap_crap_fix_locations_later.application_business.TimeTableMatchInteractor;
-import overlap_crap_fix_locations_later.interface_adapters.*;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.List;
@@ -39,19 +38,6 @@ public class TestOverlapMaximizationController {
             new OverlapTimetableCourseViewModel("Foundations",
                     List.of(testSection3), "S", "CSC110", "4");
 
-    // We kind of need a dummy Dialog to pass through just from how clean architecture works, to soak best matching
-    // Timetable.
-    OverlapInputView dummyDialog = new OverlapInputView() {
-        @Override
-        public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
-
-        }
-
-        @Override
-        public void stashBestMatchingTimetable(TimetableViewModel timetableViewModel) {
-
-        }
-    };
 
     // Initialize dummy presenter and interactor.
     OverlapMaxPresenter testPresenter = new OverlapMaxPresenter();
@@ -69,11 +55,10 @@ public class TestOverlapMaximizationController {
         OverlapTimetableViewModel testTimetable2 = new OverlapTimetableViewModel(List.of(testCourse, testCourse2));
         OverlapTimetableViewModel testTimetable3 = new OverlapTimetableViewModel(List.of(testCourse2, testCourse3));
 
-        OverlapTimetableViewModel expected = testTimetable2;
         TimetableModel actual = testController.getBestMatchingTimetable(testTimetable,
                 List.of(testTimetable2, testTimetable3));
 
-        assert actual.equals(OverlapTimetableViewModelToModelConverter.convertOverlapTimetableViewModelToModel(expected));
+        assert actual.equals(OverlapTimetableViewModelToModelConverter.convertOverlapTimetableViewModelToModel(testTimetable2));
     }
 
 
@@ -88,12 +73,11 @@ public class TestOverlapMaximizationController {
         OverlapTimetableViewModel testTimetable2 = new OverlapTimetableViewModel(List.of(testCourse2, testCourse3));
         OverlapTimetableViewModel testTimetable3 = new OverlapTimetableViewModel(List.of(testCourse3));
 
-        OverlapTimetableViewModel expected = testTimetable2;
         TimetableModel actual = testController.getBestMatchingTimetable(testTimetable,
                 List.of(testTimetable2, testTimetable3));
 
         assert actual.equals(OverlapTimetableViewModelToModelConverter
-                .convertOverlapTimetableViewModelToModel(expected));
+                .convertOverlapTimetableViewModelToModel(testTimetable2));
     }
 
 }

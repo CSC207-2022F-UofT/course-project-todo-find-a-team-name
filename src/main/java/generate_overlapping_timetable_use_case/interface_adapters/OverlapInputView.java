@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.interface_adapters;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 
@@ -14,11 +14,11 @@ public interface OverlapInputView {
     /**
      * Stash a list of OverlapTimetableViewModels somewhere in this Dialog to be used later.
      **/
-    public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels);
+    void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels);
 
     /**
      * Stash the bestMatchingTimetable in this Dialog to initialize with Kai's thing :).
      **/
-    public void stashBestMatchingTimetable(TimetableViewModel timetableViewModel);
+    void stashBestMatchingTimetable(TimetableViewModel timetableViewModel);
 
 }

@@ -1,7 +1,7 @@
-package overlap_crap_fix_locations_later.interface_adapters;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import overlap_crap_fix_locations_later.application_business.OverlapOutputBoundary;
+import generate_overlapping_timetable_use_case.application_business.OverlapOutputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 

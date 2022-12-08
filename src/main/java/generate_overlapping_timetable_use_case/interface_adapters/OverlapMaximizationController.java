@@ -1,6 +1,6 @@
-package overlap_crap_fix_locations_later.interface_adapters;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
-import overlap_crap_fix_locations_later.application_business.TimetableMatchInputBoundary;
+import generate_overlapping_timetable_use_case.application_business.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
@@ -9,13 +9,9 @@ import java.util.List;
 public class OverlapMaximizationController {
 
     private final TimetableMatchInputBoundary timetableMatcher;
-    private TimetableModel mainTable;
-    private List<TimetableModel> timetables;
 
     public OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher) {
         this.timetableMatcher = timeTableMatcher;
-        this.mainTable = null;
-        this.timetables = null;
     }
 
     /**
@@ -24,8 +20,8 @@ public class OverlapMaximizationController {
      * <p>
      * Return value should NOT be used in regular code. It is ONLY for convenience in testing.
      *
-     * @param mainTable
-     * @param timetables
+     * @param mainTable  - the target timetable to match against
+     * @param timetables - candidates to match with main table.
      */
     public TimetableModel getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
                                                    List<OverlapTimetableViewModel> timetables) {

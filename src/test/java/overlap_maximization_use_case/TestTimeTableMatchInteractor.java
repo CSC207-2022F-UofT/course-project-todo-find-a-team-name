@@ -1,13 +1,13 @@
 package overlap_maximization_use_case;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import generate_overlapping_timetable_use_case.application_business.CalculateSectionHoursInteractor;
+import generate_overlapping_timetable_use_case.application_business.TimeTableMatchInteractor;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapInputView;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapMaxPresenter;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapTimetableViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
-import overlap_crap_fix_locations_later.application_business.TimeTableMatchInteractor;
-import overlap_crap_fix_locations_later.interface_adapters.OverlapInputView;
-import overlap_crap_fix_locations_later.interface_adapters.OverlapMaxPresenter;
-import overlap_crap_fix_locations_later.interface_adapters.OverlapTimetableViewModel;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
@@ -85,7 +85,7 @@ public class TestTimeTableMatchInteractor {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse2, testCourse3));
 
-        HashMap<TimetableModel, Double> expected = new HashMap<TimetableModel, Double>(1);
+        HashMap<TimetableModel, Double> expected = new HashMap<>(1);
         expected.put(testTimetable2, 2.00);
 
         HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps(testTimetable,
@@ -101,7 +101,7 @@ public class TestTimeTableMatchInteractor {
         TimetableModel testTimetable = new TimetableModel(List.of(testCourse));
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse3));
 
-        HashMap<TimetableModel, Double> expected = new HashMap<TimetableModel, Double>(1);
+        HashMap<TimetableModel, Double> expected = new HashMap<>(1);
         expected.put(testTimetable2, 0.00);
 
         HashMap<TimetableModel, Double> actual = testInteractor.calculateTimetableOverlaps(testTimetable,
@@ -118,10 +118,9 @@ public class TestTimeTableMatchInteractor {
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse, testCourse2));
         TimetableModel testTimetable3 = new TimetableModel(List.of(testCourse2, testCourse3));
 
-        TimetableModel expected = testTimetable2;
         TimetableModel actual = testInteractor.determineBestMatchingTimetable(testTimetable,
                 List.of(testTimetable2, testTimetable3));
-        assert actual.equals(expected);
+        assert actual.equals(testTimetable2);
     }
 
 
@@ -136,9 +135,8 @@ public class TestTimeTableMatchInteractor {
         TimetableModel testTimetable2 = new TimetableModel(List.of(testCourse2, testCourse3));
         TimetableModel testTimetable3 = new TimetableModel(List.of(testCourse3));
 
-        TimetableModel expected = testTimetable2;
         TimetableModel actual = testInteractor.determineBestMatchingTimetable(testTimetable,
                 List.of(testTimetable2, testTimetable3));
-        assert actual.equals(expected);
+        assert actual.equals(testTimetable2);
     }
 }

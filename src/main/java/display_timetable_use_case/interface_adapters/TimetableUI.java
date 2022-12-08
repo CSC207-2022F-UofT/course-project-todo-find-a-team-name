@@ -3,7 +3,7 @@ package display_timetable_use_case.interface_adapters;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
-import overlap_crap_fix_locations_later.interface_adapters.OverlapMaximizationController;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapMaximizationController;
 
 import javax.swing.*;
 import java.awt.*;

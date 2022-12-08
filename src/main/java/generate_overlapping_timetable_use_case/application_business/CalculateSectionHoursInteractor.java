@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.application_business;
+package generate_overlapping_timetable_use_case.application_business;
 
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
@@ -12,6 +12,7 @@ import retrieve_timetable_use_case.application_business.SectionModel;
  */
 public class CalculateSectionHoursInteractor implements SectionHoursInputBoundary {
 
+    @Override
     public Double calculateHoursOfSection(SectionModel section) {
         double hoursAccumulator = 0.0;
         for (BlockModel block : section.getBlocks()) {

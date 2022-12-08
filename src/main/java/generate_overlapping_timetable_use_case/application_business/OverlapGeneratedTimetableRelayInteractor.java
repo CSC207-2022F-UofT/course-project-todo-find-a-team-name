@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.application_business;
+package generate_overlapping_timetable_use_case.application_business;
 
 import entities.Timetable;
 import retrieve_timetable_use_case.application_business.EntityConverter;
