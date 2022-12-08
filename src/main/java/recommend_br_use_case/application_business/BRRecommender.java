@@ -40,6 +40,7 @@ public class BRRecommender {
     /**
      * Returns sorted list of timetable courses contained in one of the sessions (fSession, sSession, and ySession),
      * with breadth category in brCategoriesSelected and do not conflict with the timetable.
+     * Courses that is already added to the timetable is also not included in the result.
      * The list is sorted based on the given TargetTimeCourseComparator.
      *
      * @return list of timetable courses each contained in one of fSession, sSession, or ySession,
