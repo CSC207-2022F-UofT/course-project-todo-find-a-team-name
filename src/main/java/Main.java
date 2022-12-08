@@ -82,6 +82,7 @@ public class Main {
         RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
         editScreen.setBRWindow(recommendBRWindow);
+        recommendBRPresenter.setView(recommendBRWindow);
 
         /*
          * This is temporary since timetable view and main menu ui branch haven't merged yet!
