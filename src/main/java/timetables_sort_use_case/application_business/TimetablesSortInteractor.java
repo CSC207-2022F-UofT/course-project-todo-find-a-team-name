@@ -5,6 +5,7 @@ import entities.Section;
 import entities.Timetable;
 import entities.TimetableCourse;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ import static java.lang.Math.abs;
  * timetables are the timetables being reordered.
  * presenter is the SorterOutputBoundary that updates in response to the user's input
  */
-public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Flow.Subscriber<List<Timetable>> {
+public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Flow.Subscriber<Object> {
 
     private Timetable[] timetables;
     private final TimetablesSortOutputBoundary presenter;
-    private RetrieveTimetableInputBoundary retrieveInteractor;
+    private final RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
 
     public TimetablesSortInteractor(TimetablesSortOutputBoundary presenter) {
         this.presenter = presenter;
@@ -180,22 +181,23 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     }
 
     @Override
-    public void setRetrieveInteractor(RetrieveTimetableInputBoundary retrieveInteractor) {
-        this.retrieveInteractor = retrieveInteractor;
-    }
-
-    @Override
     public void onSubscribe(Flow.Subscription subscription) {
 
     }
 
     @Override
-    public void onNext(List<Timetable> timetables) {
-        Timetable[] array = new Timetable[timetables.size()];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = timetables.get(i);
+    public void onNext(Object timetables) {
+        if (timetables instanceof List) {
+            Timetable[] array = new Timetable[((List<?>) timetables).size()];
+            for (int i = 0; i < array.length; i++) {
+                Object timetable = ((List<?>) timetables).get(i);
+                if (timetable instanceof Timetable) {
+                    array[i] = (Timetable) timetable;
+                }
+            }
+            this.timetables = array;
         }
-        this.timetables = array;
+
     }
 
     @Override
