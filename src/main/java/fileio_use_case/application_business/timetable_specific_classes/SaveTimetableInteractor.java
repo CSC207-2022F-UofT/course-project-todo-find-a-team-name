@@ -6,6 +6,7 @@ import java.util.concurrent.Flow;
 
 public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
     private final TimetableGateway timetableGateway;
+    private Timetable savedTimetable;
 
     public SaveTimetableInteractor(TimetableGateway timetableGateway) {
         this.timetableGateway = timetableGateway;
@@ -15,7 +16,7 @@ public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
      * to convert a timetable to file.
      *
      */
-    public void updatingTimetableToFile(Timetable savedTimetable) {
+    public void updatingTimetableToFile() {
         timetableToFile(savedTimetable);
     }
 
@@ -23,7 +24,7 @@ public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
      * src/main/saved_timetables/.
      * @param timetableToSave - Timetable entity that user wants to save
      */
-    public void timetableToFile(Timetable timetableToSave) {
+    private void timetableToFile(Timetable timetableToSave) {
         timetableGateway.timetableToFile(timetableToSave);
     }
 
@@ -41,7 +42,7 @@ public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
      */
     @Override
     public void onNext(Object timetable) {
-        updatingTimetableToFile((Timetable) timetable);
+        savedTimetable = (Timetable) timetable;
     }
 
     /**
