@@ -162,13 +162,13 @@ public class Main {
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapInputDialog, saveController);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, null, saveController);
         displayTimetablePresenter.setView(timetableUI);
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
 
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        editScreen.updateTimetable();
-        frame.add(editScreen);
+//        editScreen.updateTimetable();
+//        frame.add(editScreen);
 
 
         // display frame
@@ -177,18 +177,22 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
-        List<Flow.Subscriber<Object>> TimetableAndSessionObservers = new ArrayList<>();
-        TimetableAndSessionObservers.add(addInteractor);
-        TimetableAndSessionObservers.add(removeInteractor);
-        TimetableAndSessionObservers.add(editInteractor);
-        TimetableAndSessionObservers.add(retrieveTimetableInteractor);
-        TimetableAndSessionObservers.add(displayTimetableInteractor);
-        TimetableAndSessionObservers.add(editDisplayInteractor);
+        List<Flow.Subscriber<Object>> timetableAndSessionObservers = new ArrayList<>();
+        timetableAndSessionObservers.add(addInteractor);
+        timetableAndSessionObservers.add(removeInteractor);
+        timetableAndSessionObservers.add(editInteractor);
+        timetableAndSessionObservers.add(retrieveTimetableInteractor);
+        timetableAndSessionObservers.add(displayTimetableInteractor);
+        timetableAndSessionObservers.add(editDisplayInteractor);
+        timetableAndSessionObservers.add(recommendBRInteractor);
 
-        List<Flow.Publisher<Object>> TimetableAndSessionObservables = new ArrayList<>();
+        List<Flow.Publisher<Object>> timetableAndSessionObservables = new ArrayList<>();
+        timetableAndSessionObservables.add(sessionGatewayInteractor);
+        timetableAndSessionObservables.add(timetableGatewayInteractor);
 
-        for (Flow.Publisher<Object> observable : TimetableAndSessionObservables){
-            for (Flow.Subscriber<Object> observer : TimetableAndSessionObservers){
+
+        for (Flow.Publisher<Object> observable : timetableAndSessionObservables){
+            for (Flow.Subscriber<Object> observer : timetableAndSessionObservers){
                 observable.subscribe(observer);
             }
         }
