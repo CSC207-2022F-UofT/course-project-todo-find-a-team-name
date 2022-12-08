@@ -25,6 +25,6 @@ public class TimetableFileController {
      */
     public void createTimetableFile(String filePath) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         FileImportRequestModel requestModel = new FileImportRequestModel(filePath);
-        this.interactor.readFromFile(requestModel, "F");
+        this.interactor.readFromFile(requestModel, "Timetable");
     }
 }
