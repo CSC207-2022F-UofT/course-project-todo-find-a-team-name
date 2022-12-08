@@ -1,6 +1,7 @@
-package overlap_crap_fix_locations_later.ViewModels;
+package overlap_crap_fix_locations_later.tests;
 
 import org.junit.Test;
+import overlap_crap_fix_locations_later.ViewModels.*;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
