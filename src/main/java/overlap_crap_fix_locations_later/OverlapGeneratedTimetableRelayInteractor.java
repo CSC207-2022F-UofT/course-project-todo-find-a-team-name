@@ -19,6 +19,12 @@ import java.util.concurrent.Flow;
  */
 public class OverlapGeneratedTimetableRelayInteractor implements Flow.Subscriber<Object> {
 
+    private final OverlapPresenting presenter;
+
+    public OverlapGeneratedTimetableRelayInteractor(OverlapPresenting presenter) {
+        this.presenter = presenter;
+    }
+
     private List<Timetable> timetableList = new ArrayList<>();
 
     @Override
@@ -44,6 +50,7 @@ public class OverlapGeneratedTimetableRelayInteractor implements Flow.Subscriber
         }
 
         // Pass it to the presenter, which will turn it into ViewModels.
+        presenter.passViewModelsToDialog(timetableModels);
 
     }
 
