@@ -1,8 +1,15 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.interface_adapters.*;
+import display_timetable_use_case.frameworks_and_drivers.*;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import fileio_use_case.application_business.FileImportRequestModel;
+import fileio_use_case.application_business.timetable_specific_classes.TimetableFileImportInputBoundary;
+import fileio_use_case.interface_adapters.TimetableFileController;
+import overlap_crap_fix_locations_later.OverlapInputDialog;
+import retrieve_timetable_use_case.application_business.TimetableModel;
 import screens.MainUI;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
 import timetables_sort_use_case.interface_adapters.AllTimetablesController;
 import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
@@ -18,7 +25,7 @@ import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScree
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.AddCourseInteractor;
 import edit_timetable_use_case.application_business.EditCourseInteractor;
 import edit_timetable_use_case.application_business.RemoveCourseInteractor;
@@ -60,13 +67,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     private final JPanel timetablesPanel;
     private TimetablesSortMenu timetablesSortMenu;
     private final TimetablesSortController timetablesSortController;
-    private final DisplayTimetableController displayTimetableController;
     private final AllTimetablesController allTimetablesController;
     private final MainUI mainUI;
     private final TimetableUI timetableUI;
     public AllTimetablesScreen(JFrame frame, MainUI mainUI, TimetableUI timetableUI,
                                TimetablesSortController timetablesSortController,
-                               DisplayTimetableController displayTimetableController,
                                AllTimetablesController allTimetablesController) {
         this.frame = frame;
         this.timetablesSortController = timetablesSortController;
@@ -75,7 +80,6 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         JPanel timetablesPanel = new JPanel();
         this.timetablesPanel = timetablesPanel;
         this.timetablesSortMenu = null;
-        this.displayTimetableController = displayTimetableController;
         this.allTimetablesController = allTimetablesController;
         this.mainUI = mainUI;
         this.timetableUI = timetableUI;
@@ -145,7 +149,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     public void openTimetableUI(int i) {
         frame.getContentPane().removeAll();
         allTimetablesController.updateSubscribers(i);
-        displayTimetableController.displayTimetable();
+        timetableUI.updateTimetable();
         frame.add(timetableUI);
         frame.revalidate();
     }
@@ -333,16 +337,33 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
+        TimetableGeneratorPresenter timetableGeneratorPresenter = new TimetableGeneratorPresenter();
+        TimetableGeneratorInteractor timetableGeneratorInteractor =
+                new TimetableGeneratorInteractor(timetableGeneratorPresenter);
+        TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
+        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
         DisplayTimetablePresenter displayTimetablePresenter2 = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
-
+        ArrayList<Timetable> timetables = new ArrayList<Timetable>();
+        OverlapInputDialog overlapInputDialog = new OverlapInputDialog(timetables, sectionFilterController);
         displayTimetableInteractor2.setTimetable(timetable);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen);
+        TimetableFileImportInputBoundary timetableFileImportInputBoundary = new TimetableFileImportInputBoundary() {
+            @Override
+            public TimetableModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
+                return null;
+            }
+
+            @Override
+            public void timetableToFile(TimetableModel timetableRequestModel, String sessionType) throws InvalidSectionsException {
+
+            }
+        };
+        TimetableFileController timetableFileController = new TimetableFileController(timetableFileImportInputBoundary);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog, timetableFileController);
         displayTimetablePresenter2.setView(timetableUI);
 
         displayTimetableInteractor1.setTimetable(timetable);
@@ -359,23 +380,18 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         mainUI.setPreferredSize(new Dimension(1280, 720));
 
 
-        Timetable[] timetables = new Timetable[10];
+        Timetable[] timetables1 = new Timetable[10];
 
         for (int i = 0; i < 10; i++) {
-            timetables[i] = timetable;
+            timetables1[i] = timetable;
         }
-
-        TimetableGeneratorPresenter timetableGeneratorPresenter = new TimetableGeneratorPresenter();
-        TimetableGeneratorInteractor timetableGeneratorInteractor =
-                new TimetableGeneratorInteractor(timetableGeneratorPresenter);
 
 
         //  Use case 1 main requirements:
         //      1- TimetablesSortPresenter, 2- TimetablesSortInteractor(Presenter), 3- AllTimetablesPublisher,
         //      4- TimetablesSortController(TimetablesSortInteractor, AllTimetablesPublisher),
         //      5- AllTimetablesController(AllTimetablesPublisher),
-        //      6- AllTimetablesScreen(JFrame, MainUI, TimetableUI, TimetablesSortController,
-        //      DisplayTimetableController, AllTimetablesController)
+        //      6- AllTimetablesScreen(JFrame, MainUI, TimetableUI, TimetablesSortController, AllTimetablesController)
         //      7- TimetablesSortPresenter.setView(AllTimetablesScreen)
         //      8,9- subscribe my interactors to JD's publisher
 
@@ -384,12 +400,12 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         AllTimetablesInteractor allTimetablesInteractor = new AllTimetablesInteractor();
         TimetablesSortController timetablesSortController =
                 new TimetablesSortController(timetablesSortInteractor, allTimetablesInteractor);
-        timetablesSortInteractor.setTimetables(timetables); // this is only for testing, it should automatically
+        timetablesSortInteractor.setTimetables(timetables1); // this is only for testing, it should automatically
         // update when its publisher publishes
         AllTimetablesController allTimetablesController =
                 new AllTimetablesController(allTimetablesInteractor);
         AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetableUI,
-                timetablesSortController, displayTimetableController2, allTimetablesController);
+                timetablesSortController, allTimetablesController);
         allTimetablesScreen.updateTimetables(timetableViewModels); // this is only for testing, it should be called by
         // JD/Prime when they display my screen
         timetablesSortPresenter.setView(allTimetablesScreen);
