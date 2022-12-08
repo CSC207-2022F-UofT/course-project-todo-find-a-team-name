@@ -55,7 +55,7 @@ public class Main {
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
         EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
 
-        screen.setBRWindow(recommendBRWindow);
+//        screen.setBRWindow(recommendBRWindow);
         removePresenter.setView(screen);
         addPresenter.setView(screen);
         editPresenter.setView(screen);
