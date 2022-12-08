@@ -1,3 +1,7 @@
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
@@ -7,9 +11,19 @@ import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.application_business.RetrieveTimetablePresenter;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 
@@ -54,12 +68,18 @@ public class Main {
         addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         EditCoursePresenter editPresenter = new EditCoursePresenter();
         EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
-        EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
+        EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
         editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
         EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController, saveController);
+        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController);
+
+        removePresenter.setView(editScreen);
+        addPresenter.setView(editScreen);
+        editPresenter.setView(editScreen);
+        displayPresenter.setView(editScreen);
 
 //        screen.setBRWindow(recommendBRWindow);
         removePresenter.setView(screen);
@@ -67,9 +87,65 @@ public class Main {
         editPresenter.setView(screen);
         displayPresenter.setView(screen);
         retrieveTimetablePresenter.setView(screen);
+
+
+        /* Set up for Generating Timetable:
+         */
+        TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
+        TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
+        TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
+        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
+
+        /*Set up for BlackList/Whitelist:
+         */
+        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
+        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
+        /*
+        Todo: constraintsInputScreen.setPrevPanel(PANEL);
+         */
+        sectionFilterPresenter.setView(constraintsInputScreen);
+
+
+        /*
+         * Set up for BR recommendation:
+         *
+         * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+         * RecommendBRInteractor
+         */
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
+        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
+        editScreen.setBRWindow(recommendBRWindow);
+        recommendBRPresenter.setView(recommendBRWindow);
+
+        /*
+         * This is temporary since timetable view branch haven't merged yet!
+         *
+         * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+         * displayTimetableInteractor
+         *
+         * Anyone who displays the timetableUI should call updateTimetable() to update view model
+         * and setPrevPanel() to set the previous panel to the appropriate JPanel
+         *
+         * Hans, I need ConstraintInputScreen for mainUI
+         * Emily, I need SessionFileController and TimetableFileController for mainUI
+         *
+         */
+        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+        // TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, timetableFileController);
+        // displayTimetablePresenter.setView(timetableUI);
+
+        // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
+
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        screen.updateTimetable();
-        frame.add(screen);
+        editScreen.updateTimetable();
+        frame.add(editScreen);
     }
 
 }
