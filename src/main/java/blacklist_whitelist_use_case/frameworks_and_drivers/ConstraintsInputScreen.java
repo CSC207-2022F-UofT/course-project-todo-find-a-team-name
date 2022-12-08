@@ -8,6 +8,7 @@ import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import entities.InvalidSectionsException;
+import entities.InvalidSectionsException;
 import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;

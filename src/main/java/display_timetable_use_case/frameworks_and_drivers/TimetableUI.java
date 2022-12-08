@@ -138,10 +138,10 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
     private void changeScreen(JPanel panel){
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         this.setVisible(false);
-        frame.getContentPane().removeAll();
+        frame.getContentPane().remove(this);
         frame.add(panel);
         frame.revalidate();
-        this.setVisible(true);
+        panel.setVisible(true);
     }
 
     /**

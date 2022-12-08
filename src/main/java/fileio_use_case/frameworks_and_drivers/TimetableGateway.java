@@ -32,7 +32,7 @@ public class TimetableGateway implements TimetableGatewayInterface {
             return extractTimetable(timetableCourseHashMap, (aFileReader.returnSessionTypeImport()));
         }
         else {
-            return extractTimetable(timetableCourseHashMap, "C");
+            return extractTimetable(timetableCourseHashMap, "F");
         }
     }
     /**

@@ -146,10 +146,6 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
         description.append(":00 - ");
         description.append((int) block.getEndTime());
         description.append(":00");
-
-        if (! block.getRoom().equals("")){
-            description.append(", ").append(block.getRoom());
-        }
         return description.toString();
     }
 
