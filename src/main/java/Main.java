@@ -7,8 +7,8 @@ import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 
 import javax.swing.*;
 
@@ -32,28 +32,30 @@ public class Main {
          * Yahya and anyone that opens the timetable editor (Emily?): make sure that the displayTimetableInteractor is
          updated with the appropriate timetable and session before pulling up the edit timetable screen, and
          make sure to call editTimetableScreen.updateTimetable(ttViewModel),
-         editTimetableScreen.updateSession(sessionViewModel), editTimetableScreen.initializeTimetable(), and
+         editTimetableScreen.updateSession(), editTimetableScreen.updateTimetable(), and
          editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
          retrieveTimetable use case to do this if you don't already have the view models (although you probably should
          have it already).
          */
 
-        RetrieveTimetableInputBoundary retrieveInteractor = new RetrieveTimetableInteractor();
+
+        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+        RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
 
         RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
         RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
-        removeInteractor.setRetrieveInteractor(retrieveInteractor);
+        removeInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         AddCoursePresenter addPresenter = new AddCoursePresenter();
         AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
-        addInteractor.setRetrieveInteractor(retrieveInteractor);
+        addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         EditCoursePresenter editPresenter = new EditCoursePresenter();
         EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
         EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
-        editInteractor.setRetrieveInteractor(retrieveInteractor);
+        editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
+        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController);
 
         screen.setBRWindow(recommendBRWindow);
         removePresenter.setView(screen);

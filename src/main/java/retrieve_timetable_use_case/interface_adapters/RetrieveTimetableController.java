@@ -1,9 +1,6 @@
 package retrieve_timetable_use_case.interface_adapters;
 
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableRequestModel;
-import retrieve_timetable_use_case.application_business.CourseModel;
-import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.application_business.*;
 
 /**
  * The controller used in the RetrieveTimetableUseCase.
@@ -44,5 +41,9 @@ public class RetrieveTimetableController {
      */
     public TimetableModel retrieveTimetable(){
         return interactor.retrieveTimetable();
+    }
+
+    public SessionModel retrieveSession() {
+        return interactor.retrieveSession();
     }
 }
