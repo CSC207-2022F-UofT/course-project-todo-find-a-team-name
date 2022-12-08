@@ -93,8 +93,8 @@ public class Main {
          * Anyone who displays the timetableUI should call updateTimetable() to update view model
          * and setPrevPanel() to set the previous panel to the appropriate JPanel
          *
-         * Hans, I need constraint input screen for mainUI
-         * Emily, I need sessionFileController for mainUI
+         * Hans, I need ConstraintInputScreen for mainUI
+         * Emily, I need SessionFileController and TimetableFileController for mainUI
          *
          */
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
