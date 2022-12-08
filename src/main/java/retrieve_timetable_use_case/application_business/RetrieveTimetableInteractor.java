@@ -19,7 +19,15 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
     private Timetable timetable;
     private Session session;
 
-    public RetrieveTimetableInteractor(){}
+    private final RetrieveTimetableOutputBoundary presenter;
+
+    public RetrieveTimetableInteractor(){
+        presenter = null;
+    }
+
+    public RetrieveTimetableInteractor(RetrieveTimetableOutputBoundary presenter){
+        this.presenter = presenter;
+    }
 
 
     /**
@@ -106,4 +114,13 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
 
     }
 
+    /**
+     * Update a screen with the current session.
+     */
+    @Override
+    public void updateSession(){
+        if (presenter != null){
+            presenter.updateSession(EntityConverter.generateSessionResponse(session));
+        }
+    }
 }

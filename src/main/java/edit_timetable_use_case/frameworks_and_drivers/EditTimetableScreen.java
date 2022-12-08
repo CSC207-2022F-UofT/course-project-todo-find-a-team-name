@@ -11,8 +11,8 @@ import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.EditTimetableView;
 import entities.InvalidSectionsException;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableView;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
-import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import screens.SessionViewModel;
 
 import javax.swing.*;
@@ -30,7 +30,8 @@ import java.util.List;
  * courseButtons refer to buttons used to remove a given course.
  * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
-public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView, ITimetableUI {
+public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView, ITimetableUI,
+        RetrieveTimetableView {
 
     private final JFrame frame;
     private final EditTimetableController controller;
@@ -47,16 +48,18 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private JPanel previousPanel;
     private final DisplayTimetableController displayTimetableController;
     private final RetrieveTimetableController retrieveTimetableController;
+    private final SaveTimetableController saveController;
 
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
                                DisplayTimetableController displayTimetableController, RetrieveTimetableController
-                               retrieveTimetableController) {
+                               retrieveTimetableController, SaveTimetableController saveController) {
         this.frame = frame;
         this.controller = controller;
         this.previousPanel = previousPanel;
         this.displayTimetableController = displayTimetableController;
         this.retrieveTimetableController = retrieveTimetableController;
+        this.saveController = saveController;
 
         this.ttView = null;
         this.courseMenu = null;
@@ -172,8 +175,11 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if (cmd.startsWith("Edit ")){
             openSectionsMenu(cmd.substring("Edit ".length()));
         }
-        /*else if (cmd.equals("Save")){
-        }*/
+        else if (cmd.equals("Save")){
+            saveController.saveTimetable();
+            this.setVisible(false);
+            previousPanel.setVisible(true);
+        }
         else if(cmd.equals("<=")){
             this.setVisible(false);
             frame.add(previousPanel);
@@ -251,6 +257,14 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     }
 
     public void updateSession(){
-        this.session = TimetableModelConverter.sessionToView(retrieveTimetableController.retrieveSession());
+        retrieveTimetableController.updateSession();
+    }
+
+    /**
+     * @param sessionViewModel The current session's view model.
+     */
+    @Override
+    public void updateSession(SessionViewModel sessionViewModel) {
+        this.session = sessionViewModel;
     }
 }

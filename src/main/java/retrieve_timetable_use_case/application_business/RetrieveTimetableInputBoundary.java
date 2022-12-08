@@ -21,4 +21,6 @@ public interface RetrieveTimetableInputBoundary {
     void setSession(Session session);
 
     void setTimetable(Timetable timetable);
+
+    void updateSession();
 }

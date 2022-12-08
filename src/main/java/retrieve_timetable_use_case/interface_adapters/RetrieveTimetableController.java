@@ -46,4 +46,9 @@ public class RetrieveTimetableController {
     public SessionModel retrieveSession() {
         return interactor.retrieveSession();
     }
+
+    /**
+     * Update a screen with the current session.
+     */
+    public void updateSession(){interactor.updateSession();}
 }

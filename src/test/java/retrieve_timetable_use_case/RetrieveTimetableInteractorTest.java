@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
+import screens.SessionViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ class RetrieveTimetableInteractorTest {
     private RetrieveTimetableInteractor interactor;
     private CourseModel courseModel;
     private SessionModel sessionModel;
+    private SessionViewModel sessionViewModel;
     private TimetableModel timetableModel;
+    private TestRetrieveTimetableView view;
 
     /**
      * Creates a mock-up session and timetable with non-empty courses, sections and blocks, as well as
@@ -60,6 +64,7 @@ class RetrieveTimetableInteractorTest {
             modelCourses.put(courseModel.getCourseCode(), courseModel);
 
             sessionModel = new SessionModel(modelCourses, "F");
+            sessionViewModel = TimetableModelConverter.sessionToView(sessionModel);
             Session sessionActual = new Session("F");
             sessionActual.addCourse(courseActual);
 
@@ -67,7 +72,11 @@ class RetrieveTimetableInteractorTest {
 
             timetableModel = new TimetableModel(timetableModelCourses);
 
-            interactor = new RetrieveTimetableInteractor();
+            RetrieveTimetablePresenter presenter = new RetrieveTimetablePresenter();
+            view = new TestRetrieveTimetableView();
+            presenter.setView(view);
+
+            interactor = new RetrieveTimetableInteractor(presenter);
             interactor.setTimetable(timetable);
             interactor.setSession(sessionActual);
         }
@@ -113,5 +122,15 @@ class RetrieveTimetableInteractorTest {
     @Test
     void retrieveTimetable() {
         Assertions.assertEquals(timetableModel, interactor.retrieveTimetable());
+    }
+
+    /**
+     * Asserts that the interactor updates the view with the correct session model as expected.
+     * This test's functionality is limited because of the specificity of equality checking on the view models.
+     */
+    @Test
+    void updateSession(){
+        interactor.updateSession();
+        Assertions.assertTrue(sessionViewModel.getCourses().containsKey("EGG100") && view.session.getCourses().containsKey("EGG100"));
     }
 }

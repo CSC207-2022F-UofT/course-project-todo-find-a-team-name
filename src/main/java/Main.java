@@ -8,6 +8,7 @@ import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.application_business.RetrieveTimetablePresenter;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 
 import javax.swing.*;
@@ -36,10 +37,13 @@ public class Main {
          editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
          retrieveTimetable use case to do this if you don't already have the view models (although you probably should
          have it already).
+
+         Emily: I've named the SaveTimetableController used in my codeblock saveController. Rename it as you like
+         during final integration.
          */
 
-
-        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+        RetrieveTimetablePresenter retrieveTimetablePresenter = new RetrieveTimetablePresenter();
+        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor(retrieveTimetablePresenter);
         RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
 
         RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
@@ -55,13 +59,14 @@ public class Main {
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController);
+        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController, saveController);
 
         screen.setBRWindow(recommendBRWindow);
         removePresenter.setView(screen);
         addPresenter.setView(screen);
         editPresenter.setView(screen);
         displayPresenter.setView(screen);
+        retrieveTimetablePresenter.setView(screen);
         /* The line below must run after displayPresenter's view has been set to screen.*/
         screen.updateTimetable();
         frame.add(screen);
