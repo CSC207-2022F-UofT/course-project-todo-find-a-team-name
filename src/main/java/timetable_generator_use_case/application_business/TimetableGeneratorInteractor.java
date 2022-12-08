@@ -39,7 +39,7 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
     }
 
     private List<Timetable> generateTimetable(List<CalendarCourse> courses){
-        return generateTimetable(courses, new ArrayList<>());
+        return generateTimetable(courses, List.of(new Timetable(new ArrayList<>(), session.getSessionType())));
     }
 
     /**
@@ -55,7 +55,7 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
             TimetableCourseGenerator possibleTimes = new TimetableCourseGenerator(course);
             for(TimetableCourse possibleTime: possibleTimes.generateAllTimetableCourses()){
                 if (!timetable.hasCourseOverlap(possibleTime)){
-                    ArrayList<TimetableCourse> currentCourses = timetable.getCourseList();
+                    ArrayList<TimetableCourse> currentCourses = new ArrayList<>(timetable.getCourseList());
                     currentCourses.add(possibleTime);
                     newTimetables.add(new Timetable(currentCourses, timetable.getSessionType()));
                 }
