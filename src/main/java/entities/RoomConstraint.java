@@ -1,11 +1,8 @@
 package entities;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 /** An entity representing a RoomConstraint.
- *
  * Instance Attributes:
  * - rooms: A list of all rooms in the Constraint domain.
  * - super(isBlackList): a boolean showing b/w lists.

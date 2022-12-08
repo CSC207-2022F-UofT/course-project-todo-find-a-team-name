@@ -96,8 +96,8 @@ class RecommendBRInteractorTest {
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "early");
-        recommendBRInteractor.setFallSession(session);
-        recommendBRInteractor.setTimetable(timetable);
+        recommendBRInteractor.onNext(session);
+        recommendBRInteractor.onNext(timetable);
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -129,8 +129,40 @@ class RecommendBRInteractorTest {
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "balanced");
-        recommendBRInteractor.setTimetable(timetable);
-        recommendBRInteractor.setWinterSession(new Session("S"));
+        recommendBRInteractor.onNext(timetable);
+        recommendBRInteractor.recommendBr(requestModel);
+    }
+
+    /**
+     * Check whether recommendBr passes correct message to RecommendBROutputBoundary.prepareFailView when session type
+     * is different from timetable type
+     */
+    @Test
+    void testRecommendBrDifferentSession() {
+
+        Timetable timetable = new Timetable(new ArrayList<>(), "F");
+        HashSet<String> brCategoriesSelected = new HashSet<>();
+        brCategoriesSelected.add("3");
+        brCategoriesSelected.add("2");
+
+        RecommendBROutputBoundary dummyPresenter = new RecommendBROutputBoundary() {
+            @Override
+            public void prepareSuccessView(RecommendBRResponseModel responseModel) {
+                fail("prepareSuccessView should not be called.");
+            }
+
+            @Override
+            public void prepareFailView(String message) {
+                assertEquals("Timetable session is different! Timetable is F while Session is S.", message);
+            }
+        };
+
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
+
+        RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "balanced");
+        recommendBRInteractor.onNext(new Session("S"));
+        recommendBRInteractor.onNext(timetable);
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -161,8 +193,7 @@ class RecommendBRInteractorTest {
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(dummyPresenter, courseComparatorFactory);
 
         RecommendBRRequestModel requestModel = new RecommendBRRequestModel(brCategoriesSelected, "balanced");
-        recommendBRInteractor.setFallSession(new Session("F"));
-        recommendBRInteractor.setWinterSession(new Session("S"));
+        recommendBRInteractor.onNext(new Session("F"));
         recommendBRInteractor.recommendBr(requestModel);
     }
 
@@ -199,9 +230,8 @@ class RecommendBRInteractorTest {
         fallSession.addCourse(new CalendarCourse("testCourse", new ArrayList<>(), "F", "TEST1", "1"));
         fallSession.addCourse(new CalendarCourse("testCourse2", new ArrayList<>(), "F", "TEST2", "4"));
         fallSession.addCourse(new CalendarCourse("testCourse3", new ArrayList<>(), "F", "TEST3", "1"));
-        recommendBRInteractor.setFallSession(fallSession);
-        recommendBRInteractor.setWinterSession(new Session("S"));
-        recommendBRInteractor.setTimetable(new Timetable(new ArrayList<>(), "F"));
+        recommendBRInteractor.onNext(fallSession);
+        recommendBRInteractor.onNext(new Timetable(new ArrayList<>(), "F"));
         recommendBRInteractor.recommendBr(requestModel);
     }
 

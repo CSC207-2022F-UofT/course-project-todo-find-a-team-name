@@ -1,6 +1,6 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
-import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import entities.InvalidSectionsException;
 import recommend_br_use_case.interface_adapters.RecommendBRCourseViewModel;
 import recommend_br_use_case.interface_adapters.RecommendBRViewModel;
@@ -29,6 +29,7 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
      * that displays list of courses recommended on the left and selected course information on the right
      *
      * @param viewModel object containing all the information shown to the user in this screen
+     * @param editTimetableController controller for adding selected course in the timetable
      */
     public RecommendBROutputScreen(RecommendBRViewModel viewModel, EditTimetableController editTimetableController){
         super();

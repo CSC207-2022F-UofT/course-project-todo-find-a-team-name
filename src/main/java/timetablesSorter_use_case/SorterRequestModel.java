@@ -1,7 +1,5 @@
 package timetablesSorter_use_case;
 
-import screens.TimetableViewModel;
-
 /**
  *The request model used to request timetables sorting
  */
