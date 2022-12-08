@@ -1,4 +1,4 @@
-package display_timetable_use_case.interface_adapters;
+package display_timetable_use_case.frameworks_and_drivers;
 
 import javax.swing.*;
 import java.awt.*;
@@ -258,50 +258,5 @@ public class TimetableView extends JPanel implements MouseListener {
                 courseColors.remove(code);
             }
         }
-    }
-
-    // This method is only used for testing during the development, it will be deleted soon
-    // TODO: Delete this method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        List<TimetableViewCourseModel> courseData = new ArrayList<>();
-        List<TimetableViewSectionModel> sectionModels1 = new ArrayList<>();
-
-        List<TimetableViewBlockModel> blockModels1 = new ArrayList<>();
-        blockModels1.add(new TimetableViewBlockModel(0, 11, 12));
-        blockModels1.add(new TimetableViewBlockModel(4, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("LEC0101", blockModels1));
-
-        List<TimetableViewBlockModel> blockModels2 = new ArrayList<>();
-        blockModels2.add(new TimetableViewBlockModel(2, 11, 12));
-        sectionModels1.add(new TimetableViewSectionModel("TUT0101", blockModels2));
-
-        courseData.add(new TimetableViewCourseModel("CSC236H1", sectionModels1));
-
-
-        List<TimetableViewSectionModel> sectionModels2 = new ArrayList<>();
-
-        List<TimetableViewBlockModel> blockModels3 = new ArrayList<>();
-        blockModels3.add(new TimetableViewBlockModel(1, 16, 17));
-        blockModels3.add(new TimetableViewBlockModel(4, 16, 17));
-        sectionModels2.add(new TimetableViewSectionModel("LEC0401", blockModels3));
-
-        List<TimetableViewBlockModel> blockModels4 = new ArrayList<>();
-        blockModels4.add(new TimetableViewBlockModel(0, 14, 16));
-        sectionModels2.add(new TimetableViewSectionModel("TUT0301", blockModels4));
-
-        courseData.add(new TimetableViewCourseModel("CSC207H1", sectionModels2));
-
-
-        TimetableViewModel timetableViewModel = new TimetableViewModel(courseData);
-        TimetableView timetableView = new TimetableView(500, 600, timetableViewModel);
-
-        timetableView.addTimetableViewListener(e -> System.out.println(e.getSelectedCourseCode() + "; " + e.getSelectedSectionCode()));
-        frame.add(timetableView);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
