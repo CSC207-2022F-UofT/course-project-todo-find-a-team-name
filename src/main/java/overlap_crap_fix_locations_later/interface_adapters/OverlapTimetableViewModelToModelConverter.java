@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.ViewModels;
+package overlap_crap_fix_locations_later.interface_adapters;
 
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;

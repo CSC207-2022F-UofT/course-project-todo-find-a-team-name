@@ -1,15 +1,12 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.interface_adapters;
 
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
+import overlap_crap_fix_locations_later.application_business.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverlapMaximizationController implements OverlapMaxInputBoundary {
+public class OverlapMaximizationController {
 
     private final TimetableMatchInputBoundary timetableMatcher;
     private TimetableModel mainTable;
@@ -30,7 +27,6 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
      * @param mainTable
      * @param timetables
      */
-    @Override
     public TimetableModel getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
                                                    List<OverlapTimetableViewModel> timetables) {
 

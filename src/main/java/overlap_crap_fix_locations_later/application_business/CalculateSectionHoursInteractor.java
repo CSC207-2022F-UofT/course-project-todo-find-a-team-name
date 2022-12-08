@@ -1,6 +1,5 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.application_business;
 
-import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
 

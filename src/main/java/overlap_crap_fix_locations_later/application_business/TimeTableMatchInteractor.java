@@ -1,10 +1,7 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.application_business;
 
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
-import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
@@ -25,10 +22,10 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
      * (Weight can simply be determined by time * (proportion of satisfied constraints).
      */
 
-    private final OverlapPresenting presenter;
+    private final OverlapOutputBoundary presenter;
     private final SectionHoursInputBoundary sectionHoursCalculator;
 
-    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator, OverlapPresenting presenter) {
+    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator, OverlapOutputBoundary presenter) {
         // Initialise what we know at compile-time. Timetables and the mainTable must be passed in later.
         this.sectionHoursCalculator = sectionHoursCalculator;
         this.presenter = presenter;

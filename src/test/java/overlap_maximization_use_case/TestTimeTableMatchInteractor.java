@@ -1,13 +1,13 @@
-package overlap_crap_fix_locations_later.tests;
+package overlap_maximization_use_case;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
-import overlap_crap_fix_locations_later.TimeTableMatchInteractor;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
-import overlap_crap_fix_locations_later.presenters.OverlapMaxPresenter;
+import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
+import overlap_crap_fix_locations_later.application_business.TimeTableMatchInteractor;
+import overlap_crap_fix_locations_later.interface_adapters.OverlapInputView;
+import overlap_crap_fix_locations_later.interface_adapters.OverlapMaxPresenter;
+import overlap_crap_fix_locations_later.interface_adapters.OverlapTimetableViewModel;
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
@@ -36,7 +36,7 @@ public class TestTimeTableMatchInteractor {
 
     // We kind of need a dummy Dialog to pass through just from how clean architecture works, to soak best matching
     // Timetable.
-    OverlapInputEntryViewModel dummyDialog = new OverlapInputEntryViewModel() {
+    OverlapInputView dummyDialog = new OverlapInputView() {
         @Override
         public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
 

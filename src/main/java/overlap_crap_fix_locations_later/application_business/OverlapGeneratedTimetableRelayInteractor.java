@@ -1,7 +1,6 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.application_business;
 
 import entities.Timetable;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
 import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
@@ -17,9 +16,9 @@ import java.util.concurrent.Flow;
  */
 public class OverlapGeneratedTimetableRelayInteractor implements Flow.Subscriber<Object> {
 
-    private final OverlapPresenting presenter;
+    private final OverlapOutputBoundary presenter;
 
-    public OverlapGeneratedTimetableRelayInteractor(OverlapPresenting presenter) {
+    public OverlapGeneratedTimetableRelayInteractor(OverlapOutputBoundary presenter) {
         this.presenter = presenter;
     }
 

@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.ViewModels;
+package overlap_crap_fix_locations_later.interface_adapters;
 
 import java.util.ArrayList;
 import java.util.List;

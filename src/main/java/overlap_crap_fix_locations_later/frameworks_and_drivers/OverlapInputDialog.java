@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.frameworks_and_drivers;
 
 import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
@@ -24,12 +24,16 @@ import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import entities.*;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
-import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
-import overlap_crap_fix_locations_later.presenters.OverlapMaxPresenter;
+import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
+import overlap_crap_fix_locations_later.application_business.OverlapGeneratedTimetableRelayInteractor;
+import overlap_crap_fix_locations_later.application_business.TimeTableMatchInteractor;
+import overlap_crap_fix_locations_later.interface_adapters.*;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.application_business.TimetableModel;
@@ -50,7 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Object>, OverlapInputEntryViewModel {
+public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Object>, OverlapInputView {
 
 
     private JPanel contentPane;
@@ -61,7 +65,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private OverlapTimetableViewModel selectedMainTimetable;
 
     private HashMap<String, OverlapTimetableViewModel> timeTableRepresentations = new HashMap<>();
-    private final OverlapMaxInputBoundary overlapMaxController;
+    private final OverlapMaximizationController overlapMaxController;
     private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
     private final ConstraintsInputScreen hansInputScreen;
@@ -77,7 +81,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      */
     public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
                               TimetableUI timetablePanel,
-                              ConstraintsInputScreen hansInputScreen, OverlapMaxInputBoundary overlapMaxController,
+                              ConstraintsInputScreen hansInputScreen, OverlapMaximizationController overlapMaxController,
                               JFrame mainFrame) {
         for (int i = 0; i < timeTableOptions.size(); i++) {
 
@@ -208,6 +212,22 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             // Set up the main frame.
             JFrame frame = new JFrame();
 
+            /*A combined initialization of the Edit Timetable and Retrieve Timetable use cases. This block should be after
+            the RecommendBRWindow is created,
+             * Kai: note that editTimetableScreen needs a RecommendBRWindow on the final merge.
+             (it's called recommendBRWindow in the code, but feel free to rename it.)
+             * Yahya, Emily, and anyone else that creates a Timetable/Session publisher: addCourseInteractor,
+             * removeCourseInteractor, editCourseInteractor and retrieveTimetableInteractor all need to be included as
+             * subscribers and updated as appropriate. (displayTimetableInteractor should also be included, but that's
+             more Kai's side of things.)
+             * Yahya and anyone that opens the timetable editor (Emily?): make sure that the displayTimetableInteractor is
+             updated with the appropriate timetable and session before pulling up the edit timetable screen, and
+             make sure to call editTimetableScreen.updateTimetable(ttViewModel),
+             editTimetableScreen.updateSession(), editTimetableScreen.updateTimetable(), and
+             editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
+             retrieveTimetable use case to do this if you don't already have the view models (although you probably should
+             have it already).
+             */
             RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
             RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
 
@@ -231,6 +251,19 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             editPresenter.setView(editScreen);
             displayPresenter.setView(editScreen);
 
+            /*
+             * Set up for BR recommendation:
+             *
+             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+             * RecommendBRInteractor
+             */
+            RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+            CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+            RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
+            RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
+            editScreen.setBRWindow(recommendBRWindow);
+            recommendBRPresenter.setView(recommendBRWindow);
 
             // Set up the Session stuff for Hans and JD.
             SessionGateway sessionGateway = new SessionGateway();
@@ -261,6 +294,27 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
                 }
             });
 
+            /*
+             * This is temporary since timetable view and main menu ui branch haven't merged yet!
+             *
+             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+             * displayTimetableInteractor
+             *
+             * Anyone who displays the timetableUI should call updateTimetable() to update view model
+             * and setPrevPanel() to set the previous panel to the appropriate JPanel
+             *
+             * Hans, I need ConstraintInputScreen for mainUI
+             * Emily, I need SessionFileController and TimetableFileController for mainUI
+             *
+             */
+            DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+            DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+            DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
+            displayTimetablePresenter.setView(timetableUI);
+            editScreen.updateTimetable();
+            frame.add(editScreen);
+
             // Set up Hans' stuff.
             SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
             SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
@@ -280,7 +334,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator, presenter);
 
             // Make my controller
-            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timetableMatcher);
+            OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
 
             // Make my Dialog
             TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
@@ -408,7 +462,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      **/
     @Override
     public void stashBestMatchingTimetable(TimetableViewModel bestMatch) {
-        timetablePanel.updateViewModel(bestMatch);
+        timetablePanel.updateTimetable(bestMatch);
         callInKai();
         System.out.println(bestMatch);
 

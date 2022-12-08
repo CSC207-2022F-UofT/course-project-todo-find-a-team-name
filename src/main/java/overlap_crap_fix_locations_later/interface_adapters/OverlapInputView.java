@@ -1,7 +1,6 @@
-package overlap_crap_fix_locations_later.InputBoundaries;
+package overlap_crap_fix_locations_later.interface_adapters;
 
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  * in an attribute or something.
  */
 
-public interface OverlapInputEntryViewModel {
+public interface OverlapInputView {
 
     /**
      * Stash a list of OverlapTimetableViewModels somewhere in this Dialog to be used later.
