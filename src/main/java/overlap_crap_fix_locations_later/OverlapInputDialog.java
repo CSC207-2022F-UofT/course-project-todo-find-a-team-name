@@ -1,18 +1,28 @@
 package overlap_crap_fix_locations_later;
 
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import display_timetable_use_case.interface_adapters.TimetableUI;
 import display_timetable_use_case.interface_adapters.TimetableView;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import entities.*;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntry;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
+import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
 import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
 import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
+import overlap_crap_fix_locations_later.presenters.OverlapMaxPresenter;
+import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -39,7 +49,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
     private final ConstraintsInputScreen hansInputScreen;
-    private final TimetableUI timetableDisplay;
     private final TimetableView timetablePanel;
 
     private String selectedItemName;
@@ -50,18 +59,16 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      * and interactor and such.
      */
     public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
-                              TimetableUI timetableDisplay, TimetableView timetablePanel,
-                              ConstraintsInputScreen hansInputScreen) {
-        // This will be initialized later, when the controller subscribes to this InputDialog.
-        this.overlapMaxController = null;
+                              TimetableView timetablePanel,
+                              ConstraintsInputScreen hansInputScreen, OverlapMaxInputBoundary overlapMaxController) {
         for (int i = 0; i < timeTableOptions.size(); i++) {
 
             timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
         }
         this.timeTableOptions = timeTableOptions;
-        this.timetableDisplay = timetableDisplay;
         this.timetablePanel = timetablePanel;
         this.hansInputScreen = hansInputScreen;
+        this.overlapMaxController = overlapMaxController;
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
@@ -106,9 +113,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         // Print it out for debugging.
         System.out.println(bestMatch);
 
-        timetableDisplay.updateTimetable(TimetableModelConverter.timetableToView(bestMatch));
-        timetableDisplay.setVisible(true);
-
     }
 
     public void updateTimetableOptions(ArrayList<OverlapTimetableViewModel> newTimetableOptions) {
@@ -123,52 +127,79 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         dispose();
     }
 
-//    public static void main(String[] args) {
-//        // Initialise a test value.
-//        Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
-//        ArrayList<Block> testBlockList = new ArrayList<>();
-//        testBlockList.add(testBlock);
-//
-//        Section testSection = new Section("LEC0101", "Mario", testBlockList);
-//        ArrayList<Section> testSectionList = new ArrayList<>();
-//        testSectionList.add(testSection);
-//
-//        try {
-//            TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
-//            ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
-//            testTimetableCourseList.add(testCourse);
-//
-//            Timetable testTimetable = new Timetable(testTimetableCourseList, "S");
-//            ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
-//            testTimetableList.add(testTimetable);
-//
-//            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-//            SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-//            SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
-//
-//            SectionHoursInputBoundary sectionHoursCalculator = new CalculateSectionHoursInteractor();
-//            TimetableMatchInputBoundary timeTableMatcher = new TimeTableMatchInteractor(sectionHoursCalculator);
-//
-//            ArrayList<OverlapTimetableViewModel> timetableViewModels = new ArrayList<>();
-//            for (Timetable timetable : testTimetableList){
-//                timetableViewModels.add(
-//                        ModelToOverlapViewModelConverter.convertTimetableModel(
-//                            EntityConverter.generateTimetableResponse(timetable))
-//                );
-//            }
-//
-//            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, sectionFilterController1);
-//
-//            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timeTableMatcher,
-//                    dialog);
-//
-//            dialog.pack();
-//            dialog.setVisible(true);
-//
-//        } catch (InvalidSectionsException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    // TODO: Delete this method and all its dependencies.
+    // TODO: Also delete the freaking options thing eventually, keep it for now for initialization.
+    //  I mean making it out of ViewModels doesn't hurt but like still.
+    public static void main(String[] args) {
+        // Initialise a test section with one block.
+        Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
+        ArrayList<Block> testBlockList = new ArrayList<>();
+        testBlockList.add(testBlock);
+
+        Section testSection = new Section("LEC0101", "Mario", testBlockList);
+        ArrayList<Section> testSectionList = new ArrayList<>();
+        testSectionList.add(testSection);
+
+        try {
+            // Make a test course.
+            TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
+            ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
+            testTimetableCourseList.add(testCourse);
+
+            // Now make a test timetable.
+            Timetable testTimetable = new Timetable(testTimetableCourseList, "S");
+            ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
+            testTimetableList.add(testTimetable);
+
+            // SETUP for InputDialog creation
+            // Convert test timetable to appropriate view model
+            ArrayList<OverlapTimetableViewModel> timetableViewModels = new ArrayList<>();
+            for (Timetable timetable : testTimetableList) {
+                timetableViewModels.add(
+                        ModelToOverlapViewModelConverter.convertTimetableModel(
+                                EntityConverter.generateTimetableResponse(timetable))
+                );
+            }
+
+
+            // Make my interactors
+            CalculateSectionHoursInteractor sectionCalculator = new CalculateSectionHoursInteractor();
+            TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator);
+
+            // Make my controller
+            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timetableMatcher);
+
+
+            // Set up JD's thing
+            TimetableGeneratorPresenter timetableGeneratorPresenter = new TimetableGeneratorPresenter();
+            TimetableGeneratorInteractor timetableGeneratorInteractor = new TimetableGeneratorInteractor(timetableGeneratorPresenter);
+            TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
+            GenerateTimetableScreen timetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
+
+            // Set up for Hans' case
+            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+            SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
+            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInterator);
+            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(timetableScreen, sectionFilterController);
+
+            TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
+            TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
+            TimetableView finalTimetableView = new TimetableView(testTimetableViewModel);
+            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
+                    constraintsInputScreen, overlapMaxController);
+
+            // Make my presenters and stuff.
+            OverlapMaxPresenter presenter = new OverlapMaxPresenter(dialog);
+            OverlapGeneratedTimetableRelayInteractor relaySubscriber = new OverlapGeneratedTimetableRelayInteractor(presenter);
+            timetableGeneratorInteractor.subscribe(relaySubscriber);
+
+            dialog.pack();
+            dialog.setVisible(true);
+
+        } catch (InvalidSectionsException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * A method generated by the Swing Framework. Custom initialization of components should be handled in this method.
