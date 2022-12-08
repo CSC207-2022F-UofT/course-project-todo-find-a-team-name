@@ -1,14 +1,12 @@
 package overlap_crap_fix_locations_later;
 
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import display_timetable_use_case.interface_adapters.TimetableUI;
 import display_timetable_use_case.interface_adapters.TimetableView;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import entities.Constraint;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntry;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
@@ -31,16 +29,12 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox timeTableComboBox;
+    private JComboBox<String> timeTableComboBox;
     private JLabel textLabel;
     private OverlapTimetableViewModel selectedMainTimetable;
 
-    private SectionFilterController sectionFilterController;
-
     // TODO: May wish to find a better way of doing this. This is a placeholder.
     private HashMap<String, OverlapTimetableViewModel> timeTableRepresentations = new HashMap<>();
-    private ArrayList<Constraint> selectedConstraints;
-    private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
     private final OverlapMaxInputBoundary overlapMaxController;
     private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
@@ -48,17 +42,18 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private final TimetableUI timetableDisplay;
     private final TimetableView timetablePanel;
 
+    private String selectedItemName;
+    private Boolean waitingForNewData = false;
+
     /**
-     * Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
+     * Generating the Dialog also serves as the entry point     for the Use Case. The dialog will call the controller
      * and interactor and such.
      */
     public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
-                              SectionFilterController sectionFilterController,
                               TimetableUI timetableDisplay, TimetableView timetablePanel,
                               ConstraintsInputScreen hansInputScreen) {
         // This will be initialized later, when the controller subscribes to this InputDialog.
         this.overlapMaxController = null;
-        this.sectionFilterController = sectionFilterController;
         for (int i = 0; i < timeTableOptions.size(); i++) {
 
             timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
@@ -80,27 +75,37 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      **/
     private void finishDataEntry() {
 
+        // Assume the user has selected their target Timetable upon hitting the finish button, so ready that.
+        System.out.println(timeTableComboBox.getSelectedItem());
+        selectedItemName = (String) timeTableComboBox.getSelectedItem();
+
+        // Run through Hans' use case to go through JD's and stuff like that for him to generate the data.
         callInHans();
 
-        // Get the extras from JD:
+        // Signal that we're ready to receive data (so the next packet we get should be ready!)
+        waitingForNewData = true;
 
-        // Bundle the selected main timetable, and the candidate timetables, to send to the subscribers
-        // Notably, the TimeTableMatchInteractor
-        System.out.println(timeTableComboBox.getSelectedItem());
-        String selectedItemName = (String) timeTableComboBox.getSelectedItem();
 
-        // TODO: Make this actually get data once I can integrate, from JD's case.
-        ArrayList<OverlapTimetableViewModel> candidateTimetables = new ArrayList<>();
+    }
 
-        // Use a makeshift bundle via a map. (It's a pity Android.Bundle isn't native to Java).
-        HashMap<OverlapInputDialogDataKeys, Object> dataBundle = new HashMap<>();
-        this.selectedMainTimetable = timeTableRepresentations.get(selectedItemName);
+    /**
+     * A method to actually activate the calculations for the new, matched timeTable.
+     * It's supposed to be called after Hans' thing is activated, and positioned to wait for a new data packet from it to arrive.
+     */
+    public void activateCalculations() {
+        // Calculations activating = no longer waiting for data.
+        waitingForNewData = false;
 
-        dataBundle.put(OverlapInputDialogDataKeys.mainTable, this.selectedMainTimetable);
-        dataBundle.put(OverlapInputDialogDataKeys.candidateTimetables, candidateTimetables);
+        // Collate the data post-update.
+        ArrayList<OverlapTimetableViewModel> candidateTimetables = this.timeTableOptions;
+        this.selectedMainTimetable = timeTableRepresentations.get(selectedMainTimetable);
 
-        // Do something with this!
+        // Get the bloody timeTable.
         TimetableModel bestMatch = overlapMaxController.getBestMatchingTimetable(selectedMainTimetable, candidateTimetables);
+
+        // Print it out for debugging.
+        System.out.println(bestMatch);
+
         timetableDisplay.updateTimetable(TimetableModelConverter.timetableToView(bestMatch));
         timetableDisplay.setVisible(true);
 
@@ -255,6 +260,14 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     @Override
     public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
         timeTableOptions = new ArrayList<>(viewModels);
+
+        // Make the calculation part
+        // only activate if a flag of currently calculating is true. Otherwise just take in the data. That way
+        // we can kind of wait for JD's thing to finish.
+        // If we're waiting on data, activate the calculations with this one.
+        if (waitingForNewData) {
+            activateCalculations();
+        }
     }
 
     /**
