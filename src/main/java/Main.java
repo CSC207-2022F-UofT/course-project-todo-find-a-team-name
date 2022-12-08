@@ -73,20 +73,17 @@ public class Main {
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController, saveController);
-        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController);
+        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController, saveController);
 
         removePresenter.setView(editScreen);
         addPresenter.setView(editScreen);
         editPresenter.setView(editScreen);
         displayPresenter.setView(editScreen);
-
-//        screen.setBRWindow(recommendBRWindow);
-        removePresenter.setView(screen);
-        addPresenter.setView(screen);
-        editPresenter.setView(screen);
-        displayPresenter.setView(screen);
-        retrieveTimetablePresenter.setView(screen);
+        removePresenter.setView(editScreen);
+        addPresenter.setView(editScreen);
+        editPresenter.setView(editScreen);
+        displayPresenter.setView(editScreen);
+        retrieveTimetablePresenter.setView(editScreen);
 
 
         /* Set up for Generating Timetable:
