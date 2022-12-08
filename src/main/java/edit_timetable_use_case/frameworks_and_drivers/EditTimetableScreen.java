@@ -171,10 +171,25 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             BRWindow.showInputView();
         }
         else if (cmd.equals("Add Course")){
-            openCourseMenu();
+            if (session == null){
+                JOptionPane.showMessageDialog(frame, "Load a session first.");
+            }
+            else{
+                openCourseMenu();
+            }
         }
         else if (cmd.startsWith("Edit ")){
-            openSectionsMenu(cmd.substring("Edit ".length()));
+            String courseCode = cmd.substring("Edit ".length());
+            if (session == null){
+                JOptionPane.showMessageDialog(frame, "Load a session first.");
+            }
+            else if (session.getCourses().get(courseCode) == null){
+                JOptionPane.showMessageDialog(frame, "Course does not exist in session." +
+                        " Load the timetable's session first.");
+            }
+            else{
+                openSectionsMenu(courseCode);
+            }
         }
         else if (cmd.equals("Save")){
             saveController.saveTimetable();

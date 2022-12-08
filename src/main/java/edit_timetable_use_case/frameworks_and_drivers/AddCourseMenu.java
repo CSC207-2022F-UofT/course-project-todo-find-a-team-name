@@ -50,7 +50,12 @@ public class AddCourseMenu extends JPanel implements ActionListener {
         ListSelectionModel selectionModel = new DefaultListSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         courses.setSelectionModel(selectionModel);
-        this.add(courses);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(courses);
+        courses.setLayoutOrientation(JList.VERTICAL);
+        this.add(scrollPane);
+
 
         JButton goBackButton = new JButton("Go back");
         goBackButton.addActionListener(this);
