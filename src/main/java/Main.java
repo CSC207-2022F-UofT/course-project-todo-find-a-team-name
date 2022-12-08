@@ -119,6 +119,7 @@ public class Main {
         TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
         TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
         GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
+        // generatorPresenter.setView(allTimetablesView);
 
         /*Set up for BlackList/Whitelist:
          */
@@ -185,6 +186,8 @@ public class Main {
         timetableAndSessionObservers.add(displayTimetableInteractor);
         timetableAndSessionObservers.add(editDisplayInteractor);
         timetableAndSessionObservers.add(recommendBRInteractor);
+        timetableAndSessionObservers.add(sectionFilterInterator);
+        timetableAndSessionObservers.add(generatorInteractor);
 
         List<Flow.Publisher<Object>> timetableAndSessionObservables = new ArrayList<>();
         timetableAndSessionObservables.add(sessionGatewayInteractor);
