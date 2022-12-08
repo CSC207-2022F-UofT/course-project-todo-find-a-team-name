@@ -10,6 +10,7 @@ import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import timetables_sort_use_case.application_business.TimetablesSortResponseModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class TimetablesSortPresenterTest {
 
         TimetableViewModel[] timetables = new TimetableViewModel[1];
         timetables[0] = TimetableModelConverter.timetableToView(timetable1);
-
+        System.out.println(Arrays.toString(timetables));
         Assertions.assertEquals(timetables.length, view.timetables.length);
     }
 }

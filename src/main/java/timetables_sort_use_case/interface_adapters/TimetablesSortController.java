@@ -1,6 +1,5 @@
 package timetables_sort_use_case.interface_adapters;
 
-import timetables_sort_use_case.application_business.AllTimetablesInputBoundary;
 import timetables_sort_use_case.application_business.TimetablesSortInputBoundary;
 import timetables_sort_use_case.application_business.TimetablesSortRequestModel;
 

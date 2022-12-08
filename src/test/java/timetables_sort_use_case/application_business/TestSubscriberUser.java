@@ -6,9 +6,7 @@ import java.util.concurrent.Flow;
 
 public class TestSubscriberUser {
     public Timetable timetable;
-    private Flow.Subscriber<Object> subscriber;
 
     public TestSubscriberUser(Flow.Subscriber<Object> subscriber) {
-        this.subscriber = subscriber;
     }
 }

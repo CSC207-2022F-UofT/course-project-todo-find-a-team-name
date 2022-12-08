@@ -1,7 +1,5 @@
 package timetables_sort_use_case.application_business;
 
-import entities.Timetable;
-
 /**
  * The input boundary used in the timetables sort use case
  */

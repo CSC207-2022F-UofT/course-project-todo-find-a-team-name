@@ -23,8 +23,7 @@ public class AllTimetablesInteractorTest {
     @BeforeEach
     void setUp(){
          this.publisher = new AllTimetablesInteractor();
-         this.subscriber = new Flow.Subscriber<Object>() {
-             private Timetable timetable;
+         this.subscriber = new Flow.Subscriber<>() {
              @Override
              public void onSubscribe(Flow.Subscription subscription) {
 
