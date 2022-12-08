@@ -119,7 +119,7 @@ public class RetrieveTimetableInteractor implements RetrieveTimetableInputBounda
      */
     @Override
     public void updateSession(){
-        if (presenter != null){
+        if (presenter != null && session != null){
             presenter.updateSession(EntityConverter.generateSessionResponse(session));
         }
     }
