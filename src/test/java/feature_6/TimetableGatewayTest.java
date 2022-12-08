@@ -53,7 +53,7 @@ public class TimetableGatewayTest {
     /** Tests if Timetable is properly made */
     @Test
     void testingCreatingTimetable() throws ParseException, IOException, InvalidSectionsException {
-        FileImportRequestModel filePath = new FileImportRequestModel("src/main/resources/test_timetable.json");
+        FileImportRequestModel filePath = new FileImportRequestModel("src/main/saved_timetables/timetable 2022-12-07.json");
         TimetableGateway gateway = new TimetableGateway();
         Timetable result = gateway.readFromFile(filePath.getFilePath(), "S");
         assertEquals("S", result.getSessionType());
@@ -112,6 +112,9 @@ public class TimetableGatewayTest {
         ashTimetableCourses.add(basicTimetableCourse4);
 
         Timetable ashTimetable = new Timetable(ashTimetableCourses, "S");
-        assertEquals(ashTimetable.getCourseList(), importedTimetable.getCourseList());
+        assertEquals(ashTimetable.getCourse("PIK100"), importedTimetable.getCourse("PIK100"));
+        assertEquals(ashTimetable.getCourse("TES101"), importedTimetable.getCourse("TES101"));
+        assertEquals(ashTimetable.getCourse("FEH101"), importedTimetable.getCourse("FEH101"));
+        assertEquals(ashTimetable.getCourse("POK500"), importedTimetable.getCourse("POK500"));
     }
 }

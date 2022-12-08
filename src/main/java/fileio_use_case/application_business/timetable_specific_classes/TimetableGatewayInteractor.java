@@ -28,14 +28,14 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
-     * given a session type, return a TimetableModel with specified session type
-     * from the JSON file.
-     * @param jsonData FileImportRequestModel, Session Type
+     * given a session type, return a TimetableModel with specified course type from the JSON file
+     * (Timetable or Calendar)
+     * @param jsonData FileImportRequestModel, Course Type
      * @return TimetableModel
      */
-    public TimetableModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
+    public TimetableModel readFromFile(FileImportRequestModel jsonData, String courseType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         String filePath = jsonData.getFilePath();
-        Timetable aTimetable = this.timetableGateway.readFromFile(filePath, sessionType);
+        Timetable aTimetable = this.timetableGateway.readFromFile(filePath, courseType);
         for (Flow.Subscriber<Object> subscriber : receivers){
             subscriber.onNext(aTimetable);
         }
