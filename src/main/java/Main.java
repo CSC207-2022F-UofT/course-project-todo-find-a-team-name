@@ -3,9 +3,8 @@ import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScree
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
-import display_timetable_use_case.interface_adapters.TimetableUI;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.*;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
@@ -113,7 +112,7 @@ public class Main {
         recommendBRPresenter.setView(recommendBRWindow);
 
         /*
-         * This is temporary since timetable view and main menu ui branch haven't merged yet!
+         * This is temporary since timetable view branch haven't merged yet!
          *
          * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
          * displayTimetableInteractor
@@ -128,10 +127,10 @@ public class Main {
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
-        displayTimetablePresenter.setView(timetableUI);
+        // TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, timetableFileController);
+        // displayTimetablePresenter.setView(timetableUI);
 
-        // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController);
+        // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
 
         /* The line below must run after displayPresenter's view has been set to screen.*/
         editScreen.updateTimetable();
