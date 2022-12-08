@@ -1,6 +1,6 @@
 package screens;
 
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 
 import java.util.HashMap;
 

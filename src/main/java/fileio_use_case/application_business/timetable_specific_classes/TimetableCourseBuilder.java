@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimetableCourseBuilder {
-    /** Builds CalendarCourse **/
+    /** Builds TimetableCourse **/
     protected String title;
     protected List<Section> sections;
     protected String courseSession;

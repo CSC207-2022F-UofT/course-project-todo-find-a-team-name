@@ -6,10 +6,10 @@ import java.util.HashMap;
 /** An entity that represents Session.
  * A session contains all available courses.
  * Representation Invariants:
- * 1. Courses in a session that happens in the Fall, Winter or both.
+ * 1. Courses in a session that happens in the Fall or Winter.
  * 2. For methods that take in a course code, it is ASSUMED that the course HAS BEEN ADDED in this session.
  * 3. All CalenderCourse objects contains course codes
- * Session Types: Fall (F), Winter (S), Both (Y)
+ * Session Types: Fall (F), Winter (S)
 */
 public class Session {
 

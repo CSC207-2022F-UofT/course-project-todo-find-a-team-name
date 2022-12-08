@@ -1,20 +1,20 @@
-package display_timetable_use_case.frameworks_and_drivers;
+package display_timetable_use_case.interface_adapters;
 
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
+import display_timetable_use_case.application_business.DisplayTimetableInputBoundary;
 
 /**
  * Controller for display timetable use case that communicate with the interactor
  * to perform the use case.
  */
 public class DisplayTimetableController {
-    DisplayTimetableInteractor interactor;
+    DisplayTimetableInputBoundary interactor;
 
     /**
      * Constructs the DisplayTimetableController from the given interactor
      *
      * @param interactor interactor for display timetable use case
      */
-    public DisplayTimetableController(DisplayTimetableInteractor interactor) {
+    public DisplayTimetableController(DisplayTimetableInputBoundary interactor) {
         this.interactor = interactor;
     }
 
