@@ -61,6 +61,14 @@ public class TimetableViewCourseModel {
         return code.equals(other.code) && (new HashSet<>(sectionModels)).equals(new HashSet<>(other.sectionModels));
     }
 
+    @Override
+    public String toString() {
+        return "TimetableViewCourseModel{" +
+                "code='" + code + '\'' +
+                ", sectionModels=" + sectionModels +
+                '}';
+    }
+
     /**
      * Returns a hash code value for this object.
      * If two objects are equal based on equals method, hashCode also returns same integers.

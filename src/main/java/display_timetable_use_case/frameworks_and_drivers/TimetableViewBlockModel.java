@@ -70,6 +70,15 @@ public class TimetableViewBlockModel{
         return day == other.day && startTime == other.startTime && endTime == other.endTime;
     }
 
+    @Override
+    public String toString() {
+        return "TimetableViewBlockModel{" +
+                "day=" + day +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     /**
      * Returns a hash code value for this object.
      * If two objects are equal based on equals method, hashCode also returns same integers.

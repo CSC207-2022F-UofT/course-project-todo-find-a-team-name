@@ -60,6 +60,13 @@ public class TimetableViewModel {
         return Objects.hash(new HashSet<>(timetableCourseData));
     }
 
+    @Override
+    public String toString() {
+        return "TimetableViewModel{" +
+                "timetableCourseData=" + timetableCourseData +
+                '}';
+    }
+
     public TimetableViewCourseModel getCourse(String courseCode){
         for (TimetableViewCourseModel course : timetableCourseData){
             if (course.getCode().equals(courseCode)){
