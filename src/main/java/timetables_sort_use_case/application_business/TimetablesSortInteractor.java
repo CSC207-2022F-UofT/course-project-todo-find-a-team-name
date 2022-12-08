@@ -42,8 +42,8 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     public void timetablesSort(TimetablesSortRequestModel request) {
         List<Timetable> timetableArrayList = new ArrayList<>();
         for (Timetable timetable : timetables) {
-            double score = getTimeScore(timetable, request.timeButton());
-            score += getBreakScore(timetable, request.breakButton());
+            double score = getTimeScore(timetable, request.getTimeButton());
+            score += getBreakScore(timetable, request.getBreakButton());
             timetable.setScore(score);
             timetableArrayList.add(timetable);
         }

@@ -7,5 +7,13 @@ import retrieve_timetable_use_case.application_business.TimetableModel;
  * Instance Variables:
  * - timetables: the timetables that we will use to update view
  */
-public record TimetablesSortResponseModel(TimetableModel[] timetables) {
+public class TimetablesSortResponseModel {
+    private final TimetableModel[] timetables;
+    public TimetablesSortResponseModel(TimetableModel[] timetables) {
+        this.timetables = timetables;
+    }
+
+    public TimetableModel[] getTimetables() {
+        return timetables;
+    }
 }

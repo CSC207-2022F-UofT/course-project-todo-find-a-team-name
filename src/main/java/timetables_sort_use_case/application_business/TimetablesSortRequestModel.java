@@ -6,5 +6,18 @@ package timetables_sort_use_case.application_business;
  * - timeButton: the user's time preference
  * - breakButton: the user's break preference
  */
-public record TimetablesSortRequestModel(String timeButton, String breakButton) {
+public class TimetablesSortRequestModel {
+
+    private final String timeButton;
+    private final String breakButton;
+    public TimetablesSortRequestModel(String timeButton, String breakButton) {
+        this.timeButton = timeButton;
+        this.breakButton = breakButton;
+    }
+    public String getTimeButton() {
+        return timeButton;
+    }
+    public String getBreakButton() {
+        return breakButton;
+    }
 }
