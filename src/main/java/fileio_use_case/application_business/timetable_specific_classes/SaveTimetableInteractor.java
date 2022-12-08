@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-public class saveTimetableInteractor implements Flow.Subscriber<Object>{
+public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
     private final TimetableGateway timetableGateway;
 
-    public saveTimetableInteractor(TimetableGateway timetableGateway) {
+    public SaveTimetableInteractor(TimetableGateway timetableGateway) {
         this.timetableGateway = timetableGateway;
     }
     /** Reads timetableRequestModel into a JSON file to be stored in
