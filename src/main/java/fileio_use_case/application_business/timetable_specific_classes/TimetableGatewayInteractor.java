@@ -64,35 +64,6 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
                 allSections, course.getCourseSession(), course.getCourseCode(),
                 course.getBreadth());
     }
-    /** Reads timetableRequestModel into a JSON file to be stored in
-     * src/main/saved_timetables/.
-     * @param timetableRequestModel - a request model for Timetable
-     */
-    public void timetableToFile(TimetableModel timetableRequestModel, String sessionType) throws InvalidSectionsException {
-        Timetable aTimetable = timetableModelToTimetable(timetableRequestModel, sessionType);
-        timetableGateway.timetableToFile(aTimetable);
-    }
-    /** Helper method for timetableToFile */
-    private Timetable timetableModelToTimetable(TimetableModel model, String sessionType) throws InvalidSectionsException {
-        ArrayList<TimetableCourse> allCourses = new ArrayList<>();
-        for (CourseModel course : model.getCourses()) {
-            allCourses.add(courseModelToTimetableCourse(course));
-        }
-        return new Timetable(allCourses, sessionType);
-    }
-    /** Helper method for helper method timetableModelTimetable */
-    private TimetableCourse courseModelToTimetableCourse(CourseModel course) throws InvalidSectionsException {
-        List<Section> allSections= new ArrayList<>();
-        for (SectionModel section : course.getSections()) {
-            List<Block> allBlocks= new ArrayList<>();
-            for (BlockModel block : section.getBlocks()){
-                allBlocks.add(new Block(String.valueOf(block.getDay()), String.valueOf((block.getStartTime())),
-                        String.valueOf(block.getEndTime()), String.valueOf(block.getRoom())));
-            }
-            allSections.add(new Section(section.getCode(), section.getInstructor(), allBlocks));
-        }
-        return new TimetableCourse(course.getTitle(), allSections, course.getCourseSession(), course.getCourseCode(), course.getBreadth());
-    }
     /**
      * Add subscribers/observers to this class
      * @param subscriber - a subscriber

@@ -15,10 +15,4 @@ public interface TimetableFileImportInputBoundary {
      * @return TimetableModel
      */
      TimetableModel readFromFile(FileImportRequestModel jsonData, String courseType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException;
-
-    /** Reads timetableRequestModel into a JSON file stored in
-     * src/main/saved_timetables/.
-     * @param timetableRequestModel - a request model for Timetable
-     */
-     void timetableToFile(TimetableModel timetableRequestModel, String sessionType) throws InvalidSectionsException;
 }
