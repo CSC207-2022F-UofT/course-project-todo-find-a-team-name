@@ -70,6 +70,10 @@ public class TimetableViewBlockModel{
         return day == other.day && startTime == other.startTime && endTime == other.endTime;
     }
 
+    /**
+     * Returns the string representation of this object
+     * @return the string representation of this object
+     */
     @Override
     public String toString() {
         return "TimetableViewBlockModel{" +
