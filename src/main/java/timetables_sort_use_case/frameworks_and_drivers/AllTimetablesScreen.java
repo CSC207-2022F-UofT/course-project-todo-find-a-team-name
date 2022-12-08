@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
  *  An implementation of AllTimetablesView in JSwing.
  *  ttViews are the timetable views that the user browses through
  *  timetablesPanel contains all the ttViews
+ *  the other parameters are controllers and views that connect to this screen
  */
 public class AllTimetablesScreen extends JPanel implements ActionListener, AllTimetablesView {
 
