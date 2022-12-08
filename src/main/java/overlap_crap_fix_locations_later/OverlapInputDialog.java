@@ -10,6 +10,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import display_timetable_use_case.interface_adapters.TimetableView;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import entities.*;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntry;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
 import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
@@ -189,12 +190,17 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
             GenerateTimetableScreen timetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
 
+
             // Set up for Hans' case
             SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
             SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
             SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInterator);
             ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(timetableScreen, sectionFilterController);
 
+            // By the way he needs a SessionGateway
+            SessionGateway sessionGateway = new SessionGateway();
+
+            // Make my Dialog
             TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
             TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
             TimetableView finalTimetableView = new TimetableView(testTimetableViewModel);
