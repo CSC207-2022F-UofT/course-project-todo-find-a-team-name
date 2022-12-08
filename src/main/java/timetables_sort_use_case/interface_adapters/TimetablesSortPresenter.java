@@ -15,12 +15,8 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
 
     private AllTimetablesView view;
 
-    public TimetablesSortPresenter(){
-
-    }
-
     /**
-     * converts into a TimeTableViewModel array to prepare it for the screen then updates view
+     * converts into a TimeTableViewModel array then calls the view's updateTimetables method to present it
      * @param responseModel: a response model that contains the updated TimeTableModels
      */
     @Override

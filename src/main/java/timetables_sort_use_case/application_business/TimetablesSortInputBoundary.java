@@ -1,7 +1,6 @@
 package timetables_sort_use_case.application_business;
 
 import entities.Timetable;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 
 /**
  * The input boundary used in the timetables sort use case
@@ -9,12 +8,10 @@ import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBo
 public interface TimetablesSortInputBoundary {
 
     /**
-     * @param request a SorterRequestModel that contains the stringified version of preferences selected
+     * sorts the timetables based on the request model and updates the view accordingly
+     * @param request a TimetablesSortRequestModel that contains the stringified version of TimeButton and BreakButton
      */
     void timetablesSort(TimetablesSortRequestModel request);
 
-    /**
-     * @param timetables
-     */
     void setTimetables(Timetable[] timetables);
 }

@@ -7,12 +7,10 @@ import timetables_sort_use_case.interface_adapters.AllTimetablesView;
  */
 public interface TimetablesSortOutputBoundary {
     /**
-     * @param responseModel: a response model that contains the timetables that the User wants to sort
+     * converts into a TimeTableViewModel array then calls the view's updateTimetables method to present it
+     * @param responseModel: a response model that contains the updated TimeTableModels
      */
     void prepareView(TimetablesSortResponseModel responseModel);
 
-    /**
-     * @param view the view that this presenter will be responsible for
-     */
     void setView(AllTimetablesView view);
 }

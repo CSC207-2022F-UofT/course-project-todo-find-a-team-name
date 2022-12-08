@@ -32,12 +32,11 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     }
 
     /**
-     * timetableSort works by finding the TimeScore and BreakScore of each timetable (BreakScores are
-     * more weighted than TimeScores), then sorting through the timetables.
+     * timetablesSort works by finding the TimeScore and BreakScore of each timetable (BreakScores are
+     * prioritized over TimeScores), then sorting through the timetables.
      * We are able to use the sort method because Timetable implements Comparable<Timetable>
-     * we then convert timetables into a TimeTableModel array using retrieveInteractor
-     * to adhere to the response model
-     * @param request a SorterRequestModel that contains the stringified version of TimeButton and BreakButton
+     * we then convert timetables into a response model and call the presenter
+     * @param request a TimetablesSortRequestModel that contains the stringified version of TimeButton and BreakButton
      */
     @Override
     public void timetablesSort(TimetablesSortRequestModel request) {
@@ -70,7 +69,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
      * its closest to 2pm
      * @param timetable the timetable that we want to find the score of
      * @param timeButton the user's time preference
-     * @return double, TimeScore depending on user's preference
+     * @return TimeScore depending on user's preference
      */
     private double getTimeScore(Timetable timetable, String timeButton) {
         double score = getRawTimeScore(timetable);
@@ -88,7 +87,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     /**
      *
      * @param timetable the timetable that we want to find the score of
-     * @return double, average time that classes start
+     * @return average time that classes start
      */
     private double getRawTimeScore(Timetable timetable) {
         double score = 0;
@@ -110,9 +109,9 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
     /**
      * if the user wants the commuter plan, timetables with the least number of days on campus will be at the top
      * otherwise, if they want breaks then we prioritize timetables with the least number of back to backs
-     * @param timetable the timetable that we want to find the score of
+     * @param timetable the timetable that we want to find the break score of
      * @param breakButton the user's break preference
-     * @return double, BreakScore depending on user's preference
+     * @return BreakScore depending on user's preference
      */
     private double getBreakScore(Timetable timetable, String breakButton) {
         if (breakButton.contains("breaks")) {
@@ -126,11 +125,12 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
 
     /**
      *
-     * @param timetable the timetable that we want to find the score of
-     * @return double, number of back to back classes * -1000
+     * @param timetable the timetable that we want to find the gap score of
+     * @return number of back to back classes * -1000
      */
     private double getGapScore(Timetable timetable) {
         int count = 0;
+
         List<Double>[] table = new List[5];
         for (int i = 0; i < 5; i++) {
             table[i] = new ArrayList<>();
@@ -158,7 +158,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
 
     /**
      *
-     * @param timetable the timetable we want to find the score of
+     * @param timetable the timetable we want to find the days score of
      * @return number of days without classes * 1000
      */
     private int getDaysScore(Timetable timetable) {

@@ -59,17 +59,17 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
     private TimetableView[] ttViews;
     private final JPanel timetablesPanel;
     private TimetablesSortMenu timetablesSortMenu;
-    private final TimetablesSortController controller;
+    private final TimetablesSortController timetablesSortController;
     private final DisplayTimetableController displayTimetableController;
     private final AllTimetablesController allTimetablesController;
     private final MainUI mainUI;
     private final TimetableUI timetableUI;
     public AllTimetablesScreen(JFrame frame, MainUI mainUI, TimetableUI timetableUI,
-                               TimetablesSortController controller,
+                               TimetablesSortController timetablesSortController,
                                DisplayTimetableController displayTimetableController,
                                AllTimetablesController allTimetablesController) {
         this.frame = frame;
-        this.controller = controller;
+        this.timetablesSortController = timetablesSortController;
         this.ttViews = null;
         this.setLayout(new BorderLayout());
         JPanel timetablesPanel = new JPanel();
@@ -104,44 +104,49 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
      * opens TimeTableUI of the given timetable if a timetable button is clicked.
      */
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Clicked " + e.getActionCommand());
-
         if (e.getActionCommand().equals("Sort")) {
             openTimetablesSortMenu();
         } else if (e.getActionCommand().equals("Main Menu")) {
-            this.frame.getContentPane().removeAll();
-            this.frame.add(mainUI);
-            this.frame.revalidate();
+            openMainUI();
         } else {
-            System.out.println(e.getActionCommand());
-            this.frame.getContentPane().removeAll();
             int i = e.getActionCommand().length() - 1;
-            allTimetablesController.updateSubscribers(i);
-            displayTimetableController.displayTimetable();
-            this.frame.add(timetableUI);
-            this.frame.revalidate();
+            openTimetableUI(i);
         }
     }
 
     /**
-     * prepare a TimeTablesSortMenu and display it instead of this
+     * closes this view and opens a TimetablesSortMenu
      */
     public void openTimetablesSortMenu() {
-        if (timetablesSortMenu != null) {
-            timetablesSortMenu.setVisible(false);
-            frame.remove(timetablesSortMenu);
-        }
-        timetablesSortMenu = new TimetablesSortMenu(this.frame, this);
+        timetablesSortMenu = new TimetablesSortMenu(frame, this);
+        frame.getContentPane().removeAll();
         frame.add(timetablesSortMenu);
-        this.setVisible(false);
-        timetablesSortMenu.setVisible(true);
-        this.frame.pack();
+        frame.pack();
     }
 
+    /**
+     * closes this view and opens MainUI
+     */
+    public void openMainUI() {
+        frame.getContentPane().removeAll();
+        frame.add(mainUI);
+        frame.revalidate();
+    }
 
     /**
-     * Takes in an array of TimetableViewModels and updates previous ttViews with these timetables
-     * gets set to visible at the end to show the change
+     * closes this view and opens TimeTableUI with the timetable that the user chose
+     * @param i the index of the timetable that was chosen
+     */
+    public void openTimetableUI(int i) {
+        frame.getContentPane().removeAll();
+        allTimetablesController.updateSubscribers(i);
+        displayTimetableController.displayTimetable();
+        frame.add(timetableUI);
+        frame.revalidate();
+    }
+
+    /**
+     * shows this screen with the updated timetables
      * @param timetableViewModels the updated timetables that we want to present
      */
     public void updateTimetables(TimetableViewModel[] timetableViewModels) {
@@ -162,11 +167,16 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         for (int i = 0; i < ttViews.length; i++) {
             ttViews[i].updateViewModel(timetableViewModels[i]);
         }
-        this.frame.add(this);
+        frame.add(this);
     }
 
+    /**
+     * sorts the timetables based on the user's preference then updates the view
+     * @param timeButton the timeButton that the user chose
+     * @param breakButton the breakButton that the user chose
+     */
     public void timetablesSort(String timeButton, String breakButton) {
-        controller.timetablesSort(timeButton, breakButton);
+        timetablesSortController.timetablesSort(timeButton, breakButton);
     }
 
     /**
@@ -350,7 +360,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         //  Use case 1 main requirements:
         //      1- TimetablesSortPresenter, 2- TimetablesSortInteractor(Presenter), 3- AllTimetablesPublisher,
         //      4- TimetablesSortController(TimetablesSortInteractor, AllTimetablesPublisher),
-        //      5- AllTimetablesController(DisplayTimetableInteractor, AllTimetablesPublisher),
+        //      5- AllTimetablesController(AllTimetablesPublisher),
         //      6- AllTimetablesScreen(JFrame, MainUI, TimetableUI, TimetablesSortController,
         //      DisplayTimetableController, AllTimetablesController)
         //      7- TimetablesSortPresenter.setView(AllTimetablesScreen)
@@ -364,7 +374,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         timetablesSortInteractor.setTimetables(timetables); // this is only for testing, it should automatically
         // update when its publisher publishes
         AllTimetablesController allTimetablesController =
-                new AllTimetablesController(displayTimetableInteractor1, allTimetablesInteractor);
+                new AllTimetablesController(allTimetablesInteractor);
         AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetableUI,
                 timetablesSortController, displayTimetableController2, allTimetablesController);
         allTimetablesScreen.updateTimetables(timetableViewModels); // this is only for testing, it should be called by

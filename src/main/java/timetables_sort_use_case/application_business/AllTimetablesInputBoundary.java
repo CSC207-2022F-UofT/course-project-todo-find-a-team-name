@@ -6,6 +6,7 @@ package timetables_sort_use_case.application_business;
 public interface AllTimetablesInputBoundary {
 
     /**
+     * Sends every subscriber the timetable that the user wants to inspect
      * @param i the index of the timetable that was chosen
      */
     void updateSubscribers(int i);

@@ -7,6 +7,11 @@ import java.awt.event.ActionListener;
 
 /**
  * A menu used to display the display preferences for the user to pick from.
+ * Instance variables:
+ * - allTimetablesScreen is the allTimetablesScreen that made this Menu
+ * - JFrame the frame of this window
+ * - timeButtons an array of radio buttons for the user to choose their time preference
+ * - breakButtons an array of radio buttons for the user to choose their break preference
  */
 public class TimetablesSortMenu extends JPanel implements ActionListener {
 
@@ -90,27 +95,28 @@ public class TimetablesSortMenu extends JPanel implements ActionListener {
     }
 
     /**
-     * Find which buttons were pressed and pass them to allTimetablesScreen
+     * Finds which buttons were pressed and pass them to allTimetablesScreen
      * @param e the event to be processed
      */
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        boolean bool = true;
+        boolean noInputs = true;
         for (JRadioButton timeButton : timeButtons) {
             if (timeButton.isSelected()) {
                 for (JRadioButton breakButton : breakButtons) {
                     if (breakButton.isSelected()) {
-                        bool = false;
-                        this.setVisible(false);
+                        noInputs = false;
+                        frame.getContentPane().removeAll();
                         allTimetablesScreen.timetablesSort(timeButton.getText(), breakButton.getText());
-                        this.frame.setSize(1280, 720);
+                        frame.add(allTimetablesScreen);
+                        frame.setSize(1280, 720);
                     }
                 }
             }
         }
 
-        if(bool){
+        if(noInputs){
             JOptionPane.showMessageDialog(frame, "Please choose your preferences");
         }
 
