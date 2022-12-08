@@ -7,9 +7,20 @@ import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import display_timetable_use_case.interface_adapters.TimetableView;
+import display_timetable_use_case.application_business.DisplayTimetableInteractor;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.interface_adapters.TimetableUI;
 import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
 import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import edit_timetable_use_case.application_business.AddCourseInteractor;
+import edit_timetable_use_case.application_business.EditCourseInteractor;
+import edit_timetable_use_case.application_business.RemoveCourseInteractor;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
+import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
+import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import entities.*;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
@@ -20,7 +31,9 @@ import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
 import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
 import overlap_crap_fix_locations_later.presenters.OverlapMaxPresenter;
 import retrieve_timetable_use_case.application_business.EntityConverter;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
@@ -52,8 +65,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
     private final ConstraintsInputScreen hansInputScreen;
-    private final TimetableView timetablePanel;
+    private final TimetableUI timetablePanel;
 
+    private final JFrame mainFrame;
     private String selectedItemName;
     private Boolean waitingForNewData = false;
 
@@ -62,12 +76,14 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      * and interactor and such.
      */
     public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
-                              TimetableView timetablePanel,
-                              ConstraintsInputScreen hansInputScreen, OverlapMaxInputBoundary overlapMaxController) {
+                              TimetableUI timetablePanel,
+                              ConstraintsInputScreen hansInputScreen, OverlapMaxInputBoundary overlapMaxController,
+                              JFrame mainFrame) {
         for (int i = 0; i < timeTableOptions.size(); i++) {
 
             timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
         }
+        this.mainFrame = mainFrame;
         this.timeTableOptions = timeTableOptions;
         this.timetablePanel = timetablePanel;
         this.hansInputScreen = hansInputScreen;
@@ -126,32 +142,28 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      * to display his UI< basically.
      */
     private void callInHans() {
-        // Set up a frame for his UI
-        JFrame jFrame = new JFrame();
-        jFrame.setSize(800, 400);
-        jFrame.setResizable(true);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Rewrite the main frame for his UI
+        mainFrame.setVisible(false);
+        mainFrame.getContentPane().removeAll();
+
         CardLayout cardLayout = new CardLayout();
         JPanel screen = new JPanel(cardLayout);
         screen.add(hansInputScreen);
-        jFrame.add(screen);
-        jFrame.setVisible(true);
+        mainFrame.add(screen);
+        mainFrame.revalidate();
     }
 
     /**
      * A method to help call in Kai's UI to display the best matching Timetable we got.
      */
     private void callInKai() {
-        // Set up a frame for his UI
-        JFrame jFrame = new JFrame();
-        jFrame.setSize(800, 400);
-        jFrame.setResizable(true);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Rewrite the mainFrame for his UI.
+        mainFrame.getContentPane().removeAll();
         CardLayout cardLayout = new CardLayout();
         JPanel screen = new JPanel(cardLayout);
         screen.add(timetablePanel);
-        jFrame.add(screen);
-        jFrame.setVisible(true);
+        mainFrame.add(screen);
+        mainFrame.revalidate();
     }
 
     private void onCancel() {
@@ -192,6 +204,33 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
                                 EntityConverter.generateTimetableResponse(timetable))
                 );
             }
+
+            // Set up the main frame.
+            JFrame frame = new JFrame();
+
+            RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+            RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
+
+            RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
+            RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
+            removeInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+            AddCoursePresenter addPresenter = new AddCoursePresenter();
+            AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
+            addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+            EditCoursePresenter editPresenter = new EditCoursePresenter();
+            EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
+            EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
+            editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+            JPanel prevPanel = new JPanel();
+            DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
+            DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
+            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController);
+
+            removePresenter.setView(editScreen);
+            addPresenter.setView(editScreen);
+            editPresenter.setView(editScreen);
+            displayPresenter.setView(editScreen);
+
 
             // Set up the Session stuff for Hans and JD.
             SessionGateway sessionGateway = new SessionGateway();
@@ -243,13 +282,14 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             // Make my controller
             OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timetableMatcher);
 
-
             // Make my Dialog
             TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
             TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
-            TimetableView finalTimetableView = new TimetableView(testTimetableViewModel);
+
+
+            TimetableUI finalTimetableView = new TimetableUI(testTimetableViewModel);
             OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
-                    constraintsInputScreen, overlapMaxController);
+                    constraintsInputScreen, overlapMaxController, frame);
 
             // Set the presenter to include the Dialog.
             presenter.setDialogToPassTo(dialog);
@@ -293,7 +333,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
                                 currentlySelectedTimetable
                         ));
 
-                timetablePanel.updateViewModel(currentlySelectedTimetableViewModel);
+                timetablePanel.updateTimetable(currentlySelectedTimetableViewModel);
             }
         }
     }
