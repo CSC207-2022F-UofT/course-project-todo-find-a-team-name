@@ -51,8 +51,9 @@ public class AllTimetablesInteractor implements AllTimetablesInputBoundary,
                     updatedTimetables.add((Timetable) thing);
                 }
             }
+            this.timetables = updatedTimetables;
         }
-        this.timetables = updatedTimetables;
+
     }
 
     @Override
