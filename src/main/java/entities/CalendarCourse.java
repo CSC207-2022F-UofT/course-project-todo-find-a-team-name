@@ -32,7 +32,7 @@ public class CalendarCourse extends Course {
 
 
     /**
-     * @param obj another CalendarCourse object, which is compared to the current CalendarCourse
+     * @param obj another object, which is compared to the current CalendarCourse
      * @return true iff the entries of each instance attribute is identical.
      */
     @Override
