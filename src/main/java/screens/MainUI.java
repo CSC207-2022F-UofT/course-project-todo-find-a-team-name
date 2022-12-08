@@ -40,6 +40,7 @@ import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
@@ -290,6 +291,13 @@ public class MainUI extends JPanel implements ActionListener {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
+        TimetableGateway timetableGateway = new TimetableGateway();
+        TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
+        TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
+
+        SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
+        SaveTimetableController saveTimetableController = new SaveTimetableController(saveTimetableInteractor);
+
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
         CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
         RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
@@ -306,13 +314,14 @@ public class MainUI extends JPanel implements ActionListener {
 
         RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
         addCourseInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-
+        RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
         DisplayTimetablePresenter displayTimetablePresenter1 = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor1 = new DisplayTimetableInteractor(displayTimetablePresenter1);
         DisplayTimetableController displayTimetableController1 = new DisplayTimetableController(displayTimetableInteractor1);
 
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
-        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController, null, displayTimetableController1);
+        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController,
+                null, displayTimetableController1, retrieveTimetableController, saveTimetableController);
         displayTimetablePresenter1.setView(editTimetableScreen);
         addCoursePresenter.setView(editTimetableScreen);
         editCoursePresenter.setView(editTimetableScreen);
@@ -348,12 +357,6 @@ public class MainUI extends JPanel implements ActionListener {
         DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
         DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
 
-        TimetableGateway timetableGateway = new TimetableGateway();
-        TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
-        TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
-
-        SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
-        SaveTimetableController saveTimetableController = new SaveTimetableController(saveTimetableInteractor);
 
         TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog,
                 saveTimetableController);
