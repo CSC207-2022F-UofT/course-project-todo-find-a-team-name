@@ -9,6 +9,12 @@ import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInputBoundary;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import timetables_sort_use_case.application_business.AllTimetablesInteractor;
+import timetables_sort_use_case.application_business.TimetablesSortInteractor;
+import timetables_sort_use_case.frameworks_and_drivers.AllTimetablesScreen;
+import timetables_sort_use_case.interface_adapters.AllTimetablesController;
+import timetables_sort_use_case.interface_adapters.TimetablesSortController;
+import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
 
 import javax.swing.*;
 
@@ -60,6 +66,32 @@ public class Main {
         addPresenter.setView(screen);
         editPresenter.setView(screen);
         displayPresenter.setView(screen);
+
+        //  Use case 1 main requirements:
+        //      1- TimetablesSortPresenter, 2- TimetablesSortInteractor(Presenter), 3- AllTimetablesPublisher,
+        //      4- TimetablesSortController(TimetablesSortInteractor, AllTimetablesInteractor),
+        //      5- AllTimetablesController(TimetablesSortInteractor),
+        //      6- AllTimetablesScreen(JFrame, MainUI, TimetableUI, OverlapInputDialogue,
+        //      TimetablesSortController, AllTimetablesController)
+        //      7- TimetablesSortPresenter.setView(AllTimetablesScreen)
+        //      8,9- subscribe my interactors to JD's publisher
+        //      Comment: no timetables will show in AllTimetablesScreen until my subscriber gets an input
+        //      Comment2: lots of things i depend on are not in main yet, uncomment it when they are here
+//        TimetablesSortPresenter timetablesSortPresenter = new TimetablesSortPresenter();
+//        TimetablesSortInteractor timetablesSortInteractor = new TimetablesSortInteractor(timetablesSortPresenter);
+//        AllTimetablesInteractor allTimetablesInteractor = new AllTimetablesInteractor();
+//        TimetablesSortController timetablesSortController =
+//                new TimetablesSortController(timetablesSortInteractor);
+//        AllTimetablesController allTimetablesController =
+//                new AllTimetablesController(allTimetablesInteractor);
+//        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetableUI,
+//                overlapInputDialog, timetablesSortController, allTimetablesController);
+//        allTimetablesScreen.updateTimetables(timetableViewModels); // this is only for testing, updateTimetables
+//        // should be called by JD when he displays my screen
+//        timetablesSortPresenter.setView(allTimetablesScreen);
+//
+//        timetableGeneratorInteractor.subscribe(allTimetablesInteractor);
+//        timetableGeneratorInteractor.subscribe(timetablesSortInteractor);
         /* The line below must run after displayPresenter's view has been set to screen.*/
         screen.updateTimetable();
         frame.add(screen);
