@@ -89,6 +89,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         this.timetablePanel = timetablePanel;
         this.hansInputScreen = hansInputScreen;
         this.overlapMaxController = overlapMaxController;
+        $$$setupUI$$$();
         setUpUiWithNewTimetables(timeTableOptions);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -156,13 +157,12 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      */
     private void callInHans() {
         // Rewrite the main frame for his UI
-        mainFrame.setVisible(false);
         mainFrame.getContentPane().removeAll();
-
         CardLayout cardLayout = new CardLayout();
         JPanel screen = new JPanel(cardLayout);
         screen.add(hansInputScreen);
         mainFrame.add(screen);
+        mainFrame.setSize(1280, 720);
         mainFrame.revalidate();
     }
 
@@ -176,6 +176,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         JPanel screen = new JPanel(cardLayout);
         screen.add(timetablePanel);
         mainFrame.add(screen);
+        mainFrame.setSize(1280, 720);
         mainFrame.revalidate();
     }
 
@@ -253,7 +254,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             JPanel prevPanel = new JPanel();
             DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
             DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController);
+            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController);
 
             removePresenter.setView(editScreen);
             addPresenter.setView(editScreen);
@@ -316,22 +317,6 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
              * Emily, I need SessionFileController and TimetableFileController for mainUI
              *
              */
-            DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-            DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-            DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
-            displayTimetablePresenter.setView(timetableUI);
-            editScreen.updateTimetable();
-            frame.add(editScreen);
-
-            // Set up Hans' stuff.
-            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-            SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
-            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
-            sectionFilterPresenter.setView(constraintsInputScreen);
-
-            sectionFilterInteractor.onNext(fall);
 
             // Make my presenters and stuff.
             OverlapMaxPresenter presenter = new OverlapMaxPresenter();
@@ -345,18 +330,40 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             // Make my controller
             OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
 
+
+            DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+            DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+            DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
+            displayTimetablePresenter.setView(timetableUI);
+            /* The line below must run after displayPresenter's view has been set to screen.*/
+            editScreen.updateTimetable();
+            frame.add(editScreen);
+
+            // Set up Hans' stuff.
+            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+            SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
+            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
+            sectionFilterPresenter.setView(constraintsInputScreen);
+
+            sectionFilterInteractor.onNext(fall);
+
             // Make my Dialog
             TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
             TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
 
 
-            TimetableUI finalTimetableView = new TimetableUI(testTimetableViewModel);
+            TimetableUI finalTimetableView = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
             OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
                     constraintsInputScreen, overlapMaxController, frame);
 
             // Set the presenter to include the Dialog.
             presenter.setDialogToPassTo(dialog);
 
+            frame.pack();
+            frame.setSize(1280, 720);
+            frame.setVisible(true);
             dialog.pack();
             dialog.setVisible(true);
 
