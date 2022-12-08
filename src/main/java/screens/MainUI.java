@@ -352,6 +352,7 @@ public class MainUI extends JPanel implements ActionListener {
         sessionGatewayInteractor.subscribe(removeCourseInteractor);
         sessionGatewayInteractor.subscribe(displayTimetableInteractor2);
         sessionGatewayInteractor.subscribe(displayTimetableInteractor1);
+        sessionGatewayInteractor.subscribe(sectionFilterInteractor);
 
         timetableGatewayInteractor.subscribe(recommendBRInteractor);
         timetableGatewayInteractor.subscribe(addCourseInteractor);
