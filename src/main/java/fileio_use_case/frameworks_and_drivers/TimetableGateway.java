@@ -20,15 +20,20 @@ public class TimetableGateway implements TimetableGatewayInterface {
     /**
      * Takes in filepath, reads it, and converts it into a Timetable.
      *
-     * @param filePath    - a Timetable class
-     * @param sessionType - a session type (Fall (F), Winter (S))
+     * @param filePath - a Timetable class
+     * @param courseType - course type (Timetable or Calendar)
      * @return Timetable
      */
-    public Timetable readFromFile(String filePath, String sessionType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException {
+    public Timetable readFromFile(String filePath, String courseType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException {
         ProgramFileReader aFileReader = new ProgramFileReader();
-        aFileReader.parseString(Files.readString(Path.of(filePath)), "Timetable");
+        aFileReader.parseString(Files.readString(Path.of(filePath)), courseType);
         HashMap<String, TimetableCourse> timetableCourseHashMap = aFileReader.returnTimetableCourseHashMap();
-        return extractTimetable(timetableCourseHashMap, sessionType);
+        if (!timetableCourseHashMap.isEmpty()) {
+            return extractTimetable(timetableCourseHashMap, (aFileReader.returnSessionTypeImport()));
+        }
+        else {
+            return extractTimetable(timetableCourseHashMap, "C");
+        }
     }
     /**
      * HELPER METHOD

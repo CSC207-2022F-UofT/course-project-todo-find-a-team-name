@@ -28,14 +28,14 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
-     * given a session type, return a TimetableModel with specified session type
-     * from the JSON file.
-     * @param jsonData FileImportRequestModel, Session Type
+     * given a session type, return a TimetableModel with specified course type from the JSON file
+     * (Timetable or Calendar)
+     * @param jsonData FileImportRequestModel, Course Type
      * @return TimetableModel
      */
-    public TimetableModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
+    public TimetableModel readFromFile(FileImportRequestModel jsonData, String courseType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         String filePath = jsonData.getFilePath();
-        Timetable aTimetable = this.timetableGateway.readFromFile(filePath, sessionType);
+        Timetable aTimetable = this.timetableGateway.readFromFile(filePath, courseType);
         for (Flow.Subscriber<Object> subscriber : receivers){
             subscriber.onNext(aTimetable);
         }
@@ -63,35 +63,6 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
         return new CourseModel(course.getTitle(),
                 allSections, course.getCourseSession(), course.getCourseCode(),
                 course.getBreadth());
-    }
-    /** Reads timetableRequestModel into a JSON file to be stored in
-     * src/main/saved_timetables/.
-     * @param timetableRequestModel - a request model for Timetable
-     */
-    public void timetableToFile(TimetableModel timetableRequestModel, String sessionType) throws InvalidSectionsException {
-        Timetable aTimetable = timetableModelToTimetable(timetableRequestModel, sessionType);
-        timetableGateway.timetableToFile(aTimetable);
-    }
-    /** Helper method for timetableToFile */
-    private Timetable timetableModelToTimetable(TimetableModel model, String sessionType) throws InvalidSectionsException {
-        ArrayList<TimetableCourse> allCourses = new ArrayList<>();
-        for (CourseModel course : model.getCourses()) {
-            allCourses.add(courseModelToTimetableCourse(course));
-        }
-        return new Timetable(allCourses, sessionType);
-    }
-    /** Helper method for helper method timetableModelTimetable */
-    private TimetableCourse courseModelToTimetableCourse(CourseModel course) throws InvalidSectionsException {
-        List<Section> allSections= new ArrayList<>();
-        for (SectionModel section : course.getSections()) {
-            List<Block> allBlocks= new ArrayList<>();
-            for (BlockModel block : section.getBlocks()){
-                allBlocks.add(new Block(String.valueOf(block.getDay()), String.valueOf((block.getStartTime())),
-                        String.valueOf(block.getEndTime()), String.valueOf(block.getRoom())));
-            }
-            allSections.add(new Section(section.getCode(), section.getInstructor(), allBlocks));
-        }
-        return new TimetableCourse(course.getTitle(), allSections, course.getCourseSession(), course.getCourseCode(), course.getBreadth());
     }
     /**
      * Add subscribers/observers to this class
