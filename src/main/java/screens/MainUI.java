@@ -42,7 +42,6 @@ import timetable_generator_use_case.application_business.TimetableGeneratorInter
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
-import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -83,6 +82,7 @@ public class MainUI extends JPanel implements ActionListener {
      * @param editTimetableScreen screen for editing timetable
      * @param timetableUI screen for displaying timetable
      * @param sessionController controller used for importing sessions
+     * @param timetableFileController controller used for importing timetable
      */
     public MainUI(JFrame frame, ConstraintsInputScreen constraintsInputScreen, EditTimetableScreen editTimetableScreen,
                   TimetableUI timetableUI, SessionFileController sessionController, TimetableFileController timetableFileController){
