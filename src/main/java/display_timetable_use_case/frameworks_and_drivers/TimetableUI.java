@@ -6,7 +6,7 @@ import display_timetable_use_case.interface_adapters.ITimetableUI;
 import entities.InvalidSectionsException;
 import fileio_use_case.interface_adapters.TimetableFileController;
 import org.json.simple.parser.ParseException;
-import overlap_crap_fix_locations_later.OverlapInputDialog;
+import overlap_crap_fix_locations_later.frameworks_and_drivers.OverlapInputDialog;
 
 import javax.swing.*;
 import java.awt.*;

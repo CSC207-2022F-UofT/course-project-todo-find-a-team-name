@@ -1,48 +1,12 @@
 package overlap_crap_fix_locations_later.frameworks_and_drivers;
 
-import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
-import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.application_business.AddCourseInteractor;
-import edit_timetable_use_case.application_business.EditCourseInteractor;
-import edit_timetable_use_case.application_business.RemoveCourseInteractor;
-import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
-import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
-import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
-import edit_timetable_use_case.interface_adapters.EditTimetableController;
-import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
-import entities.*;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import org.json.simple.parser.ParseException;
-import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
-import overlap_crap_fix_locations_later.application_business.OverlapGeneratedTimetableRelayInteractor;
-import overlap_crap_fix_locations_later.application_business.TimeTableMatchInteractor;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import overlap_crap_fix_locations_later.interface_adapters.*;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
-import retrieve_timetable_use_case.application_business.EntityConverter;
-import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
-import retrieve_timetable_use_case.application_business.TimetableModel;
-import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
-import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
-import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
-import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -51,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -187,190 +150,190 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     // TODO: Delete this method and all its dependencies.
     // TODO: Also delete the freaking options thing eventually, keep it for now for initialization.
     //  I mean making it out of ViewModels doesn't hurt but like still.
-    public static void main(String[] args) {
-
-        // Initialise a test section with one block.
-        Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
-        ArrayList<Block> testBlockList = new ArrayList<>();
-        testBlockList.add(testBlock);
-
-        Section testSection = new Section("LEC0101", "Mario", testBlockList);
-        ArrayList<Section> testSectionList = new ArrayList<>();
-        testSectionList.add(testSection);
-
-        try {
-            // Make a test course.
-            TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
-            ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
-            testTimetableCourseList.add(testCourse);
-
-            // Now make a test timetable.
-            Timetable testTimetable = new Timetable(testTimetableCourseList, "S");
-            ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
-            testTimetableList.add(testTimetable);
-
-            // SETUP for InputDialog creation
-            // Convert test timetable to appropriate view model
-            ArrayList<OverlapTimetableViewModel> timetableViewModels = new ArrayList<>();
-            for (Timetable timetable : testTimetableList) {
-                timetableViewModels.add(
-                        ModelToOverlapViewModelConverter.convertTimetableModel(
-                                EntityConverter.generateTimetableResponse(timetable))
-                );
-            }
-
-            // Set up the main frame.
-            JFrame frame = new JFrame();
-
-            /*A combined initialization of the Edit Timetable and Retrieve Timetable use cases. This block should be after
-            the RecommendBRWindow is created,
-             * Kai: note that editTimetableScreen needs a RecommendBRWindow on the final merge.
-             (it's called recommendBRWindow in the code, but feel free to rename it.)
-             * Yahya, Emily, and anyone else that creates a Timetable/Session publisher: addCourseInteractor,
-             * removeCourseInteractor, editCourseInteractor and retrieveTimetableInteractor all need to be included as
-             * subscribers and updated as appropriate. (displayTimetableInteractor should also be included, but that's
-             more Kai's side of things.)
-             * Yahya and anyone that opens the timetable editor (Emily?): make sure that the displayTimetableInteractor is
-             updated with the appropriate timetable and session before pulling up the edit timetable screen, and
-             make sure to call editTimetableScreen.updateTimetable(ttViewModel),
-             editTimetableScreen.updateSession(), editTimetableScreen.updateTimetable(), and
-             editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
-             retrieveTimetable use case to do this if you don't already have the view models (although you probably should
-             have it already).
-             */
-            RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
-            RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
-
-            RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
-            RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
-            removeInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-            AddCoursePresenter addPresenter = new AddCoursePresenter();
-            AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
-            addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-            EditCoursePresenter editPresenter = new EditCoursePresenter();
-            EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
-            EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
-            editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-            JPanel prevPanel = new JPanel();
-            DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
-            DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController);
-
-            removePresenter.setView(editScreen);
-            addPresenter.setView(editScreen);
-            editPresenter.setView(editScreen);
-            displayPresenter.setView(editScreen);
-
-            /*
-             * Set up for BR recommendation:
-             *
-             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
-             * RecommendBRInteractor
-             */
-            RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
-            CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
-            RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
-            RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
-            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
-            editScreen.setBRWindow(recommendBRWindow);
-            recommendBRPresenter.setView(recommendBRWindow);
-
-            // Set up the Session stuff for Hans and JD.
-            SessionGateway sessionGateway = new SessionGateway();
-            Session fall;
-            try {
-                fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-            } catch (ParseException | IOException | InvalidSectionsException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Set up JD's thing
-            TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
-            TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
-            TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
-
-            // He needs this.
-            generatorInteractor.onNext(fall);
-            GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
-
-            // He needs this too..
-            generatorPresenter.setView(timetables -> {
-                System.out.println("Timetable Size: " + timetables.length);
-                for (TimetableViewModel timetableModel : timetables) {
-                    System.out.println("------");
-                    for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()) {
-                        System.out.println(courseModel.getCode());
-                    }
-                }
-            });
-
-            /*
-             * This is temporary since timetable view and main menu ui branch haven't merged yet!
-             *
-             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
-             * displayTimetableInteractor
-             *
-             * Anyone who displays the timetableUI should call updateTimetable() to update view model
-             * and setPrevPanel() to set the previous panel to the appropriate JPanel
-             *
-             * Hans, I need ConstraintInputScreen for mainUI
-             * Emily, I need SessionFileController and TimetableFileController for mainUI
-             *
-             */
-
-            // Make my presenters and stuff.
-            OverlapMaxPresenter presenter = new OverlapMaxPresenter();
-            OverlapGeneratedTimetableRelayInteractor relaySubscriber = new OverlapGeneratedTimetableRelayInteractor(presenter);
-            generatorInteractor.subscribe(relaySubscriber);
-
-            // Make my interactors
-            CalculateSectionHoursInteractor sectionCalculator = new CalculateSectionHoursInteractor();
-            TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator, presenter);
-
-            // Make my controller
-            OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
-
-
-            DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-            DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-            DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
-            displayTimetablePresenter.setView(timetableUI);
-            /* The line below must run after displayPresenter's view has been set to screen.*/
-            editScreen.updateTimetable();
-            frame.add(editScreen);
-
-            // Set up Hans' stuff.
-            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-            SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
-            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
-            sectionFilterPresenter.setView(constraintsInputScreen);
-
-            sectionFilterInteractor.onNext(fall);
-
-            // Make my Dialog
-            TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
-            TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
-
-
-            TimetableUI finalTimetableView = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
-            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
-                    constraintsInputScreen, overlapMaxController, frame);
-
-            // Set the presenter to include the Dialog.
-            presenter.setDialogToPassTo(dialog);
-
-            frame.pack();
-            frame.setSize(1280, 720);
-            frame.setVisible(true);
-            dialog.pack();
-            dialog.setVisible(true);
-
-        } catch (InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static void main(String[] args) {
+//
+//        // Initialise a test section with one block.
+//        Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
+//        ArrayList<Block> testBlockList = new ArrayList<>();
+//        testBlockList.add(testBlock);
+//
+//        Section testSection = new Section("LEC0101", "Mario", testBlockList);
+//        ArrayList<Section> testSectionList = new ArrayList<>();
+//        testSectionList.add(testSection);
+//
+//        try {
+//            // Make a test course.
+//            TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
+//            ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
+//            testTimetableCourseList.add(testCourse);
+//
+//            // Now make a test timetable.
+//            Timetable testTimetable = new Timetable(testTimetableCourseList, "S");
+//            ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
+//            testTimetableList.add(testTimetable);
+//
+//            // SETUP for InputDialog creation
+//            // Convert test timetable to appropriate view model
+//            ArrayList<OverlapTimetableViewModel> timetableViewModels = new ArrayList<>();
+//            for (Timetable timetable : testTimetableList) {
+//                timetableViewModels.add(
+//                        ModelToOverlapViewModelConverter.convertTimetableModel(
+//                                EntityConverter.generateTimetableResponse(timetable))
+//                );
+//            }
+//
+//            // Set up the main frame.
+//            JFrame frame = new JFrame();
+//
+//            /*A combined initialization of the Edit Timetable and Retrieve Timetable use cases. This block should be after
+//            the RecommendBRWindow is created,
+//             * Kai: note that editTimetableScreen needs a RecommendBRWindow on the final merge.
+//             (it's called recommendBRWindow in the code, but feel free to rename it.)
+//             * Yahya, Emily, and anyone else that creates a Timetable/Session publisher: addCourseInteractor,
+//             * removeCourseInteractor, editCourseInteractor and retrieveTimetableInteractor all need to be included as
+//             * subscribers and updated as appropriate. (displayTimetableInteractor should also be included, but that's
+//             more Kai's side of things.)
+//             * Yahya and anyone that opens the timetable editor (Emily?): make sure that the displayTimetableInteractor is
+//             updated with the appropriate timetable and session before pulling up the edit timetable screen, and
+//             make sure to call editTimetableScreen.updateTimetable(ttViewModel),
+//             editTimetableScreen.updateSession(), editTimetableScreen.updateTimetable(), and
+//             editTimetableScreen.setPreviousPanel(previousPanel) before setting it to visible. You may need to use the
+//             retrieveTimetable use case to do this if you don't already have the view models (although you probably should
+//             have it already).
+//             */
+//            RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+//            RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
+//
+//            RemoveCoursePresenter removePresenter = new RemoveCoursePresenter();
+//            RemoveCourseInteractor removeInteractor = new RemoveCourseInteractor(removePresenter);
+//            removeInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+//            AddCoursePresenter addPresenter = new AddCoursePresenter();
+//            AddCourseInteractor addInteractor = new AddCourseInteractor(addPresenter);
+//            addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+//            EditCoursePresenter editPresenter = new EditCoursePresenter();
+//            EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
+//            EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
+//            editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+//            JPanel prevPanel = new JPanel();
+//            DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
+//            DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
+//            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController);
+//
+//            removePresenter.setView(editScreen);
+//            addPresenter.setView(editScreen);
+//            editPresenter.setView(editScreen);
+//            displayPresenter.setView(editScreen);
+//
+//            /*
+//             * Set up for BR recommendation:
+//             *
+//             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+//             * RecommendBRInteractor
+//             */
+//            RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+//            CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+//            RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
+//            RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+//            RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
+//            editScreen.setBRWindow(recommendBRWindow);
+//            recommendBRPresenter.setView(recommendBRWindow);
+//
+//            // Set up the Session stuff for Hans and JD.
+//            SessionGateway sessionGateway = new SessionGateway();
+//            Session fall;
+//            try {
+//                fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+//            } catch (ParseException | IOException | InvalidSectionsException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            // Set up JD's thing
+//            TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
+//            TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
+//            TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
+//
+//            // He needs this.
+//            generatorInteractor.onNext(fall);
+//            GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
+//
+//            // He needs this too..
+//            generatorPresenter.setView(timetables -> {
+//                System.out.println("Timetable Size: " + timetables.length);
+//                for (TimetableViewModel timetableModel : timetables) {
+//                    System.out.println("------");
+//                    for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()) {
+//                        System.out.println(courseModel.getCode());
+//                    }
+//                }
+//            });
+//
+//            /*
+//             * This is temporary since timetable view and main menu ui branch haven't merged yet!
+//             *
+//             * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+//             * displayTimetableInteractor
+//             *
+//             * Anyone who displays the timetableUI should call updateTimetable() to update view model
+//             * and setPrevPanel() to set the previous panel to the appropriate JPanel
+//             *
+//             * Hans, I need ConstraintInputScreen for mainUI
+//             * Emily, I need SessionFileController and TimetableFileController for mainUI
+//             *
+//             */
+//
+//            // Make my presenters and stuff.
+//            OverlapMaxPresenter presenter = new OverlapMaxPresenter();
+//            OverlapGeneratedTimetableRelayInteractor relaySubscriber = new OverlapGeneratedTimetableRelayInteractor(presenter);
+//            generatorInteractor.subscribe(relaySubscriber);
+//
+//            // Make my interactors
+//            CalculateSectionHoursInteractor sectionCalculator = new CalculateSectionHoursInteractor();
+//            TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator, presenter);
+//
+//            // Make my controller
+//            OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
+//
+//
+//            DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+//            DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+//            DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+//            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
+//            displayTimetablePresenter.setView(timetableUI);
+//            /* The line below must run after displayPresenter's view has been set to screen.*/
+//            editScreen.updateTimetable();
+//            frame.add(editScreen);
+//
+//            // Set up Hans' stuff.
+//            SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+//            SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+//            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
+//            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
+//            sectionFilterPresenter.setView(constraintsInputScreen);
+//
+//            sectionFilterInteractor.onNext(fall);
+//
+//            // Make my Dialog
+//            TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
+//            TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
+//
+//
+//            TimetableUI finalTimetableView = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
+//            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
+//                    constraintsInputScreen, overlapMaxController, frame);
+//
+//            // Set the presenter to include the Dialog.
+//            presenter.setDialogToPassTo(dialog);
+//
+//            frame.pack();
+//            frame.setSize(1280, 720);
+//            frame.setVisible(true);
+//            dialog.pack();
+//            dialog.setVisible(true);
+//
+//        } catch (InvalidSectionsException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     /**
      * A method generated by the Swing Framework. Custom initialization of components should be handled in this method.

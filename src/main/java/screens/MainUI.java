@@ -4,27 +4,14 @@ package screens;
 
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
 import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 
-import entities.*;
 
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import entities.InvalidSectionsException;
 import fileio_use_case.interface_adapters.SessionFileController;
-import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import fileio_use_case.interface_adapters.SessionFileController;
 import org.json.simple.parser.ParseException;
-import overlap_crap_fix_locations_later.OverlapInputDialog;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 
-import entities.InvalidSectionsException;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -33,7 +20,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
