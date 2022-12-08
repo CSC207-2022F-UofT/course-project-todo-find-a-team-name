@@ -271,6 +271,7 @@ public class MainUI extends JPanel implements ActionListener {
             case "Edit":
                 changeScreen(editTimetableScreen);
                 editTimetableScreen.updateTimetable();
+                editTimetableScreen.updateSession();
                 editTimetableScreen.setPreviousPanel(this);
                 break;
             case "Display": {
