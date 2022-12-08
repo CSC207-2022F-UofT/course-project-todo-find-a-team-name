@@ -5,7 +5,9 @@ import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
-import edit_timetable_use_case.application_business.*;
+import edit_timetable_use_case.application_business.AddCourseInteractor;
+import edit_timetable_use_case.application_business.EditCourseInteractor;
+import edit_timetable_use_case.application_business.RemoveCourseInteractor;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
@@ -26,6 +28,9 @@ import timetable_generator_use_case.interface_adapters.TimetableGeneratorControl
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Flow;
 
 public class Main {
 
@@ -143,6 +148,21 @@ public class Main {
         /* The line below must run after displayPresenter's view has been set to screen.*/
         editScreen.updateTimetable();
         frame.add(editScreen);
+
+        List<Flow.Subscriber<Object>> TimetableAndSessionObservers = new ArrayList<>();
+        TimetableAndSessionObservers.add(addInteractor);
+        TimetableAndSessionObservers.add(removeInteractor);
+        TimetableAndSessionObservers.add(editInteractor);
+        TimetableAndSessionObservers.add(retrieveTimetableInteractor);
+
+        List<Flow.Publisher<Object>> TimetableAndSessionObservables = new ArrayList<>();
+
+        for (Flow.Publisher<Object> observable : TimetableAndSessionObservables){
+            for (Flow.Subscriber<Object> observer : TimetableAndSessionObservers){
+                observable.subscribe(observer);
+            }
+        }
+
     }
 
 }
