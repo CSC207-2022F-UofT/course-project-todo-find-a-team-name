@@ -42,6 +42,7 @@ import timetable_generator_use_case.application_business.TimetableGeneratorInter
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
+import timetables_sort_use_case.interface_adapters.AllTimetablesView;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -326,7 +327,13 @@ public class MainUI extends JPanel implements ActionListener {
         TimetableGeneratorInteractor timetableGeneratorInteractor = new TimetableGeneratorInteractor(timetableGeneratorPresenter);
         TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
         GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
-        timetableGeneratorPresenter.setView(System.out::println);
+        timetableGeneratorPresenter.setView(timetables -> {
+            for (TimetableViewModel viewModel : timetables){
+                System.out.println("-------------------");
+                System.out.println(viewModel);
+            }
+        });
+
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
