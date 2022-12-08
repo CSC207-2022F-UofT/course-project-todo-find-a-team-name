@@ -11,6 +11,8 @@ import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.EditTimetableView;
 import entities.InvalidSectionsException;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import screens.SessionViewModel;
 
 import javax.swing.*;
@@ -44,14 +46,17 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private TimetableViewModel timetable;
     private JPanel previousPanel;
     private final DisplayTimetableController displayTimetableController;
+    private final RetrieveTimetableController retrieveTimetableController;
 
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
-                               DisplayTimetableController displayTimetableController) {
+                               DisplayTimetableController displayTimetableController, RetrieveTimetableController
+                               retrieveTimetableController) {
         this.frame = frame;
         this.controller = controller;
         this.previousPanel = previousPanel;
         this.displayTimetableController = displayTimetableController;
+        this.retrieveTimetableController = retrieveTimetableController;
 
         this.ttView = null;
         this.courseMenu = null;
@@ -223,12 +228,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         JOptionPane.showMessageDialog(frame, message);
     }
 
-    /**
-     * @param session Updates the screen's session view model.
-     */
-    public void updateSession(SessionViewModel session) {
-        this.session = session;
-    }
+
     /**
      * @param successMessage A success message as determined by the presenter.
      *                       This method creates a message dialog with the given message.
@@ -248,5 +248,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
     public void updateTimetable(){
         displayTimetableController.displayTimetable();
+    }
+
+    public void updateSession(){
+        this.session = TimetableModelConverter.sessionToView(retrieveTimetableController.retrieveSession());
     }
 }
