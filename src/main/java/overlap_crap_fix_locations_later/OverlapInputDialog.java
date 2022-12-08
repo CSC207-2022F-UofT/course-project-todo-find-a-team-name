@@ -119,8 +119,21 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         this.timeTableOptions = newTimetableOptions;
     }
 
+    /**
+     * A method to help call in Hans' UI to take over some data transfer stuff. Gives the necessary set up
+     * to display his UI< basically.
+     */
     private void callInHans() {
-        hansInputScreen.setVisible(true);
+        // Set up a frame for his UI
+        JFrame jFrame = new JFrame();
+        jFrame.setSize(800, 400);
+        jFrame.setResizable(true);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        CardLayout cardLayout = new CardLayout();
+        JPanel screen = new JPanel(cardLayout);
+        screen.add(hansInputScreen);
+        jFrame.add(screen);
+        jFrame.setVisible(true);
     }
 
     private void onCancel() {
