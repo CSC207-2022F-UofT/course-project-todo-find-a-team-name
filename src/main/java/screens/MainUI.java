@@ -21,9 +21,11 @@ import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 
 
 import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
+import fileio_use_case.application_business.timetable_specific_classes.SaveTimetableInteractor;
 import fileio_use_case.application_business.timetable_specific_classes.TimetableGatewayInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import fileio_use_case.frameworks_and_drivers.TimetableGateway;
+import fileio_use_case.interface_adapters.SaveTimetableController;
 import fileio_use_case.interface_adapters.SessionFileController;
 import fileio_use_case.interface_adapters.TimetableFileController;
 import org.json.simple.parser.ParseException;
@@ -348,8 +350,12 @@ public class MainUI extends JPanel implements ActionListener {
         TimetableGateway timetableGateway = new TimetableGateway();
         TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
         TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
+
+        SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
+        SaveTimetableController saveTimetableController = new SaveTimetableController(saveTimetableInteractor);
+
         TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog,
-                timetableFileController);
+                saveTimetableController);
         displayTimetablePresenter2.setView(timetableUI);
 
         SessionGateway sessionGateway = new SessionGateway();
@@ -371,6 +377,7 @@ public class MainUI extends JPanel implements ActionListener {
         timetableGatewayInteractor.subscribe(removeCourseInteractor);
         timetableGatewayInteractor.subscribe(displayTimetableInteractor2);
         timetableGatewayInteractor.subscribe(displayTimetableInteractor1);
+        timetableGatewayInteractor.subscribe(saveTimetableInteractor);
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController, timetableFileController);
 
