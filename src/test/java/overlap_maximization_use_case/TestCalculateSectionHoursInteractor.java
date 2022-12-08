@@ -1,7 +1,7 @@
 //package overlap_crap_fix_locations_later.tests;
 //
 //import org.junit.Test;
-//import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
+//import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;
 //import retrieve_timetable_use_case.application_business.BlockModel;
 //import retrieve_timetable_use_case.application_business.SectionModel;
 //

@@ -1,15 +1,12 @@
-package overlap_crap_fix_locations_later;
+package overlap_crap_fix_locations_later.interface_adapters;
 
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
+import overlap_crap_fix_locations_later.application_business.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverlapMaximizationController implements OverlapMaxInputBoundary {
+public class OverlapMaximizationController {
 
     private final TimetableMatchInputBoundary timetableMatcher;
     private TimetableModel mainTable;
@@ -24,13 +21,14 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
     /**
      * Prompt the use case interactor to calculate the best matching timetable.
      * Convert the weird viewModels we start out with to TimetableModels that the Interactor knows how to use.
+     * <p>
+     * Return value should NOT be used in regular code. It is ONLY for convenience in testing.
      *
      * @param mainTable
      * @param timetables
      */
-    @Override
-    public void getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
-                                         List<OverlapTimetableViewModel> timetables) {
+    public TimetableModel getBestMatchingTimetable(OverlapTimetableViewModel mainTable,
+                                                   List<OverlapTimetableViewModel> timetables) {
 
         // Convert the weird viewModels to actual TimetablModels for the UCI.
         TimetableModel actualMainTable = OverlapTimetableViewModelToModelConverter
@@ -44,6 +42,6 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
         }
 
         // Make it work!
-        timetableMatcher.determineBestMatchingTimetable(actualMainTable, actualTimetables);
+        return timetableMatcher.determineBestMatchingTimetable(actualMainTable, actualTimetables);
     }
 }

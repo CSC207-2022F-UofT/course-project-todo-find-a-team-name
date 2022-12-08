@@ -1,10 +1,7 @@
-package overlap_crap_fix_locations_later.presenters;
+package overlap_crap_fix_locations_later.interface_adapters;
 
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
-import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
-import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
-import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import overlap_crap_fix_locations_later.application_business.OverlapOutputBoundary;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 
@@ -15,9 +12,9 @@ import java.util.List;
  * A presenter who's job it is to pass some models gained from the interactor and throw that shit into
  * the InputDialog so that it may be used as input.
  */
-public class OverlapMaxPresenter implements OverlapPresenting {
+public class OverlapMaxPresenter implements OverlapOutputBoundary {
 
-    private OverlapInputEntryViewModel dialogToPassTo = null;
+    private OverlapInputView dialogToPassTo = null;
 
     /**
      * Convert a list of timetableModels to ViewModels and then pass them to the dialog.
@@ -44,7 +41,7 @@ public class OverlapMaxPresenter implements OverlapPresenting {
     /**
      * SET the view of this presenter! Like, the dialog to input to!!!
      */
-    public void setDialogToPassTo(OverlapInputEntryViewModel dialog) {
+    public void setDialogToPassTo(OverlapInputView dialog) {
         this.dialogToPassTo = dialog;
     }
 }

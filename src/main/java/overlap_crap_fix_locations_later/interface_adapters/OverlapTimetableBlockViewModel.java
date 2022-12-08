@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.ViewModels;
+package overlap_crap_fix_locations_later.interface_adapters;
 
 /**
  * A helper ViewModel representing a Block for the OverlapInput Dialog.
