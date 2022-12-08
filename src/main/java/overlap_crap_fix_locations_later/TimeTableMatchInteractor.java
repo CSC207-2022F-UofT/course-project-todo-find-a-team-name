@@ -2,6 +2,7 @@ package overlap_crap_fix_locations_later;
 
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
+import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
 import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
 import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
 import retrieve_timetable_use_case.application_business.BlockModel;
@@ -24,11 +25,13 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
      * (Weight can simply be determined by time * (proportion of satisfied constraints).
      */
 
+    private final OverlapPresenting presenter;
     private final SectionHoursInputBoundary sectionHoursCalculator;
 
-    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator) {
+    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator, OverlapPresenting presenter) {
         // Initialise what we know at compile-time. Timetables and the mainTable must be passed in later.
         this.sectionHoursCalculator = sectionHoursCalculator;
+        this.presenter = presenter;
     }
 
     /**
@@ -80,11 +83,12 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
     }
 
     /**
-     * Return ONLY the best overlapping timetable with the main one. Order is arbitrary if there is a tie. For multiple
-     * outputs, use calculateTimetableOverlaps and just take the first few.
+     * Push ONLY the best overlapping timetable with the main one to the presenter.
+     * Order is arbitrary if there is a tie. For multiple
+     * outputs, use calculateTimetableOverlaps and just take the first few if you want.
      **/
-    public TimetableModel determineBestMatchingTimetable(TimetableModel mainTimetable,
-                                                         List<TimetableModel> timetables) {
+    public void determineBestMatchingTimetable(TimetableModel mainTimetable,
+                                               List<TimetableModel> timetables) {
         TimetableModel bestTimetable = null;
         Double bestScore = -1.0;
         for (TimetableModel timetable : timetables) {
@@ -94,7 +98,7 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
                 bestScore = calculateTimetableOverlap(mainTimetable, timetable);
             }
         }
-        return bestTimetable;
+        presenter.passBestTimetable(bestTimetable);
     }
 
 }

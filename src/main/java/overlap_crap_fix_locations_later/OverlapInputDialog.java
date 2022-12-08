@@ -4,54 +4,74 @@ import blacklist_whitelist_use_case.application_business.SectionFilterInteractor
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+import display_timetable_use_case.interface_adapters.TimetableView;
+import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
+import display_timetable_use_case.interface_adapters.TimetableViewModel;
 import entities.*;
+import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import org.json.simple.parser.ParseException;
+import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapMaxInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
+import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
+import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModel;
+import overlap_crap_fix_locations_later.ViewModels.OverlapTimetableViewModelToModelConverter;
+import overlap_crap_fix_locations_later.presenters.OverlapMaxPresenter;
+import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Flow;
 
-public class OverlapInputDialog extends JDialog implements Flow.Publisher {
+public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Object>, OverlapInputEntryViewModel {
+
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox timeTableComboBox;
+    private JComboBox<String> timeTableComboBox;
     private JLabel textLabel;
-    private Timetable selectedMainTimetable;
+    private OverlapTimetableViewModel selectedMainTimetable;
 
-    private SectionFilterController sectionFilterController;
-
-    // TODO: May wish to find a better way of doing this. This is a placeholder.
-    private HashMap<String, Timetable> timeTableRepresentations = new HashMap<>();
-    private ArrayList<Constraint> selectedConstraints;
-
-    private ArrayList<Flow.Subscriber> dataReceivers = new ArrayList<>();
+    private HashMap<String, OverlapTimetableViewModel> timeTableRepresentations = new HashMap<>();
     private final OverlapMaxInputBoundary overlapMaxController;
-    private final ArrayList<Timetable> timeTableOptions;
+    private ArrayList<OverlapTimetableViewModel> timeTableOptions;
+
+    private final ConstraintsInputScreen hansInputScreen;
+    private final TimetableView timetablePanel;
+
+    private String selectedItemName;
+    private Boolean waitingForNewData = false;
 
     /**
-     * Generating the Dialog also serves as the entry point for the Use Case. The dialog will call the controller
+     * Generating the Dialog also serves as the entry point     for the Use Case. The dialog will call the controller
      * and interactor and such.
      */
-    public OverlapInputDialog(ArrayList<Timetable> timeTableOptions, SectionFilterController sectionFilterController) {
-        // This will be initialized later, when the controller subscribes to this InputDialog.
-        this.overlapMaxController = null;
-        this.sectionFilterController = sectionFilterController;
-        this.timeTableOptions = timeTableOptions;
+    public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
+                              TimetableView timetablePanel,
+                              ConstraintsInputScreen hansInputScreen, OverlapMaxInputBoundary overlapMaxController) {
         for (int i = 0; i < timeTableOptions.size(); i++) {
+
             timeTableRepresentations.put("Timetable " + i, timeTableOptions.get(i));
         }
+        this.timeTableOptions = timeTableOptions;
+        this.timetablePanel = timetablePanel;
+        this.hansInputScreen = hansInputScreen;
+        this.overlapMaxController = overlapMaxController;
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
@@ -65,54 +85,72 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
      **/
     private void finishDataEntry() {
 
+        // Assume the user has selected their target Timetable upon hitting the finish button, so ready that.
+        System.out.println(timeTableComboBox.getSelectedItem());
+        selectedItemName = (String) timeTableComboBox.getSelectedItem();
+
+        // Run through Hans' use case to go through JD's and stuff like that for him to generate the data.
         callInHans();
 
-        // Get the extras from JD:
+        // Signal that we're ready to receive data (so the next packet we get should be ready!)
+        waitingForNewData = true;
 
-        // Bundle the selected main timetable, and the candidate timetables, to send to the subscribers
-        // Notably, the TimeTableMatchInteractor
-        System.out.println(timeTableComboBox.getSelectedItem());
-        String selectedItemName = (String) timeTableComboBox.getSelectedItem();
 
-        // TODO: Make this actually get data once I can integrate...
-        ArrayList<TimetableModel> candidateTimetables = new ArrayList<>();
-
-        // Use a makeshift bundle via a map. (It's a pity Android.Bundle isn't native to Java).
-        HashMap<OverlapInputDialogDataKeys, Object> dataBundle = new HashMap<>();
-        this.selectedMainTimetable = timeTableRepresentations.get(selectedItemName);
-
-        dataBundle.put(OverlapInputDialogDataKeys.mainTable, this.selectedMainTimetable);
-        dataBundle.put(OverlapInputDialogDataKeys.candidateTimetables, candidateTimetables);
-
-        // Pass our makeshift bundles to the subscribers.
-        for (Flow.Subscriber subscriber : dataReceivers) {
-            subscriber.onNext(dataBundle);
-            // This Dialog should only create data one time. So destroy the thing after.
-            subscriber.onComplete();
-        }
-
-        // Do something with this!
-        overlapMaxController.getBestMatchingTimetable();
-
-        // TODO: Display a TimetableUI of this. Or possibly pass it to other people.
     }
 
+    /**
+     * A method to actually activate the calculations for the new, matched timeTable.
+     * It's supposed to be called after Hans' thing is activated, and positioned to wait for a new data packet from it to arrive.
+     */
+    public void activateCalculations() {
+        // Calculations activating = no longer waiting for data.
+        waitingForNewData = false;
+
+        // Collate the data post-update.
+        ArrayList<OverlapTimetableViewModel> candidateTimetables = this.timeTableOptions;
+        // This is sus!
+        this.selectedMainTimetable = timeTableRepresentations.get(selectedItemName);
+
+        // Get the bloody timeTable.
+        overlapMaxController.getBestMatchingTimetable(selectedMainTimetable, candidateTimetables);
+
+        // Now when the output comes back, the presenter will call a method to display it :).
+    }
+
+    public void updateTimetableOptions(ArrayList<OverlapTimetableViewModel> newTimetableOptions) {
+        this.timeTableOptions = newTimetableOptions;
+    }
+
+    /**
+     * A method to help call in Hans' UI to take over some data transfer stuff. Gives the necessary set up
+     * to display his UI< basically.
+     */
     private void callInHans() {
-        /* This is mostly taken from Hans' use case to get his to start. **/
+        // Set up a frame for his UI
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CardLayout cardLayout = new CardLayout();
-        JPanel screens = new JPanel(cardLayout);
-        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+        JPanel screen = new JPanel(cardLayout);
+        screen.add(hansInputScreen);
+        jFrame.add(screen);
+        jFrame.setVisible(true);
+    }
 
-        ConstraintsInputScreen c = new ConstraintsInputScreen(null, sectionFilterController1);
-        sectionFilterPresenter.setView(c);
-        screens.add(c, "hi");
-        jFrame.add(screens);
+    /**
+     * A method to help call in Kai's UI to display the best matching Timetable we got.
+     */
+    private void callInKai() {
+        // Set up a frame for his UI
+        JFrame jFrame = new JFrame();
+        jFrame.setSize(800, 400);
+        jFrame.setResizable(true);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        CardLayout cardLayout = new CardLayout();
+        JPanel screen = new JPanel(cardLayout);
+        screen.add(timetablePanel);
+        jFrame.add(screen);
         jFrame.setVisible(true);
     }
 
@@ -120,8 +158,12 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         dispose();
     }
 
+    // TODO: Delete this method and all its dependencies.
+    // TODO: Also delete the freaking options thing eventually, keep it for now for initialization.
+    //  I mean making it out of ViewModels doesn't hurt but like still.
     public static void main(String[] args) {
-        // Initialise a test value.
+
+        // Initialise a test section with one block.
         Block testBlock = new Block("Monday", "18:00", "21:00", "Castle Badr");
         ArrayList<Block> testBlockList = new ArrayList<>();
         testBlockList.add(testBlock);
@@ -131,25 +173,86 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
         testSectionList.add(testSection);
 
         try {
+            // Make a test course.
             TimetableCourse testCourse = new TimetableCourse("C1", testSectionList, "S", "CLA215", "4");
             ArrayList<TimetableCourse> testTimetableCourseList = new ArrayList<>();
             testTimetableCourseList.add(testCourse);
 
+            // Now make a test timetable.
             Timetable testTimetable = new Timetable(testTimetableCourseList, "S");
             ArrayList<Timetable> testTimetableList = new ArrayList<Timetable>();
             testTimetableList.add(testTimetable);
 
+            // SETUP for InputDialog creation
+            // Convert test timetable to appropriate view model
+            ArrayList<OverlapTimetableViewModel> timetableViewModels = new ArrayList<>();
+            for (Timetable timetable : testTimetableList) {
+                timetableViewModels.add(
+                        ModelToOverlapViewModelConverter.convertTimetableModel(
+                                EntityConverter.generateTimetableResponse(timetable))
+                );
+            }
+
+            // Set up the Session stuff for Hans and JD.
+            SessionGateway sessionGateway = new SessionGateway();
+            Session fall;
+            try {
+                fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
+            } catch (ParseException | IOException | InvalidSectionsException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Set up JD's thing
+            TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
+            TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
+            TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
+
+            // He needs this.
+            generatorInteractor.onNext(fall);
+            GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
+
+            // He needs this too..
+            generatorPresenter.setView(timetables -> {
+                System.out.println("Timetable Size: " + timetables.length);
+                for (TimetableViewModel timetableModel : timetables) {
+                    System.out.println("------");
+                    for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()) {
+                        System.out.println(courseModel.getCode());
+                    }
+                }
+            });
+
+            // Set up Hans' stuff.
             SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-            SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-            SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+            SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+            SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
+            ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
+            sectionFilterPresenter.setView(constraintsInputScreen);
 
-            SectionHoursInputBoundary sectionHoursCalculator = new CalculateSectionHoursInteractor();
-            TimetableMatchInputBoundary timeTableMatcher = new TimeTableMatchInteractor(sectionHoursCalculator);
+            sectionFilterInteractor.onNext(fall);
 
-            OverlapInputDialog dialog = new OverlapInputDialog(testTimetableList, sectionFilterController1);
+            // Make my presenters and stuff.
+            OverlapMaxPresenter presenter = new OverlapMaxPresenter();
+            OverlapGeneratedTimetableRelayInteractor relaySubscriber = new OverlapGeneratedTimetableRelayInteractor(presenter);
+            generatorInteractor.subscribe(relaySubscriber);
 
-            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timeTableMatcher,
-                    dialog);
+            // Make my interactors
+            CalculateSectionHoursInteractor sectionCalculator = new CalculateSectionHoursInteractor();
+            TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator, presenter);
+
+            // Make my controller
+            OverlapMaxInputBoundary overlapMaxController = new OverlapMaximizationController(timetableMatcher);
+
+
+            // Make my Dialog
+            TimetableModel testTimetableModel = EntityConverter.generateTimetableResponse(testTimetable);
+            TimetableViewModel testTimetableViewModel = TimetableModelConverter.timetableToView(testTimetableModel);
+            TimetableView finalTimetableView = new TimetableView(testTimetableViewModel);
+            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
+                    constraintsInputScreen, overlapMaxController);
+
+            // Set the presenter to include the Dialog.
+            presenter.setDialogToPassTo(dialog);
 
             dialog.pack();
             dialog.setVisible(true);
@@ -168,12 +271,40 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
 
     // Custom initialize a ComboBox object and return it.
     private JComboBox initialiseComboBox() {
-        return new JComboBox(timeTableRepresentations.keySet().toArray());
+        JComboBox marCombo = new JComboBox(timeTableRepresentations.keySet().toArray());
+
+        return marCombo;
     }
+
+    /**
+     * A helper ItemListener that lets me listen to when a ComboBox selected item is changed. :)
+     **/
+
+    private class ComboBoxItemChanged implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                OverlapTimetableViewModel currentlySelectedTimetable = timeTableRepresentations
+                        .get(timeTableComboBox.getSelectedItem());
+
+
+                TimetableViewModel currentlySelectedTimetableViewModel = TimetableModelConverter.timetableToView(
+                        OverlapTimetableViewModelToModelConverter.convertOverlapTimetableViewModelToModel(
+                                currentlySelectedTimetable
+                        ));
+
+                timetablePanel.updateViewModel(currentlySelectedTimetableViewModel);
+            }
+        }
+    }
+
+    // TODO: Add a method that will let me
 
     public void setUpCancelFunctionality() {
         buttonCancel.addActionListener(new ActionListener() {
-            /** Add an action listener for the cancel dialogue button that kills the dialog. **/
+            /**
+             * Add an action listener for the cancel dialogue button that kills the dialog.
+             **/
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
@@ -199,13 +330,49 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     }
 
     @Override
-    public void subscribe(Flow.Subscriber subscriber) {
-        // Keep a reference of it. I guess.
-        System.out.println(dataReceivers);
-        dataReceivers.add(subscriber);
-        System.out.println(dataReceivers);
+    public void onSubscribe(Flow.Subscription subscription) {
+
     }
 
+    @Override
+    public void onNext(Object item) {
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
+        timeTableOptions = new ArrayList<>(viewModels);
+
+        // Make the calculation part
+        // only activate if a flag of currently calculating is true. Otherwise just take in the data. That way
+        // we can kind of wait for JD's thing to finish.
+        // If we're waiting on data, activate the calculations with this one.
+        if (waitingForNewData) {
+            activateCalculations();
+        }
+    }
+
+    /**
+     * A method allowing for the presenter to pass in the best matching Timetable.
+     * The best matching timetable is then displayed :)
+     **/
+    @Override
+    public void stashBestMatchingTimetable(TimetableViewModel bestMatch) {
+        timetablePanel.updateViewModel(bestMatch);
+        callInKai();
+        System.out.println(bestMatch);
+
+    }
 
     /**
      * Method generated by IntelliJ IDEA GUI Designer
@@ -217,35 +384,35 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     private void $$$setupUI$$$() {
         createUIComponents();
         contentPane = new JPanel();
-        contentPane.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         contentPane.setBorder(BorderFactory.createTitledBorder(null, "Overlap Input Dialog", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        panel1.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
+        panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         buttonOK.setText("OK");
-        panel2.add(buttonOK, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
-        panel2.add(buttonCancel, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel3.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         textLabel = new JLabel();
         textLabel.setText("Choose a timetable to produce an overlapping one for.");
-        panel3.add(textLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
-        panel3.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 2, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        panel3.add(timeTableComboBox, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
-        panel3.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer4 = new com.intellij.uiDesigner.core.Spacer();
-        panel3.add(spacer4, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel3.add(textLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        panel3.add(spacer2, new GridConstraints(1, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel3.add(timeTableComboBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        panel3.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        panel3.add(spacer4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 
     /**
@@ -254,5 +421,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Publisher {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
+    // TODO: Add an error if something goes really wrong and this has no timetable things.
 
 }
