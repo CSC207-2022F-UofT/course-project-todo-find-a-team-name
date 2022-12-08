@@ -176,7 +176,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
             case "edit":
                 changeScreen(editTimetableScreen);
                 editTimetableScreen.updateTimetable();
-                setPrevPanel(this);
+                editTimetableScreen.setPreviousPanel(this);
                 break;
             case "<=":
                 if (prevPanel != null) {
