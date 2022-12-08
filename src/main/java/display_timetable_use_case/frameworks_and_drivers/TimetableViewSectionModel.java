@@ -61,6 +61,10 @@ public class TimetableViewSectionModel {
         return code.equals(other.code) && (new HashSet<>(blockModels)).equals(new HashSet<>(other.blockModels));
     }
 
+    /**
+     * Returns the string representation of this object
+     * @return the string representation of this object
+     */
     @Override
     public String toString() {
         return "TimetableViewSectionModel{" +
