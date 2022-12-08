@@ -158,12 +158,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
                 overlapInputDialog.setVisible(true);
                 break;
             case "save":
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                Window window = SwingUtilities.getWindowAncestor(this);
-                if(fileChooser.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
-                    saveTimetableController.saveTimetable();
-                }
+                saveTimetableController.saveTimetable();
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
