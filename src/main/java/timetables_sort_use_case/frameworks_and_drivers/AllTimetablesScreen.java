@@ -1,7 +1,7 @@
 package timetables_sort_use_case.frameworks_and_drivers;
 
 import display_timetable_use_case.frameworks_and_drivers.*;
-import overlap_crap_fix_locations_later.OverlapInputDialog;
+import overlap_crap_fix_locations_later.frameworks_and_drivers.OverlapInputDialog;
 import screens.MainUI;
 import timetables_sort_use_case.interface_adapters.TimetablesSortController;
 import timetables_sort_use_case.interface_adapters.AllTimetablesController;
