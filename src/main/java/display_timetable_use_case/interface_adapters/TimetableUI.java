@@ -2,7 +2,7 @@ package display_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
-import screens.EditTimetableScreen;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
