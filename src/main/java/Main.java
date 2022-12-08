@@ -87,13 +87,14 @@ public class Main {
         GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
 
         /*Set up for BlackList/Whitelist:
-
          */
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
-        constraintsInputScreen.setPrevPanel(generateTimetableScreen);
+        /*
+        Todo: constraintsInputScreen.setPrevPanel(PANEL);
+         */
         sectionFilterPresenter.setView(constraintsInputScreen);
 
 
