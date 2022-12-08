@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.HashSet;
 import java.util.List;
 
 /** A concrete implementation of Course that stores all sections available in a course.
@@ -31,11 +32,17 @@ public class CalendarCourse extends Course {
 
 
     /**
-     * @param other another CalendarCourse object, which is compared to the current CalendarCourse
+     * @param obj another object, which is compared to the current CalendarCourse
      * @return true iff the entries of each instance attribute is identical.
      */
-    public boolean equals(CalendarCourse other) {
-        return (this.title.equals(other.title) && this.sections.equals(other.sections) &&
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CalendarCourse))
+            return false;
+
+        CalendarCourse other = (CalendarCourse) obj;
+
+        return (this.title.equals(other.title) && new HashSet<>(this.sections).equals(new HashSet<>(other.sections)) &&
                 this.courseSession.equals(other.courseSession) && this.courseCode.equals(other.courseCode)
                 && this.breadth.equals(other.breadth));
     }
