@@ -241,6 +241,7 @@ public class MainUI extends JPanel implements ActionListener {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     try {
                         fallSessionFilePath.setText(importedSessionFilePath);
+                        winterSessionFilePath.setText("Choose the file... ");
                         sessionController.createSessionFile(importedSessionFilePath, "F");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
@@ -254,6 +255,7 @@ public class MainUI extends JPanel implements ActionListener {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     try {
                         winterSessionFilePath.setText(importedSessionFilePath);
+                        fallSessionFilePath.setText("Choose the file... ");
                         sessionController.createSessionFile(importedSessionFilePath, "S");
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
