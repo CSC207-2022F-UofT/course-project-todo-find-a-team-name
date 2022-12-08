@@ -1,32 +1,10 @@
 package screens;
 
 // TODO: Remove these imports (It's used for main)
-import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
 import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import edit_timetable_use_case.AddCourseInteractor;
-import edit_timetable_use_case.RemoveCourseInteractor;
-import entities.*;
-
-
-import edit_timetable_use_case.EditTimetableController;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import org.json.simple.parser.ParseException;
-import overlap_crap_fix_locations_later.CalculateSectionHoursInteractor;
-import overlap_crap_fix_locations_later.OverlapMaximizationController;
-import overlap_crap_fix_locations_later.TimeTableMatchInteractor;
-import recommend_br_use_case.application_business.CourseComparatorFactory;
-import recommend_br_use_case.application_business.RecommendBRInteractor;
-import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
-import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import recommend_br_use_case.interface_adapters.RecommendBRController;
-import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -34,10 +12,6 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Flow;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to
@@ -202,148 +176,5 @@ public class MainUI extends JPanel implements ActionListener {
                 break;
             }
         }
-    }
-
-
-
-    // TODO: Remove this
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
-        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
-        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
-                courseComparatorFactory);
-        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
-
-        AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
-        AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
-        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
-        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
-        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor);
-
-        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
-        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController);
-        editTimetableScreen.setBRWindow(recommendBRWindow);
-        editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
-
-        Block block1 = new Block("MO", "11:00", "12:00", "");
-        Block block2 = new Block("FR", "11:00", "12:00", "");
-        java.util.List<Block> blocks1 = new ArrayList<>();
-        blocks1.add(block1);
-        blocks1.add(block2);
-
-        Block block3 = new Block("WE", "11:00", "12:00", "");
-        java.util.List<Block> blocks2 = new ArrayList<>();
-        blocks2.add(block3);
-
-        Block block4 = new Block("TU", "16:00", "17:00", "");
-        Block block5 = new Block("FR", "16:00", "17:00", "");
-        java.util.List<Block> blocks3 = new ArrayList<>();
-        blocks3.add(block4);
-        blocks3.add(block5);
-
-        Block block6 = new Block("MO", "14:00", "16:00", "");
-        java.util.List<Block> blocks4 = new ArrayList<>();
-        blocks4.add(block6);
-
-        Section s1 = new Section("LEC0101", "", blocks1);
-        Section s2 = new Section("TUT0101", "", blocks2);
-
-        Section s3 = new Section("LEC0401", "", blocks3);
-        Section s4 = new Section("TUT0301", "", blocks4);
-
-        java.util.List<Section> sections1 = new ArrayList<>();
-        sections1.add(s1);
-        sections1.add(s2);
-        List<Section> sections2 = new ArrayList<>();
-        sections2.add(s3);
-        sections2.add(s4);
-
-        TimetableCourse c1;
-        TimetableCourse c2;
-
-        try {
-            c1 = new TimetableCourse("some title", sections1, "", "CSC236H1", "");
-            c2 = new TimetableCourse("some other title", sections2, "", "CSC207H1", "");
-        } catch (InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-
-        ArrayList<TimetableCourse> courses = new ArrayList<>();
-        courses.add(c1);
-        courses.add(c2);
-        Timetable timetable = new Timetable(courses, "F");
-
-        recommendBRPresenter.setView(recommendBRWindow);
-        addCoursePresenter.setView(editTimetableScreen);
-        removeCoursePresenter.setView(editTimetableScreen);
-        addCourseInteractor.setTimetable(timetable);
-        removeCourseInteractor.setTimetable(timetable);
-        recommendBRInteractor.setTimetable(timetable);
-
-        SessionGateway sessionGateway = new SessionGateway();
-        Session fSession;
-        try {
-            fSession = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        addCourseInteractor.setSession(fSession);
-        recommendBRInteractor.setFallSession(fSession);
-
-        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
-        SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
-        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(new JPanel(), sectionFilterController);
-        sectionFilterPresenter.setView(constraintsInputScreen);
-
-        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
-        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
-        displayTimetableInteractor.setTimetable(timetable);
-        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-
-        CalculateSectionHoursInteractor calculateSectionHoursInteractor = new CalculateSectionHoursInteractor();
-        TimeTableMatchInteractor timeTableMatchInteractor = new TimeTableMatchInteractor(calculateSectionHoursInteractor);
-
-        OverlapMaximizationController overlapMaximizationController
-                = new OverlapMaximizationController(timeTableMatchInteractor, new Flow.Processor() {
-            @Override
-            public void subscribe(Flow.Subscriber subscriber) {
-
-            }
-
-            @Override
-            public void onSubscribe(Flow.Subscription subscription) {
-
-            }
-
-            @Override
-            public void onNext(Object item) {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editTimetableScreen, overlapMaximizationController);
-        displayTimetablePresenter.setView(timetableUI);
-
-        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI);
-        timetableUI.setPrevPanel(mainUI);
-        mainUI.setPreferredSize(new Dimension(1280, 720));
-        frame.add(mainUI);
-
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
 }

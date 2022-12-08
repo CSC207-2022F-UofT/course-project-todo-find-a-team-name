@@ -13,7 +13,6 @@ public class TimetableViewBlockModel {
     private final double endTime;
     private String room;
 
-    private final String room;
 
     /**
      * Constructs TimetableViewBlockModel with the given day (day of the week), start time, and end time.
@@ -21,9 +20,8 @@ public class TimetableViewBlockModel {
      * @param day       day of the week for this block
      * @param startTime start time of the block
      * @param endTime   end time of the block
-     * @param room      name of the room
      */
-    public TimetableViewBlockModel(int day, double startTime, double endTime, String room) {
+    public TimetableViewBlockModel(int day, double startTime, double endTime) {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -34,7 +32,6 @@ public class TimetableViewBlockModel {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.room = room;
     }
 
     /**
@@ -63,7 +60,4 @@ public class TimetableViewBlockModel {
     public int getDay() {
         return day;
     }
-
-    public String getRoom() {
-        return this.room; }
 }
