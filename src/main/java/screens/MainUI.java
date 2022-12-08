@@ -326,6 +326,7 @@ public class MainUI extends JPanel implements ActionListener {
         TimetableGeneratorInteractor timetableGeneratorInteractor = new TimetableGeneratorInteractor(timetableGeneratorPresenter);
         TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
         GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
+        timetableGeneratorPresenter.setView(System.out::println);
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
         sectionFilterPresenter.setView(constraintsInputScreen);
 
@@ -353,6 +354,7 @@ public class MainUI extends JPanel implements ActionListener {
         sessionGatewayInteractor.subscribe(displayTimetableInteractor2);
         sessionGatewayInteractor.subscribe(displayTimetableInteractor1);
         sessionGatewayInteractor.subscribe(sectionFilterInteractor);
+        sessionGatewayInteractor.subscribe(timetableGeneratorInteractor);
 
         timetableGatewayInteractor.subscribe(recommendBRInteractor);
         timetableGatewayInteractor.subscribe(addCourseInteractor);
