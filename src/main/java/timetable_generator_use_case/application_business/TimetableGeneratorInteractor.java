@@ -1,9 +1,9 @@
 package timetable_generator_use_case.application_business;
 
 import entities.*;
-import generate_timetable_course_use_case.TimetableCourseGenerator;
 //import retrieve_timetable_use_case.EntityConverter;
 //import retrieve_timetable_use_case.TimetableModel;
+import generate_timetable_course_use_case.application_business.TimetableCourseGenerator;
 import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
@@ -15,10 +15,12 @@ import java.util.concurrent.Flow.Subscriber;
  * Generates all possible Timetables
  */
 
-public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoundary, Subscriber<Object>{
+public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoundary, Subscriber<Object>,
+        Flow.Publisher<Object> {
 
     private Session session;
     private final TimetableGeneratorOutputBoundary presenter;
+    private final ArrayList<Flow.Subscriber<Object>> subscribers = new ArrayList<>();
 
     public TimetableGeneratorInteractor(TimetableGeneratorOutputBoundary presenter) {
         this.presenter = presenter;
@@ -34,7 +36,9 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
         for (Timetable timetable : generatedTimetables){
             generatedTimetableModels.add(EntityConverter.generateTimetableResponse(timetable));
         }
-
+        for (Subscriber<Object> subscriber : subscribers) {
+            subscriber.onNext(generatedTimetables);
+        }
         presenter.prepareSuccessView(new TimetableGeneratorResponseModel(generatedTimetableModels));
     }
 
@@ -53,7 +57,7 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
         ArrayList<Timetable> newTimetables = new ArrayList<>();
         for(Timetable timetable : timetables){
             TimetableCourseGenerator possibleTimes = new TimetableCourseGenerator(course);
-            for(TimetableCourse possibleTime: possibleTimes.generateAllTimetableCourse()){
+            for(TimetableCourse possibleTime: possibleTimes.generateAllTimetableCourses()){
                 if (!timetable.hasCourseOverlap(possibleTime)){
                     ArrayList<TimetableCourse> currentCourses = timetable.getCourseList();
                     currentCourses.add(possibleTime);
@@ -117,5 +121,8 @@ public class TimetableGeneratorInteractor implements TimetableGeneratorInputBoun
     @Override
     public void onComplete() {
 
+    }
+    public void subscribe(Subscriber<Object> subscriber) {
+        this.subscribers.add(subscriber);
     }
 }

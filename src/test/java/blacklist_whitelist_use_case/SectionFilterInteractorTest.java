@@ -150,7 +150,7 @@ class SectionFilterInteractorTest {
             }
         };
         interactor = new SectionFilterInteractor(presenter1);
-        interactor.setSession(session);
+        interactor.onNext(session);
         SectionFilterRequestModel requestModel = new SectionFilterRequestModel(
                 "CSC207H1, CSC258H1, CSC236H1, MAT235H1",
                 "BLACKLIST",
@@ -186,7 +186,7 @@ class SectionFilterInteractorTest {
             }
         };
         SectionFilterInteractor interactor = new SectionFilterInteractor(presenter3);
-        interactor.setSession(session);
+        interactor.onNext(session);
         SectionFilterRequestModel requestModel3 = new SectionFilterRequestModel(
                 "CS888666",
                 "/",
@@ -236,7 +236,7 @@ class SectionFilterInteractorTest {
             }
         };
         SectionFilterInteractor interactor = new SectionFilterInteractor(presenter4);
-        interactor.setSession(session);
+        interactor.onNext(session);
         SectionFilterRequestModel requestModel4 = new SectionFilterRequestModel(
                 "",
                 "/",
@@ -273,7 +273,7 @@ class SectionFilterInteractorTest {
             }
         };
         SectionFilterInteractor interactor = new SectionFilterInteractor(presenter5);
-        interactor.setSession(session);
+        interactor.onNext(session);
         SectionFilterRequestModel requestModel5 = new SectionFilterRequestModel(
                 "CSC207H1",
                 "/",
@@ -313,7 +313,7 @@ class SectionFilterInteractorTest {
             }
         };
         SectionFilterInteractor interactor = new SectionFilterInteractor(presenter6);
-        interactor.setSession(session);
+        interactor.onNext(session);
         SectionFilterRequestModel requestModel6 = new SectionFilterRequestModel(
                 "CSC207H1",
                 "/",

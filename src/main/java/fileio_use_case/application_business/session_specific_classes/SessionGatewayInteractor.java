@@ -1,27 +1,26 @@
 package fileio_use_case.application_business.session_specific_classes;
 
-import entities.Block;
-import entities.CalendarCourse;
-import entities.Section;
-import entities.Session;
+import entities.*;
 import fileio_use_case.application_business.FileImportRequestModel;
 import org.json.simple.parser.ParseException;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import retrieve_timetable_use_case.BlockModel;
-import retrieve_timetable_use_case.CourseModel;
-import retrieve_timetable_use_case.SectionModel;
-import retrieve_timetable_use_case.SessionModel;
+import retrieve_timetable_use_case.application_business.BlockModel;
+import retrieve_timetable_use_case.application_business.CourseModel;
+import retrieve_timetable_use_case.application_business.SectionModel;
+import retrieve_timetable_use_case.application_business.SessionModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
-    private final SessionGateway sessionGateway;
-    public SessionGatewayInteractor() {
-        this.sessionGateway = new SessionGateway();
+public class SessionGatewayInteractor implements SessionFileImportInputBoundary, Flow.Publisher<Object> {
+    ArrayList<Flow.Subscriber<Object>> receivers;
+    private final SessionGatewayInterface sessionGateway;
+    public SessionGatewayInteractor(SessionGatewayInterface sessionGateway) {
+        this.sessionGateway = sessionGateway;
+        this.receivers = new ArrayList<>();
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
@@ -30,11 +29,19 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
      * @param jsonData FileImportRequestModel, Session Type
      * @return SessionModel
      */
-    public SessionModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException {
+    public SessionModel readFromFile(FileImportRequestModel jsonData, String sessionType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
         String filePath = jsonData.getFilePath();
         Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
         HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
-        HashMap<String, CourseModel> returnAllSessionCoursesModel = new HashMap<>();
+        SessionModel aSessionModel = createSessionModel(allSessionCourses, sessionType);
+        for (Flow.Subscriber<Object> subscriber : receivers){
+            subscriber.onNext(aSessionModel); // Things you want to pass
+        }
+        return aSessionModel;
+    }
+    /** HELPER METHOD to create SessionModel **/
+    private SessionModel createSessionModel(HashMap<String, CalendarCourse> allSessionCourses, String sessionType) {
+        HashMap<String, CourseModel> allSessionCoursesModel = new HashMap<>();
         for (CalendarCourse course : allSessionCourses.values()) {
             List<SectionModel> sectionList = new ArrayList<>();
             for (Section section : course.getSections()) {
@@ -49,8 +56,12 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
             }
             CourseModel aNewCourse = new CourseModel(course.getTitle(), sectionList,
                     course.getCourseSession(), course.getCourseCode(), course.getBreadth());
-            returnAllSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
+            allSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
         }
-        return new SessionModel(returnAllSessionCoursesModel, sessionType);
+        return new SessionModel(allSessionCoursesModel, sessionType);
+    }
+    @Override
+    public void subscribe(Flow.Subscriber<? super Object> subscriber) {
+        receivers.add(subscriber); // Adds subscribe to list of subscribers
     }
 }

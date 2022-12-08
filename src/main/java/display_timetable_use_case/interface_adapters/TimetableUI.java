@@ -4,6 +4,7 @@ import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableControl
 import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
 import overlap_crap_fix_locations_later.OverlapMaximizationController;
 import screens.EditTimetableScreen;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;

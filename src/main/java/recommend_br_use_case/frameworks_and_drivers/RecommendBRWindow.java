@@ -1,8 +1,9 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
-import edit_timetable_use_case.EditTimetableController;
+import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import recommend_br_use_case.interface_adapters.IRecommendBRView;
 import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRViewModel;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -12,15 +13,19 @@ import java.awt.event.WindowEvent;
  */
 public class RecommendBRWindow extends JDialog implements IRecommendBRView {
 
-    /**
-     * Constructs RecommendBRWindow from the given JFrame, controller and timetable id.
-     * User cannot perform any action on the given frame until this window is closed.
-     * It displays the RecommendBRInputScreen.
-     */
     private RecommendBRInputScreen inputScreen;
     private final RecommendBRController brController;
     private final EditTimetableController editTimetableController;
 
+    /**
+     * Constructs RecommendBRWindow from the given JFrame, controller and timetable id.
+     * User cannot perform any action on the given frame until this window is closed.
+     * It displays the RecommendBRInputScreen.
+     *
+     * @param frame original window
+     * @param brController controller for recommending breadth requirements
+     * @param editTimetableController controller for editing timetable
+     */
     public RecommendBRWindow(JFrame frame, RecommendBRController brController, EditTimetableController editTimetableController){
         super(frame, "Recommend BR", true);
         this.setSize(600, 400);

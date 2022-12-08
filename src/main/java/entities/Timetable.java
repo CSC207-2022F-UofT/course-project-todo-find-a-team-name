@@ -9,7 +9,7 @@ public class Timetable implements Comparable<Timetable> {
     private String sessionType;
     private double score;
     
-    public Timetable(ArrayList<TimetableCourse> timetableCourses, String sessionType){
+    public Timetable(List<TimetableCourse> timetableCourses, String sessionType){
         this.courseList = new ArrayList<TimetableCourse>();
         this.courseList.addAll(timetableCourses);
         this.sessionType = sessionType;

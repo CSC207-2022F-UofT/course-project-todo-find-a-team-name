@@ -5,10 +5,12 @@ import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
+import entities.InvalidSectionsException;
 import entities.Session;
 
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
 import org.json.simple.parser.ParseException;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,7 +106,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         Session fall;
         try {
             fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (ParseException | IOException e) {
+        } catch (ParseException | IOException | InvalidSectionsException e) {
             throw new RuntimeException(e);
         }
         JPanel fakeJDScreen= new JPanel();
@@ -117,7 +119,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         JPanel screens = new JPanel(cardLayout);
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
         SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.setSession(fall); //delete
+//        sectionFilterInterator.setSession(fall); //delete
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
         ConstraintsInputScreen c = new ConstraintsInputScreen(fakeJDScreen, sectionFilterController1);
         sectionFilterPresenter.setView(c);
@@ -162,7 +164,7 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     @Override
     public void showSuccessView(SectionFilterViewModel viewModel) {
         JFrame window = (JFrame) SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new FilteredSectionsOutputScreen(generateTimeTableScreen, window, viewModel);
+        JDialog dialog = new FilteredSectionsOutputScreen((GenerateTimetableScreen) generateTimeTableScreen, window, viewModel);
         dialog.setVisible(true);
     }
 

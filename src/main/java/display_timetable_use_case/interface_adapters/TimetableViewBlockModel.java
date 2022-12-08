@@ -11,6 +11,7 @@ public class TimetableViewBlockModel {
     private final int day;
     private final double startTime;
     private final double endTime;
+    private String room;
 
     private final String room;
 
@@ -22,6 +23,13 @@ public class TimetableViewBlockModel {
      * @param endTime   end time of the block
      * @param room      name of the room
      */
+    public TimetableViewBlockModel(int day, double startTime, double endTime, String room) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.room = "";
+    }
+
     public TimetableViewBlockModel(int day, double startTime, double endTime, String room) {
         this.day = day;
         this.startTime = startTime;
