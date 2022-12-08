@@ -3,17 +3,13 @@ package display_timetable_use_case.frameworks_and_drivers;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.ITimetableUI;
-import entities.InvalidSectionsException;
 import fileio_use_case.interface_adapters.TimetableFileController;
-import org.json.simple.parser.ParseException;
 import overlap_crap_fix_locations_later.OverlapInputDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -161,17 +157,17 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
                 overlapInputDialog.setVisible(true);
                 break;
             case "save":
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                Window window = SwingUtilities.getWindowAncestor(this);
-                if(fileChooser.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        timetableFileController.createTimetableFile(file.getAbsolutePath());
-                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-                        JOptionPane.showMessageDialog(window, ex.getMessage());
-                    }
-                }
+//                JFileChooser fileChooser = new JFileChooser();
+//                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//                Window window = SwingUtilities.getWindowAncestor(this);
+//                if(fileChooser.showOpenDialog(window) == JFileChooser.APPROVE_OPTION) {
+//                    File file = fileChooser.getSelectedFile();
+//                    try {
+//                        timetableFileController.createTimetableFile(file.getAbsolutePath());
+//                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
+//                        JOptionPane.showMessageDialog(window, ex.getMessage());
+//                    }
+//                }
                 break;
             case "edit":
                 changeScreen(editTimetableScreen);
