@@ -12,6 +12,4 @@ public interface TimetablesSortInputBoundary {
      * @param request a TimetablesSortRequestModel that contains the stringified version of TimeButton and BreakButton
      */
     void timetablesSort(TimetablesSortRequestModel request);
-
-    void setTimetables(Timetable[] timetables);
 }

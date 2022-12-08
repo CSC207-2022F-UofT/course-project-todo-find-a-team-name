@@ -40,7 +40,7 @@ public class AllTimetablesInteractor implements AllTimetablesInputBoundary,
 
     /**
      * Updates this Interactor's timetables according to the publisher
-     * Note that timetables is of type List<Timetables> unless this project is expanded on in the future
+     * Note that timetables is of type List<Timetable> unless this project is expanded on in the future
      * @param timetables the updated timetables
      */
     @Override

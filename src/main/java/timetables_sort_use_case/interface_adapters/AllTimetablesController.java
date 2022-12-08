@@ -12,6 +12,10 @@ public class AllTimetablesController {
         this.allTimetablesInteractor = allTimetablesInteractor;
     }
 
+    /**
+     * publish the selected timetable to subscribers
+     * @param i the index of the timetable that was selected
+     */
     public void updateSubscribers(int i) {
         allTimetablesInteractor.updateSubscribers(i);
     }

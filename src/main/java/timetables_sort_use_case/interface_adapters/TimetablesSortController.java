@@ -9,17 +9,13 @@ import timetables_sort_use_case.application_business.TimetablesSortRequestModel;
  */
 public class TimetablesSortController {
     TimetablesSortInputBoundary timetablesSortInteractor;
-    AllTimetablesInputBoundary allTimetablesInteractor;
 
-    public TimetablesSortController(TimetablesSortInputBoundary timetablesSortInteractor,
-                                    AllTimetablesInputBoundary allTimetablesInteractor){
+    public TimetablesSortController(TimetablesSortInputBoundary timetablesSortInteractor){
         this.timetablesSortInteractor = timetablesSortInteractor;
-        this.allTimetablesInteractor = allTimetablesInteractor;
     }
 
     /**
      * Sorts timetables and displays it
-     *
      * @param timeButton the text in the chosen timeButton
      * @param breakButton the text in the chosen breakButton
      */

@@ -44,7 +44,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
         for (Timetable timetable : timetables) {
             double score = getTimeScore(timetable, request.getTimeButton());
             score += getBreakScore(timetable, request.getBreakButton());
-            timetable.setScore(score);
+            timetable.setScore(-score);
             timetableArrayList.add(timetable);
         }
 
@@ -76,7 +76,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
         if (timeButton.contains("morning")) {
             return (-score);
         } else if (timeButton.contains("afternoon")) {
-            return -abs((score - 2));
+            return -abs((score - 14));
         } else if (timeButton.contains("evening")) {
             return score;
         } else {
@@ -153,7 +153,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
                 }
             }
         }
-        return count * -1000;
+        return count * -10000;
     }
 
     /**
@@ -173,12 +173,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
                 }
             }
         }
-        return (days[0] + days[1] + days[2] + days[3] + days[4]) * 1000;
-    }
-
-    @Override
-    public void setTimetables(Timetable[] timetables) {
-        this.timetables = timetables;
+        return (days[0] + days[1] + days[2] + days[3] + days[4]) * 10000;
     }
 
     @Override

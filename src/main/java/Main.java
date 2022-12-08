@@ -1,7 +1,7 @@
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
-import display_timetable_use_case.interface_adapters.TimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.*;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
@@ -100,8 +100,8 @@ public class Main {
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
-        displayTimetablePresenter.setView(timetableUI);
+//        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
+//        displayTimetablePresenter.setView(timetableUI);
 
         // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController);
 
