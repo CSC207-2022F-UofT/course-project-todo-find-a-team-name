@@ -1,6 +1,6 @@
 package overlap_maximization_use_case;
 
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import overlap_crap_fix_locations_later.application_business.CalculateSectionHoursInteractor;

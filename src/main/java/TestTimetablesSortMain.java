@@ -6,7 +6,7 @@
 //import display_timetable_use_case.frameworks_and_drivers.*;
 //import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 //import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
-//import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
+//import display_timetable_use_case.frameworks_and_drivers.TimetableViewBlockModel;
 //import edit_timetable_use_case.application_business.AddCourseInteractor;
 //import edit_timetable_use_case.application_business.EditCourseInteractor;
 //import edit_timetable_use_case.application_business.RemoveCourseInteractor;

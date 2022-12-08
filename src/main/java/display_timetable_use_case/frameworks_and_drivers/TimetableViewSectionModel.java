@@ -1,7 +1,5 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
