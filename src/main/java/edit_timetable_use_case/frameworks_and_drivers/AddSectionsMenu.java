@@ -1,9 +1,9 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import display_timetable_use_case.interface_adapters.TimetableViewSectionModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewBlockModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewSectionModel;
 import screens.SessionViewModel;
 
 import javax.swing.*;
@@ -146,10 +146,6 @@ public class AddSectionsMenu extends JPanel implements ActionListener {
         description.append(":00 - ");
         description.append((int) block.getEndTime());
         description.append(":00");
-
-        if (! block.getRoom().equals("")){
-            description.append(", ").append(block.getRoom());
-        }
         return description.toString();
     }
 

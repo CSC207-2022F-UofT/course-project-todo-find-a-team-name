@@ -10,8 +10,7 @@ import java.io.IOException;
 public interface SessionFileImportInputBoundary {
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
-     * given a session type, return a Session with specified session type
-     * from the JSON file where the key is the course code and value is course information.
+     * given a session type, return a Session with specified session type from the JSON file.
      * @param jsonData FileImportRequestModel, Session Type
      * @return Session
      */

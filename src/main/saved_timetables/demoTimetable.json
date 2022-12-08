@@ -1,0 +1,116 @@
+{
+  "CSC207H1-F-20229" : {
+    "code" : "CSC207H1",
+    "breadth" : "5",
+    "session" : "F",
+    "title" : "Software Design",
+    "sections" : {
+      "LEC-0201" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "16:0",
+            "endTime" : "17:0",
+            "day" : "1",
+            "room" : "BR 200"
+          },
+          "1Block" : {
+            "startTime" : "16:0",
+            "endTime" : "17:0",
+            "day" : "3",
+            "room" : "BR 200"
+          }
+        },
+        "section" : "LEC-0101",
+        "prof" : "J Calver"
+      },
+      "TUT-0301" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "14:0",
+            "endTime" : "16:0",
+            "day" : "0",
+            "room" : "Contact DEPT"
+          }
+        },
+        "section" : "TUT-0301",
+        "prof" : ""
+      }
+    }
+  },
+  "CSC236aH1-F-20229" : {
+    "code" : "CSC236H1",
+    "breadth" : "5",
+    "session" : "F",
+    "title" : "Introduction to the Theory of Computation",
+    "sections" : {
+      "LEC-0101" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "11:0",
+            "endTime" : "12:0",
+            "day" : "0",
+            "room" : "MP 203"
+          },
+          "1Block" : {
+            "startTime" : "11:0",
+            "endTime" : "12:0",
+            "day" : "4",
+            "room" : "MP 103"
+          }
+        },
+        "section" : "LEC-0101",
+        "prof" : "F Pitt"
+      },
+      "TUT-0103" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "11:0",
+            "endTime" : "12:0",
+            "day" : "2",
+            "room" : "BA 1230"
+          }
+        },
+        "section" : "TUT-0103",
+        "prof" : ""
+      }
+    }
+  },
+  "STA247H1-F-20229" : {
+    "code" : "STA247H1",
+    "breadth" : "5",
+    "session" : "F",
+    "title" : "Probability with Computer Applications",
+    "sections" : {
+      "LEC-0201" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "15:0",
+            "endTime" : "16:0",
+            "day" : "1",
+            "room" : "MC 102"
+          },
+          "1Block" : {
+            "startTime" : "14:0",
+            "endTime" : "16:0",
+            "day" : "3",
+            "room" : "MC 102"
+          }
+        },
+        "section" : "LEC-0201",
+        "prof" : "K Huynh Wong"
+      },
+      "TUT-0202" : {
+        "blocks" : {
+          "0Block" : {
+            "startTime" : "14:0",
+            "endTime" : "15:0",
+            "day" : "1",
+            "room" : ""
+          }
+        },
+        "section" : "TUT-0202",
+        "prof" : ""
+      }
+    }
+  }
+}

@@ -10,16 +10,26 @@ public class Block {
     private final String room;
 
     public Block(String day, String startTime, String endTime, String room) {
-        if (day.equals("MO")) {
-            this.day = 0;
-        } else if (day.equals("TU")) {
-            this.day = 1;
-        } else if (day.equals("WE")) {
-            this.day = 2;
-        } else if (day.equals("TH")) {
-            this.day = 3;
-        } else {
-            this.day = 4;
+        switch (day) {
+            case "MO":
+            case "0":
+                this.day = 0;
+                break;
+            case "TU":
+            case "1":
+                this.day = 1;
+                break;
+            case "WE":
+            case "2":
+                this.day = 2;
+                break;
+            case "TH":
+            case "3":
+                this.day = 3;
+                break;
+            default:
+                this.day = 4;
+                break;
         }
 
 

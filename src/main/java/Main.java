@@ -1,6 +1,6 @@
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.*;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
@@ -61,7 +61,7 @@ public class Main {
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
         EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController, saveController);
 
-        screen.setBRWindow(recommendBRWindow);
+//        screen.setBRWindow(recommendBRWindow);
         removePresenter.setView(screen);
         addPresenter.setView(screen);
         editPresenter.setView(screen);
