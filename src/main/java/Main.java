@@ -3,6 +3,7 @@ import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScree
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
 import display_timetable_use_case.interface_adapters.DisplayTimetableController;
 import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.AddCourseInteractor;
@@ -30,12 +31,14 @@ import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.application_business.RetrieveTimetablePresenter;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import screens.MainUI;
 import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Flow;
@@ -94,18 +97,19 @@ public class Main {
         EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
         editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         JPanel prevPanel = new JPanel();
-        DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
-        DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController, saveController);
+        DisplayTimetablePresenter editDisplayPresenter = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor editDisplayInteractor = new DisplayTimetableInteractor(editDisplayPresenter);
+        DisplayTimetableController editDisplayController = new DisplayTimetableController(editDisplayInteractor);
+        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, editDisplayController, retrieveTimetableController, saveController);
 
         removePresenter.setView(editScreen);
         addPresenter.setView(editScreen);
         editPresenter.setView(editScreen);
-        displayPresenter.setView(editScreen);
+        editDisplayPresenter.setView(editScreen);
         removePresenter.setView(editScreen);
         addPresenter.setView(editScreen);
         editPresenter.setView(editScreen);
-        displayPresenter.setView(editScreen);
+        editDisplayPresenter.setView(editScreen);
         retrieveTimetablePresenter.setView(editScreen);
 
 
@@ -178,6 +182,8 @@ public class Main {
         TimetableAndSessionObservers.add(removeInteractor);
         TimetableAndSessionObservers.add(editInteractor);
         TimetableAndSessionObservers.add(retrieveTimetableInteractor);
+        TimetableAndSessionObservers.add(displayTimetableInteractor);
+        TimetableAndSessionObservers.add(editDisplayInteractor);
 
         List<Flow.Publisher<Object>> TimetableAndSessionObservables = new ArrayList<>();
 
