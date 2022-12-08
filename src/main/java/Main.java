@@ -1,3 +1,7 @@
+import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
+import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
@@ -16,6 +20,10 @@ import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
+import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
+import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 
@@ -68,6 +76,25 @@ public class Main {
         addPresenter.setView(editScreen);
         editPresenter.setView(editScreen);
         displayPresenter.setView(editScreen);
+
+
+
+        /* Set up for Generating Timetable:
+         */
+        TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
+        TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
+        TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
+        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
+
+        /*Set up for BlackList/Whitelist:
+
+         */
+        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
+        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
+        constraintsInputScreen.setPrevPanel(generateTimetableScreen);
+        sectionFilterPresenter.setView(constraintsInputScreen);
 
 
         /*
