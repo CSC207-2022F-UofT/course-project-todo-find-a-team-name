@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TimetableMatchInputBoundary {
 
-    TimetableModel determineBestMatchingTimetable(TimetableModel mainTable, List<TimetableModel> timetables);
+    void determineBestMatchingTimetable(TimetableModel mainTable, List<TimetableModel> timetables);
 
     HashMap<TimetableModel, Double> calculateTimetableOverlaps(TimetableModel mainTable, List<TimetableModel> timetables);
 }

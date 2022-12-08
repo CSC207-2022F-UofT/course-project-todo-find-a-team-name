@@ -1,7 +1,6 @@
 package overlap_crap_fix_locations_later.ViewModels;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -79,14 +78,14 @@ class OverlapTimetableCourseViewModel {
      **/
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OverlapTimetableCourseViewModel that = (OverlapTimetableCourseViewModel) o;
-        return getTitle().equals(that.getTitle()) &&
-                new HashSet<>(getSections()).equals(new HashSet<>(that.getSections()))
-                && getCourseSession().equals(that.getCourseSession())
-                && getCourseCode().equals(that.getCourseCode())
-                && getBreadth().equals(that.getBreadth());
+        if (o instanceof OverlapTimetableCourseViewModel) {
+            OverlapTimetableCourseViewModel other = (OverlapTimetableCourseViewModel) o;
+            return this.title.equals(other.title) && this.sections.equals(other.sections)
+                    && this.courseSession.equals(other.courseSession) && this.courseCode.equals(other.courseCode)
+                    && this.breadth.equals(other.breadth);
+        } else {
+            return false;
+        }
     }
 }
 
@@ -126,11 +125,13 @@ class OverlapTimetableSectionViewModel {
      **/
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OverlapTimetableSectionViewModel that = (OverlapTimetableSectionViewModel) o;
-        return getCode().equals(that.getCode()) && getInstructor().equals(that.getInstructor()) &&
-                new HashSet<>(getBlocks()).equals(new HashSet<>(that.getBlocks()));
+        if (o instanceof OverlapTimetableSectionViewModel) {
+            OverlapTimetableSectionViewModel other = (OverlapTimetableSectionViewModel) o;
+            return this.code.equals(other.code) && this.instructor.equals(other.instructor) &&
+                    this.blocks.equals(other.blocks);
+        } else {
+            return false;
+        }
     }
 }
 
