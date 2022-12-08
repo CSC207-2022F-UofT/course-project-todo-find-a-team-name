@@ -105,9 +105,9 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
 
         if (course.getLectureCode() != null)
             sectionCodes.add(course.getLectureCode());
-        else if (course.getTutorialCode() != null)
+        if (course.getTutorialCode() != null)
             sectionCodes.add(course.getTutorialCode());
-        else if (course.getPracticalCode() != null)
+        if (course.getPracticalCode() != null)
             sectionCodes.add(course.getPracticalCode());
 
         try {
