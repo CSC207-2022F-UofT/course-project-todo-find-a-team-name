@@ -238,7 +238,6 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser("src/main");
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    // Add SessionFileController
                     try {
                         fallSessionFilePath.setText(importedSessionFilePath);
                         sessionController.createSessionFile(importedSessionFilePath, "F");
@@ -252,7 +251,6 @@ public class MainUI extends JPanel implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser("src/main");
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    // Add SessionFileController
                     try {
                         winterSessionFilePath.setText(importedSessionFilePath);
                         sessionController.createSessionFile(importedSessionFilePath, "S");

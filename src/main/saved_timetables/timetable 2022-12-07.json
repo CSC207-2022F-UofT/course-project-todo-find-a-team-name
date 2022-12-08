@@ -28,8 +28,8 @@
       "LEC-0401" : {
         "blocks" : {
           "1Block" : {
-            "startTime" : "1:0",
-            "endTime" : "2:0",
+            "startTime" : "8:0",
+            "endTime" : "10:0",
             "day" : "1",
             "room" : "Pokemon"
           }
