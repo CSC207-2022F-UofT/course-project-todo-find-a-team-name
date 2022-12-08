@@ -75,7 +75,7 @@ class WeekdayConstraintTest {
         // testing to check if all sections without the whitelisted time intervals are not removed, and the
         // section type is consistent.
         assertTrue(weekdayConstraint.filter(course2));
-        assertTrue(course1.equals(course2));
+        assertEquals(course1, course2);
     }
 
     @Test

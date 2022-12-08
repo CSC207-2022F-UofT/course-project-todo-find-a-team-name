@@ -135,7 +135,7 @@ class RoomConstraintTest {
         // testing to check original and modified course section type consistency.
         CalendarCourse courseUnchanged = new CalendarCourse("Course1",sections1, "", "","");
         assertFalse(roomConstraint2.filter(course1));
-        assertTrue(courseUnchanged.equals(course1));
+        assertEquals(courseUnchanged, course1);
 
     }
     @Test
