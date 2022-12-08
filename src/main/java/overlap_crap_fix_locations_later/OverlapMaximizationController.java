@@ -15,7 +15,7 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
     private TimetableModel mainTable;
     private List<TimetableModel> timetables;
 
-    OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher) {
+    public OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher) {
         this.timetableMatcher = timeTableMatcher;
         this.mainTable = null;
         this.timetables = null;

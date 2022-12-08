@@ -1,5 +1,7 @@
 package display_timetable_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

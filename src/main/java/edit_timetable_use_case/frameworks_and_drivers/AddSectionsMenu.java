@@ -1,9 +1,9 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewBlockModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewSectionModel;
+import display_timetable_use_case.interface_adapters.TimetableViewBlockModel;
 import screens.SessionViewModel;
 
 import javax.swing.*;

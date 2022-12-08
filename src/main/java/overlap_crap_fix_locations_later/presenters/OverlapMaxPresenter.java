@@ -1,6 +1,6 @@
 package overlap_crap_fix_locations_later.presenters;
 
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapInputEntryViewModel;
 import overlap_crap_fix_locations_later.InputBoundaries.OverlapPresenting;
 import overlap_crap_fix_locations_later.ViewModels.ModelToOverlapViewModelConverter;
