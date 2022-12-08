@@ -373,8 +373,6 @@ public class MainUI extends JPanel implements ActionListener {
         timetableGatewayInteractor.subscribe(displayTimetableInteractor1);
 
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController, timetableFileController);
-        timetableUI.setPrevPanel(mainUI);
-        editTimetableScreen.setPreviousPanel(mainUI);
 
         mainUI.setPreferredSize(new Dimension(1280, 720));
         frame.add(mainUI);
