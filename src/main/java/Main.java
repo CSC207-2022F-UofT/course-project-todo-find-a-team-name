@@ -1,12 +1,19 @@
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
 import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
+import display_timetable_use_case.interface_adapters.TimetableUI;
 import edit_timetable_use_case.application_business.*;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
+import recommend_br_use_case.application_business.CourseComparatorFactory;
+import recommend_br_use_case.application_business.RecommendBRInteractor;
+import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
+import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
+import recommend_br_use_case.interface_adapters.RecommendBRController;
+import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 
@@ -50,21 +57,56 @@ public class Main {
         addInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         EditCoursePresenter editPresenter = new EditCoursePresenter();
         EditCourseInteractor editInteractor = new EditCourseInteractor(editPresenter);
-        EditTimetableController controller = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
+        EditTimetableController editController = new EditTimetableController(removeInteractor, addInteractor, editInteractor);
         editInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController, retrieveTimetableController);
+        EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController, retrieveTimetableController);
 
-        screen.setBRWindow(recommendBRWindow);
-        removePresenter.setView(screen);
-        addPresenter.setView(screen);
-        editPresenter.setView(screen);
-        displayPresenter.setView(screen);
+        removePresenter.setView(editScreen);
+        addPresenter.setView(editScreen);
+        editPresenter.setView(editScreen);
+        displayPresenter.setView(editScreen);
+
+
+        /*
+         * Set up for BR recommendation:
+         *
+         * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+         * RecommendBRInteractor
+         */
+        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter, courseComparatorFactory);
+        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
+        editScreen.setBRWindow(recommendBRWindow);
+
+        /*
+         * This is temporary since timetable view and main menu ui branch haven't merged yet!
+         *
+         * Emily, Yahya, and anybody who implements publisher for timetable and session should subscribe
+         * displayTimetableInteractor
+         *
+         * Anyone who displays the timetableUI should call updateTimetable() to update view model
+         * and setPrevPanel() to set the previous panel to the appropriate JPanel
+         *
+         * Hans, I need constraint input screen for mainUI
+         * Emily, I need sessionFileController for mainUI
+         *
+         */
+        DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
+        DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
+        DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen);
+        displayTimetablePresenter.setView(timetableUI);
+
+        // MainUI mainUI = new MainUI(frame, constraintInputScreen, editScreen, timetableUI, sessionFileController);
+
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        screen.updateTimetable();
-        frame.add(screen);
+        editScreen.updateTimetable();
+        frame.add(editScreen);
     }
 
 }
