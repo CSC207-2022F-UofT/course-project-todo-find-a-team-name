@@ -19,7 +19,7 @@ public class AllTimetablesPublisher implements AllTimetablesInputBoundary,
         this.subscribers.add(subscriber);
     }
 
-    public void updateTimetable(int i) {
+    public void updateSubscribers(int i) {
         for (Flow.Subscriber<Object> subscriber : subscribers) {
             Timetable timetable = this.timetables.get(i);
             subscriber.onNext(timetable);

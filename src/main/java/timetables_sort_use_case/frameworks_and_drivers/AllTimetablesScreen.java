@@ -109,8 +109,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             this.setVisible(false);
             mainUI.setVisible(true);
         } else {
+            System.out.println(e.getActionCommand());
+            this.setVisible(false);
             int i = e.getActionCommand().length() - 1;
-            openTimetableUI(i);
+            allTimetablesController.updateSubscribers(i);
+            displayTimetableController.displayTimetable();
         }
     }
 
@@ -127,11 +130,6 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         this.setVisible(false);
         timetablesSortMenu.setVisible(true);
         this.frame.pack();
-    }
-    public void openTimetableUI(int i) {
-        allTimetablesController.setTTUI(i);
-        // TODO make a controller that updates his interactor's timetable and flow to everyone
-        displayTimetableController.displayTimetable();
     }
 
 
@@ -293,6 +291,10 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
 //        frame.setVisible(true);
 
 
+
+
+
+
         JFrame frame = new JFrame();
 
         RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
@@ -434,15 +436,10 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
                 new TimetablesSortController(timetablesSortInteractor, allTimetablesPublisher);
         timetablesSortInteractor.setTimetables(timetables);
         timetablesSortInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
-        DisplayTimetableOutputBoundary displayTimetablePresenter = new DisplayTimetablePresenter();
-        DisplayTimetableInputBoundary displayTimetableInteractor =
-                new DisplayTimetableInteractor(displayTimetablePresenter);
-        DisplayTimetableController displayTimetableController =
-                new DisplayTimetableController(displayTimetableInteractor);
         AllTimetablesController allTimetablesController =
-                new AllTimetablesController(displayTimetableInteractor, allTimetablesPublisher);
+                new AllTimetablesController(displayTimetableInteractor1, allTimetablesPublisher);
         AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetablesSortController,
-                displayTimetableController, allTimetablesController);
+                displayTimetableController2, allTimetablesController);
         allTimetablesScreen.updateTimetables(timetableViewModels);
         timetablesSortPresenter.setView(allTimetablesScreen);
 
@@ -453,17 +450,17 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         test.setSize(200,200);
         test.setBackground(Color.red);
 //      WHY DOES THIS WORK
-        frame.add(test);
-        test.setVisible(false);
-        frame.add(mainUI);
-        mainUI.setVisible(false);
-        test.setVisible(true);
+//        frame.add(test);
+//        test.setVisible(false);
+//        frame.add(mainUI);
+//        mainUI.setVisible(false);
+//        test.setVisible(true);
 //      AND NOT THIS
-        frame.add(mainUI);
-        mainUI.setVisible(false);
-        frame.add(test);
-        test.setVisible(false);
-        mainUI.setVisible(true);
+//        frame.add(mainUI);
+//        mainUI.setVisible(false);
+//        frame.add(test);
+//        test.setVisible(false);
+//        test.setVisible(true);
 
 //        frame.add(allTimetablesScreen);
 
