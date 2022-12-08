@@ -1,7 +1,6 @@
-package display_timetable_use_case.frameworks_and_drivers;
+package display_timetable_use_case.interface_adapters;
 
 import display_timetable_use_case.application_business.DisplayTimetableInputBoundary;
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
 
 /**
  * Controller for display timetable use case that communicate with the interactor

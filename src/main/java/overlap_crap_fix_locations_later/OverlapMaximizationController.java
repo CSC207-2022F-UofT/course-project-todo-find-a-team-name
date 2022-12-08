@@ -17,7 +17,7 @@ public class OverlapMaximizationController implements OverlapMaxInputBoundary {
 
     private Flow.Publisher publisher;
 
-    OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher, Flow.Publisher publisher) {
+    public OverlapMaximizationController(TimetableMatchInputBoundary timeTableMatcher, Flow.Publisher publisher) {
         this.timetableMatcher = timeTableMatcher;
         this.publisher = publisher;
         this.mainTable = null;

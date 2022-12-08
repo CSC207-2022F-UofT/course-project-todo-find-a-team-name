@@ -11,6 +11,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.7.1'
+    implementation group: 'com.intellij', name: 'forms_rt', version: '7.0.3'
 }
 
 test {
