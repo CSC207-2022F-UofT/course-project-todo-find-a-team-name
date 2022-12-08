@@ -188,6 +188,7 @@ public class Main {
         timetableAndSessionObservers.add(recommendBRInteractor);
         timetableAndSessionObservers.add(sectionFilterInterator);
         timetableAndSessionObservers.add(generatorInteractor);
+        timetableAndSessionObservers.add(saveTimetableInteractor);
 
         List<Flow.Publisher<Object>> timetableAndSessionObservables = new ArrayList<>();
         timetableAndSessionObservables.add(sessionGatewayInteractor);
