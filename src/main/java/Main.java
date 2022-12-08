@@ -59,13 +59,13 @@ public class Main {
         JPanel prevPanel = new JPanel();
         DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
         DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
+//        EditTimetableScreen screen = new EditTimetableScreen(frame, controller, prevPanel, updateController);
 
 //        screen.setBRWindow(recommendBRWindow);
-        removePresenter.setView(screen);
-        addPresenter.setView(screen);
-        editPresenter.setView(screen);
-        displayPresenter.setView(screen);
+//        removePresenter.setView(screen);
+//        addPresenter.setView(screen);
+//        editPresenter.setView(screen);
+//        displayPresenter.setView(screen);
 
         //  Use case 1 main requirements:
         //      1- TimetablesSortPresenter, 2- TimetablesSortInteractor(Presenter), 3- AllTimetablesPublisher,
@@ -93,8 +93,8 @@ public class Main {
 //        timetableGeneratorInteractor.subscribe(allTimetablesInteractor);
 //        timetableGeneratorInteractor.subscribe(timetablesSortInteractor);
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        screen.updateTimetable();
-        frame.add(screen);
+//        screen.updateTimetable();
+//        frame.add(screen);
     }
 
 }
