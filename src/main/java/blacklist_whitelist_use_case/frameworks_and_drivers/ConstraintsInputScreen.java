@@ -49,7 +49,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final JButton submit = new JButton("submit and filter");
     private final JButton help = new JButton("help");
 
-
     public ConstraintsInputScreen(GenerateTimetableScreen generateTimeTableScreen, SectionFilterController controller) {
         this.generateTimeTableScreen = generateTimeTableScreen;
         JRadioButton radioButton = new JRadioButton("MO");
@@ -134,7 +133,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
             }
         });
 
-        generateTimetableScreen.add(new JButton("HELLO"));
         JFrame jFrame = new JFrame();
         jFrame.setSize(800, 400);
         jFrame.setResizable(true);
