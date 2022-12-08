@@ -84,10 +84,13 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         top.setSize(100, 100);
         JButton sort = new JButton("Sort");
         JButton mainMenu = new JButton("Main Menu");
+        JButton overlap = new JButton("Overlap");
         top.add(sort);
         top.add(mainMenu);
+        top.add(overlap);
         sort.addActionListener(this);
         mainMenu.addActionListener(this);
+        overlap.addActionListener(this);
 
         timetablesPanel.setLayout(new GridLayout(0, 2, 10, 10));
         timetablesPanel.setSize(500, 500);
@@ -108,6 +111,8 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
             openTimetablesSortMenu();
         } else if (e.getActionCommand().equals("Main Menu")) {
             openMainUI();
+        } else if (e.getActionCommand().equals("Overlap")) {
+            openOverlapUI();
         } else {
             int i = e.getActionCommand().length() - 1;
             openTimetableUI(i);
@@ -143,6 +148,14 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         displayTimetableController.displayTimetable();
         frame.add(timetableUI);
         frame.revalidate();
+    }
+
+    /**
+     * closes this view and opens OverlapInputDialogue
+     */
+    public void openOverlapUI() {
+        frame.getContentPane().removeAll();
+
     }
 
     /**
