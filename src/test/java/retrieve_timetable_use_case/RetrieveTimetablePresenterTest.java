@@ -10,6 +10,9 @@ import screens.SessionViewModel;
 
 import java.util.ArrayList;
 
+/**
+ * A suite of test for RetrieveTimetablePresenter.
+ */
 public class RetrieveTimetablePresenterTest {
     private RetrieveTimetablePresenter presenter;
     private TestRetrieveTimetableView view;
@@ -64,6 +67,9 @@ public class RetrieveTimetablePresenterTest {
         }
     }
 
+    /**
+     * Tests that updateSession correctly updates the view's session.
+     */
     @Test
     void updateSession(){
         presenter.updateSession(sessionModel);

@@ -115,6 +115,9 @@ class RetrieveTimetableControllerTest {
         Assertions.assertEquals(controller.retrieveTimetable(), timetableModel);
     }
 
+    /**
+     * Tests that the controller eventually causes the correct view model to be set in the view.
+     */
     @Test
     void updateSession(){
         controller.updateSession();
