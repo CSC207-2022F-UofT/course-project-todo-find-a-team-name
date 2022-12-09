@@ -152,13 +152,12 @@ public class Section {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Section)){
+        if (!(obj instanceof Section)) {
             return false;
         }
 
-        Section other = (Section) obj;
-
-        return code.equals(other.code) && instructorName.equals(other.instructorName) && blocks.equals(other.blocks);
+        return code.equals(((Section) obj).code) && instructorName.equals(((Section) obj).instructorName)
+                && blocks.equals(((Section) obj).blocks);
     }
 
     /**

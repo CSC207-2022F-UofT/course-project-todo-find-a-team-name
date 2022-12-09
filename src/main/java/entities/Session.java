@@ -15,7 +15,7 @@ public class Session {
 
     // allSessionCourses contains all courses in this session:
     // key (Course Code) and value (CalendarCourse object)
-    private HashMap<String, CalendarCourse> allSessionCourses;
+    private final HashMap<String, CalendarCourse> allSessionCourses;
     private final String sessionType;
 
     // Constructor
@@ -143,11 +143,14 @@ public class Session {
     }
 
 
+    /**
+     * Sessions are the same if they have the same courses and same session.
+     */
     @Override
-    /** Sessions are the same if they have the same courses and same session.*/
     public boolean equals(Object obj) {
-        if (obj instanceof Session other){
-            return this.sessionType.equals(other.sessionType) && this.allSessionCourses.equals(other.allSessionCourses);
+        if (obj instanceof Session) {
+            return this.sessionType.equals(((Session) obj).sessionType)
+                    && this.allSessionCourses.equals(((Session) obj).allSessionCourses);
         } else {
             return false;
         }
