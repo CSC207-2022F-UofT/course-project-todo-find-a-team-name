@@ -1,4 +1,5 @@
 # Timetable Generator
+Note: Saved timetables are saved in ```src/main/saved_timetables``` and demo session file is under ```src/main/resources/courses_cleaned.json```.
 
 ## Summary of How The Program Works
 
@@ -74,14 +75,13 @@ JRE or JDK 19 should be installed and usable on the machine.
 - The pop up window will be closed and selected course will be added and displayed on the original edit timetable screen
 
 **To use Use Case 6 (File IO/Importing and Exporting Files)**:
-- To import a JSON file that holds either courses from a timetable or sessions, use the Import Session or Timetable buttons on the main menu and upload the timetable or session JSON file from your local storage.
-- Next, you should see a popup indicating that your timetable or session have been successfully saved onto the program.
-- To export a timetable as a JSON file, choose the timetable you want to save from the UI that displays all timetables and then click on the save button on the UI for the corresponding timetable. The program will then download your timetable onto your local storage.
+- To import a JSON file that holds either courses from a timetable or sessions, use the Import Session or Timetable buttons on the main menu and upload the timetable or session JSON file from your local storage. Session from demo stored in ```src/main/resources/courses_cleaned.json```. 
+- To export a timetable as a JSON file, choose the timetable you want to save from the UI that displays all timetables and then click on the save button on the UI for the corresponding timetable. The program will then download your timetable onto your local storage in ```src/main/saved_timetables```.
 
 **To use Use Case 7(BlackList/WhiteList: Filtering out Sections of CalendarCourses)**:
 - First, access Constraint Input Screen
 - To get the input format, click help button.
-- Select the Session Type, “S” or “F”.
+- Select the Session Type, “S” or “F”..
 - Enter Course Code separated by comma (CSC207H1, CSC258H1, CSC236H1)
 - For each constraints panel, first select blacklist/whitelist, then enter or select the corresponding Constraints Domain.
 - Time and date is used most frequently realistically speaking. If using whitelist, it’s recommended that the user enter all their favorite time or professor for each course, so that the filtering would work more effectively.
