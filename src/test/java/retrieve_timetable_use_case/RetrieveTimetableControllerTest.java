@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import java.util.ArrayList;
 

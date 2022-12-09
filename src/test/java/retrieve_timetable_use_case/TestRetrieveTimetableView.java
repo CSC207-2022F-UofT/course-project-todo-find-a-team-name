@@ -1,7 +1,7 @@
 package retrieve_timetable_use_case;
 
 import retrieve_timetable_use_case.application_business.RetrieveTimetableView;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 /**
  * A mock view used to simulate a RetrieveTimetableView object.

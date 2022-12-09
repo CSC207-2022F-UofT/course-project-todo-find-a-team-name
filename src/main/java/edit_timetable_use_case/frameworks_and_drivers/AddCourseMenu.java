@@ -2,7 +2,7 @@ package edit_timetable_use_case.frameworks_and_drivers;
 
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

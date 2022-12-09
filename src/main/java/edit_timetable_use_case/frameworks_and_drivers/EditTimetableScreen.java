@@ -15,7 +15,7 @@ import fileio_use_case.interface_adapters.SaveTimetableController;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableView;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
