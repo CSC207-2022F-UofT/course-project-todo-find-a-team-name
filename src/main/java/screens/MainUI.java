@@ -256,4 +256,111 @@ public class MainUI extends JPanel implements ActionListener {
             }
         }
     }
+
+
+    // TODO: Remove this
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame();
+//
+//        TimetableGateway timetableGateway = new TimetableGateway();
+//        TimetableGatewayInteractor timetableGatewayInteractor = new TimetableGatewayInteractor(timetableGateway);
+//        TimetableFileController timetableFileController = new TimetableFileController(timetableGatewayInteractor);
+//
+//        SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
+//        SaveTimetableController saveTimetableController = new SaveTimetableController(saveTimetableInteractor);
+//
+//        RecommendBRPresenter recommendBRPresenter = new RecommendBRPresenter();
+//        CourseComparatorFactory courseComparatorFactory = new TargetTimeCourseComparatorFactory();
+//        RecommendBRInteractor recommendBRInteractor = new RecommendBRInteractor(recommendBRPresenter,
+//                courseComparatorFactory);
+//        RecommendBRController recommendBRController = new RecommendBRController(recommendBRInteractor);
+//
+//        AddCoursePresenter addCoursePresenter = new AddCoursePresenter();
+//        AddCourseInteractor addCourseInteractor = new AddCourseInteractor(addCoursePresenter);
+//        EditCoursePresenter editCoursePresenter = new EditCoursePresenter();
+//        EditCourseInteractor editCourseInteractor = new EditCourseInteractor(editCoursePresenter);
+//        RemoveCoursePresenter removeCoursePresenter = new RemoveCoursePresenter();
+//        RemoveCourseInteractor removeCourseInteractor = new RemoveCourseInteractor(removeCoursePresenter);
+//        EditTimetableController editTimetableController = new EditTimetableController(removeCourseInteractor, addCourseInteractor, editCourseInteractor);
+//
+//        RetrieveTimetableInteractor retrieveTimetableInteractor = new RetrieveTimetableInteractor();
+//        addCourseInteractor.setRetrieveInteractor(retrieveTimetableInteractor);
+//        RetrieveTimetableController retrieveTimetableController = new RetrieveTimetableController(retrieveTimetableInteractor);
+//        DisplayTimetablePresenter displayTimetablePresenter1 = new DisplayTimetablePresenter();
+//        DisplayTimetableInteractor displayTimetableInteractor1 = new DisplayTimetableInteractor(displayTimetablePresenter1);
+//        DisplayTimetableController displayTimetableController1 = new DisplayTimetableController(displayTimetableInteractor1);
+//
+//        RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editTimetableController);
+//        EditTimetableScreen editTimetableScreen = new EditTimetableScreen(frame, editTimetableController,
+//                null, displayTimetableController1, retrieveTimetableController, saveTimetableController);
+//        displayTimetablePresenter1.setView(editTimetableScreen);
+//        addCoursePresenter.setView(editTimetableScreen);
+//        editCoursePresenter.setView(editTimetableScreen);
+//        addCoursePresenter.setView(editTimetableScreen);
+//        removeCoursePresenter.setView(editTimetableScreen);
+//
+//        editTimetableScreen.setBRWindow(recommendBRWindow);
+//        editTimetableScreen.updateTimetable(new TimetableViewModel(new ArrayList<>()));
+//
+//        recommendBRPresenter.setView(recommendBRWindow);
+//
+//        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
+//        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+//        SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
+//
+//        TimetableGeneratorPresenter timetableGeneratorPresenter = new TimetableGeneratorPresenter();
+//        TimetableGeneratorInteractor timetableGeneratorInteractor = new TimetableGeneratorInteractor(timetableGeneratorPresenter);
+//        TimetableGeneratorController timetableGeneratorController = new TimetableGeneratorController(timetableGeneratorInteractor);
+//        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(timetableGeneratorController);
+//        timetableGeneratorPresenter.setView(timetables -> {
+//            for (TimetableViewModel viewModel : timetables){
+//                System.out.println("-------------------");
+//                System.out.println(viewModel);
+//            }
+//        });
+//
+//        ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
+//        sectionFilterPresenter.setView(constraintsInputScreen);
+//
+//        OverlapInputDialog overlapInputDialog = new OverlapInputDialog(new ArrayList<>(), sectionFilterController);
+//
+//        DisplayTimetablePresenter displayTimetablePresenter2 = new DisplayTimetablePresenter();
+//        DisplayTimetableInteractor displayTimetableInteractor2 = new DisplayTimetableInteractor(displayTimetablePresenter2);
+//        DisplayTimetableController displayTimetableController2 = new DisplayTimetableController(displayTimetableInteractor2);
+//
+//
+//        TimetableUI timetableUI = new TimetableUI(displayTimetableController2, editTimetableScreen, overlapInputDialog,
+//                saveTimetableController);
+//        displayTimetablePresenter2.setView(timetableUI);
+//
+//        SessionGateway sessionGateway = new SessionGateway();
+//        SessionGatewayInteractor sessionGatewayInteractor = new SessionGatewayInteractor(sessionGateway);
+//        SessionFileController sessionFileController = new SessionFileController(sessionGatewayInteractor);
+//
+//        sessionGatewayInteractor.subscribe(recommendBRInteractor);
+//        sessionGatewayInteractor.subscribe(addCourseInteractor);
+//        sessionGatewayInteractor.subscribe(editCourseInteractor);
+//        sessionGatewayInteractor.subscribe(removeCourseInteractor);
+//        sessionGatewayInteractor.subscribe(displayTimetableInteractor2);
+//        sessionGatewayInteractor.subscribe(displayTimetableInteractor1);
+//        sessionGatewayInteractor.subscribe(sectionFilterInteractor);
+//        sessionGatewayInteractor.subscribe(timetableGeneratorInteractor);
+//
+//        timetableGatewayInteractor.subscribe(recommendBRInteractor);
+//        timetableGatewayInteractor.subscribe(addCourseInteractor);
+//        timetableGatewayInteractor.subscribe(editCourseInteractor);
+//        timetableGatewayInteractor.subscribe(removeCourseInteractor);
+//        timetableGatewayInteractor.subscribe(displayTimetableInteractor2);
+//        timetableGatewayInteractor.subscribe(displayTimetableInteractor1);
+//        timetableGatewayInteractor.subscribe(saveTimetableInteractor);
+//
+//        MainUI mainUI = new MainUI(frame, constraintsInputScreen, editTimetableScreen, timetableUI, sessionFileController, timetableFileController);
+//
+//        mainUI.setPreferredSize(new Dimension(1280, 720));
+//        frame.add(mainUI);
+//
+//        frame.pack();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+//    }
 }

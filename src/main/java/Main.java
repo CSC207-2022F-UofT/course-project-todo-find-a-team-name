@@ -22,6 +22,12 @@ import fileio_use_case.frameworks_and_drivers.TimetableGateway;
 import fileio_use_case.interface_adapters.SaveTimetableController;
 import fileio_use_case.interface_adapters.SessionFileController;
 import fileio_use_case.interface_adapters.TimetableFileController;
+import generate_overlapping_timetable_use_case.application_business.CalculateSectionHoursInteractor;
+import generate_overlapping_timetable_use_case.application_business.OverlapGeneratedTimetableRelayInteractor;
+import generate_overlapping_timetable_use_case.application_business.TimeTableMatchInteractor;
+import generate_overlapping_timetable_use_case.frameworks_and_drivers.OverlapInputDialog;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapMaxPresenter;
+import generate_overlapping_timetable_use_case.interface_adapters.OverlapMaximizationController;
 import recommend_br_use_case.application_business.CourseComparatorFactory;
 import recommend_br_use_case.application_business.RecommendBRInteractor;
 import recommend_br_use_case.application_business.TargetTimeCourseComparatorFactory;
@@ -124,13 +130,14 @@ public class Main {
         /*Set up for BlackList/Whitelist:
          */
         SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
+        SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
+        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInteractor);
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
         /*
         Todo: constraintsInputScreen.setPrevPanel(PANEL);
          */
         sectionFilterPresenter.setView(constraintsInputScreen);
+        // sectionFilterInteractor.onNext(sessionGateway);
 
 
         /*
@@ -146,6 +153,20 @@ public class Main {
         RecommendBRWindow recommendBRWindow = new RecommendBRWindow(frame, recommendBRController, editController);
         editScreen.setBRWindow(recommendBRWindow);
         recommendBRPresenter.setView(recommendBRWindow);
+
+        // Make my presenters and stuff.
+        OverlapMaxPresenter overlapPresenter = new OverlapMaxPresenter();
+        OverlapGeneratedTimetableRelayInteractor relaySubscriber = new OverlapGeneratedTimetableRelayInteractor(overlapPresenter);
+        generatorInteractor.subscribe(relaySubscriber);
+
+        // Make my interactors.
+        CalculateSectionHoursInteractor sectionCalculator = new CalculateSectionHoursInteractor();
+        TimeTableMatchInteractor timetableMatcher = new TimeTableMatchInteractor(sectionCalculator, overlapPresenter);
+
+        // Make my controller and dialog.
+        OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
+
+        OverlapInputDialog overlapInputDialog = new OverlapInputDialog(constraintsInputScreen, overlapMaxController, frame);
 
         /*
          * This is temporary since timetable view branch haven't merged yet!
@@ -163,13 +184,28 @@ public class Main {
         DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
         DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
         DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, null, saveController);
+        TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapInputDialog, saveController);
         displayTimetablePresenter.setView(timetableUI);
         MainUI mainUI = new MainUI(frame, constraintsInputScreen, editScreen, timetableUI, sessionFileController, timetableFileController);
 
         /* The line below must run after displayPresenter's view has been set to screen.*/
 //        editScreen.updateTimetable();
 //        frame.add(editScreen);
+
+        /* Final Set up for Use case 3: Overlapping Shenanigans.
+         * Please make sure I have a TimetableUI initialized beforehand.
+         * **/
+
+
+        /* The line below must run after displayPresenter's view has been set to screen.*/
+        editScreen.updateTimetable();
+        frame.add(editScreen);
+
+
+        // Set the presenter to include the Dialog.
+        overlapPresenter.setDialogToPassTo(overlapInputDialog);
+        // Set up my dialog. RUN  AFTER WE HAVE TIMETABLE UI.
+        overlapInputDialog.setTimetablePanel(timetableUI);
 
 
         // display frame
@@ -178,6 +214,7 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
+        // Looks like we make all of our publishers here.
         List<Flow.Subscriber<Object>> timetableAndSessionObservers = new ArrayList<>();
         timetableAndSessionObservers.add(addInteractor);
         timetableAndSessionObservers.add(removeInteractor);
@@ -186,13 +223,15 @@ public class Main {
         timetableAndSessionObservers.add(displayTimetableInteractor);
         timetableAndSessionObservers.add(editDisplayInteractor);
         timetableAndSessionObservers.add(recommendBRInteractor);
-        timetableAndSessionObservers.add(sectionFilterInterator);
+        timetableAndSessionObservers.add(sectionFilterInteractor);
         timetableAndSessionObservers.add(generatorInteractor);
-        timetableAndSessionObservers.add(saveTimetableInteractor);
+        timetableAndSessionObservers.add(relaySubscriber);
 
+        // Make the observers here
         List<Flow.Publisher<Object>> timetableAndSessionObservables = new ArrayList<>();
         timetableAndSessionObservables.add(sessionGatewayInteractor);
         timetableAndSessionObservables.add(timetableGatewayInteractor);
+        timetableAndSessionObservables.add(timetableMatcher);
 
 
         for (Flow.Publisher<Object> observable : timetableAndSessionObservables){
