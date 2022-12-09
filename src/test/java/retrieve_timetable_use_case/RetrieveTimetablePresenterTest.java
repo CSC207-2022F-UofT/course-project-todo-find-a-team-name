@@ -24,47 +24,23 @@ public class RetrieveTimetablePresenterTest {
         view = new TestRetrieveTimetableView();
         presenter.setView(view);
 
-        BlockModel blockModel = new BlockModel(2, 14, 16, "AB106");
         Block blockActual = new Block("WE", "14:00", "16:00", "AB106");
-
-        ArrayList<BlockModel> modelBlocks = new ArrayList<>();
-        modelBlocks.add(blockModel);
 
         ArrayList<Block> actualBlocks = new ArrayList<>();
         actualBlocks.add(blockActual);
 
         Section sectionActual = new Section("LEC0101", "prof!!", actualBlocks);
-        SectionModel sectionModel = new SectionModel("LEC0101", "prof!!", modelBlocks);
-
-        ArrayList<SectionModel> modelSections = new ArrayList<>();
-        modelSections.add(sectionModel);
 
         ArrayList<Section> actualSections = new ArrayList<>();
         actualSections.add(sectionActual);
 
-        CourseModel courseModel = new CourseModel("some course", modelSections, "F", "EGG100", "" +
-                "BR1");
         CalendarCourse courseActual = new CalendarCourse("some course", actualSections, "F", "EGG100", "" +
                 "BR1");
-        try {
-            ArrayList<TimetableCourse> timetableCourses = new ArrayList<>();
-            timetableCourses.add(new TimetableCourse("some course", actualSections, "F",
-                    "EGG100", "BR1"));
-
-            ArrayList<CourseModel> timetableModelCourses = new ArrayList<>();
-            timetableModelCourses.add(courseModel);
-
             Session sessionActual = new Session("F");
             sessionActual.addCourse(courseActual);
 
-            Timetable timetable = new Timetable(timetableCourses, "F");
-
-            TimetableModel timetableModel = new TimetableModel(timetableModelCourses);
             sessionModel = EntityConverter.generateSessionResponse(sessionActual);
             sessionViewModel = TimetableModelConverter.sessionToView(EntityConverter.generateSessionResponse(sessionActual));
-        }
-        catch(InvalidSectionsException ignored){
-        }
     }
 
     /**
@@ -73,6 +49,6 @@ public class RetrieveTimetablePresenterTest {
     @Test
     void updateSession(){
         presenter.updateSession(sessionModel);
-        Assertions.assertTrue(sessionViewModel.getCourses().containsKey("EGG100") && view.session.getCourses().containsKey("EGG100"));
+        Assertions.assertEquals(sessionViewModel, view.session);
     }
 }
