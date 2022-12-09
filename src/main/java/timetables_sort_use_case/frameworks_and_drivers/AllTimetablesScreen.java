@@ -146,7 +146,10 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         for (int i = 0; i < ttViews.length; i++) {
             ttViews[i].updateViewModel(timetableViewModels[i]);
         }
+        frame.getContentPane().removeAll();
         frame.add(this);
+        this.revalidate();
+        frame.revalidate();
     }
 
     /**
