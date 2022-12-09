@@ -4,7 +4,6 @@ import entities.InvalidSectionsException;
 import entities.Session;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 public interface SessionGatewayInterface {
     /**

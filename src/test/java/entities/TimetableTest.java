@@ -29,7 +29,7 @@ class TimetableTest{
         assert emptyTimetable2.getCourseList().get(0) == course1;
     }
 //    @Test
-//    void testHasCourseOverlap() throws InvalidSectionsException {
+//    void testHasCourseOverlap() throws InvalidSectionsException
 //        ArrayList<TimetableCourse> aCourseList = new ArrayList<>();
 //        Section s1 = new Section("LEC0101", "inst1", new ArrayList<>());
 //        Section s2 = new Section("TUT0102", "inst2", new ArrayList<>());
@@ -46,6 +46,6 @@ class TimetableTest{
 //                "F", "EGX101", "BR1");
 //
 //        assertTrue(timetable1.hasCourseOverlap(course2));
-//    }
+//
 
 }

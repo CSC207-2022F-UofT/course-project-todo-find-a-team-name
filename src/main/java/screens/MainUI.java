@@ -259,7 +259,7 @@ public class MainUI extends JPanel implements ActionListener {
 
 
     // TODO: Remove this
-//    public static void main(String[] args) {
+//    public static void main(String[] args)
 //        JFrame frame = new JFrame();
 //
 //        TimetableGateway timetableGateway = new TimetableGateway();
@@ -362,5 +362,5 @@ public class MainUI extends JPanel implements ActionListener {
 //        frame.pack();
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        frame.setVisible(true);
-//    }
+//
 }

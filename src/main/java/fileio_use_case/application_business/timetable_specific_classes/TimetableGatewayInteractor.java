@@ -39,31 +39,28 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
         for (Flow.Subscriber<Object> subscriber : receivers){
             subscriber.onNext(aTimetable);
         }
-        timetableToTimetableModel(aTimetable);
     }
-    /** Helper method for readFromFile */
-    private TimetableModel timetableToTimetableModel(Timetable aTimetable) {
-        List<CourseModel> allCourses = new ArrayList<>();
-        for (TimetableCourse course : aTimetable.getCourseList()) {
-            allCourses.add(timetableCourseToCourseModel(course));
-        }
-        return new TimetableModel(allCourses);
-    }
-    /** Helper method for timetableToTimetableModel */
-    private CourseModel timetableCourseToCourseModel(TimetableCourse course) {
-        List<SectionModel> allSections = new ArrayList<>();
-        for (Section section : course.getSections()) {
-            List<BlockModel> allBlocks = new ArrayList<>();
-            for (Block block : section.getBlocks()){
-                allBlocks.add(new BlockModel(block.getDay(), block.getStartTime(),
-                        block.getEndTime(), block.getRoom()));
-            }
-            allSections.add(new SectionModel(section.getCode(), section.getInstructorName(), allBlocks));
-        }
-        return new CourseModel(course.getTitle(),
-                allSections, course.getCourseSession(), course.getCourseCode(),
-                course.getBreadth());
-    }
+//    /** Helper method for readFromFile */
+//    private TimetableModel timetableToTimetableModel(Timetable aTimetable)
+//        List<CourseModel> allCourses = new ArrayList<>();
+//        for (TimetableCourse course : aTimetable.getCourseList()) {
+//            allCourses.add(timetableCourseToCourseModel(course));
+//        }
+//        return new TimetableModel(allCourses);
+//    /** Helper method for timetableToTimetableModel */
+//    private CourseModel timetableCourseToCourseModel(TimetableCourse course)
+//        List<SectionModel> allSections = new ArrayList<>();
+//        for (Section section : course.getSections()) {
+//            List<BlockModel> allBlocks = new ArrayList<>();
+//            for (Block block : section.getBlocks()){
+//                allBlocks.add(new BlockModel(block.getDay(), block.getStartTime(),
+//                        block.getEndTime(), block.getRoom()));
+//            }
+//            allSections.add(new SectionModel(section.getCode(), section.getInstructorName(), allBlocks));
+//        }
+//        return new CourseModel(course.getTitle(),
+//                allSections, course.getCourseSession(), course.getCourseCode(),
+//                course.getBreadth());
     /**
      * Add subscribers/observers to this class
      * @param subscriber - a subscriber

@@ -1,6 +1,5 @@
 package retrieve_timetable_use_case;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
