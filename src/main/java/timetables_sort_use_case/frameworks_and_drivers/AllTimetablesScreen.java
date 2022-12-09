@@ -98,9 +98,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
      * closes this view and opens MainUI
      */
     public void openMainUI() {
+        this.setVisible(false);
         frame.getContentPane().removeAll();
         frame.add(mainUI);
         frame.revalidate();
+        mainUI.setVisible(true);
     }
 
     /**
@@ -109,9 +111,11 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
      * @param i the index of the timetable that was chosen
      */
     public void openTimetableUI(int i) {
+        this.setVisible(false);
         frame.getContentPane().removeAll();
         allTimetablesController.updateSubscribers(i);
         timetableUI.updateTimetable();
+        timetableUI.setPrevPanel(this);
         frame.add(timetableUI);
         frame.revalidate();
     }

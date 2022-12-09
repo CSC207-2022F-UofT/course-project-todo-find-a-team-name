@@ -107,6 +107,7 @@ public class TimetablesSortMenu extends JPanel implements ActionListener {
                 for (JRadioButton breakButton : breakButtons) {
                     if (breakButton.isSelected()) {
                         noInputs = false;
+                        this.setVisible(false);
                         frame.getContentPane().removeAll();
                         allTimetablesScreen.timetablesSort(timeButton.getText(), breakButton.getText());
                         frame.add(allTimetablesScreen);
