@@ -1,22 +1,23 @@
 package timetables_sort_use_case.interface_adapters;
 
-import display_timetable_use_case.application_business.DisplayTimetableInputBoundary;
 import timetables_sort_use_case.application_business.AllTimetablesInputBoundary;
 
 /**
- * The controller responsible for subscribing to ALlTimetablesScreen publisher and updating TimetableUI
+ * The controller responsible for subscribing to AllTimetablesScreen publisher and updating TimetableUI
  */
 public class AllTimetablesController {
-    DisplayTimetableInputBoundary interactor;
-    AllTimetablesInputBoundary publisher;
+    AllTimetablesInputBoundary allTimetablesInteractor;
 
-    public AllTimetablesController(DisplayTimetableInputBoundary interactor, AllTimetablesInputBoundary publisher) {
-        this.interactor = interactor;
-        this.publisher = publisher;
+    public AllTimetablesController(AllTimetablesInputBoundary allTimetablesInteractor) {
+        this.allTimetablesInteractor = allTimetablesInteractor;
     }
 
-    public void setTTUI(int i) {
-        publisher.updateTimetable(i);
+    /**
+     * publish the selected timetable to subscribers
+     * @param i the index of the timetable that was selected
+     */
+    public void updateSubscribers(int i) {
+        allTimetablesInteractor.updateSubscribers(i);
     }
 
 }

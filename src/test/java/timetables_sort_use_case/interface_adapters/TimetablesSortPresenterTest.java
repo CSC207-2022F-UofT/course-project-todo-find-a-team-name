@@ -1,15 +1,16 @@
 package timetables_sort_use_case.interface_adapters;
 
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import timetables_sort_use_case.application_business.TimetablesSortResponseModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class TimetablesSortPresenterTest {
 
         TimetableViewModel[] timetables = new TimetableViewModel[1];
         timetables[0] = TimetableModelConverter.timetableToView(timetable1);
-
+        System.out.println(Arrays.toString(timetables));
         Assertions.assertEquals(timetables.length, view.timetables.length);
     }
 }

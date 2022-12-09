@@ -15,19 +15,15 @@ public class TimetablesSortPresenter implements TimetablesSortOutputBoundary {
 
     private AllTimetablesView view;
 
-    public TimetablesSortPresenter(){
-
-    }
-
     /**
-     * converts into a TimeTableViewModel array to prepare it for the screen then updates view
+     * converts into a TimeTableViewModel array then calls the view's updateTimetables method to present it
      * @param responseModel: a response model that contains the updated TimeTableModels
      */
     @Override
     public void prepareView(TimetablesSortResponseModel responseModel) {
         TimetableModel[] updatedTimetables = responseModel.getTimetables();
         TimetableViewModel[] timetablesViewModel = new TimetableViewModel[updatedTimetables.length];
-        for (int i = 0; i < responseModel.getTimetables().length; i++) {
+        for (int i = 0; i < updatedTimetables.length; i++) {
             TimetableViewModel timetableViewModel = TimetableModelConverter.timetableToView(updatedTimetables[i]);
             timetablesViewModel[i] = timetableViewModel;
         }
