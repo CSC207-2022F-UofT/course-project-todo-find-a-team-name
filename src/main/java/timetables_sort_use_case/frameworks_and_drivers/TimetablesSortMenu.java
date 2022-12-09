@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 
 /**
  * A menu used to display the display preferences for the user to pick from.
- * controller refers to the TimetableSortController the processes user inputs
- *
  */
 public class TimetablesSortMenu extends JPanel implements ActionListener {
 
@@ -92,7 +90,7 @@ public class TimetablesSortMenu extends JPanel implements ActionListener {
     }
 
     /**
-     * Find which buttons were pressed and pass them onto controller.
+     * Find which buttons were pressed and pass them to allTimetablesScreen
      * @param e the event to be processed
      */
     @Override

@@ -44,8 +44,8 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
         }
 
         TimetableModel[] timetablesModel = new TimetableModel[timetables.length];
-        for(int i = 0; i < timetables.length; i++) {
-            retrieveInteractor.setTimetable(timetables[i]);
+        for (int i = 0; i < timetables.length; i++) {
+            //retrieveInteractor.setTimetable(timetables[i]);
             timetablesModel[i] = retrieveInteractor.retrieveTimetable();
         }
 
@@ -88,7 +88,6 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary {
     }
 
     /**
-     *
      * @param timetables updates the timetables used by the interactor
      */
     @Override

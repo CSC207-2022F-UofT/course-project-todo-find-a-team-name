@@ -1,15 +1,11 @@
-package overlap_crap_fix_locations_later;
+package generate_overlapping_timetable_use_case.application_business;
 
 // TODO: Assuming timeTable is a list of timetableCourses. Note that the current code is kind of a standIn.
 
-import overlap_crap_fix_locations_later.InputBoundaries.SectionHoursInputBoundary;
-import overlap_crap_fix_locations_later.InputBoundaries.TimetableMatchInputBoundary;
-import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
 import retrieve_timetable_use_case.application_business.SectionModel;
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,15 +20,18 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
      * (Weight can simply be determined by time * (proportion of satisfied constraints).
      */
 
+    private final OverlapOutputBoundary presenter;
     private final SectionHoursInputBoundary sectionHoursCalculator;
 
-    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator) {
+    public TimeTableMatchInteractor(SectionHoursInputBoundary sectionHoursCalculator, OverlapOutputBoundary presenter) {
         // Initialise what we know at compile-time. Timetables and the mainTable must be passed in later.
         this.sectionHoursCalculator = sectionHoursCalculator;
+        this.presenter = presenter;
     }
 
     /**
      * Return the overlap value of a timeTable with the main one.
+     * TODO: Extract a method since this is very deeply nested.
      */
     private Double calculateTimetableOverlap(TimetableModel mainTable, TimetableModel candidate) {
         List<CourseModel> mainCourses = mainTable.getCourses();
@@ -50,7 +49,6 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
                             // If they're in the same section in the same course, the two people can go together :).
                             // Hey, what if we used a companion object to not have to make a new one each time? Or just made this into an object.
 
-                            ArrayList<BlockModel> blockModels = new ArrayList<>();
                             Double thisOverlapWeightedHrs =
                                     sectionHoursCalculator.calculateHoursOfSection(candidateSection);
 
@@ -80,8 +78,11 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
     }
 
     /**
-     * Return ONLY the best overlapping timetable with the main one. Order is arbitrary if there is a tie. For multiple
-     * outputs, use calculateTimetableOverlaps and just take the first few.
+     * Push ONLY the best overlapping timetable with the main one to the presenter.
+     * Order is arbitrary if there is a tie. For multiple
+     * outputs, use calculateTimetableOverlaps and just take the first few if you want.
+     * Note: the return value is intended to be used for testing convenience ONLY.
+     * Don't actually rely on this to return stuff, dummy!!!
      **/
     public TimetableModel determineBestMatchingTimetable(TimetableModel mainTimetable,
                                                          List<TimetableModel> timetables) {
@@ -94,6 +95,8 @@ public class TimeTableMatchInteractor implements TimetableMatchInputBoundary {
                 bestScore = calculateTimetableOverlap(mainTimetable, timetable);
             }
         }
+        presenter.passBestTimetable(bestTimetable);
+
         return bestTimetable;
     }
 
