@@ -21,10 +21,6 @@ class RemoveCoursePresenterTest {
         presenter.setView(testView);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void prepareViewOnSuccess() {
         EditTimetableResponseModel response = new EditTimetableResponseModel("CSC207",

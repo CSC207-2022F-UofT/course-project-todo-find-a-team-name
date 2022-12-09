@@ -12,39 +12,39 @@ public class TestOverlapMaximizationController {
 
 
     // Make some initial test data available to all tests.
-    OverlapTimetableBlockViewModel testBlock =
+    final OverlapTimetableBlockViewModel testBlock =
             new OverlapTimetableBlockViewModel(24, 10.00, 12.00, "BA137");
-    OverlapTimetableSectionViewModel testSection =
+    final OverlapTimetableSectionViewModel testSection =
             new OverlapTimetableSectionViewModel("LEC0101", "Mario-chan", List.of(testBlock));
 
-    OverlapTimetableBlockViewModel testBlock2 =
+    final OverlapTimetableBlockViewModel testBlock2 =
             new OverlapTimetableBlockViewModel(24, 12.00, 14.00, "BA137");
-    OverlapTimetableSectionViewModel testSection2 =
+    final OverlapTimetableSectionViewModel testSection2 =
             new OverlapTimetableSectionViewModel("LEC0201", "Mario-chan", List.of(testBlock2));
 
-    OverlapTimetableBlockViewModel testBlock3 =
+    final OverlapTimetableBlockViewModel testBlock3 =
             new OverlapTimetableBlockViewModel(24, 14.00, 16.00, "BA137");
-    OverlapTimetableSectionViewModel testSection3 =
+    final OverlapTimetableSectionViewModel testSection3 =
             new OverlapTimetableSectionViewModel("LEC0201", "Mario-chan", List.of(testBlock3));
 
 
-    OverlapTimetableCourseViewModel testCourse =
+    final OverlapTimetableCourseViewModel testCourse =
             new OverlapTimetableCourseViewModel("Foundations",
                     List.of(testSection), "S", "CSC110", "4");
-    OverlapTimetableCourseViewModel testCourse2 =
+    final OverlapTimetableCourseViewModel testCourse2 =
             new OverlapTimetableCourseViewModel("Foundations",
                     List.of(testSection2), "S", "CSC110", "4");
-    OverlapTimetableCourseViewModel testCourse3 =
+    final OverlapTimetableCourseViewModel testCourse3 =
             new OverlapTimetableCourseViewModel("Foundations",
                     List.of(testSection3), "S", "CSC110", "4");
 
 
     // Initialize dummy presenter and interactor.
-    OverlapMaxPresenter testPresenter = new OverlapMaxPresenter();
-    TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
+    final OverlapMaxPresenter testPresenter = new OverlapMaxPresenter();
+    final TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
             new CalculateSectionHoursInteractor(), testPresenter);
 
-    OverlapMaximizationController testController = new OverlapMaximizationController(testInteractor);
+    final OverlapMaximizationController testController = new OverlapMaximizationController(testInteractor);
 
     /**
      * Test determineBestMatchingTimetable with an identical timetable -- it should give that one...

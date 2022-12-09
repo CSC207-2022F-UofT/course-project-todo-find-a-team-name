@@ -16,7 +16,7 @@ import java.util.concurrent.Flow;
 
 /** Interactor for SessionGateway **/
 public class SessionGatewayInteractor implements SessionFileImportInputBoundary, Flow.Publisher<Object> {
-    ArrayList<Flow.Subscriber<Object>> receivers;
+    final ArrayList<Flow.Subscriber<Object>> receivers;
     private final SessionGatewayInterface sessionGateway;
     public SessionGatewayInteractor(SessionGatewayInterface sessionGateway) {
         this.sessionGateway = sessionGateway;

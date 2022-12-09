@@ -9,11 +9,11 @@ import java.util.List;
 
 public class TimetableCourseBuilder {
     /** Builds TimetableCourse **/
-    protected String title;
-    protected List<Section> sections;
-    protected String courseSession;
-    protected String courseCode;
-    protected String breadth;
+    protected final String title;
+    protected final List<Section> sections;
+    protected final String courseSession;
+    protected final String courseCode;
+    protected final String breadth;
     public TimetableCourseBuilder(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
         this.title = title;
         this.sections = sections;

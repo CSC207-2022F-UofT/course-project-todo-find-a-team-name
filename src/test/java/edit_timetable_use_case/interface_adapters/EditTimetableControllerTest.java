@@ -80,10 +80,6 @@ class EditTimetableControllerTest {
 
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Remove should be successfully called in this case.
      */

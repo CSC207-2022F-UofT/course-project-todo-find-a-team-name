@@ -27,10 +27,6 @@ class TimetableModelTest {
         timetable = new TimetableModel(courses);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Tests that the Timetable and its equivalent TimetableModel are considered equal.
      */

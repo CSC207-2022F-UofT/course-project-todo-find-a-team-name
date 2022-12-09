@@ -13,5 +13,5 @@ public interface SessionGatewayInterface {
      * @param filePath file path for JSON file, Session Type
      * @return Session
      */
-    Session readFromFile(String filePath, String sessionType) throws IOException, ParseException, org.json.simple.parser.ParseException, InvalidSectionsException;
+    Session readFromFile(String filePath, String sessionType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException;
 }

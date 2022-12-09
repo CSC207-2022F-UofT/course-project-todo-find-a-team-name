@@ -84,10 +84,6 @@ class RetrieveTimetableControllerTest {
         }
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Tests that the object returned by a call of retrieveCalendarCourse has data equivalent to the corresponding
      * CalendarCourse. (See TimetableCourse.equals() for further details).

@@ -6,7 +6,6 @@ import entities.TimetableCourse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Flow;
 
 /**
  * Class that generates all possible timetable courses from the given calendar course

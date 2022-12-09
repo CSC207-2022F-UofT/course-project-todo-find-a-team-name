@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 /** Builds CalendarCourse **/
 public class CalendarCourseBuilder {
-    protected String title;
-    protected List<Section> sections;
-    protected String courseSession;
-    protected String courseCode;
-    protected String breadth;
+    protected final String title;
+    protected final List<Section> sections;
+    protected final String courseSession;
+    protected final String courseCode;
+    protected final String breadth;
     public CalendarCourseBuilder(String title, ArrayList<Section> sections, String courseSession, String courseCode, String breadth) {
         this.title = title;
         this.sections = sections;

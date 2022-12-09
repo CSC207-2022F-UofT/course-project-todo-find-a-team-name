@@ -47,7 +47,7 @@ class RoomConstraintTest {
         // testing to check original and modified course section type consistency.
         CalendarCourse courseWithNoSections = new CalendarCourse("Course1", emptySections, "", "", "");
         assertFalse(roomConstraint1.filter(course1));
-        assertFalse(courseWithNoSections.equals(course1));
+        assertNotEquals(courseWithNoSections, course1);
 
     }
 
@@ -99,7 +99,7 @@ class RoomConstraintTest {
         // testing to check original and modified course section type consistency.
         CalendarCourse courseWithModifiedSections = new CalendarCourse("Course2", expectedSections, "", "", "");
         assertFalse(roomConstraint2.filter(course2));
-        assertTrue(courseWithModifiedSections.equals(course2));
+        assertEquals(courseWithModifiedSections, course2);
 
     }
 

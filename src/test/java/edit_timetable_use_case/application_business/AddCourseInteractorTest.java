@@ -46,10 +46,6 @@ class AddCourseInteractorTest {
         interactor.setSession(session);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Tests to see that at least 1 section of each type can be selected in an added course.
      */

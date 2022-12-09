@@ -16,7 +16,7 @@ import java.util.concurrent.Flow;
 
 /** Interactor for TimetableGateway*/
 public class TimetableGatewayInteractor implements TimetableFileImportInputBoundary, Flow.Publisher<Object>{
-    ArrayList<Flow.Subscriber<Object>> receivers;
+    final ArrayList<Flow.Subscriber<Object>> receivers;
     private final TimetableGateway timetableGateway;
     /**
      * Constructor
@@ -30,16 +30,16 @@ public class TimetableGatewayInteractor implements TimetableFileImportInputBound
      * Given FileImportRequestModel, which holds a string of the JSON file path and
      * given a session type, return a TimetableModel with specified course type from the JSON file
      * (Timetable or Calendar)
+     *
      * @param jsonData FileImportRequestModel, Course Type
-     * @return TimetableModel
      */
-    public TimetableModel readFromFile(FileImportRequestModel jsonData, String courseType) throws IOException, ParseException, java.text.ParseException, InvalidSectionsException {
+    public void readFromFile(FileImportRequestModel jsonData, String courseType) throws IOException, ParseException, InvalidSectionsException {
         String filePath = jsonData.getFilePath();
         Timetable aTimetable = this.timetableGateway.readFromFile(filePath, courseType);
         for (Flow.Subscriber<Object> subscriber : receivers){
             subscriber.onNext(aTimetable);
         }
-        return timetableToTimetableModel(aTimetable);
+        timetableToTimetableModel(aTimetable);
     }
     /** Helper method for readFromFile */
     private TimetableModel timetableToTimetableModel(Timetable aTimetable) {

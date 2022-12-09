@@ -1,7 +1,6 @@
 package feature_6;
 
 import entities.*;
-import entities.InvalidSectionsException;
 import fileio_use_case.application_business.FileImportRequestModel;
 import fileio_use_case.frameworks_and_drivers.TimetableGateway;
 import org.json.simple.parser.ParseException;

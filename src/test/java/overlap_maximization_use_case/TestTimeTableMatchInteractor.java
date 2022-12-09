@@ -19,24 +19,24 @@ import java.util.List;
 public class TestTimeTableMatchInteractor {
 
     // Make some initial test data available to all tests.
-    BlockModel testBlock = new BlockModel(24, 10.00, 12.00, "BA137");
-    SectionModel testSection = new SectionModel("LEC0101", "Mario-chan", List.of(testBlock));
+    final BlockModel testBlock = new BlockModel(24, 10.00, 12.00, "BA137");
+    final SectionModel testSection = new SectionModel("LEC0101", "Mario-chan", List.of(testBlock));
 
-    BlockModel testBlock2 = new BlockModel(24, 12.00, 14.00, "BA137");
-    SectionModel testSection2 = new SectionModel("LEC0201", "Mario-chan", List.of(testBlock2));
+    final BlockModel testBlock2 = new BlockModel(24, 12.00, 14.00, "BA137");
+    final SectionModel testSection2 = new SectionModel("LEC0201", "Mario-chan", List.of(testBlock2));
 
-    BlockModel testBlock3 = new BlockModel(24, 14.00, 16.00, "BA137");
-    SectionModel testSection3 = new SectionModel("LEC0201", "Mario-chan", List.of(testBlock3));
+    final BlockModel testBlock3 = new BlockModel(24, 14.00, 16.00, "BA137");
+    final SectionModel testSection3 = new SectionModel("LEC0201", "Mario-chan", List.of(testBlock3));
 
 
-    CourseModel testCourse = new CourseModel("Foundations", List.of(testSection), "S", "CSC110", "4");
-    CourseModel testCourse2 = new CourseModel("Foundations", List.of(testSection2), "S", "CSC110", "4");
-    CourseModel testCourse3 = new CourseModel("Foundations", List.of(testSection3), "S", "CSC110", "4");
+    final CourseModel testCourse = new CourseModel("Foundations", List.of(testSection), "S", "CSC110", "4");
+    final CourseModel testCourse2 = new CourseModel("Foundations", List.of(testSection2), "S", "CSC110", "4");
+    final CourseModel testCourse3 = new CourseModel("Foundations", List.of(testSection3), "S", "CSC110", "4");
 
 
     // We kind of need a dummy Dialog to pass through just from how clean architecture works, to soak best matching
     // Timetable.
-    OverlapInputView dummyDialog = new OverlapInputView() {
+    final OverlapInputView dummyDialog = new OverlapInputView() {
         @Override
         public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
 
@@ -49,8 +49,8 @@ public class TestTimeTableMatchInteractor {
     };
 
     // Initialize dummy presenter and interactor.
-    OverlapMaxPresenter testPresenter = new OverlapMaxPresenter();
-    TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
+    final OverlapMaxPresenter testPresenter = new OverlapMaxPresenter();
+    final TimeTableMatchInteractor testInteractor = new TimeTableMatchInteractor(
             new CalculateSectionHoursInteractor(), testPresenter);
 
     /**

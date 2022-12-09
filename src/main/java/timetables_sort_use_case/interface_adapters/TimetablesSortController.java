@@ -7,7 +7,7 @@ import timetables_sort_use_case.application_business.TimetablesSortRequestModel;
  * The controller used to process requests to sort timetables by User preference.
  */
 public class TimetablesSortController {
-    TimetablesSortInputBoundary timetablesSortInteractor;
+    final TimetablesSortInputBoundary timetablesSortInteractor;
 
     public TimetablesSortController(TimetablesSortInputBoundary timetablesSortInteractor){
         this.timetablesSortInteractor = timetablesSortInteractor;
