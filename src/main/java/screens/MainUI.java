@@ -76,6 +76,7 @@ public class MainUI extends JPanel implements ActionListener {
     private final TimetableUI timetableUI;
     private final JFrame frame;
     private final JPanel timetablePanel;
+    private boolean isTimetableImported;
 
     /**
      * Constructs MainUI with title, import timetable/session buttons, and display/edit/generate timetable buttons.
@@ -96,6 +97,7 @@ public class MainUI extends JPanel implements ActionListener {
         this.frame = frame;
         this.sessionController = sessionController;
         this.timetableController = timetableFileController;
+        this.isTimetableImported = false;
         setLayout(new BorderLayout());
 
         JLabel title = new JLabel("Main menu");
@@ -231,7 +233,10 @@ public class MainUI extends JPanel implements ActionListener {
                     try {
                         timetableFilePath.setText(importTimetableFilePath);
                         timetableController.createTimetableFile(importTimetableFilePath);
-                        addTimetableButtons();
+                        if (!isTimetableImported){
+                            addTimetableButtons();
+                        }
+                        isTimetableImported = true;
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
                         throw new RuntimeException(ex);
                     }
