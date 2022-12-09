@@ -38,7 +38,6 @@ import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 
-import entities.InvalidSectionsException;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
@@ -231,14 +230,16 @@ public class MainUI extends JPanel implements ActionListener {
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog( this)) {
                     String importTimetableFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     try {
-                        timetableFilePath.setText(importTimetableFilePath);
                         timetableController.createTimetableFile(importTimetableFilePath);
+                        timetableFilePath.setText(importTimetableFilePath);
                         if (!isTimetableImported){
                             addTimetableButtons();
                         }
                         isTimetableImported = true;
-                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-//                        JOptionPane.showMessageDialog();
+                    } catch (IOException | ParseException | java.text.ParseException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid File!");
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(this, "Invalid File! " + ex.getMessage());
                     }
                 }
                 break;
@@ -248,11 +249,13 @@ public class MainUI extends JPanel implements ActionListener {
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     try {
+                        sessionController.createSessionFile(importedSessionFilePath, "F");
                         fallSessionFilePath.setText(importedSessionFilePath);
                         winterSessionFilePath.setText("Choose the file... ");
-                        sessionController.createSessionFile(importedSessionFilePath, "F");
-                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-                        throw new RuntimeException(ex);
+                    } catch (IOException | ParseException | java.text.ParseException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid File!");
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(this, "Invalid File! " + ex.getMessage());
                     }
                 }
                 break;
@@ -262,11 +265,13 @@ public class MainUI extends JPanel implements ActionListener {
                 if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(this)) {
                     String importedSessionFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     try {
+                        sessionController.createSessionFile(importedSessionFilePath, "S");
                         winterSessionFilePath.setText(importedSessionFilePath);
                         fallSessionFilePath.setText("Choose the file... ");
-                        sessionController.createSessionFile(importedSessionFilePath, "S");
-                    } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-                        throw new RuntimeException(ex);
+                    } catch (IOException | ParseException | java.text.ParseException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid File!");
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(this, "Invalid File! " + ex.getMessage());
                     }
                 }
                 break;
