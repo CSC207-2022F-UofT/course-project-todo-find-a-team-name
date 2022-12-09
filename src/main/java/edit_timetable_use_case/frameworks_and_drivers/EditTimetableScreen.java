@@ -1,5 +1,6 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
 import display_timetable_use_case.frameworks_and_drivers.TimetableView;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
@@ -200,6 +201,9 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         else if(cmd.equals("<=")){
             this.setVisible(false);
             frame.add(previousPanel);
+            if (previousPanel instanceof TimetableUI){
+                ((TimetableUI) previousPanel).updateTimetable();
+            }
             previousPanel.setVisible(true);
         }
 
