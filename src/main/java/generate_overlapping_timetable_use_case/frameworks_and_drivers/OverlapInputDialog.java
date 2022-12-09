@@ -39,6 +39,7 @@ import recommend_br_use_case.interface_adapters.RecommendBRController;
 import recommend_br_use_case.interface_adapters.RecommendBRPresenter;
 import retrieve_timetable_use_case.application_business.EntityConverter;
 import retrieve_timetable_use_case.application_business.RetrieveTimetableInteractor;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
 import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
@@ -255,7 +256,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             JPanel prevPanel = new JPanel();
             DisplayTimetablePresenter displayPresenter = new DisplayTimetablePresenter();
             DisplayTimetableController updateController = new DisplayTimetableController(new DisplayTimetableInteractor(displayPresenter));
-            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController);
+            EditTimetableScreen editScreen = new EditTimetableScreen(frame, editController, prevPanel, updateController,
+                    new RetrieveTimetableController(retrieveTimetableInteractor), new SaveTimetableController(new SaveTimetableInteractor(new TimetableGateway())));
 
             removePresenter.setView(editScreen);
             addPresenter.setView(editScreen);
