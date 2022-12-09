@@ -13,7 +13,6 @@ NOTE FOR EVERYONE:
 <a name="summary"/>
 
 ## Summary of How The Program Works
-
 The Timetable Generator is a program which stores courses on the University of Toronto’s Arts & Science Fall-Winter academic calendar and has the ability to generate and display timetables based on user-inputted requirements and preferences. Timetables can be exported and imported as files. Courses in generated timetables can also be edited, removed, or added through the user interface. The user can also prompt the program to display breadth course sections that match selected breadth categories sorted based on the user's preferred time.
 
 ![Timetable](src/main/images/Timetable.png)

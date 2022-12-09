@@ -251,6 +251,7 @@ public class Main {
         timetableAndSessionObservers.add(sectionFilterInteractor);
         timetableAndSessionObservers.add(generatorInteractor);
         timetableAndSessionObservers.add(relaySubscriber);
+        timetableAndSessionObservers.add(saveTimetableInteractor);
 
         // Make the observers here
         List<Flow.Publisher<Object>> timetableAndSessionObservables = new ArrayList<>();
