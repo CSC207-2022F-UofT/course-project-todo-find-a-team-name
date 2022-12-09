@@ -167,7 +167,7 @@ public class TimetablesSortInteractor implements TimetablesSortInputBoundary, Fl
         for (int i = 0; i < courses.size(); i++) {
             List<Section> sections = courses.get(i).getSections();
             for (int j = 0; j < sections.size(); j++) {
-                List<Block> blocks = sections.get(i).getBlocks();
+                List<Block> blocks = sections.get(j).getBlocks();
                 for (Block block : blocks) {
                     days[block.getDay()] = 0;
                 }
