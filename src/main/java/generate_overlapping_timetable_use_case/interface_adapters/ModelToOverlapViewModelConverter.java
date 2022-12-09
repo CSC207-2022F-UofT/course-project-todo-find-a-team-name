@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.interface_adapters;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
 import retrieve_timetable_use_case.application_business.BlockModel;
 import retrieve_timetable_use_case.application_business.CourseModel;
@@ -11,7 +11,7 @@ public class ModelToOverlapViewModelConverter {
     /**
      * Convenience method to turn a BlockModel into an OverlapTimetableBlockViewModel.
      *
-     * @param blockModel
+     * @param blockModel - the blockModel to convert.
      */
     public static OverlapTimetableBlockViewModel convertBlockModel(BlockModel blockModel) {
         return new OverlapTimetableBlockViewModel(blockModel.getDay(), blockModel.getStartTime(),
@@ -35,7 +35,9 @@ public class ModelToOverlapViewModelConverter {
     }
 
     /**
-     * Convenience constructor to quickly make this ViewModel out of a CourseModel
+     * Convenience method to quickly convert into ViewModel out of a CourseModel.
+     *
+     * @param courseModel - the courseModel to convert.
      **/
     public static OverlapTimetableCourseViewModel convertCourseModel(CourseModel courseModel) {
 
@@ -49,6 +51,11 @@ public class ModelToOverlapViewModelConverter {
                 courseModel.getCourseSession(), courseModel.getCourseCode(), courseModel.getBreadth());
     }
 
+    /**
+     * Convenience method to quickly convert into ViewModel out of a CourseModel.
+     *
+     * @param timetableModel - the timetableModel to convert.
+     **/
     public static OverlapTimetableViewModel convertTimetableModel(TimetableModel timetableModel) {
         ArrayList<OverlapTimetableCourseViewModel> courseViewModels = new ArrayList<>();
         for (CourseModel courseModel : timetableModel.getCourses()) {

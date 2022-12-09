@@ -14,9 +14,11 @@ import java.util.HashMap;
 public class ProgramFileReader {
     HashMap<String, CalendarCourse> allCalendarCourses;
     HashMap<String, TimetableCourse> allTimetableCourses;
+    String sessionType;
     public ProgramFileReader() {
         this.allCalendarCourses = new HashMap<>();
         this.allTimetableCourses = new HashMap<>();
+        this.sessionType = "";
     }
     public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException {
         // Parse String
@@ -92,5 +94,11 @@ public class ProgramFileReader {
     /** Returns HashMap of String to TimetableCourse from file **/
     public HashMap<String, TimetableCourse> returnTimetableCourseHashMap() {
         return this.allTimetableCourses;
+    }
+    /** Returns session type of imported timetable **/
+    public String returnSessionTypeImport() {
+         TimetableCourse aCourse = allTimetableCourses.values().iterator().next();
+         this.sessionType = aCourse.getCourseSession();
+         return this.sessionType;
     }
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
 import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ class RetrieveTimetableControllerTest {
     private TimetableModel timetableModel;
 
     private RetrieveTimetableController controller;
+    private TestRetrieveTimetableView view;
+    SessionViewModel sessionViewModel;
 
     /**
      * Sets up the controller, as well as a set of timetable data structures and their corresponding models for later
@@ -64,7 +68,13 @@ class RetrieveTimetableControllerTest {
 
             timetableModel = new TimetableModel(timetableModelCourses);
 
-            RetrieveTimetableInteractor interactor = new RetrieveTimetableInteractor();
+            sessionViewModel = TimetableModelConverter.sessionToView(EntityConverter.generateSessionResponse(sessionActual));
+
+            RetrieveTimetablePresenter presenter = new RetrieveTimetablePresenter();
+            view = new TestRetrieveTimetableView();
+            presenter.setView(view);
+
+            RetrieveTimetableInteractor interactor = new RetrieveTimetableInteractor(presenter);
             interactor.setTimetable(timetable);
             interactor.setSession(sessionActual);
 
@@ -103,5 +113,14 @@ class RetrieveTimetableControllerTest {
     @Test
     void retrieveTimetable() {
         Assertions.assertEquals(controller.retrieveTimetable(), timetableModel);
+    }
+
+    /**
+     * Tests that the controller eventually causes the correct view model to be set in the view.
+     */
+    @Test
+    void updateSession(){
+        controller.updateSession();
+        Assertions.assertEquals(sessionViewModel, view.session);
     }
 }

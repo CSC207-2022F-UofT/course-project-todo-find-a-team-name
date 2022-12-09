@@ -29,6 +29,10 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow
      */
     @Override
     public void filter(SectionFilterRequestModel requestModel) {
+        if (session == null){
+            presenter.prepareFailView("Please go back to main menu to load the Session first.");
+            return;
+        }
         ArrayList<String> courseCodes = (ArrayList<String>) this.formatInputString(requestModel.getCourseCodes());
         ArrayList<CalendarCourse> calendarCourses = new ArrayList<>();
         if (requestModel.getCourseCodes().isEmpty()){
@@ -39,7 +43,6 @@ public class SectionFilterInteractor implements SectionFilterInputBoundary, Flow
             presenter.prepareFailView("StartTime Must be BEFORE EndTime");
             return;
         }
-
             for (String code: courseCodes) {
                 if (session.checkCourseCode(code)){
                     calendarCourses.add(session.getCalendarCourse(code));

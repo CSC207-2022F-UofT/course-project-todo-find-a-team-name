@@ -1,4 +1,4 @@
-package overlap_crap_fix_locations_later.application_business;
+package generate_overlapping_timetable_use_case.application_business;
 
 import retrieve_timetable_use_case.application_business.TimetableModel;
 
@@ -9,12 +9,12 @@ public interface OverlapOutputBoundary {
     /**
      * Pass viewModels to the dialog, given a list of TimetableModels
      **/
-    public void passViewModelsToDialog(List<TimetableModel> timetableModels);
+    void passViewModelsToDialog(List<TimetableModel> timetableModels);
 
     /**
      * Pass the best
      * matching timetable as a TimetableViewModel to the Dialog (for use with Kai's TimetableView),
      * given a TimetableModel from the Interactor.
      */
-    public void passBestTimetable(TimetableModel timetableModel);
+    void passBestTimetable(TimetableModel timetableModel);
 }
