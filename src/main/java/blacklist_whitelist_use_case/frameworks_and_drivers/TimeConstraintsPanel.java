@@ -8,12 +8,12 @@ import javax.swing.*;
  */
 
 public class TimeConstraintsPanel extends JPanel {
-    JLabel label;
-    JComboBox<String> selectList;
-    JLabel label1 = new JLabel("startTime");
-    JLabel label2 = new JLabel("endTime");
-    JComboBox<String> startTime;
-    JComboBox<String> endTime;
+    final JLabel label;
+    final JComboBox<String> selectList;
+    final JLabel label1 = new JLabel("startTime");
+    final JLabel label2 = new JLabel("endTime");
+    final JComboBox<String> startTime;
+    final JComboBox<String> endTime;
 
     public TimeConstraintsPanel(JLabel label, JComboBox<String> selectList, JComboBox<String> startTime, JComboBox<String> endTime) {
         this.label = label;

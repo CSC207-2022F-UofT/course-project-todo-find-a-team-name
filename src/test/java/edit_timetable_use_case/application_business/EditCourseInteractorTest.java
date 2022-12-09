@@ -58,10 +58,6 @@ class EditCourseInteractorTest {
         catch (InvalidSectionsException ignored){}
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * In this test, we edit CSC207 so that it goes from having sections LEC0101, TUT0101, to having LEC0102, TUT0101
      * and confirm that it does so.

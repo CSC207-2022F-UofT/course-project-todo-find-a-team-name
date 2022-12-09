@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 /** Class that reads files and converts it to either TimetableCourse or CalendarCourse and returns it*/
 public class ProgramFileReader {
-    HashMap<String, CalendarCourse> allCalendarCourses;
-    HashMap<String, TimetableCourse> allTimetableCourses;
+    final HashMap<String, CalendarCourse> allCalendarCourses;
+    final HashMap<String, TimetableCourse> allTimetableCourses;
     String sessionType;
     public ProgramFileReader() {
         this.allCalendarCourses = new HashMap<>();

@@ -7,7 +7,6 @@ public interface RemoveCourseOutputBoundary {
 
     /**
      * @param responseModel The response model passed by the interactor.
-     * @throws RemoveCourseFailedException when the course code does not match any of the Timetable's courses.
      */
-    void prepareView(EditTimetableResponseModel responseModel) throws RemoveCourseFailedException;
+    void prepareView(EditTimetableResponseModel responseModel);
 }

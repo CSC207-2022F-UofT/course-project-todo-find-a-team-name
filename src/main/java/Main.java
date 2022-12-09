@@ -42,6 +42,12 @@ import timetable_generator_use_case.application_business.TimetableGeneratorInter
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
 import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
+import timetables_sort_use_case.application_business.AllTimetablesInteractor;
+import timetables_sort_use_case.application_business.TimetablesSortInteractor;
+import timetables_sort_use_case.frameworks_and_drivers.AllTimetablesScreen;
+import timetables_sort_use_case.interface_adapters.AllTimetablesController;
+import timetables_sort_use_case.interface_adapters.TimetablesSortController;
+import timetables_sort_use_case.interface_adapters.TimetablesSortPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -125,7 +131,6 @@ public class Main {
         TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
         TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
         GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
-        // generatorPresenter.setView(allTimetablesView);
 
         /*Set up for BlackList/Whitelist:
          */
@@ -133,11 +138,7 @@ public class Main {
         SectionFilterInteractor sectionFilterInteractor = new SectionFilterInteractor(sectionFilterPresenter);
         SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInteractor);
         ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
-        /*
-        Todo: constraintsInputScreen.setPrevPanel(PANEL);
-         */
         sectionFilterPresenter.setView(constraintsInputScreen);
-        // sectionFilterInteractor.onNext(sessionGateway);
 
 
         /*
@@ -165,7 +166,6 @@ public class Main {
 
         // Make my controller and dialog.
         OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
-
         OverlapInputDialog overlapInputDialog = new OverlapInputDialog(constraintsInputScreen, overlapMaxController, frame);
 
         /*
@@ -198,8 +198,33 @@ public class Main {
 
 
         /* The line below must run after displayPresenter's view has been set to screen.*/
-        editScreen.updateTimetable();
-        frame.add(editScreen);
+//        editScreen.updateTimetable();
+//        frame.add(editScreen);
+
+        //  Use case 1 main requirements:
+        //      1- TimetablesSortPresenter, 2- TimetablesSortInteractor(Presenter), 3- AllTimetablesPublisher,
+        //      4- TimetablesSortController(TimetablesSortInteractor, AllTimetablesInteractor),
+        //      5- AllTimetablesController(TimetablesSortInteractor),
+        //      6- AllTimetablesScreen(JFrame, MainUI, TimetableUI, OverlapInputDialogue,
+        //      TimetablesSortController, AllTimetablesController)
+        //      7- TimetablesSortPresenter.setView(AllTimetablesScreen)
+        //      8,9- subscribe my interactors to JD's publisher
+        //      Comment: no timetables will show in AllTimetablesScreen until my subscriber gets an input
+
+        TimetablesSortPresenter timetablesSortPresenter = new TimetablesSortPresenter();
+        TimetablesSortInteractor timetablesSortInteractor = new TimetablesSortInteractor(timetablesSortPresenter);
+        AllTimetablesInteractor allTimetablesInteractor = new AllTimetablesInteractor();
+        TimetablesSortController timetablesSortController =
+                new TimetablesSortController(timetablesSortInteractor);
+        AllTimetablesController allTimetablesController =
+                new AllTimetablesController(allTimetablesInteractor);
+        AllTimetablesScreen allTimetablesScreen = new AllTimetablesScreen(frame, mainUI, timetableUI,
+                overlapInputDialog, timetablesSortController, allTimetablesController);
+        timetablesSortPresenter.setView(allTimetablesScreen);
+        generatorPresenter.setView(allTimetablesScreen);
+
+        generatorInteractor.subscribe(allTimetablesInteractor);
+        generatorInteractor.subscribe(timetablesSortInteractor);
 
 
         // Set the presenter to include the Dialog.
@@ -232,6 +257,7 @@ public class Main {
         timetableAndSessionObservables.add(sessionGatewayInteractor);
         timetableAndSessionObservables.add(timetableGatewayInteractor);
         timetableAndSessionObservables.add(timetableMatcher);
+        timetableAndSessionObservables.add(allTimetablesInteractor);
 
 
         for (Flow.Publisher<Object> observable : timetableAndSessionObservables){

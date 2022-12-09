@@ -19,11 +19,11 @@ import java.util.Vector;
  */
 public class AddCourseMenu extends JPanel implements ActionListener {
 
-    SessionViewModel session;
-    EditTimetableScreen editScreen;
-    JList<String> courses;
-    TimetableViewModel timetable;
-    JFrame frame;
+    final SessionViewModel session;
+    final EditTimetableScreen editScreen;
+    final JList<String> courses;
+    final TimetableViewModel timetable;
+    final JFrame frame;
 
     /**
      * @param session session is the view model of the session for which the user is making a timetable for.

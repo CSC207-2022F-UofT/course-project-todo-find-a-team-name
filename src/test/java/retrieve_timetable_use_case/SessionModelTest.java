@@ -26,10 +26,6 @@ class SessionModelTest {
         session = new SessionModel(courses, "F");
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Tests that the Session and its equivalent SessionModel are considered equal.
      */

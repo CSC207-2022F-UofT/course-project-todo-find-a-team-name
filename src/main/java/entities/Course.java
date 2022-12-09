@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class Course {
 
     protected final String title;
-    protected List<Section> sections;
+    protected final List<Section> sections;
     protected final String courseSession;
     protected final String courseCode;
     protected final String breadth;

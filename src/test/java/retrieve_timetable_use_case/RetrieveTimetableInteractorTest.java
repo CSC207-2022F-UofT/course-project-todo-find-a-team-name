@@ -84,10 +84,6 @@ class RetrieveTimetableInteractorTest {
         }
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     /**
      * Asserts that the CourseModel object returned by the interactor is equivalent to the input TimetableCourse.
      */

@@ -8,7 +8,7 @@ import retrieve_timetable_use_case.application_business.*;
  */
 public class RetrieveTimetableController {
 
-    RetrieveTimetableInputBoundary interactor;
+    final RetrieveTimetableInputBoundary interactor;
 
     public RetrieveTimetableController(RetrieveTimetableInputBoundary interactor){
         this.interactor = interactor;

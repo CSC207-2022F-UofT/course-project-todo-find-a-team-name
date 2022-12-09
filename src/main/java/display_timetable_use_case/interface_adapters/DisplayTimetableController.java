@@ -7,7 +7,7 @@ import display_timetable_use_case.application_business.DisplayTimetableInputBoun
  * to perform the use case.
  */
 public class DisplayTimetableController {
-    DisplayTimetableInputBoundary interactor;
+    final DisplayTimetableInputBoundary interactor;
 
     /**
      * Constructs the DisplayTimetableController from the given interactor
