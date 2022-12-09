@@ -30,13 +30,13 @@ We organized the repository by use case, then further divided it by clean archit
 - Many of our interactors store timetables and sessions directly, but need to be updated whenever the user navigates between different timetables or when new ones are generated. To update the timetables and sessions, we use the Observer design pattern (implemented as Java.Flow from the Java Reactive Streams API ) since it solves the problem of alerting and updating relevant interactors when the selected timetable is changed.
 - Many of our classes avoid instantiating another class using dependency injection pattern to reduce the coupling.
 
-- **Use Case 6**: Used dependency injection, used design pattern similar to builder design, and used observer design pattern and iterator design pattern by implementing Java.Flow from the Java Reactive Streams API.
-- **Use case 7**: Demonstrate OCP by dependency inject through using abstraction to loosely decouple classes from different layers, and used MVC as a simple structure for the clean architecture.
-- **Use Case 3**: Chosen to have the user input an original Timetable to try and 'match' with pre-generated ones instead of trying to generate 2 matching new ones directly from a set of constraints. This limits computational complexity to reasonable levels.
-- **Use Case 3**: Implemented Observer design pattern (see below), and made use of Singleton pattern in helper Converter classes that really don’t have a reason to be initialized more than once (for the purpose of screaming architecture, and convenience of access)
-- **Use case 1**: Gave a title to each timetable to the user can keep track of which timetables they already evaluated, reduced preferences options due to complexity reasons.
-- **Use case 2**: Used dependency injection for the timetable generation and observer design for the observers.
-- **Use case 5**: Maintained Open-Closed principle by implementing factory design pattern for course comparator used for sorting courses based on user’s preferred time. By implementing an interface for the factory, we can add another implementation for comparator without modifying any existing classes.
+  - **Use Case 6**: Used dependency injection, used design pattern similar to builder design, and used observer design pattern and iterator design pattern by implementing Java.Flow from the Java Reactive Streams API.
+  - **Use case 7**: Demonstrate OCP by dependency inject through using abstraction to loosely decouple classes from different layers, and used MVC as a simple structure for the clean architecture.
+  - **Use Case 3**: Chosen to have the user input an original Timetable to try and 'match' with pre-generated ones instead of trying to generate 2 matching new ones directly from a set of constraints. This limits computational complexity to reasonable levels.
+  - **Use Case 3**: Implemented Observer design pattern (see below), and made use of Singleton pattern in helper Converter classes that really don’t have a reason to be initialized more than once (for the purpose of screaming architecture, and convenience of access)
+  - **Use case 1**: Gave a title to each timetable to the user can keep track of which timetables they already evaluated, reduced preferences options due to complexity reasons.
+  - **Use case 2**: Used dependency injection for the timetable generation and observer design for the observers.
+  - **Use case 5**: Maintained Open-Closed principle by implementing factory design pattern for course comparator used for sorting courses based on user’s preferred time. By implementing an interface for the factory, we can add another implementation for comparator without modifying any existing classes.
 
 <a name ="setup"/>
 
