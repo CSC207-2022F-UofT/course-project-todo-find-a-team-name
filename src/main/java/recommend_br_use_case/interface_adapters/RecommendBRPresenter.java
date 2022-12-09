@@ -119,6 +119,8 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
      *      "[day], [start time] ~ [end time]"
      * day is written as Monday, Tuesday, and so on.
      * start time and end time is written as hh:mm
+     * If there are no block in the section, it returns list with single element,
+     * "No Block info available from the data".
      *
      * @param sectionResponseModel response model representing section
      * @return list of block information from the given BRSectionResponseModel
@@ -128,6 +130,11 @@ public class RecommendBRPresenter implements RecommendBROutputBoundary {
             return new ArrayList<>();
 
         List<String> blockInfos = new ArrayList<>();
+        if (sectionResponseModel.getBlocks().size() == 0){
+            blockInfos.add("No Block info available from the data");
+            return blockInfos;
+        }
+
         for (BlockModel blockResponseModel : sectionResponseModel.getBlocks()){
 
             String day = intToStringDay(blockResponseModel.getDay());

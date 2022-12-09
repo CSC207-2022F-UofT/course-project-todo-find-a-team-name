@@ -1,4 +1,6 @@
-package display_timetable_use_case.interface_adapters;
+package display_timetable_use_case.frameworks_and_drivers;
+
+import java.util.Objects;
 
 /**
  * Class representing all information needed for the block in displaying the timetable
@@ -7,28 +9,19 @@ package display_timetable_use_case.interface_adapters;
  *      - startTime: start time of the block represented as double (e.g. 13:00 = 13, 09:30 = 9.5)
  *      - endTime: end time of the block represented as double (e.g. 13:00 = 13, 09:30 = 9.5)
  */
-public class TimetableViewBlockModel {
+public class TimetableViewBlockModel{
     private final int day;
     private final double startTime;
     private final double endTime;
-    private String room;
-
 
     /**
      * Constructs TimetableViewBlockModel with the given day (day of the week), start time, and end time.
      *
-     * @param day       day of the week for this block
+     * @param day day of the week for this block
      * @param startTime start time of the block
-     * @param endTime   end time of the block
+     * @param endTime end time of the block
      */
     public TimetableViewBlockModel(int day, double startTime, double endTime) {
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.room = "";
-    }
-
-    public TimetableViewBlockModel(int day, double startTime, double endTime, String room) {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -57,7 +50,47 @@ public class TimetableViewBlockModel {
      *
      * @return day of the week for this block
      */
-    public int getDay() {
+    public int getDay(){
         return day;
+    }
+
+    /**
+     * Return whether this object is equal to obj
+     * @param obj object compared
+     * @return whether this object is equal to obj
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimetableViewBlockModel)){
+            return false;
+        }
+
+        TimetableViewBlockModel other = (TimetableViewBlockModel) obj;
+
+        return day == other.day && startTime == other.startTime && endTime == other.endTime;
+    }
+
+    /**
+     * Returns the string representation of this object
+     * @return the string representation of this object
+     */
+    @Override
+    public String toString() {
+        return "TimetableViewBlockModel{" +
+                "day=" + day +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
+    /**
+     * Returns a hash code value for this object.
+     * If two objects are equal based on equals method, hashCode also returns same integers.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, startTime, endTime);
     }
 }

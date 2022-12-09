@@ -7,5 +7,5 @@ import java.io.IOException;
 
 /** Interface for TimetableGateway */
 public interface TimetableGatewayInterface {
-    Timetable readFromFile(String filePath, String sessionType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException;
+    Timetable readFromFile(String filePath, String courseType) throws IOException, org.json.simple.parser.ParseException, InvalidSectionsException;
 }
