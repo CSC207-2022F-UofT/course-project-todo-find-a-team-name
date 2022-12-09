@@ -42,7 +42,8 @@ public class SaveTimetableInteractor implements Flow.Subscriber<Object>{
      */
     @Override
     public void onNext(Object timetable) {
-        savedTimetable = (Timetable) timetable;
+        if (timetable instanceof Timetable)
+            savedTimetable = (Timetable) timetable;
     }
 
     /**

@@ -1,7 +1,6 @@
 package recommend_br_use_case.frameworks_and_drivers;
 
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
-import entities.InvalidSectionsException;
 import recommend_br_use_case.interface_adapters.RecommendBRCourseViewModel;
 import recommend_br_use_case.interface_adapters.RecommendBRViewModel;
 
@@ -112,7 +111,7 @@ public class RecommendBROutputScreen extends JPanel implements ListSelectionList
 
         try {
             editTimetableController.add(course.getCode(), sectionCodes);
-        } catch (InvalidSectionsException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 

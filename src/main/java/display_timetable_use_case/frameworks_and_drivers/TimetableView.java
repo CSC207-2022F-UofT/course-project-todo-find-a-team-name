@@ -2,9 +2,6 @@ package display_timetable_use_case.frameworks_and_drivers;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
 import java.util.*;
 
 /**
@@ -14,7 +11,7 @@ import java.util.*;
  *      - courseColors: color assigned to each course
  *      - observers: list of observer that get notified when course section is clicked
  */
-public class TimetableView extends JPanel implements MouseListener {
+public class TimetableView extends JPanel {
 
     public static final int START_TIME = 8;
     public static final int END_TIME = 22;
@@ -25,7 +22,6 @@ public class TimetableView extends JPanel implements MouseListener {
     private int cellHeight;
     private TimetableViewModel timetableViewModel;
     private final HashMap<String, Color> courseColors;
-    private final List<TimetableViewEventListener> observers;
 
     /**
      * Constructs TimetableView from the given TimetableViewModel, containing
@@ -37,8 +33,6 @@ public class TimetableView extends JPanel implements MouseListener {
         super();
         courseColors = new HashMap<>();
         updateViewModel(timetableViewModel);
-        observers = new ArrayList<>();
-        addMouseListener(this);
     }
 
     /**
@@ -143,97 +137,6 @@ public class TimetableView extends JPanel implements MouseListener {
         g.drawString(text, x1, y1 + cellHeight);
         g.setFont(font);
     }
-
-    /**
-     * Add the given observer to this class, that get notified when course section is clicked.
-     *
-     * @param observer new observer added
-     */
-    public void addTimetableViewListener(TimetableViewEventListener observer){
-        observers.add(observer);
-    }
-
-    /**
-     * Remove the given observer from this class
-     *
-     * @param observer observer that is going to be deleted
-     */
-    public void removeTimetableViewListener(TimetableViewEventListener observer){
-        observers.remove(observer);
-    }
-
-    /**
-     * Notify the observers that course section was displayed by calling courseClicked with
-     * the given event as an argument
-     *
-     * @param event event describing the details of clicking course event
-     */
-    public void notifyObservers(TimetableViewEvent event){
-        for (TimetableViewEventListener observer : observers){
-            observer.courseClicked(event);
-        }
-    }
-
-    /**
-     * Call notifyObservers by passing in event detail as TimetableViewEvent when
-     * course section is clicked by the user
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        Rectangle r = this.getBounds();
-        int cellWidth = r.width / NUM_COLUMNS;
-        int cellHeight = r.height / NUM_ROWS;
-
-        for (int i = 0; i < timetableViewModel.getCourseData().size(); i++){
-            TimetableViewCourseModel courseModel = timetableViewModel.getCourseData().get(i);
-            for (TimetableViewSectionModel sectionModel : courseModel.getSectionModels()) {
-                for (TimetableViewBlockModel blockModel : sectionModel.getBlockModels()) {
-                    int y1 = (int) ((blockModel.getStartTime() - START_TIME) * 2 * cellHeight) + cellHeight;
-                    int y2 = (int) ((blockModel.getEndTime() - START_TIME) * 2 *  cellHeight) + cellHeight;
-                    int x1 = (blockModel.getDay() + 1) * cellWidth;
-                    int x2 = x1 + cellWidth;
-
-                    if (x1 <= e.getX() && e.getX() <= x2 && y1 <= e.getY() && e.getY() <= y2){
-                        notifyObservers(new TimetableViewEvent(this, courseModel.getCode(), sectionModel.getCode()));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Unused method that is called when mouse is pressed
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    /**
-     * Unused method that is called when mouse is released
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    /**
-     * Unused method that is called when mouse is entered
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    /**
-     * Unused method that is called when mouse is exited
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseExited(MouseEvent e) {}
 
     /**
      * Sets the timetableViewModel to the given TimetableViewModel, and

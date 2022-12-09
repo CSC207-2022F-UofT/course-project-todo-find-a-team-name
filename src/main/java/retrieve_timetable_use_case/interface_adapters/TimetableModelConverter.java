@@ -1,11 +1,7 @@
 package retrieve_timetable_use_case.interface_adapters;
 
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewBlockModel;
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewSectionModel;
+import display_timetable_use_case.frameworks_and_drivers.*;
 import retrieve_timetable_use_case.application_business.*;
-import screens.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
