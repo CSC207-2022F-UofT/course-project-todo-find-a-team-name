@@ -1,5 +1,8 @@
 package screens;
 
+import display_timetable_use_case.frameworks_and_drivers.*;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -113,4 +116,3 @@ public class AllTimetablesScreen extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
 }
-

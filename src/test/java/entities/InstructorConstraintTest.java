@@ -68,7 +68,7 @@ class InstructorConstraintTest {
         InstructorConstraint instructorConstraint = new InstructorConstraint(instructorNames,false);
         // testing to check original and modified course section type consistency.
         assertTrue(instructorConstraint.filter(course));
-        assertTrue(courseBeforeFilter.equals(course));
+        assertEquals(courseBeforeFilter, course);
         assertEquals(3, course.getSections().size());
 
     }
