@@ -38,6 +38,7 @@ JRE or JDK 19 should be installed and usable on the machine.
 - Click “Sort” to get to the sorter
   - Choose your preferences (there are only 2 kinds of preferences each with 3 options that are described on that screen)
   - Click “Submit Input” to return to AllTimetablesScreen with the timetables sorted
+  
 **To use Use Case 2 (Timetable Generating)**:
 - First, access CourseInput Screen
 - To get the input format, click the help button.
@@ -71,10 +72,12 @@ JRE or JDK 19 should be installed and usable on the machine.
 - You can select a course on the left to see basic course information on the right half of the screen
 - Click “Add Course” button on the right to add the selected course to the original timetable
 - The pop up window will be closed and selected course will be added and displayed on the original edit timetable screen
+
 **To use Use Case 6 (File IO/Importing and Exporting Files)**:
 - To import a JSON file that holds either courses from a timetable or sessions, use the Import Session or Timetable buttons on the main menu and upload the timetable or session JSON file from your local storage.
 - Next, you should see a popup indicating that your timetable or session have been successfully saved onto the program.
 - To export a timetable as a JSON file, choose the timetable you want to save from the UI that displays all timetables and then click on the save button on the UI for the corresponding timetable. The program will then download your timetable onto your local storage.
+
 **To use Use Case 7(BlackList/WhiteList: Filtering out Sections of CalendarCourses)**:
 - First, access Constraint Input Screen
 - To get the input format, click help button.
