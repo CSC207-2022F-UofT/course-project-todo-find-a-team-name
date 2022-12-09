@@ -1,31 +1,11 @@
 package screens;
 
 // TODO: Remove these imports (It's used for main)
-import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
+
 import blacklist_whitelist_use_case.frameworks_and_drivers.ConstraintsInputScreen;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
-import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-
-import edit_timetable_use_case.application_business.AddCourseInteractor;
-import edit_timetable_use_case.application_business.EditCourseInteractor;
-import edit_timetable_use_case.application_business.RemoveCourseInteractor;
-import edit_timetable_use_case.interface_adapters.AddCoursePresenter;
-import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
-import edit_timetable_use_case.interface_adapters.EditTimetableController;
-import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
-import display_timetable_use_case.interface_adapters.DisplayTimetableController;
-import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
-import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-
-
-import fileio_use_case.application_business.session_specific_classes.SessionGatewayInteractor;
-import fileio_use_case.application_business.timetable_specific_classes.SaveTimetableInteractor;
-import fileio_use_case.application_business.timetable_specific_classes.TimetableGatewayInteractor;
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import fileio_use_case.frameworks_and_drivers.TimetableGateway;
-import fileio_use_case.interface_adapters.SaveTimetableController;
+import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
+import entities.InvalidSectionsException;
 import fileio_use_case.interface_adapters.SessionFileController;
 import fileio_use_case.interface_adapters.TimetableFileController;
 import org.json.simple.parser.ParseException;
@@ -51,7 +31,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Class used to display the main menu of this program that allow user to import files and navigates user to

@@ -1,36 +1,42 @@
 package entities;
-import java.util.*;
 
-/** An implementation of the timetable which stores all of the timetablecourses
- *  related to a timetable
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * An implementation of the timetable which stores all of the timetablecourses
+ * related to a timetable
  */
 public class Timetable implements Comparable<Timetable> {
-    private ArrayList<TimetableCourse> courseList;
-    private String sessionType;
+    private final ArrayList<TimetableCourse> courseList;
+    private final String sessionType;
     private double score;
-    
-    public Timetable(List<TimetableCourse> timetableCourses, String sessionType){
-        this.courseList = new ArrayList<TimetableCourse>();
+
+    public Timetable(List<TimetableCourse> timetableCourses, String sessionType) {
+        this.courseList = new ArrayList<>();
         this.courseList.addAll(timetableCourses);
         this.sessionType = sessionType;
         this.score = 0;
     }
+
     // Adds course
-    public void addToCourseList(TimetableCourse course){
+    public void addToCourseList(TimetableCourse course) {
         this.courseList.add(course);
     }
+
     // returns true if there is a conflict
-    public boolean isConflicted(Section section){
-        for (TimetableCourse course : this.courseList){
-            for (Section timetableSection : course.getSections()){
+    public boolean isConflicted(Section section) {
+        for (TimetableCourse course : this.courseList) {
+            for (Section timetableSection : course.getSections()) {
                 if (timetableSection.isConflicted(section))
                     return true;
             }
         }
         return false;
-    } 
+    }
+
     // Gets course
-    public TimetableCourse getCourse(String code){
+    public TimetableCourse getCourse(String code) {
         for(TimetableCourse course: this.courseList){
             if(course.courseCode.equals(code)){
                 return course;
@@ -84,6 +90,16 @@ public class Timetable implements Comparable<Timetable> {
     @Override
     public int compareTo(Timetable o) {
         return Double.compare(score, o.score);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Timetable) {
+            return this.courseList.equals(((Timetable) obj).courseList) &&
+                    this.sessionType.equals(((Timetable) obj).sessionType);
+        } else {
+            return false;
+        }
     }
 }
 
