@@ -64,6 +64,7 @@ JRE or JDK 19 should be installed and usable on the machine.
 - Upon pressing the “Edit [Course]” button, the user will be shown a menu displaying all available sections for the course to be edited, of which the currently used sections are already highlighted. Multiple sections can be selected by holding shift while selecting or deselecting sections. Once the user moves forward, the timetable will be updated to reflect the edited course or display an error.
 
 **To use Use Case 5 (BR Recommendation)**:
+![Recommend BR](src/main/images/RecommendBR1 .png) ![Recommend BR2] (src/main/images/RecommendBR2.png)
 - First, access timetable editor UI through Use Case 4 (as described above)
 - Then click “Recommend BR Courses” button, which opens up popup screen
 - Select breadth category(s) that you want in the check box
@@ -75,10 +76,12 @@ JRE or JDK 19 should be installed and usable on the machine.
 - The pop up window will be closed and selected course will be added and displayed on the original edit timetable screen
 
 **To use Use Case 6 (File IO/Importing and Exporting Files)**:
+![Constraints](src/main/images/MainMenuUi.png)
 - To import a JSON file that holds either courses from a timetable or sessions, use the Import Session or Timetable buttons on the main menu and upload the timetable or session JSON file from your local storage. Session from demo stored in ```src/main/resources/courses_cleaned.json```. 
-- To export a timetable as a JSON file, choose the timetable you want to save from the UI that displays all timetables and then click on the save button on the UI for the corresponding timetable. The program will then download your timetable onto your local storage in ```src/main/saved_timetables```.
+- To export a timetable as a JSON file, choose the timetable you want to save from the UI that displays a single timetable or displays all timetables and then click on the save button on the UI for the corresponding timetable. The program will then download your timetable onto your local storage in ```src/main/saved_timetables```.
 
 **To use Use Case 7(BlackList/WhiteList: Filtering out Sections of CalendarCourses)**:
+![Constraints](src/main/images/Constraints.png)
 - First, access Constraint Input Screen
 - To get the input format, click help button.
 - Select the Session Type, “S” or “F”..
