@@ -2,7 +2,7 @@ package edit_timetable_use_case.frameworks_and_drivers;
 
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,7 +50,12 @@ public class AddCourseMenu extends JPanel implements ActionListener {
         ListSelectionModel selectionModel = new DefaultListSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         courses.setSelectionModel(selectionModel);
-        this.add(courses);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(courses);
+        courses.setLayoutOrientation(JList.VERTICAL);
+        this.add(scrollPane);
+
 
         JButton goBackButton = new JButton("Go back");
         goBackButton.addActionListener(this);

@@ -5,7 +5,6 @@ import display_timetable_use_case.interface_adapters.ITimetableUI;
 import edit_timetable_use_case.frameworks_and_drivers.EditTimetableScreen;
 import fileio_use_case.interface_adapters.SaveTimetableController;
 import generate_overlapping_timetable_use_case.frameworks_and_drivers.OverlapInputDialog;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -162,6 +161,7 @@ public class TimetableUI extends JPanel implements ActionListener, ITimetableUI 
             case "edit":
                 changeScreen(editTimetableScreen);
                 editTimetableScreen.updateTimetable();
+                editTimetableScreen.updateSession();
                 editTimetableScreen.setPreviousPanel(this);
                 break;
             case "<=":

@@ -4,7 +4,7 @@ import display_timetable_use_case.frameworks_and_drivers.TimetableViewBlockModel
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import display_timetable_use_case.frameworks_and_drivers.TimetableViewSectionModel;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
