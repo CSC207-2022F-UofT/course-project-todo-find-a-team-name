@@ -35,7 +35,9 @@ public class ModelToOverlapViewModelConverter {
     }
 
     /**
-     * Convenience constructor to quickly make this ViewModel out of a CourseModel
+     * Convenience method to quickly convert into ViewModel out of a CourseModel.
+     *
+     * @param courseModel - the courseModel to convert.
      **/
     public static OverlapTimetableCourseViewModel convertCourseModel(CourseModel courseModel) {
 
@@ -49,6 +51,11 @@ public class ModelToOverlapViewModelConverter {
                 courseModel.getCourseSession(), courseModel.getCourseCode(), courseModel.getBreadth());
     }
 
+    /**
+     * Convenience method to quickly convert into ViewModel out of a CourseModel.
+     *
+     * @param timetableModel - the timetableModel to convert.
+     **/
     public static OverlapTimetableViewModel convertTimetableModel(TimetableModel timetableModel) {
         ArrayList<OverlapTimetableCourseViewModel> courseViewModels = new ArrayList<>();
         for (CourseModel courseModel : timetableModel.getCourses()) {

@@ -1,22 +1,26 @@
 package entities;
 
-/** An implementation of the timetable which stores all of the timetablecourses
- *  related to a timetable
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * An implementation of the timetable which stores all of the timetablecourses
+ * related to a timetable
  */
 public class Timetable implements Comparable<Timetable> {
-    private ArrayList<TimetableCourse> courseList;
-    private String sessionType;
+    private final ArrayList<TimetableCourse> courseList;
+    private final String sessionType;
     private double score;
 
-    public Timetable(List<TimetableCourse> timetableCourses, String sessionType){
-        this.courseList = new ArrayList<TimetableCourse>();
+    public Timetable(List<TimetableCourse> timetableCourses, String sessionType) {
+        this.courseList = new ArrayList<>();
         this.courseList.addAll(timetableCourses);
         this.sessionType = sessionType;
         this.score = 0;
     }
 
     // Adds course
-    public void addToCourseList(TimetableCourse course){
+    public void addToCourseList(TimetableCourse course) {
         this.courseList.add(course);
     }
 

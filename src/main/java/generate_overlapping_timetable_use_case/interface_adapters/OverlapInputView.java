@@ -1,6 +1,6 @@
 package generate_overlapping_timetable_use_case.interface_adapters;
 
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 
 import java.util.List;
 

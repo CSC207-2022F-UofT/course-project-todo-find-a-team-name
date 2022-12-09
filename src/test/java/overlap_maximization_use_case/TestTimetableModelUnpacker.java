@@ -1,11 +1,11 @@
-package overlap_use_case;
+package overlap_maximization_use_case;
 
 import entities.*;
+import generate_overlapping_timetable_use_case.interface_adapters.TimetableModelUnpacker;
 import org.junit.Assert;
 import org.junit.Test;
-import retrieve_timetable_use_case.*;
+import retrieve_timetable_use_case.application_business.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,11 +64,13 @@ public class TestTimetableModelUnpacker {
         assert basicTimetableCourse.equals(TimetableModelUnpacker.unpackCourseModelasTimetableCourse(basicCourseModel));
     }
 
-    /** Test unpackTimetable with a basic case. **/
+    /**
+     * Test unpackTimetable with a basic case.
+     **/
     @Test
-    public void testUnpackTimetableBasic(){
-        TimetableModel testTimetableModel = new TimetableModel(List.of(basicCourseModel), "S");
-        Timetable expectedTimetable = new Timetable(new ArrayList<>(List.of(basicTimetableCourse)), "S");
+    public void testUnpackTimetableBasic() {
+        TimetableModel testTimetableModel = new TimetableModel(List.of(basicCourseModel));
+        Timetable expectedTimetable = new Timetable((List.of(basicTimetableCourse)), "S");
 
         assert expectedTimetable.equals(TimetableModelUnpacker.unpackTimetable(testTimetableModel));
     }

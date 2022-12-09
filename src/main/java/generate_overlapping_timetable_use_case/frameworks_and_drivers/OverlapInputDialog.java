@@ -8,11 +8,11 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import display_timetable_use_case.application_business.DisplayTimetableInteractor;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetablePresenter;
-import display_timetable_use_case.interface_adapters.TimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.DisplayTimetablePresenter;
 import edit_timetable_use_case.application_business.AddCourseInteractor;
 import edit_timetable_use_case.application_business.EditCourseInteractor;
 import edit_timetable_use_case.application_business.RemoveCourseInteractor;
@@ -22,7 +22,10 @@ import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.RemoveCoursePresenter;
 import entities.*;
+import fileio_use_case.application_business.timetable_specific_classes.SaveTimetableInteractor;
 import fileio_use_case.frameworks_and_drivers.SessionGateway;
+import fileio_use_case.frameworks_and_drivers.TimetableGateway;
+import fileio_use_case.interface_adapters.SaveTimetableController;
 import generate_overlapping_timetable_use_case.application_business.CalculateSectionHoursInteractor;
 import generate_overlapping_timetable_use_case.application_business.OverlapGeneratedTimetableRelayInteractor;
 import generate_overlapping_timetable_use_case.application_business.TimeTableMatchInteractor;
@@ -49,9 +52,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.Flow;
 
 public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Object>, OverlapInputView {
@@ -68,7 +73,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
     private ArrayList<OverlapTimetableViewModel> timeTableOptions;
 
     private final ConstraintsInputScreen hansInputScreen;
-    private final TimetableUI timetablePanel;
+
+    // This needs to be initialized later, since TimetableUI requires a complete version of this dialog.
+    private TimetableUI timetablePanel = null;
 
     private final JFrame mainFrame;
     private String selectedItemName;
@@ -79,11 +86,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      * and interactor and such.
      */
     public OverlapInputDialog(ArrayList<OverlapTimetableViewModel> timeTableOptions,
-                              TimetableUI timetablePanel,
                               ConstraintsInputScreen hansInputScreen, OverlapMaximizationController overlapMaxController,
                               JFrame mainFrame) {
         this.mainFrame = mainFrame;
-        this.timetablePanel = timetablePanel;
         this.hansInputScreen = hansInputScreen;
         this.overlapMaxController = overlapMaxController;
         $$$setupUI$$$();
@@ -326,15 +331,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             // Make my controller
             OverlapMaximizationController overlapMaxController = new OverlapMaximizationController(timetableMatcher);
 
-
             DisplayTimetablePresenter displayTimetablePresenter = new DisplayTimetablePresenter();
             DisplayTimetableInteractor displayTimetableInteractor = new DisplayTimetableInteractor(displayTimetablePresenter);
             DisplayTimetableController displayTimetableController = new DisplayTimetableController(displayTimetableInteractor);
-            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
-            displayTimetablePresenter.setView(timetableUI);
-            /* The line below must run after displayPresenter's view has been set to screen.*/
-            editScreen.updateTimetable();
-            frame.add(editScreen);
 
             // Set up Hans' stuff.
             SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
@@ -342,13 +341,22 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
             SectionFilterController sectionFilterController = new SectionFilterController(sectionFilterInteractor);
             ConstraintsInputScreen constraintsInputScreen = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController);
             sectionFilterPresenter.setView(constraintsInputScreen);
-
-            sectionFilterInteractor.onNext(fall);
-
-            TimetableUI finalTimetableView = new TimetableUI(displayTimetableController, editScreen, overlapMaxController);
-            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels, finalTimetableView,
+            OverlapInputDialog dialog = new OverlapInputDialog(timetableViewModels,
                     constraintsInputScreen, overlapMaxController, frame);
 
+            TimetableGateway timetableGateway = new TimetableGateway();
+            SaveTimetableInteractor saveTimetableInteractor = new SaveTimetableInteractor(timetableGateway);
+            SaveTimetableController saveTimetableController = new SaveTimetableController(saveTimetableInteractor);
+            TimetableUI timetableUI = new TimetableUI(displayTimetableController, editScreen, dialog,
+                    saveTimetableController);
+            displayTimetablePresenter.setView(timetableUI);
+            dialog.setTimetablePanel(timetableUI);
+            /* The line below must run after displayPresenter's view has been set to screen.*/
+            editScreen.updateTimetable();
+            frame.add(editScreen);
+
+
+            sectionFilterInteractor.onNext(fall);
             // Set the presenter to include the Dialog.
             presenter.setDialogToPassTo(dialog);
 
@@ -424,6 +432,16 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
 
     }
 
+    /**
+     * Initialise this OverlapInputDialog's accompanying timetableUI so that it can display the finished timetable.
+     * Although you can technically initialise the dialog without calling it, don't try! It's NOT a good idea!!!
+     *
+     * @param timetableUI - the companion timetableUI.
+     */
+    public void setTimetablePanel(TimetableUI timetableUI) {
+        this.timetablePanel = timetableUI;
+    }
+
     @Override
     public void stashTimetableViewModels(List<OverlapTimetableViewModel> viewModels) {
         timeTableOptions = new ArrayList<>(viewModels);
@@ -447,10 +465,9 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
      **/
     @Override
     public void stashBestMatchingTimetable(TimetableViewModel bestMatch) {
-        timetablePanel.updateTimetable(bestMatch);
+        timetablePanel.updateTimetable();
         callInKai();
         System.out.println(bestMatch);
-
     }
 
     /**
@@ -464,7 +481,8 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         createUIComponents();
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setBorder(BorderFactory.createTitledBorder(null, "Overlap Input Dialog", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        contentPane.setName("OverlapInputDialog");
+        contentPane.setBorder(BorderFactory.createTitledBorder(null, this.$$$getMessageFromBundle$$$("strings", "overlapInputDialogTitle"), TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
@@ -474,24 +492,101 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
-        buttonOK.setText("OK");
+        this.$$$loadButtonText$$$(buttonOK, this.$$$getMessageFromBundle$$$("strings", "finishDataInputPrompt"));
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
+        this.$$$loadButtonText$$$(buttonCancel, this.$$$getMessageFromBundle$$$("strings", "cancelPrompt"));
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         textLabel = new JLabel();
-        textLabel.setText("Choose a timetable to produce an overlapping one for.");
+        this.$$$loadLabelText$$$(textLabel, this.$$$getMessageFromBundle$$$("strings", "overlapInputDialogPrompt"));
         panel3.add(textLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel3.add(spacer2, new GridConstraints(1, 1, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        timeTableComboBox.setName("timeTableComboBox");
+        timeTableComboBox.setOpaque(false);
         panel3.add(timeTableComboBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         panel3.add(spacer3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();
         panel3.add(spacer4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        textLabel.setLabelFor(timeTableComboBox);
+    }
+
+    private static Method $$$cachedGetBundleMethod$$$ = null;
+
+    /**
+     * An auto-generated method from IntelliJ. It access the strings bundle. Don't change it please!
+     **/
+    private String $$$getMessageFromBundle$$$(String path, String key) {
+        ResourceBundle bundle;
+        try {
+            Class<?> thisClass = this.getClass();
+            if ($$$cachedGetBundleMethod$$$ == null) {
+                Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+                $$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+            }
+            bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+        } catch (Exception e) {
+            bundle = ResourceBundle.getBundle(path);
+        }
+        return bundle.getString(key);
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadLabelText$$$(JLabel component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setDisplayedMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private void $$$loadButtonText$$$(AbstractButton component, String text) {
+        StringBuffer result = new StringBuffer();
+        boolean haveMnemonic = false;
+        char mnemonic = '\0';
+        int mnemonicIndex = -1;
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '&') {
+                i++;
+                if (i == text.length()) break;
+                if (!haveMnemonic && text.charAt(i) != '&') {
+                    haveMnemonic = true;
+                    mnemonic = text.charAt(i);
+                    mnemonicIndex = result.length();
+                }
+            }
+            result.append(text.charAt(i));
+        }
+        component.setText(result.toString());
+        if (haveMnemonic) {
+            component.setMnemonic(mnemonic);
+            component.setDisplayedMnemonicIndex(mnemonicIndex);
+        }
     }
 
     /**

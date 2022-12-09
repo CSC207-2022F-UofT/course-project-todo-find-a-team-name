@@ -1,7 +1,7 @@
-package overlap_use_case;
+package generate_overlapping_timetable_use_case.interface_adapters;
 
 import entities.*;
-import retrieve_timetable_use_case.*;
+import retrieve_timetable_use_case.application_business.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class TimetableModelUnpacker {
             courses.add(unpackCourseModelasTimetableCourse(course));
         }
 
-        return new Timetable(courses, timetable.getSessionType());
+        return new Timetable(courses, courses.get(0).getCourseSession());
     }
 
     /** Unpack a list of SectionModels into an ArrayList of Sections. **/
