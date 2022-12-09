@@ -49,7 +49,8 @@ public class OverlapTimetableCourseViewModel {
      **/
     @Override
     public boolean equals(Object o) {
-        if (o instanceof OverlapTimetableCourseViewModel other) {
+        if (o instanceof OverlapTimetableCourseViewModel) {
+            OverlapTimetableCourseViewModel other = (OverlapTimetableCourseViewModel) o;
             return this.title.equals(other.title) && this.sections.equals(other.sections)
                     && this.courseSession.equals(other.courseSession) && this.courseCode.equals(other.courseCode)
                     && this.breadth.equals(other.breadth);

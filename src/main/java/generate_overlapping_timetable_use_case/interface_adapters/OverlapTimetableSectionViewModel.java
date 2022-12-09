@@ -37,7 +37,8 @@ public class OverlapTimetableSectionViewModel {
      **/
     @Override
     public boolean equals(Object o) {
-        if (o instanceof OverlapTimetableSectionViewModel other) {
+        if (o instanceof OverlapTimetableSectionViewModel) {
+            OverlapTimetableSectionViewModel other = (OverlapTimetableSectionViewModel) o;
             return this.code.equals(other.code) && this.instructor.equals(other.instructor) &&
                     this.blocks.equals(other.blocks);
         } else {
