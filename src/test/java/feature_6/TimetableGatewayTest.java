@@ -102,7 +102,7 @@ public class TimetableGatewayTest {
         TimetableCourse basicTimetableCourse3 = new TimetableCourse("How to Catch Them All", List.of(basicSection3), "S",
                 "POK500", "3");
         // Timetable Course 4
-        Block basicBlock4 = new Block("TU", "1:00", "2:00", "Pokemon");
+        Block basicBlock4 = new Block("TU", "8:00", "10:00", "Pokemon");
         Section basicSection4 = new Section("LEC-0401", "Pikachu", List.of(basicBlock4));
         TimetableCourse basicTimetableCourse4 = new TimetableCourse("Pika Pika", List.of(basicSection4), "S",
                 "PIK100", "4");
