@@ -73,6 +73,6 @@ public class RetrieveTimetablePresenterTest {
     @Test
     void updateSession(){
         presenter.updateSession(sessionModel);
-        Assertions.assertTrue(sessionViewModel.getCourses().containsKey("EGG100") && view.session.getCourses().containsKey("EGG100"));
+        Assertions.assertEquals(sessionViewModel, view.session);
     }
 }
