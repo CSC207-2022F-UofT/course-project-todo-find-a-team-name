@@ -131,6 +131,6 @@ class RetrieveTimetableInteractorTest {
     @Test
     void updateSession(){
         interactor.updateSession();
-        Assertions.assertTrue(sessionViewModel.getCourses().containsKey("EGG100") && view.session.getCourses().containsKey("EGG100"));
+        Assertions.assertEquals(sessionViewModel, view.session);
     }
 }

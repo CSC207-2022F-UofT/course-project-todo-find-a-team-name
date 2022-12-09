@@ -238,7 +238,7 @@ public class MainUI extends JPanel implements ActionListener {
                         }
                         isTimetableImported = true;
                     } catch (IOException | ParseException | java.text.ParseException | InvalidSectionsException ex) {
-                        throw new RuntimeException(ex);
+//                        JOptionPane.showMessageDialog();
                     }
                 }
                 break;
