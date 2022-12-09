@@ -125,6 +125,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
      */
     public void openOverlapUI() {
         overlapInputDialog.setVisible(true);
+        overlapInputDialog.setSize(1080,720);
     }
 
     /**
@@ -152,6 +153,7 @@ public class AllTimetablesScreen extends JPanel implements ActionListener, AllTi
         }
         frame.getContentPane().removeAll();
         frame.add(this);
+        this.setVisible(true);
         this.revalidate();
         frame.revalidate();
     }

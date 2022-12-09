@@ -61,6 +61,7 @@ public class OverlapInputDialog extends JDialog implements Flow.Subscriber<Objec
         getRootPane().setDefaultButton(buttonOK);
         setUpCancelFunctionality();
         setUpInputPassing();
+        this.setSize(512, 360);
     }
 
     /**
