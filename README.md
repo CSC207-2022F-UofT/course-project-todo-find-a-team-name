@@ -64,7 +64,8 @@ JRE or JDK 19 should be installed and usable on the machine.
 - Upon pressing the “Edit [Course]” button, the user will be shown a menu displaying all available sections for the course to be edited, of which the currently used sections are already highlighted. Multiple sections can be selected by holding shift while selecting or deselecting sections. Once the user moves forward, the timetable will be updated to reflect the edited course or display an error.
 
 **To use Use Case 5 (BR Recommendation)**:
-![Recommend BR](src/main/images/RecommendBR1 .png) ![Recommend BR2] (src/main/images/RecommendBR2.png)
+![Recommend BR](src/main/images/RecommendBR1.png)
+![Recommend BR2](src/main/images/RecommendBR2.png)
 - First, access timetable editor UI through Use Case 4 (as described above)
 - Then click “Recommend BR Courses” button, which opens up popup screen
 - Select breadth category(s) that you want in the check box
