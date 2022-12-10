@@ -13,7 +13,7 @@ import java.util.List;
  * to generate timetable courses based on these sections only (but other attributes like course code is
  * given by the calendar course)
  */
-public class TimetableCourseGenerator {
+public class TimetableCourseGenerator{
 
     private final CalendarCourse calenderCourse;
 

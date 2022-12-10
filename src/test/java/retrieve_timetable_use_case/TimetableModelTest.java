@@ -1,6 +1,5 @@
 package retrieve_timetable_use_case;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
@@ -25,10 +24,6 @@ class TimetableModelTest {
         courses.add(new CourseModel("some course", new ArrayList<>(), "F",
                 "CSD203", "BR1"));
         timetable = new TimetableModel(courses);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     /**

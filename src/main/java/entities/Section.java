@@ -98,7 +98,7 @@ public class Section {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Section)){
+        if (!(obj instanceof Section)) {
             return false;
         }
 

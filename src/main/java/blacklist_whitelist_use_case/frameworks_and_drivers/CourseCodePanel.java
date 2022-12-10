@@ -7,8 +7,8 @@ import javax.swing.*;
  */
 
 public class CourseCodePanel extends JPanel{
-    JLabel courseLabel = new JLabel("Course Codes");
-    JTextField textField;
+    final JLabel courseLabel = new JLabel("Course Codes");
+    final JTextField textField;
 
     public CourseCodePanel(JTextField textField) {
         this.add(courseLabel);

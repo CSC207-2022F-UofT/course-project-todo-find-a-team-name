@@ -36,7 +36,7 @@ class CalendarCourseTest {
                 new ArrayList<>(List.of(s1, s2)),
                 "F", "EGX101", "BR1");
 
-        assertTrue(c1.equals(c2));
+        assertEquals(c1, c2);
     }
 
     @Test
@@ -50,7 +50,7 @@ class CalendarCourseTest {
         CalendarCourse c2 = new CalendarCourse("Test Course",
                 new ArrayList<>(List.of(s1)),
                 "F", "EGX101", "BR1");
-        assertFalse(c1.equals(c2));
+        assertNotEquals(c1, c2);
     }
 
     @Test

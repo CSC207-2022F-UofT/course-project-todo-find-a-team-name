@@ -1,6 +1,5 @@
 package retrieve_timetable_use_case;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.*;
@@ -24,10 +23,6 @@ class SessionModelTest {
         HashMap<String, CourseModel> courses = new HashMap<>();
         courses.put("SD204", (new CourseModel("Something cool", new ArrayList<>(), "F", "SD204", "BR1")));
         session = new SessionModel(courses, "F");
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     /**

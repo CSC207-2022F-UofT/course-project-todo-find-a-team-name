@@ -1,17 +1,21 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.frameworks_and_drivers.DisplayTimetableController;
-import display_timetable_use_case.frameworks_and_drivers.ITimetableUI;
-import display_timetable_use_case.interface_adapters.TimetableView;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableUI;
+import display_timetable_use_case.frameworks_and_drivers.TimetableView;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import display_timetable_use_case.interface_adapters.DisplayTimetableController;
+import display_timetable_use_case.interface_adapters.ITimetableUI;
 import edit_timetable_use_case.application_business.NotInTimetableException;
 import edit_timetable_use_case.application_business.RemoveCourseFailedException;
 import edit_timetable_use_case.interface_adapters.EditTimetableController;
 import edit_timetable_use_case.interface_adapters.EditTimetableView;
 import entities.InvalidSectionsException;
+import fileio_use_case.interface_adapters.SaveTimetableController;
 import recommend_br_use_case.frameworks_and_drivers.RecommendBRWindow;
-import screens.SessionViewModel;
+import retrieve_timetable_use_case.application_business.RetrieveTimetableView;
+import retrieve_timetable_use_case.interface_adapters.RetrieveTimetableController;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,7 +32,8 @@ import java.util.List;
  * courseButtons refer to buttons used to remove a given course.
  * BRWindow is the screen associated with the Recommend BR use case, and must be set before making this screen visible.
  */
-public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView, ITimetableUI {
+public class EditTimetableScreen extends JPanel implements ActionListener, EditTimetableView, ITimetableUI,
+        RetrieveTimetableView {
 
     private final JFrame frame;
     private final EditTimetableController controller;
@@ -44,14 +49,19 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
     private TimetableViewModel timetable;
     private JPanel previousPanel;
     private final DisplayTimetableController displayTimetableController;
+    private final RetrieveTimetableController retrieveTimetableController;
+    private final SaveTimetableController saveController;
 
 
     public EditTimetableScreen(JFrame frame, EditTimetableController controller, JPanel previousPanel,
-                               DisplayTimetableController displayTimetableController) {
+                               DisplayTimetableController displayTimetableController, RetrieveTimetableController
+                               retrieveTimetableController, SaveTimetableController saveController) {
         this.frame = frame;
         this.controller = controller;
         this.previousPanel = previousPanel;
         this.displayTimetableController = displayTimetableController;
+        this.retrieveTimetableController = retrieveTimetableController;
+        this.saveController = saveController;
 
         this.ttView = null;
         this.courseMenu = null;
@@ -162,16 +172,38 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
             BRWindow.showInputView();
         }
         else if (cmd.equals("Add Course")){
-            openCourseMenu();
+            if (session == null){
+                JOptionPane.showMessageDialog(frame, "Load a session first.");
+            }
+            else{
+                openCourseMenu();
+            }
         }
         else if (cmd.startsWith("Edit ")){
-            openSectionsMenu(cmd.substring("Edit ".length()));
+            String courseCode = cmd.substring("Edit ".length());
+            if (session == null){
+                JOptionPane.showMessageDialog(frame, "Load a session first.");
+            }
+            else if (session.getCourses().get(courseCode) == null){
+                JOptionPane.showMessageDialog(frame, "Course does not exist in session." +
+                        " Load the timetable's session first.");
+            }
+            else{
+                openSectionsMenu(courseCode);
+            }
         }
-        /*else if (cmd.equals("Save")){
-        }*/
+        else if (cmd.equals("Save")){
+            saveController.saveTimetable();
+            this.setVisible(false);
+            frame.add(previousPanel);
+            previousPanel.setVisible(true);
+        }
         else if(cmd.equals("<=")){
             this.setVisible(false);
             frame.add(previousPanel);
+            if (previousPanel instanceof TimetableUI){
+                ((TimetableUI) previousPanel).updateTimetable();
+            }
             previousPanel.setVisible(true);
         }
 
@@ -223,12 +255,7 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
         JOptionPane.showMessageDialog(frame, message);
     }
 
-    /**
-     * @param session Updates the screen's session view model.
-     */
-    public void updateSession(SessionViewModel session) {
-        this.session = session;
-    }
+
     /**
      * @param successMessage A success message as determined by the presenter.
      *                       This method creates a message dialog with the given message.
@@ -248,5 +275,17 @@ public class EditTimetableScreen extends JPanel implements ActionListener, EditT
 
     public void updateTimetable(){
         displayTimetableController.displayTimetable();
+    }
+
+    public void updateSession(){
+        retrieveTimetableController.updateSession();
+    }
+
+    /**
+     * @param sessionViewModel The current session's view model.
+     */
+    @Override
+    public void updateSession(SessionViewModel sessionViewModel) {
+        this.session = sessionViewModel;
     }
 }

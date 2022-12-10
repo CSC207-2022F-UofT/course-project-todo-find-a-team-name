@@ -14,12 +14,15 @@ public class HelpInstructionScreen extends JDialog {
         this.setSize(500, 500);
         setLayout(new BorderLayout());
         JTextArea textArea = new JTextArea();
-        String s = "*--> For instructor Constraint input, enter the instructor names with the Initial of the first name and" +
+        String s = "\n\n* --> IMPORTANT DEMO: \n\n Courses: MAT224H1, STA257H1, CSC236H1, CSC207H1, CSC343H1" +
+                "\n\nDateConstraints: BlackList: Friday"+
+                "\n\nTimeInterval Constraints: WhiteList 14:00 - 21:00" +
+                "\n\nClick submit and filter"+"\n\n --> For instructor Constraint input, enter the instructor names with the Initial of the first name and" +
                 " full last name seperated by comma. For example, if you don't want to take the course delivered by Professor" +
-                " Genius Alien and Smart Bro, select blacklist, and enter: G Alien, S Bro \n\n *--> For Room Constraint input, " +
+                " Genius Alien and Smart Bro, select blacklist, and enter: G Alien, S Bro \n\n--> For Room Constraint input, " +
                 "enter the Building and the room number seperated by comma, SS 123, SS 234. \n\n *--> Note if you select Whitelist" +
                 " constraints, you MUST enter valid preference for all the courses. eg. If you want to whitelist instructor, you are" +
-                " encouraged to enter at least one of your favorite instructor for each course. ";
+                " encouraged to enter at least one of your favorite instructor for each course. "        ;
         textArea.setText(s);
         textArea.setLineWrap(true);
         textArea.setEditable(false);

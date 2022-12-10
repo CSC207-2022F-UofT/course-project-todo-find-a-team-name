@@ -12,12 +12,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Flow;
 
 /** Interactor for SessionGateway **/
-public class SessionGatewayInteractor implements SessionFileImportInputBoundary {
+public class SessionGatewayInteractor implements SessionFileImportInputBoundary, Flow.Publisher<Object> {
+    final ArrayList<Flow.Subscriber<Object>> receivers;
     private final SessionGatewayInterface sessionGateway;
     public SessionGatewayInteractor(SessionGatewayInterface sessionGateway) {
         this.sessionGateway = sessionGateway;
+        this.receivers = new ArrayList<>();
     }
     /**
      * Given FileImportRequestModel, which holds a string of the JSON file path and
@@ -30,6 +33,9 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
         String filePath = jsonData.getFilePath();
         Session aSession = this.sessionGateway.readFromFile(filePath, sessionType);
         HashMap<String, CalendarCourse> allSessionCourses = aSession.getAllSessionCourses();
+        for (Flow.Subscriber<Object> subscriber : receivers){
+            subscriber.onNext(aSession); // Things you want to pass. Here it's a session object.
+        }
         return createSessionModel(allSessionCourses, sessionType);
     }
     /** HELPER METHOD to create SessionModel **/
@@ -52,5 +58,13 @@ public class SessionGatewayInteractor implements SessionFileImportInputBoundary 
             allSessionCoursesModel.put(course.getCourseCode(), aNewCourse);
         }
         return new SessionModel(allSessionCoursesModel, sessionType);
+    }
+    /**
+     * Add subscribers/observers to this class
+     * @param subscriber - a subscriber
+     * */
+    @Override
+    public void subscribe(Flow.Subscriber<? super Object> subscriber) {
+        receivers.add(subscriber); // Adds subscribe to list of subscribers
     }
 }

@@ -6,16 +6,16 @@ import java.util.HashMap;
 /** An entity that represents Session.
  * A session contains all available courses.
  * Representation Invariants:
- * 1. Courses in a session that happens in the Fall, Winter or both.
+ * 1. Courses in a session that happens in the Fall or Winter.
  * 2. For methods that take in a course code, it is ASSUMED that the course HAS BEEN ADDED in this session.
  * 3. All CalenderCourse objects contains course codes
- * Session Types: Fall (F), Winter (S), Both (Y)
+ * Session Types: Fall (F), Winter (S)
 */
 public class Session {
 
     // allSessionCourses contains all courses in this session:
     // key (Course Code) and value (CalendarCourse object)
-    private HashMap<String, CalendarCourse> allSessionCourses;
+    private final HashMap<String, CalendarCourse> allSessionCourses;
     private final String sessionType;
 
     // Constructor
@@ -141,5 +141,18 @@ public class Session {
     public String toString() {
         return "Session: " + this.sessionType + " { " + allSessionCourses + " }";
     }
-    
+
+
+    /**
+     * Sessions are the same if they have the same courses and same session.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Session) {
+            return this.sessionType.equals(((Session) obj).sessionType)
+                    && this.allSessionCourses.equals(((Session) obj).allSessionCourses);
+        } else {
+            return false;
+        }
+    }
 }

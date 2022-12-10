@@ -1,8 +1,8 @@
 package edit_timetable_use_case.frameworks_and_drivers;
 
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import screens.SessionViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewCourseModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.SessionViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,11 +19,11 @@ import java.util.Vector;
  */
 public class AddCourseMenu extends JPanel implements ActionListener {
 
-    SessionViewModel session;
-    EditTimetableScreen editScreen;
-    JList<String> courses;
-    TimetableViewModel timetable;
-    JFrame frame;
+    final SessionViewModel session;
+    final EditTimetableScreen editScreen;
+    final JList<String> courses;
+    final TimetableViewModel timetable;
+    final JFrame frame;
 
     /**
      * @param session session is the view model of the session for which the user is making a timetable for.
@@ -50,7 +50,12 @@ public class AddCourseMenu extends JPanel implements ActionListener {
         ListSelectionModel selectionModel = new DefaultListSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         courses.setSelectionModel(selectionModel);
-        this.add(courses);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(courses);
+        courses.setLayoutOrientation(JList.VERTICAL);
+        this.add(scrollPane);
+
 
         JButton goBackButton = new JButton("Go back");
         goBackButton.addActionListener(this);

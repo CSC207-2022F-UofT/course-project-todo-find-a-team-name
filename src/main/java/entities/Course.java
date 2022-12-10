@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class Course {
 
     protected final String title;
-    protected List<Section> sections;
+    protected final List<Section> sections;
     protected final String courseSession;
     protected final String courseCode;
     protected final String breadth;
@@ -62,5 +62,17 @@ public abstract class Course {
             sectionCodes.add(section.getCode());
         }
         return sectionCodes;
+    }
+
+    /** A Course == another course, if all the attributes are the same. **/
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Course) {
+            return this.title.equals(((Course) obj).title) && this.courseSession.equals(((Course) obj).courseSession)
+                    && this.courseCode.equals(((Course) obj).courseCode) && this.breadth.equals(((Course) obj).breadth)
+                    && this.sections.equals(((Course) obj).sections);
+        } else {
+            return false;
+        }
     }
 }

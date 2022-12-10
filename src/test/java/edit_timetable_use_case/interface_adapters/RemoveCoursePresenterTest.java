@@ -1,7 +1,6 @@
 package edit_timetable_use_case.interface_adapters;
 
 import edit_timetable_use_case.application_business.EditTimetableResponseModel;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrieve_timetable_use_case.application_business.TimetableModel;
@@ -19,10 +18,6 @@ class RemoveCoursePresenterTest {
         presenter = new RemoveCoursePresenter();
         testView = new TestEditTimetableView();
         presenter.setView(testView);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test

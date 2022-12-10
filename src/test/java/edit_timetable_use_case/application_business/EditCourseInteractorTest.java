@@ -3,7 +3,6 @@ package edit_timetable_use_case.application_business;
 import edit_timetable_use_case.interface_adapters.EditCoursePresenter;
 import edit_timetable_use_case.interface_adapters.TestEditTimetableView;
 import entities.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,10 +55,6 @@ class EditCourseInteractorTest {
             interactor.setRetrieveInteractor(retrieveInteractor);
         }
         catch (InvalidSectionsException ignored){}
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     /**

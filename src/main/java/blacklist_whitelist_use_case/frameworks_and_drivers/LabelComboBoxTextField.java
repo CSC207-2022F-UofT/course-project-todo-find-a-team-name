@@ -9,9 +9,9 @@ import javax.swing.*;
 
 public class LabelComboBoxTextField extends JPanel{
 
-    JLabel label;
-    JComboBox<String> jComboBox;
-    JTextField textField;
+    final JLabel label;
+    final JComboBox<String> jComboBox;
+    final JTextField textField;
 
     public LabelComboBoxTextField(JLabel label, JComboBox<String> jComboBox, JTextField textField) {
         this.label = label;

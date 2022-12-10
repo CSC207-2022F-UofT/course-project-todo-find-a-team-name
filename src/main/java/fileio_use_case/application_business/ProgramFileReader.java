@@ -12,11 +12,13 @@ import java.util.HashMap;
 
 /** Class that reads files and converts it to either TimetableCourse or CalendarCourse and returns it*/
 public class ProgramFileReader {
-    HashMap<String, CalendarCourse> allCalendarCourses;
-    HashMap<String, TimetableCourse> allTimetableCourses;
+    final HashMap<String, CalendarCourse> allCalendarCourses;
+    final HashMap<String, TimetableCourse> allTimetableCourses;
+    String sessionType;
     public ProgramFileReader() {
         this.allCalendarCourses = new HashMap<>();
         this.allTimetableCourses = new HashMap<>();
+        this.sessionType = "";
     }
     public void parseString(String jsonData, String type) throws ParseException, InvalidSectionsException {
         // Parse String
@@ -50,13 +52,13 @@ public class ProgramFileReader {
                 CalendarCourse calCourse = new CalendarCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
+                allCalendarCourses.put((String) courseInfo.get("code"), calCourse);
             }
             else {
                 TimetableCourse timetableCourse = new TimetableCourseBuilder((String) courseInfo.get("title"), allSections,
                         (String) courseInfo.get("session"), (String) courseInfo.get("code"),
                         (String) courseInfo.get("breadth")).newCourse();
-                this.allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
+                allTimetableCourses.put((String) courseInfo.get("code"), timetableCourse);
             }
         }
     }
@@ -92,5 +94,11 @@ public class ProgramFileReader {
     /** Returns HashMap of String to TimetableCourse from file **/
     public HashMap<String, TimetableCourse> returnTimetableCourseHashMap() {
         return this.allTimetableCourses;
+    }
+    /** Returns session type of imported timetable **/
+    public String returnSessionTypeImport() {
+         TimetableCourse aCourse = allTimetableCourses.values().iterator().next();
+         this.sessionType = aCourse.getCourseSession();
+         return this.sessionType;
     }
 }

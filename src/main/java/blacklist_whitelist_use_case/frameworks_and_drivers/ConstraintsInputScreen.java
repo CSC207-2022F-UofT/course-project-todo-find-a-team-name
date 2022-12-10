@@ -1,27 +1,13 @@
 package blacklist_whitelist_use_case.frameworks_and_drivers;
-
-import blacklist_whitelist_use_case.application_business.SectionFilterInteractor;
 import blacklist_whitelist_use_case.interface_adapters.ISectionFilterView;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterController;
-import blacklist_whitelist_use_case.interface_adapters.SectionFilterPresenter;
 import blacklist_whitelist_use_case.interface_adapters.SectionFilterViewModel;
-import display_timetable_use_case.interface_adapters.TimetableViewCourseModel;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
-import entities.InvalidSectionsException;
-import entities.Session;
-
-import fileio_use_case.frameworks_and_drivers.SessionGateway;
-import org.json.simple.parser.ParseException;
-import timetable_generator_use_case.application_business.TimetableGeneratorInteractor;
 import timetable_generator_use_case.frameworks_and_drivers.GenerateTimetableScreen;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorController;
-import timetable_generator_use_case.interface_adapters.TimetableGeneratorPresenter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +34,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
     private final JComboBox<String> endTime = new JComboBox<>(TIME);
     private final JButton submit = new JButton("submit and filter");
     private final JButton help = new JButton("help");
-
 
     public ConstraintsInputScreen(GenerateTimetableScreen generateTimeTableScreen, SectionFilterController controller) {
         this.generateTimeTableScreen = generateTimeTableScreen;
@@ -104,50 +89,6 @@ public class ConstraintsInputScreen extends JPanel implements ActionListener, IS
         this.add(panel, BorderLayout.CENTER);
         this.add(buttons, BorderLayout.PAGE_END);
 
-    }
-
-    /**
-     *main function that runs the Constraints Input Screen. For testing purpose.
-     */
-    public static void main(String[] args) throws IOException, ParseException {
-        SessionGateway sessionGateway = new SessionGateway();
-        Session fall;
-        try {
-            fall = sessionGateway.readFromFile("src/main/resources/courses_cleaned.json", "F");
-        } catch (ParseException | IOException | InvalidSectionsException e) {
-            throw new RuntimeException(e);
-        }
-
-        TimetableGeneratorPresenter generatorPresenter = new TimetableGeneratorPresenter();
-        TimetableGeneratorInteractor generatorInteractor = new TimetableGeneratorInteractor(generatorPresenter);
-        TimetableGeneratorController generatorController = new TimetableGeneratorController(generatorInteractor);
-        generatorInteractor.onNext(fall);
-        GenerateTimetableScreen generateTimetableScreen = new GenerateTimetableScreen(generatorController);
-
-        generatorPresenter.setView(timetables -> {
-            System.out.println("Timetable Size: " + timetables.length);
-            for (TimetableViewModel timetableModel : timetables){
-                System.out.println("------");
-                for (TimetableViewCourseModel courseModel : timetableModel.getCourseData()){
-                    System.out.println(courseModel.getCode());
-                }
-            }
-        });
-
-        generateTimetableScreen.add(new JButton("HELLO"));
-        JFrame jFrame = new JFrame();
-        jFrame.setSize(800, 400);
-        jFrame.setResizable(true);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        SectionFilterPresenter sectionFilterPresenter = new SectionFilterPresenter();
-        SectionFilterInteractor sectionFilterInterator = new SectionFilterInteractor(sectionFilterPresenter);
-        sectionFilterInterator.onNext(fall); //delete
-        SectionFilterController sectionFilterController1 = new SectionFilterController(sectionFilterInterator);
-        ConstraintsInputScreen c = new ConstraintsInputScreen(generateTimetableScreen, sectionFilterController1);
-        c.setPrevPanel(generateTimetableScreen);
-        sectionFilterPresenter.setView(c);
-        jFrame.add(c);
-        jFrame.setVisible(true);
     }
 
     /**

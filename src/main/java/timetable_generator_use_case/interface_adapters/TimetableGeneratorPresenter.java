@@ -1,12 +1,5 @@
 package timetable_generator_use_case.interface_adapters;
-//import display_timetable_use_case.interface_adapters.TimetableViewModel;
-//
-//import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
-//
-//import timetable_generator_use_case.application_business.TimetableGeneratorOutputBoundary;
-//import timetable_generator_use_case.application_business.TimetableGeneratorResponseModel;
-//import timetables_sort_use_case.interface_adapters.AllTimetablesView;
-import display_timetable_use_case.interface_adapters.TimetableViewModel;
+import display_timetable_use_case.frameworks_and_drivers.TimetableViewModel;
 import retrieve_timetable_use_case.interface_adapters.TimetableModelConverter;
 import timetable_generator_use_case.application_business.TimetableGeneratorOutputBoundary;
 import timetable_generator_use_case.application_business.TimetableGeneratorResponseModel;

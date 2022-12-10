@@ -9,9 +9,9 @@ import java.util.List;
  */
 
 public class DayConstraintsPanel extends JPanel {
-    JLabel label;
-    JComboBox<String> jComboBox;
-    List<JRadioButton> jRadioButtons;
+    final JLabel label;
+    final JComboBox<String> jComboBox;
+    final List<JRadioButton> jRadioButtons;
     public DayConstraintsPanel(JLabel label, JComboBox<String> comboBox, List<JRadioButton> jRadioButtons){
         this.label = label;
         this.jComboBox = comboBox;
