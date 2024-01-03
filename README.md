@@ -1,7 +1,4 @@
 # Timetable Generator 🏫 📅
-NOTE FOR EVERYONE:
-- Saved timetables are saved in ```src/main/saved_timetables``` and demo session file is under ```src/main/resources/courses_cleaned.json```.
-- Enter the constraints for Constraints Input screen under ```To use Use Case 7``` in this README.
 
 ## Table of Contents 
 1. [Summary of How The Program Works](#summary)
@@ -21,6 +18,9 @@ The Timetable Generator is a program which stores courses on the University of T
 
 ## Organization
 We organized the repository by use case, then further divided it by clean architecture layers. Each use case package contains all classes in the Application business Rules layer and contains packages for the Interface adapters layer and Framework & Drivers layer. Outside of the use case packages, there is the entities package containing all entities used in the program.
+
+NOTE:
+- Saved timetables are saved in ```src/main/saved_timetables``` and demo session file is under ```src/main/resources/courses_cleaned.json```.
 
 <a name ="setup"/>
 
