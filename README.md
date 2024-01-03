@@ -1,5 +1,7 @@
 # Timetable Generator 🏫 📅
 
+![Timetable](images/timetable_generator.png)
+
 ## Table of Contents 
 1. [Summary of How The Program Works](#summary)
 2. [Organization](#org)
