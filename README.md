@@ -1,7 +1,5 @@
 # Timetable Generator 🏫 📅
 
-![Timetable](images/timetable_generator.png)
-
 ## Table of Contents 
 1. [Summary of How The Program Works](#summary)
 2. [Organization](#org)
@@ -14,7 +12,7 @@
 ## Summary of How The Program Works
 The Timetable Generator is a program which stores courses on the University of Toronto’s Arts & Science Fall-Winter academic calendar and has the ability to generate and display timetables based on user-inputted requirements and preferences. Timetables can be exported and imported as files. Courses in generated timetables can also be edited, removed, or added through the user interface. The user can also prompt the program to display breadth course sections that match selected breadth categories sorted based on the user's preferred time.
 
-![Timetable](src/main/images/Timetable.png)
+![Timetable](images/timetable_generator.png)
 
 <a name ="org"/>
 
@@ -69,8 +67,8 @@ JRE or JDK 19 should be installed and usable on the machine.
 - Upon pressing the “Edit [Course]” button, the user will be shown a menu displaying all available sections for the course to be edited, of which the currently used sections are already highlighted. Multiple sections can be selected by holding shift while selecting or deselecting sections. Once the user moves forward, the timetable will be updated to reflect the edited course or display an error.
 
 **To use Use Case 5 (BR Recommendation)**:
+<br>
 ![Recommend BR](src/main/images/RecommendBR1.png)
-
 ![Recommend BR2](src/main/images/RecommendBR2.png)
 - First, access timetable editor UI through Use Case 4 (as described above)
 - Then click “Recommend BR Courses” button, which opens up popup screen
